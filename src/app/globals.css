@@ -1,19 +1,187 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #152028;
+  --ink-soft: #3d4d56;
+  --mute: #6a7a82;
+  --paper: #eef3f0;
+  --paper-deep: #dce6e1;
+  --mat: #c9d8d1;
+  --copper: #b65c2e;
+  --copper-deep: #8f4520;
+  --flux: #2a6b66;
+  --line: color-mix(in oklab, var(--ink) 12%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 22%, transparent);
+  --warn-bg: #fff4e5;
+  --warn-ink: #6a3b08;
+  --warn-line: #e0b36a;
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --hero-rise: 720ms;
+  --trace-draw: 1400ms;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-mute: var(--mute);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-mat: var(--mat);
+  --color-copper: var(--copper);
+  --color-copper-deep: var(--copper-deep);
+  --color-flux: var(--flux);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-ink: var(--warn-ink);
+  --color-warn-line: var(--warn-line);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes trace-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 28px 18px, 28px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --hero-rise: 1ms;
+    --trace-draw: 1ms;
+  }
+
+  .motion-rise,
+  .motion-trace,
+  .atmosphere-grid {
+    animation: none !important;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, sans-serif;
+}
+
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 700px at 12% -10%, color-mix(in oklab, var(--copper) 18%, transparent), transparent 60%),
+    radial-gradient(900px 600px at 92% 8%, color-mix(in oklab, var(--flux) 16%, transparent), transparent 55%),
+    linear-gradient(165deg, #f5f8f6 0%, var(--paper) 42%, var(--paper-deep) 100%);
+}
+
+.atmosphere-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%);
+  animation: grid-drift 28s linear infinite;
+}
+
+.brand-mark {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.motion-rise {
+  animation: rise-in var(--hero-rise) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.motion-rise-delay-1 {
+  animation-delay: 80ms;
+}
+
+.motion-rise-delay-2 {
+  animation-delay: 160ms;
+}
+
+.motion-rise-delay-3 {
+  animation-delay: 240ms;
+}
+
+.motion-trace {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: trace-draw var(--trace-draw) cubic-bezier(0.4, 0, 0.2, 1) 280ms forwards;
+}
+
+.guide-shell {
+  position: relative;
+}
+
+.guide-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 100% 0%, color-mix(in oklab, var(--flux) 12%, transparent), transparent 55%),
+    linear-gradient(180deg, #f7faf8 0%, var(--paper) 38%, #e7efe9 100%);
+}
+
+.section-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--copper), transparent 70%);
+  opacity: 0.55;
+}
+
+.diagram-shell {
+  position: relative;
+  overflow: hidden;
+  min-height: 16rem;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--mat) 55%, white), color-mix(in oklab, var(--paper-deep) 70%, white));
+}
+
+.diagram-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 0);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(180deg, black 40%, transparent 100%);
+}
+
+.diagram-shell > * {
+  position: relative;
+  z-index: 1;
 }
