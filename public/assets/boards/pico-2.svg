@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Raspberry Pi Pico 2 (RP2350) top-down silhouette.
+  Original artwork for HelpmeSolder. License: CC0.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 420" width="200" height="420"
+     role="img" aria-label="Raspberry Pi Pico 2 RP2350 top view">
+  <title>Raspberry Pi Pico 2 (RP2350)</title>
+  <defs>
+    <linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a9b4a"/>
+      <stop offset="100%" stop-color="#2d7a38"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="28" y="36" width="144" height="360" rx="6" fill="url(#pcb)" stroke="#1f5a28" stroke-width="2"/>
+  <circle cx="44" cy="52" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="156" cy="52" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="44" cy="380" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="156" cy="380" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+
+  <!-- USB-C style connector silhouette for Pico 2 family look -->
+  <g id="usb">
+    <rect x="70" y="16" width="60" height="30" rx="6" fill="#2a2a2a" stroke="#111" stroke-width="1"/>
+    <rect x="80" y="24" width="40" height="10" rx="3" fill="#bdbdbd"/>
+    <text x="100" y="14" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#333">USB</text>
+  </g>
+
+  <rect x="88" y="58" width="24" height="14" rx="2" fill="#222" stroke="#111"/>
+  <text x="100" y="88" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#e8f5e9">BOOTSEL</text>
+
+  <!-- RP2350 chip -->
+  <g id="mcu">
+    <rect x="68" y="168" width="64" height="64" rx="3" fill="#1c1c1c" stroke="#0a0a0a"/>
+    <text x="100" y="196" text-anchor="middle" font-family="ui-monospace, monospace" font-size="12" fill="#eee" font-weight="700">RP2350</text>
+    <text x="100" y="214" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#8bc34a">Pico 2</text>
+  </g>
+
+  <rect x="82" y="250" width="36" height="22" rx="2" fill="#222"/>
+  <text x="100" y="264" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#ccc">FLASH</text>
+
+  <g id="header-left" fill="#d4af37">
+    <circle cx="40" cy="70" r="3.2"/><circle cx="40" cy="85" r="3.2"/>
+    <circle cx="40" cy="100" r="3.2" data-pin="GND"/><circle cx="40" cy="115" r="3.2"/>
+    <circle cx="40" cy="130" r="3.2"/><circle cx="40" cy="145" r="3.2"/>
+    <circle cx="40" cy="160" r="3.2"/><circle cx="40" cy="175" r="3.2" data-pin="GND"/>
+    <circle cx="40" cy="190" r="3.2"/><circle cx="40" cy="205" r="3.2"/>
+    <circle cx="40" cy="220" r="3.2"/><circle cx="40" cy="235" r="3.2"/>
+    <circle cx="40" cy="250" r="3.2" data-pin="GND"/><circle cx="40" cy="265" r="3.2"/>
+    <circle cx="40" cy="280" r="3.2"/><circle cx="40" cy="295" r="3.2"/>
+    <circle cx="40" cy="310" r="3.2"/><circle cx="40" cy="325" r="3.2" data-pin="GND"/>
+    <circle cx="40" cy="340" r="3.2"/><circle cx="40" cy="355" r="3.2"/>
+  </g>
+
+  <g id="header-right" fill="#d4af37">
+    <circle cx="160" cy="70" r="3.2" data-pin="VBUS" id="pin-vbus"/>
+    <circle cx="160" cy="85" r="3.2" data-pin="VSYS"/>
+    <circle cx="160" cy="100" r="3.2" data-pin="GND" id="pin-gnd-r"/>
+    <circle cx="160" cy="115" r="3.2"/>
+    <circle cx="160" cy="130" r="3.2" data-pin="3V3" id="pin-3v3"/>
+    <circle cx="160" cy="145" r="3.2"/>
+    <circle cx="160" cy="160" r="3.2"/>
+    <circle cx="160" cy="175" r="3.2" data-pin="GND"/>
+    <circle cx="160" cy="190" r="3.2"/>
+    <circle cx="160" cy="205" r="3.2"/>
+    <circle cx="160" cy="220" r="3.2"/>
+    <circle cx="160" cy="235" r="3.2"/>
+    <circle cx="160" cy="250" r="3.2" data-pin="GND"/>
+    <circle cx="160" cy="265" r="3.2"/>
+    <circle cx="160" cy="280" r="3.2"/>
+    <circle cx="160" cy="295" r="3.2"/>
+    <circle cx="160" cy="310" r="3.2"/>
+    <circle cx="160" cy="325" r="3.2" data-pin="GND"/>
+    <circle cx="160" cy="340" r="3.2"/>
+    <circle cx="160" cy="355" r="3.2"/>
+  </g>
+
+  <g id="power-labels" font-family="ui-monospace, monospace" font-size="8" fill="#fff8e1">
+    <text x="172" y="73" data-pin-label="VBUS">VBUS</text>
+    <text x="172" y="103" data-pin-label="GND">GND</text>
+    <text x="172" y="133" data-pin-label="3V3">3V3</text>
+    <text x="8" y="103" data-pin-label="GND">GND</text>
+  </g>
+
+  <text x="100" y="400" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1a3d20" font-weight="700">Pico 2 · RP2350</text>
+</svg>

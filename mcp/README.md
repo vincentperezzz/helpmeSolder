@@ -5,12 +5,14 @@ Thin MCP server for Cursor/Claude. Tools call the Next.js API. No hosted LLM.
 ## Tools
 
 - `create_guide`
+- `ask_power_source` — **ask the user** USB wall vs battery kind (never guess)
+- `ask_sensor` — **ask the user** which exact sensor/input module (never guess)
 - `set_power_source`
 - `add_part`
 - `add_connection`
 - `set_steps`
 - `get_guide`
-- `list_catalog`
+- `list_catalog` — boards, modules, passives (breadboard/resistors/LEDs/…), recipes
 - `validate_guide`
 
 ## Env
@@ -53,8 +55,11 @@ Same shape under `mcpServers` in `claude_desktop_config.json`.
 
 ## Flow for the LLM
 
-1. `list_catalog` to pick board + modules
-2. Ask user for power if unknown (`battery` / `usb_wall`)
-3. `create_guide` → tell user the secret URL
-4. `set_power_source`, `add_part`, `add_connection`, `set_steps`
-5. `validate_guide` and fix using `alternatives[]`
+1. `list_catalog` to pick board + passives (resistor/breadboard when needed)
+2. `ask_power_source` → **ask the user** USB wall vs specific battery kind — do not invent it
+3. When the build needs sensing, measurement, or a specific input module → `ask_sensor` → **ask the user** which exact part — do not invent it
+4. `create_guide` → tell user the secret URL
+5. `set_power_source` with their power answer (`usb_wall` or `battery`; note battery kind in steps)
+6. `add_part` using catalog ids from the sensor answer and catalog
+7. `add_connection`, `set_steps`
+8. `validate_guide` and fix using `alternatives[]`

@@ -1,12 +1,35 @@
-export type PowerSource = "battery" | "usb_wall";
+export type PowerSource =
+  | "usb_wall"
+  | "battery_9v"
+  | "battery_2aa"
+  | "battery_3aa"
+  | "battery_18650";
 
-export type PinKind = "digital" | "analog" | "power" | "ground" | "i2c" | "spi" | "uart";
+export type PinKind =
+  | "digital"
+  | "analog"
+  | "power"
+  | "ground"
+  | "i2c"
+  | "spi"
+  | "uart";
 
 export type CatalogPin = {
   id: string;
   label: string;
   kinds: PinKind[];
   voltage?: "3v3" | "5v";
+};
+
+export type WokwiPart = {
+  tag: string;
+  attrs?: Record<string, string>;
+};
+
+export type PartVariantNote = {
+  label: string;
+  detail: string;
+  matchesGuide?: boolean;
 };
 
 export type CatalogPart = {
@@ -16,6 +39,17 @@ export type CatalogPart = {
   description: string;
   pins: CatalogPin[];
   photoHint?: string;
+  photoCaption?: string;
+  identify?: string;
+  variants?: PartVariantNote[];
+  watchOuts?: string[];
+  wokwi?: WokwiPart;
+  displayClass?:
+    | "character-lcd"
+    | "oled"
+    | "tft"
+    | "epaper"
+    | "matrix";
 };
 
 export type Recipe = {

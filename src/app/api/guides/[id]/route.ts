@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
+import { powerSourceNullableInputSchema } from "@/lib/guides/power-source";
 import { validateGuide } from "@/lib/guides/validator";
 
 type RouteContext = {
@@ -10,7 +11,7 @@ type RouteContext = {
 
 const patchSchema = z.object({
   title: z.string().optional(),
-  power_source: z.enum(["battery", "usb_wall"]).nullable().optional(),
+  power_source: powerSourceNullableInputSchema.optional(),
   board_id: z.string().nullable().optional(),
   parts: z
     .array(

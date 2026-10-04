@@ -1,4 +1,5 @@
 import { getCatalogPart } from "@/lib/catalog";
+import { POWER_SOURCE_VALUES } from "@/lib/guides/power-source";
 import type {
   Guide,
   GuideConnection,
@@ -28,6 +29,19 @@ function alternativesForPin(part: GuidePart, wanted: string[]): string[] {
     .slice(0, 6);
 }
 
+function isBreadboardRail(part: GuidePart | undefined, pinId: string): boolean {
+  if (!part?.catalogId.includes("breadboard")) return false;
+  return (
+    pinId === "+" ||
+    pinId === "-" ||
+    pinId === "+.t" ||
+    pinId === "-.t" ||
+    pinId === "+.b" ||
+    pinId === "-.b" ||
+    /^[+-]\.[tb](\.\d+)?$/.test(pinId)
+  );
+}
+
 export function validateGuide(guide: Guide): ValidationResult {
   const issues: ValidationIssue[] = [];
   const partsByInstance = new Map(guide.parts.map((part) => [part.instanceId, part]));
@@ -35,8 +49,9 @@ export function validateGuide(guide: Guide): ValidationResult {
   if (!guide.power_source) {
     issues.push({
       code: "power_source_required",
-      message: "Ask the user whether power is battery or usb_wall.",
-      alternatives: ["battery", "usb_wall"],
+      message:
+        "Ask the user which power source (battery type or USB wall) before wiring. Call ask_power_source, then set_power_source.",
+      alternatives: [...POWER_SOURCE_VALUES],
     });
   }
 
@@ -65,10 +80,11 @@ export function validateGuide(guide: Guide): ValidationResult {
   const usedPins = new Map<string, string>();
   for (const connection of guide.connections) {
     for (const end of [connection.from, connection.to]) {
+      const part = partsByInstance.get(end.instanceId);
+      if (isBreadboardRail(part, end.pinId)) continue;
       const key = `${end.instanceId}:${end.pinId}`;
       const prior = usedPins.get(key);
       if (prior && prior !== connection.id) {
-        const part = partsByInstance.get(end.instanceId);
         issues.push({
           code: "pin_already_used",
           message: `Pin ${end.pinId} on ${end.instanceId} is used more than once.`,

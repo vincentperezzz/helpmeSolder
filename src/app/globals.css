@@ -185,24 +185,86 @@ body {
 .diagram-shell {
   position: relative;
   overflow: hidden;
-  min-height: 16rem;
+  min-height: 20rem;
   border: 1px solid var(--line-strong);
   background:
     linear-gradient(180deg, color-mix(in oklab, var(--mat) 55%, white), color-mix(in oklab, var(--paper-deep) 70%, white));
+}
+
+.whiteboard-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: min(82vh, 860px);
 }
 
 .diagram-shell::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.45;
+  opacity: 0.35;
+  pointer-events: none;
   background-image:
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 0);
   background-size: 20px 20px;
-  mask-image: linear-gradient(180deg, black 40%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 55%, transparent 100%);
 }
 
 .diagram-shell > * {
   position: relative;
   z-index: 1;
+}
+
+.diagram-viewport {
+  overflow: hidden;
+  flex: 1 1 auto;
+  height: min(78vh, 820px);
+  min-height: 28rem;
+  touch-action: none;
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 12%, transparent) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.diagram-world {
+  will-change: transform;
+}
+
+.whiteboard-shell.is-fullscreen,
+.whiteboard-shell:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  border: none;
+  background: #e8eef0;
+}
+
+.whiteboard-shell.is-enlarged {
+  min-height: min(92vh, 960px);
+}
+
+.whiteboard-shell.is-enlarged .diagram-viewport {
+  height: min(88vh, 920px);
+}
+
+.whiteboard-shell.is-fullscreen .diagram-viewport,
+.whiteboard-shell:fullscreen .diagram-viewport {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.diagram-zoom-btn {
+  min-width: 2rem;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 70%, var(--paper));
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.4rem 0.55rem;
+}
+
+.diagram-zoom-btn:hover {
+  border-color: var(--flux);
+  color: var(--flux);
 }
