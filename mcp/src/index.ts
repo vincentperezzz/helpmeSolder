@@ -17,6 +17,7 @@ import {
   setStepsInput,
   validateGuide,
 } from "./api.js";
+import { sensorCategories } from "./sensor-options.js";
 
 const server = new McpServer({
   name: "helpmesolder",
@@ -41,7 +42,7 @@ server.registerTool(
   "create_guide",
   {
     description:
-      "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Before wiring, ask the user how they will power the project (battery pack vs USB wall adapter) — never guess — then call set_power_source.",
+      "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Before wiring, ask the user which power source (battery type or USB wall) — never guess — then call set_power_source.",
     inputSchema: createGuideInput,
   },
   async (input) => {
@@ -70,28 +71,79 @@ server.registerTool(
     return ok({
       mustAskUser: true,
       question:
-        "How will you power this build — a battery pack, or a USB wall adapter plugged into the board?",
+        "How will you power this build — USB wall adapter, 9V battery, 2×AA, 3×AA, or single 18650 cell?",
       whyAsk:
-        "Battery vs USB wall changes the diagram (battery pack vs wall brick) and wiring notes (VIN/GND vs USB/VIN). Never assume.",
+        "Power choice changes the diagram and VIN/USB wiring notes. Never assume battery type or USB wall.",
       options: [
-        {
-          id: "battery",
-          label: "Battery pack",
-          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
-          when:
-            "Portable, outdoor, remote, or no wall outlet. Mind voltage (usually 3.7–9V depending on pack).",
-        },
         {
           id: "usb_wall",
           label: "USB wall adapter",
           diagram: "Shows a USB wall brick into the board USB / 5V rail.",
           when: "Bench, indoor, always-on, or powered from a phone charger brick.",
+          setPowerSource: "usb_wall",
+        },
+        {
+          id: "battery_9v",
+          label: "9V battery (snap connector)",
+          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          when: "Compact portable builds; check board VIN range (often 7–12V on Uno).",
+          setPowerSource: "battery",
+        },
+        {
+          id: "battery_2aa",
+          label: "2×AA battery pack (~3V)",
+          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          when: "Low-voltage portable; may need 3.3V board or boost — confirm MCU supply.",
+          setPowerSource: "battery",
+        },
+        {
+          id: "battery_3aa",
+          label: "3×AA battery pack (~4.5V)",
+          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          when: "Portable with a bit more headroom than 2×AA.",
+          setPowerSource: "battery",
+        },
+        {
+          id: "battery_18650",
+          label: "18650 Li-ion cell (~3.7V)",
+          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          when: "Rechargeable portable; use a protected cell and proper charger — never guess polarity.",
+          setPowerSource: "battery",
         },
       ],
       nextStep:
-        "Ask the user the question above. After they pick, call set_power_source with battery or usb_wall.",
+        "Ask the user the question above. After they pick an option id, call set_power_source with power_source set to that option's setPowerSource (usb_wall or battery). Mention their specific battery kind in steps/notes.",
       guide_id: guide_id ?? null,
       context: context ?? null,
+    });
+  },
+);
+
+server.registerTool(
+  "ask_sensor",
+  {
+    description:
+      "Decision helper when the user wants sensing/measurement/input but has not named an exact module. Returns grouped catalog options. Do NOT guess (e.g. do not assume generic soil moisture) — ask the user, then add_part with the chosen catalog id.",
+    inputSchema: z.object({
+      guide_id: z.string().optional(),
+      intent: z
+        .string()
+        .optional()
+        .describe("What the user said they want to measure or detect"),
+    }),
+  },
+  async ({ guide_id, intent }) => {
+    return ok({
+      mustAskUser: true,
+      question:
+        "Which exact sensor or input module do you have? Pick one from the list (same part you will wire on the breadboard).",
+      whyAsk:
+        "Different modules use different pins, libraries, and passives. Never substitute a vague category for a specific catalog part.",
+      categories: sensorCategories,
+      nextStep:
+        "Ask the user the question above. After they pick an option id, call add_part with catalogId set to that id.",
+      guide_id: guide_id ?? null,
+      intent: intent ?? null,
     });
   },
 );
