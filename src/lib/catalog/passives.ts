@@ -130,47 +130,47 @@ export const passives: CatalogPart[] = [
     name: "9V Battery (snap)",
     kind: "passive",
     description:
-      "Classic 9V snap battery. Ask the user which battery type before wiring. Diagram when power_source=battery_9v.",
+      "Classic 9V snap battery. Both + and − snaps sit on top. Wires leave those top terminals.",
     photoHint: "battery-9v",
     pins: [
-      { id: "+", label: "+", kinds: ["power"], voltage: "5v" },
-      { id: "-", label: "−", kinds: ["ground"] },
+      { id: "+", label: "+ (top snap)", kinds: ["power"], voltage: "5v" },
+      { id: "-", label: "− (top snap)", kinds: ["ground"] },
     ],
   },
   {
     id: "passive.power.battery.2aa",
-    name: "2×AA Battery Holder",
+    name: "2×AA Batteries",
     kind: "passive",
     description:
-      "Two AA cells in series (~3V). Ask the user which battery type. Diagram when power_source=battery_2aa.",
+      "Two AA cells (~3V). Positive nubs on top, flat negatives on bottom — wires leave those ends.",
     photoHint: "battery-2aa",
     pins: [
-      { id: "+", label: "+", kinds: ["power"], voltage: "3v3" },
-      { id: "-", label: "−", kinds: ["ground"] },
+      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "3v3" },
+      { id: "-", label: "− (bottom)", kinds: ["ground"] },
     ],
   },
   {
     id: "passive.power.battery.3aa",
-    name: "3×AA Battery Holder",
+    name: "3×AA Batteries",
     kind: "passive",
     description:
-      "Three AA cells in series (~4.5V). Ask the user which battery type. Diagram when power_source=battery_3aa.",
+      "Three AA cells (~4.5V). Positive on top, negative on bottom — wires leave those ends.",
     photoHint: "battery-3aa",
     pins: [
-      { id: "+", label: "+", kinds: ["power"], voltage: "5v" },
-      { id: "-", label: "−", kinds: ["ground"] },
+      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "5v" },
+      { id: "-", label: "− (bottom)", kinds: ["ground"] },
     ],
   },
   {
     id: "passive.power.battery.18650",
-    name: "18650 Li-ion Cell / Holder",
+    name: "18650 Li-ion Cell",
     kind: "passive",
     description:
-      "Single 18650 Li-ion (~3.7V). Ask the user which battery type. Diagram when power_source=battery_18650.",
+      "Single 18650 Li-ion (~3.7V). Button + on top, flat − on bottom.",
     photoHint: "battery-18650",
     pins: [
-      { id: "+", label: "+", kinds: ["power"], voltage: "3v3" },
-      { id: "-", label: "−", kinds: ["ground"] },
+      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "3v3" },
+      { id: "-", label: "− (bottom)", kinds: ["ground"] },
     ],
   },
 ];

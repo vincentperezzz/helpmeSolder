@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 170" width="160" height="170" role="img" aria-label="Two AA batteries positive on top negative on bottom">
+  <title>2x AA batteries (CC0)</title>
+  <rect x="28" y="28" width="44" height="112" rx="8" fill="#f0e6c8" stroke="#8d6e63" stroke-width="1.5"/>
+  <rect x="88" y="28" width="44" height="112" rx="8" fill="#f0e6c8" stroke="#8d6e63" stroke-width="1.5"/>
+  <rect x="34" y="48" width="32" height="18" rx="2" fill="#c62828"/>
+  <rect x="94" y="48" width="32" height="18" rx="2" fill="#c62828"/>
+  <text x="50" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#5d4037">AA</text>
+  <text x="110" y="100" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#5d4037">AA</text>
+  <rect id="term-plus" x="68" y="10" width="24" height="12" rx="2" fill="#c62828" stroke="#8e0000" stroke-width="1.5"/>
+  <circle cx="80" cy="16" r="5" fill="#ef5350"/>
+  <text x="80" y="8" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#c62828">+</text>
+  <path d="M50 28 V16 H68" fill="none" stroke="#c62828" stroke-width="2"/>
+  <path d="M110 28 V16 H92" fill="none" stroke="#c62828" stroke-width="2"/>
+  <rect id="term-minus" x="62" y="142" width="36" height="10" rx="2" fill="#212121" stroke="#000" stroke-width="1.5"/>
+  <text x="80" y="164" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121"></text>
+  <path d="M50 140 V147 H62" fill="none" stroke="#212121" stroke-width="2"/>
+  <path d="M110 140 V147 H98" fill="none" stroke="#212121" stroke-width="2"/>
+</svg>

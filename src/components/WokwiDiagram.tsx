@@ -11,6 +11,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { getCatalogPart } from "@/lib/catalog";
+import { getBatteryAsset, type BatteryKind } from "@/lib/catalog/batteries";
 import type { Guide, PowerSource } from "@/lib/catalog/types";
 import {
   type BatteryPowerSource,
@@ -29,6 +30,7 @@ type ExitDir = { dx: number; dy: number };
 
 const STUB_BASE = 18;
 const STUB_SPREAD = 4;
+const POWER_ORIGIN = { x: 24, y: 24 };
 
 type PlacedPart = {
   instanceId: string;
@@ -624,13 +626,29 @@ function BreadboardVisual({
 
 const BATTERY_WIRE_ANCHORS: Record<
   BatteryPowerSource,
-  { plus: { x: number; y: number }; minus: { x: number; y: number } }
-> = {
-  battery_9v: { plus: { x: 122, y: 24 }, minus: { x: 52, y: 24 } },
-  battery_2aa: { plus: { x: 146, y: 52 }, minus: { x: 34, y: 90 } },
-  battery_3aa: { plus: { x: 152, y: 54 }, minus: { x: 64, y: 96 } },
-  battery_18650: { plus: { x: 140, y: 46 }, minus: { x: 26, y: 46 } },
-};
+  { plus: Point; minus: Point; plusExit: ExitDir; minusExit: ExitDir }
+> = (["battery_9v", "battery_2aa", "battery_3aa", "battery_18650"] as BatteryKind[]).reduce(
+  (acc, kind) => {
+    const asset = getBatteryAsset(kind);
+    acc[kind] = {
+      plus: {
+        x: POWER_ORIGIN.x + asset.terminals.plus.x,
+        y: POWER_ORIGIN.y + asset.terminals.plus.y,
+      },
+      minus: {
+        x: POWER_ORIGIN.x + asset.terminals.minus.x,
+        y: POWER_ORIGIN.y + asset.terminals.minus.y,
+      },
+      plusExit: asset.terminals.plusExit,
+      minusExit: asset.terminals.minusExit,
+    };
+    return acc;
+  },
+  {} as Record<
+    BatteryPowerSource,
+    { plus: Point; minus: Point; plusExit: ExitDir; minusExit: ExitDir }
+  >,
+);
 
 function PowerSourceVisual({
   source,
@@ -648,124 +666,32 @@ function PowerSourceVisual({
         className="absolute"
         style={{ left: x, top: y, width: 150 }}
       >
-        <svg viewBox="0 0 150 110" width={150} height={110} aria-label="USB wall power">
-          <rect x="18" y="8" width="70" height="52" rx="6" fill="#eceff1" stroke="#546e7a" />
-          <rect x="28" y="18" width="18" height="10" rx="1" fill="#90a4ae" />
-          <rect x="52" y="18" width="18" height="10" rx="1" fill="#90a4ae" />
-          <text x="28" y="48" fontSize="9" fill="#37474f" fontFamily="monospace">
-            USB WALL
-          </text>
-          <path d="M88 34 H118" stroke="#212121" strokeWidth="3" />
-          <rect x="118" y="26" width="22" height="16" rx="2" fill="#37474f" />
-          <circle cx="128" cy="34" r="2.5" fill="#c62828" />
-          <text x="18" y="78" fontSize="10" fill="#546e7a" fontFamily="monospace">
-            5V USB adapter
-          </text>
-          <text x="18" y="94" fontSize="9" fill="#78909c" fontFamily="monospace">
-            one feed → USB / VIN
-          </text>
-        </svg>
+        <img
+          src="/assets/batteries/usb-wall.svg"
+          alt="USB wall adapter"
+          width={150}
+          height={110}
+          draggable={false}
+        />
       </div>
     );
   }
 
-  if (source === "battery_9v") {
-    return (
-      <div
-        data-instance="power-source"
-        className="absolute"
-        style={{ left: x, top: y, width: 150 }}
-      >
-        <svg viewBox="0 0 150 118" width={150} height={118} aria-label="9V battery">
-          <rect x="36" y="28" width="56" height="72" rx="4" fill="#37474f" stroke="#263238" />
-          <rect x="44" y="36" width="40" height="56" rx="2" fill="#455a64" />
-          <text x="64" y="72" textAnchor="middle" fontSize="14" fill="#eceff1" fontFamily="monospace">
-            9V
-          </text>
-          <circle cx="48" cy="18" r="5" fill="#212121" stroke="#263238" strokeWidth="1" />
-          <text x="38" y="14" fontSize="8" fill="#212121" fontFamily="monospace">−</text>
-          <rect x="78" y="12" width="10" height="12" rx="1" fill="#c62828" stroke="#8d6e63" />
-          <text x="92" y="20" fontSize="9" fill="#c62828" fontFamily="monospace">+</text>
-          <path d="M48 23 V36" stroke="#212121" strokeWidth="2" />
-          <path d="M83 24 V28" stroke="#c62828" strokeWidth="2" />
-          <text x="18" y="108" fontSize="9" fill="#37474f" fontFamily="monospace">
-            9V snap · + → VIN · − → GND
-          </text>
-        </svg>
-      </div>
-    );
-  }
-
-  if (source === "battery_2aa") {
-    return (
-      <div
-        data-instance="power-source"
-        className="absolute"
-        style={{ left: x, top: y, width: 150 }}
-      >
-        <svg viewBox="0 0 150 120" width={150} height={120} aria-label="2xAA battery holder">
-          <rect x="20" y="24" width="88" height="44" rx="5" fill="#5d4037" stroke="#3e2723" />
-          <rect x="28" y="30" width="30" height="32" rx="14" fill="#ffecb3" stroke="#8d6e63" />
-          <rect x="62" y="30" width="30" height="32" rx="14" fill="#ffecb3" stroke="#8d6e63" />
-          <path d="M108 38 C118 38 124 44 124 52" stroke="#c62828" strokeWidth="2.5" fill="none" />
-          <circle cx="128" cy="52" r="4" fill="#c62828" />
-          <text x="134" y="55" fontSize="9" fill="#c62828" fontFamily="monospace">+</text>
-          <path d="M108 58 C118 58 124 64 124 72" stroke="#212121" strokeWidth="2.5" fill="none" />
-          <circle cx="128" cy="72" r="4" fill="#212121" />
-          <text x="134" y="75" fontSize="9" fill="#212121" fontFamily="monospace">−</text>
-          <text x="22" y="88" fontSize="10" fill="#5d4037" fontFamily="monospace">2×AA HOLDER</text>
-          <text x="22" y="104" fontSize="9" fill="#8d6e63" fontFamily="monospace">
-            red + · black −
-          </text>
-        </svg>
-      </div>
-    );
-  }
-
-  if (source === "battery_18650") {
-    return (
-      <div
-        data-instance="power-source"
-        className="absolute"
-        style={{ left: x, top: y, width: 150 }}
-      >
-        <svg viewBox="0 0 150 110" width={150} height={110} aria-label="18650 battery">
-          <rect x="24" y="34" width="88" height="28" rx="14" fill="#1565c0" stroke="#0d47a1" />
-          <rect x="30" y="40" width="76" height="16" rx="8" fill="#1976d2" />
-          <circle cx="118" cy="48" r="5" fill="#c62828" stroke="#8d6e63" strokeWidth="1" />
-          <text x="126" y="51" fontSize="9" fill="#c62828" fontFamily="monospace">+</text>
-          <circle cx="18" cy="48" r="5" fill="#212121" stroke="#37474f" strokeWidth="1" />
-          <text x="8" y="51" fontSize="9" fill="#212121" fontFamily="monospace">−</text>
-          <text x="24" y="82" fontSize="10" fill="#0d47a1" fontFamily="monospace">18650 Li-ion</text>
-          <text x="24" y="98" fontSize="9" fill="#546e7a" fontFamily="monospace">
-            + → VIN · − → GND
-          </text>
-        </svg>
-      </div>
-    );
-  }
-
+  const asset = getBatteryAsset(source);
   return (
     <div
       data-instance="power-source"
       className="absolute"
-      style={{ left: x, top: y, width: 150 }}
+      style={{ left: x, top: y, width: asset.width }}
     >
-      <svg viewBox="0 0 150 120" width={150} height={120} aria-label="3xAA battery holder">
-        <rect x="16" y="12" width="92" height="48" rx="6" fill="#fff8e1" stroke="#8d6e63" />
-        <rect x="24" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
-        <rect x="50" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
-        <rect x="76" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
-        <rect x="108" y="28" width="8" height="16" rx="1" fill="#6d4c41" />
-        <circle cx="128" cy="30" r="4" fill="#c62828" stroke="#8d6e63" strokeWidth="1" />
-        <text x="134" y="33" fontSize="9" fill="#c62828" fontFamily="monospace">+</text>
-        <circle cx="40" cy="72" r="4" fill="#212121" stroke="#8d6e63" strokeWidth="1" />
-        <text x="48" y="75" fontSize="9" fill="#212121" fontFamily="monospace">−</text>
-        <text x="24" y="96" fontSize="10" fill="#5d4037" fontFamily="monospace">3×AA HOLDER</text>
-        <text x="24" y="112" fontSize="9" fill="#8d6e63" fontFamily="monospace">
-          + → VIN · − → GND
-        </text>
-      </svg>
+      <img
+        src={asset.src}
+        alt={asset.label}
+        width={asset.width}
+        height={asset.height}
+        draggable={false}
+      />
+      <p className="mt-1 font-mono text-[9px] text-mute">{asset.caption}</p>
     </div>
   );
 }
@@ -935,10 +861,24 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       }
 
       if (guide.power_source) {
-        obstacles.push({ x: 16, y: 16, w: 162, h: 124 });
+        if (isBatteryPowerSource(guide.power_source)) {
+          const asset = getBatteryAsset(guide.power_source);
+          obstacles.push({
+            x: POWER_ORIGIN.x,
+            y: POWER_ORIGIN.y,
+            w: asset.width,
+            h: asset.height + 16,
+          });
+        } else {
+          obstacles.push({
+            x: POWER_ORIGIN.x,
+            y: POWER_ORIGIN.y,
+            w: 150,
+            h: 110,
+          });
+        }
       }
 
-      const powerBodyCenter = { x: 99, y: 62 };
       const defaultExit: ExitDir = { dx: 1, dy: 0 };
 
       const board = placed.find((part) => part.kind === "board");
@@ -946,18 +886,10 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         const powerPins = boardPowerPins(board);
         if (isBatteryPowerSource(guide.power_source)) {
           const wireAnchors = BATTERY_WIRE_ANCHORS[guide.power_source];
-          const plusPt = wireAnchors.plus;
-          const minusPt = wireAnchors.minus;
-          anchors.set("power-source:+", plusPt);
-          anchors.set("power-source:-", minusPt);
-          exitDirs.set(
-            "power-source:+",
-            exitFromBodyCenter(plusPt, powerBodyCenter),
-          );
-          exitDirs.set(
-            "power-source:-",
-            exitFromBodyCenter(minusPt, powerBodyCenter),
-          );
+          anchors.set("power-source:+", wireAnchors.plus);
+          anchors.set("power-source:-", wireAnchors.minus);
+          exitDirs.set("power-source:+", wireAnchors.plusExit);
+          exitDirs.set("power-source:-", wireAnchors.minusExit);
           if (powerPins.vin) {
             const vinKey = `${board.instanceId}:${powerPins.vin}`;
             const vin =
@@ -985,12 +917,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             );
           }
         } else {
-          const outPt = { x: 140, y: 58 };
+          const outPt = {
+            x: POWER_ORIGIN.x + 128,
+            y: POWER_ORIGIN.y + 38,
+          };
           anchors.set("power-source:OUT", outPt);
-          exitDirs.set(
-            "power-source:OUT",
-            exitFromBodyCenter(outPt, powerBodyCenter),
-          );
+          exitDirs.set("power-source:OUT", { dx: 1, dy: 0 });
           const targetPin = powerPins.usb || powerPins.vin;
           const target = targetPin
             ? anchors.get(`${board.instanceId}:${targetPin}`)
@@ -1007,6 +939,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
               "power-source:BOARD",
               exitDirs.get(boardKey) ?? defaultExit,
             );
+          } else {
+            exitDirs.set("power-source:BOARD", defaultExit);
           }
         }
       }
@@ -1308,7 +1242,11 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           }}
         >
           {guide.power_source ? (
-            <PowerSourceVisual source={guide.power_source} x={24} y={24} />
+            <PowerSourceVisual
+              source={guide.power_source}
+              x={POWER_ORIGIN.x}
+              y={POWER_ORIGIN.y}
+            />
           ) : null}
 
           <svg
@@ -1396,7 +1334,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         Wokwi visuals (MIT) plus breadboard and power. Diagram only, not a simulator.
         {guide.power_source
           ? isBatteryPowerSource(guide.power_source)
-            ? " Power: battery + to VIN, − to GND."
+            ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`
             : " Power: USB wall to USB/VIN."
           : ""}
       </p>
