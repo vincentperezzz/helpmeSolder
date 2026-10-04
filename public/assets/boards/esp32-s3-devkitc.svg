@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 560" width="240" height="560" role="img" aria-label="ESP32-S3 DevKitC style simplified top-view">
+  <title>ESP32-S3 DevKitC-1 style (original simplified top-view, CC0)</title>
+  <!--
+    Original CC0 simplified top-view for HelpmeSolder (optional / not in v1 catalog).
+    DevKitC-1 style: USB-C at bottom, ESP32-S3-WROOM module near top, dual headers.
+    Layout facts only - not Espressif docs art (often CC-BY-SA) and not Fritzing forum parts.
+    Left x=18, right x=222. Representative common pins labeled; silkscreen varies by rev.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .board { fill: #1a1a1a; stroke: #0d0d0d; stroke-width: 2; }
+      .module { fill: #757575; stroke: #424242; stroke-width: 1; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.1; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 7px; fill: #263238; }
+      .ant { fill: none; stroke: #5d5650; stroke-width: 1.2; }
+    ]]></style>
+  </defs>
+
+  <rect class="board" x="40" y="40" width="160" height="480" rx="10"/>
+  <circle cx="56" cy="60" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="184" cy="60" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="56" cy="500" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="184" cy="500" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+
+  <path class="ant" d="M60 100 V52 H88 V84 H112 V52 H136 V82 H160 V52 H180 V104"/>
+  <rect class="module" x="60" y="104" width="120" height="130" rx="2"/>
+  <text class="label" x="120" y="168" text-anchor="middle" font-size="13">ESP32-S3</text>
+  <text class="label" x="120" y="188" text-anchor="middle" font-size="8">WROOM-1</text>
+
+  <rect x="72" y="250" width="10" height="20" rx="1" fill="#e5e5e5"/>
+  <circle cx="77" cy="259" r="3" fill="#ef5350"/>
+  <rect x="158" y="250" width="10" height="20" rx="1" fill="#e5e5e5"/>
+  <circle cx="163" cy="259" r="3" fill="#66bb6a"/>
+
+  <g id="buttons">
+    <rect class="btn" x="64" y="400" width="28" height="20" rx="3"/>
+    <circle cx="78" cy="410" r="5" fill="#ffdc8e"/>
+    <text class="label" x="78" y="436" text-anchor="middle" font-size="8">BOOT</text>
+    <rect class="btn" x="148" y="400" width="28" height="20" rx="3"/>
+    <circle cx="162" cy="410" r="5" fill="#ffdc8e"/>
+    <text class="label" x="162" y="436" text-anchor="middle" font-size="8">RST</text>
+  </g>
+
+  <g id="usb-end">
+    <rect class="usb" x="88" y="500" width="64" height="28" rx="4"/>
+    <rect x="104" y="508" width="32" height="10" rx="2" fill="#90a4ae"/>
+    <text class="label" x="120" y="494" text-anchor="middle" font-size="9">USB-C</text>
+  </g>
+
+  <g id="left-header">
+    <circle id="pin-3v3" class="hole v3" cx="18" cy="88" r="6"/><text class="pinlbl" x="18" y="82" text-anchor="middle">3V3</text>
+    <circle id="pin-3v3-2" class="hole v3" cx="18" cy="109.5" r="6"/>
+    <circle id="pin-rst" class="hole" cx="18" cy="131" r="6"/>
+    <circle id="pin-gpio4" class="hole" cx="18" cy="152.5" r="6"/>
+    <circle id="pin-gpio5" class="hole" cx="18" cy="174" r="6"/>
+    <circle id="pin-gpio6" class="hole" cx="18" cy="195.5" r="6"/>
+    <circle id="pin-gpio7" class="hole" cx="18" cy="217" r="6"/>
+    <circle id="pin-gpio15" class="hole" cx="18" cy="238.5" r="6"/>
+    <circle id="pin-gpio16" class="hole" cx="18" cy="260" r="6"/>
+    <circle id="pin-gpio17" class="hole" cx="18" cy="281.5" r="6"/>
+    <circle id="pin-gpio18" class="hole" cx="18" cy="303" r="6"/>
+    <circle id="pin-gpio8" class="hole" cx="18" cy="324.5" r="6"/>
+    <circle id="pin-gpio3" class="hole" cx="18" cy="346" r="6"/>
+    <circle id="pin-gpio46" class="hole" cx="18" cy="367.5" r="6"/>
+    <circle id="pin-gpio9" class="hole" cx="18" cy="389" r="6"/>
+    <circle id="pin-gpio10" class="hole" cx="18" cy="410.5" r="6"/>
+    <circle id="pin-gpio11" class="hole" cx="18" cy="432" r="6"/>
+    <circle id="pin-gpio12" class="hole" cx="18" cy="453.5" r="6"/>
+    <circle id="pin-gpio13" class="hole" cx="18" cy="475" r="6"/>
+    <circle id="pin-gpio14" class="hole" cx="18" cy="496.5" r="6"/>
+    <circle id="pin-5v" class="hole pwr" cx="18" cy="518" r="6"/><text class="pinlbl" x="18" y="512" text-anchor="middle">5V</text>
+    <circle id="pin-gnd-left" class="hole gnd" cx="18" cy="539.5" r="6"/><text class="pinlbl" x="18" y="556" text-anchor="middle">GND</text>
+  </g>
+
+  <g id="right-header">
+    <circle id="pin-gpio1" class="hole" cx="222" cy="88" r="6"/><text class="pinlbl" x="222" y="82" text-anchor="middle">IO1</text>
+    <circle id="pin-gpio2" class="hole" cx="222" cy="109.5" r="6"/>
+    <circle id="pin-gpio42" class="hole" cx="222" cy="131" r="6"/>
+    <circle id="pin-gpio41" class="hole" cx="222" cy="152.5" r="6"/>
+    <circle id="pin-gpio40" class="hole" cx="222" cy="174" r="6"/>
+    <circle id="pin-gpio39" class="hole" cx="222" cy="195.5" r="6"/>
+    <circle id="pin-gpio38" class="hole" cx="222" cy="217" r="6"/>
+    <circle id="pin-gpio37" class="hole" cx="222" cy="238.5" r="6"/>
+    <circle id="pin-gpio36" class="hole" cx="222" cy="260" r="6"/>
+    <circle id="pin-gpio35" class="hole" cx="222" cy="281.5" r="6"/>
+    <circle id="pin-gpio0" class="hole" cx="222" cy="303" r="6"/>
+    <circle id="pin-gpio45" class="hole" cx="222" cy="324.5" r="6"/>
+    <circle id="pin-gpio48" class="hole" cx="222" cy="346" r="6"/>
+    <circle id="pin-gpio47" class="hole" cx="222" cy="367.5" r="6"/>
+    <circle id="pin-gpio21" class="hole" cx="222" cy="389" r="6"/>
+    <circle id="pin-gpio20" class="hole" cx="222" cy="410.5" r="6"/>
+    <circle id="pin-gpio19" class="hole" cx="222" cy="432" r="6"/>
+    <circle id="pin-tx" class="hole" cx="222" cy="453.5" r="6"/><text class="pinlbl" x="222" y="448" text-anchor="middle">TX</text>
+    <circle id="pin-rx" class="hole" cx="222" cy="475" r="6"/><text class="pinlbl" x="222" y="469" text-anchor="middle">RX</text>
+    <circle id="pin-gpio43" class="hole" cx="222" cy="496.5" r="6"/>
+    <circle id="pin-gpio44" class="hole" cx="222" cy="518" r="6"/>
+    <circle id="pin-gnd-right" class="hole gnd" cx="222" cy="539.5" r="6"/><text class="pinlbl" x="222" y="556" text-anchor="middle">GND</text>
+  </g>
+</svg>

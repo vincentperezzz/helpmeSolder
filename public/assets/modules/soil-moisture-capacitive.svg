@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 420" width="160" height="420" role="img" aria-label="Capacitive soil moisture sensor simplified top-view">
+  <title>Capacitive soil moisture sensor (original simplified top-view, CC0)</title>
+  <!--
+    Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
+    Generic capacitive soil moisture module: small logic PCB + long corrosion-resistant probe.
+    Header pins at top: VCC, GND, AO, DO (matches catalog module.soil.moisture).
+    Not derived from Adafruit (CC-BY-SA), OgreTransporter (GPL-3.0), or DFRobot artwork.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .pcb { fill: #2e7d32; stroke: #1b5e20; stroke-width: 2; }
+      .probe { fill: #43a047; stroke: #1b5e20; stroke-width: 1.5; }
+      .trace { fill: none; stroke: #c0c0c0; stroke-width: 2.2; }
+      .chip { fill: #212121; }
+      .pad { fill: #b68b2d; stroke: #6d4c1b; stroke-width: 0.8; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .ao { fill: #1565c0; stroke: #0d47a1; }
+      .do { fill: #6a1b9a; stroke: #4a148c; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #e8f5e9; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #263238; }
+      .hint { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #81c784; }
+    ]]></style>
+  </defs>
+
+  <!-- Probe / sensing area -->
+  <path class="probe" d="M40 150 H120 V390 Q80 415 40 390 Z"/>
+  <path class="trace" d="M58 160 V370"/>
+  <path class="trace" d="M80 160 V378"/>
+  <path class="trace" d="M102 160 V370"/>
+  <text class="hint" x="80" y="300" text-anchor="middle">insert in soil</text>
+
+  <!-- Logic PCB -->
+  <rect class="pcb" x="28" y="48" width="104" height="120" rx="4"/>
+  <rect class="chip" x="56" y="88" width="48" height="28" rx="2"/>
+  <text class="label" x="80" y="106" text-anchor="middle" font-size="8">LOGIC</text>
+  <circle cx="48" cy="100" r="5" fill="#ef5350"/>
+  <text class="label" x="48" y="120" text-anchor="middle" font-size="7">PWR</text>
+  <rect x="100" y="96" width="18" height="10" rx="1" fill="#78909c"/>
+  <text class="label" x="80" y="155" text-anchor="middle" font-size="8">capacitive</text>
+
+  <!-- 4-pin header (top) -->
+  <g id="pin-header">
+    <rect class="pad" x="34" y="28" width="92" height="28" rx="2"/>
+    <circle id="pin-vcc" class="hole pwr" cx="48" cy="42" r="7"/>
+    <circle id="pin-gnd" class="hole gnd" cx="72" cy="42" r="7"/>
+    <circle id="pin-ao" class="hole ao" cx="96" cy="42" r="7"/>
+    <circle id="pin-do" class="hole do" cx="120" cy="42" r="7"/>
+    <text class="pinlbl" x="48" y="22" text-anchor="middle">VCC</text>
+    <text class="pinlbl" x="72" y="22" text-anchor="middle">GND</text>
+    <text class="pinlbl" x="96" y="22" text-anchor="middle">AO</text>
+    <text class="pinlbl" x="120" y="22" text-anchor="middle">DO</text>
+  </g>
+</svg>
