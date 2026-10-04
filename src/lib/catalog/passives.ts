@@ -4,6 +4,19 @@ function rail(id: string, label: string, kinds: CatalogPart["pins"][number]["kin
   return { id, label, kinds, voltage };
 }
 
+function breadboardHolePins(): CatalogPart["pins"] {
+  const cols = [1, 5, 10, 15, 20, 25, 30];
+  const rows = ["a", "e", "f", "j"] as const;
+  const holes = cols.flatMap((col) =>
+    rows.map((row) => rail(`${row}${col}`, `${row}${col}`, ["digital", "analog"])),
+  );
+  return [
+    rail("+", "+ rail", ["power"], "5v"),
+    rail("-", "- rail", ["ground"]),
+    ...holes,
+  ];
+}
+
 export const passives: CatalogPart[] = [
   {
     id: "passive.breadboard.half",
@@ -11,22 +24,7 @@ export const passives: CatalogPart[] = [
     kind: "passive",
     description: "Half-size solderless breadboard for prototype wiring. Custom MIT-style visual.",
     photoHint: "breadboard-half",
-    pins: [
-      rail("+", "+ rail", ["power"], "5v"),
-      rail("-", "- rail", ["ground"]),
-      rail("a1", "a1", ["digital", "analog"]),
-      rail("e1", "e1", ["digital", "analog"]),
-      rail("f1", "f1", ["digital", "analog"]),
-      rail("j1", "j1", ["digital", "analog"]),
-      rail("a15", "a15", ["digital", "analog"]),
-      rail("e15", "e15", ["digital", "analog"]),
-      rail("f15", "f15", ["digital", "analog"]),
-      rail("j15", "j15", ["digital", "analog"]),
-      rail("a30", "a30", ["digital", "analog"]),
-      rail("e30", "e30", ["digital", "analog"]),
-      rail("f30", "f30", ["digital", "analog"]),
-      rail("j30", "j30", ["digital", "analog"]),
-    ],
+    pins: breadboardHolePins(),
   },
   {
     id: "passive.resistor.220",

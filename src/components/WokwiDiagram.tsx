@@ -19,6 +19,8 @@ type WokwiDiagramProps = {
 };
 
 type PinInfo = { name: string; x: number; y: number };
+type Point = { x: number; y: number };
+type Rect = { x: number; y: number; w: number; h: number };
 
 type PlacedPart = {
   instanceId: string;
@@ -29,6 +31,7 @@ type PlacedPart = {
   y: number;
   name: string;
   kind: "board" | "module" | "passive" | "power";
+  seated?: boolean;
 };
 
 type Wire = {
@@ -36,9 +39,10 @@ type Wire = {
   color: string;
   d: string;
   label: string;
-  mid: { x: number; y: number };
-  from: { x: number; y: number };
-  to: { x: number; y: number };
+  showLabel: boolean;
+  mid: Point;
+  from: Point;
+  to: Point;
 };
 
 const COLORS = [
@@ -54,10 +58,25 @@ const COLORS = [
 
 const MIN_ZOOM = 0.45;
 const MAX_ZOOM = 2.4;
+const BB_LABEL_H = 18;
+const BB_ORIGIN_X = 28;
+const BB_STEP = 10;
+const BB_ROW_Y: Record<string, number> = {
+  a: 40,
+  b: 50,
+  c: 60,
+  d: 70,
+  e: 80,
+  f: 108,
+  g: 118,
+  h: 128,
+  i: 138,
+  j: 148,
+};
 
 function wireColor(index: number, label: string): string {
   const lower = label.toLowerCase();
-  if (lower.includes("gnd") || lower.includes("vss") || lower.includes("-")) {
+  if (lower.includes("gnd") || lower.includes("vss") || lower.includes("−") || lower.includes("- rail") || lower.startsWith("−")) {
     return "#212121";
   }
   if (
@@ -80,6 +99,249 @@ function pinLabel(catalogId: string, pinId: string): string {
   const catalog = getCatalogPart(catalogId);
   const pin = catalog?.pins.find((entry) => entry.id === pinId);
   return pin?.label || pinId;
+}
+
+function isBreadboardId(catalogId: string): boolean {
+  return catalogId.includes("breadboard");
+}
+
+function breadboardHoleLocal(pinId: string): Point | null {
+  if (pinId === "+" ) {
+    return { x: BB_ORIGIN_X + 2 * BB_STEP, y: BB_LABEL_H + 17 };
+  }
+  if (pinId === "-") {
+    return { x: BB_ORIGIN_X + 8 * BB_STEP, y: BB_LABEL_H + 163 };
+  }
+  const match = /^([a-j])(\d+)$/i.exec(pinId);
+  if (!match) return null;
+  const row = match[1].toLowerCase();
+  const col = Number(match[2]);
+  const rowY = BB_ROW_Y[row];
+  if (!rowY || col < 1 || col > 30) return null;
+  return {
+    x: BB_ORIGIN_X + (col - 1) * BB_STEP,
+    y: BB_LABEL_H + rowY,
+  };
+}
+
+function breadboardCol(pinId: string): number | null {
+  const match = /^[a-j](\d+)$/i.exec(pinId);
+  return match ? Number(match[1]) : null;
+}
+
+function pointInRect(point: Point, rect: Rect, pad = 0): boolean {
+  return (
+    point.x >= rect.x - pad &&
+    point.x <= rect.x + rect.w + pad &&
+    point.y >= rect.y - pad &&
+    point.y <= rect.y + rect.h + pad
+  );
+}
+
+function segmentHitsRect(a: Point, b: Point, rect: Rect): boolean {
+  const minX = Math.min(a.x, b.x);
+  const maxX = Math.max(a.x, b.x);
+  const minY = Math.min(a.y, b.y);
+  const maxY = Math.max(a.y, b.y);
+  if (a.y === b.y) {
+    if (a.y <= rect.y || a.y >= rect.y + rect.h) return false;
+    return maxX > rect.x && minX < rect.x + rect.w;
+  }
+  if (a.x === b.x) {
+    if (a.x <= rect.x || a.x >= rect.x + rect.w) return false;
+    return maxY > rect.y && minY < rect.y + rect.h;
+  }
+  return false;
+}
+
+function pathCrossesObstacles(points: Point[], obstacles: Rect[]): boolean {
+  for (let i = 0; i < points.length - 1; i += 1) {
+    for (const obstacle of obstacles) {
+      if (segmentHitsRect(points[i], points[i + 1], obstacle)) return true;
+    }
+  }
+  return false;
+}
+
+function pathLength(points: Point[]): number {
+  let total = 0;
+  for (let i = 0; i < points.length - 1; i += 1) {
+    total +=
+      Math.abs(points[i + 1].x - points[i].x) +
+      Math.abs(points[i + 1].y - points[i].y);
+  }
+  return total;
+}
+
+function blockersForWire(from: Point, to: Point, obstacles: Rect[]): Rect[] {
+  return obstacles.filter((obs) => {
+    const fromInside = pointInRect(from, obs, 6);
+    const toInside = pointInRect(to, obs, 6);
+    if (fromInside && toInside) return false;
+
+    const left = Math.min(from.x, to.x);
+    const right = Math.max(from.x, to.x);
+    const spansX = right > obs.x + 12 && left < obs.x + obs.w - 12;
+    if (!spansX) return false;
+
+    const fromLeft = from.x < obs.x + obs.w * 0.3;
+    const fromRight = from.x > obs.x + obs.w * 0.7;
+    const toLeft = to.x < obs.x + obs.w * 0.3;
+    const toRight = to.x > obs.x + obs.w * 0.7;
+    const spansAcross = (fromLeft && toRight) || (fromRight && toLeft);
+
+    if (!fromInside && !toInside) {
+      const top = Math.min(from.y, to.y);
+      const bottom = Math.max(from.y, to.y);
+      const overlapsY = bottom > obs.y && top < obs.y + obs.h;
+      return spansAcross || overlapsY;
+    }
+
+    const outside = fromInside ? to : from;
+    const exitsFarSide =
+      outside.x < obs.x - 8 || outside.x > obs.x + obs.w + 8;
+    return exitsFarSide || spansAcross;
+  });
+}
+
+function routedPath(
+  from: Point,
+  to: Point,
+  obstacles: Rect[],
+  index: number,
+): { d: string; mid: Point } {
+  const lane = ((index % 5) - 2) * 16;
+  const blockers = blockersForWire(from, to, obstacles);
+  const avoid = blockers.map((obs) => ({
+    x: obs.x + 10,
+    y: obs.y + 10,
+    w: Math.max(20, obs.w - 20),
+    h: Math.max(20, obs.h - 20),
+  }));
+
+  const candidates: Point[][] = [];
+  const midX = from.x + (to.x - from.x) * 0.5 + lane;
+  candidates.push([
+    from,
+    { x: midX, y: from.y },
+    { x: midX, y: to.y },
+    to,
+  ]);
+  const midY = (from.y + to.y) / 2 + lane * 0.4;
+  candidates.push([
+    from,
+    { x: from.x, y: midY },
+    { x: to.x, y: midY },
+    to,
+  ]);
+
+  if (blockers.length > 0) {
+    const clearTop =
+      Math.min(...blockers.map((obs) => obs.y)) - 30 - Math.abs(lane);
+    const clearBot =
+      Math.max(...blockers.map((obs) => obs.y + obs.h)) + 30 + Math.abs(lane);
+    const clearRight =
+      Math.max(...blockers.map((obs) => obs.x + obs.w)) + 26 + Math.abs(lane);
+    const clearLeft =
+      Math.min(...blockers.map((obs) => obs.x)) - 26 - Math.abs(lane);
+
+    candidates.push([
+      from,
+      { x: from.x, y: clearTop },
+      { x: to.x, y: clearTop },
+      to,
+    ]);
+    candidates.push([
+      from,
+      { x: from.x, y: clearBot },
+      { x: to.x, y: clearBot },
+      to,
+    ]);
+    candidates.push([
+      from,
+      { x: from.x, y: clearTop },
+      { x: clearRight, y: clearTop },
+      { x: clearRight, y: to.y },
+      to,
+    ]);
+    candidates.push([
+      from,
+      { x: from.x, y: clearBot },
+      { x: clearRight, y: clearBot },
+      { x: clearRight, y: to.y },
+      to,
+    ]);
+    candidates.push([
+      from,
+      { x: clearLeft, y: from.y },
+      { x: clearLeft, y: clearTop },
+      { x: to.x, y: clearTop },
+      to,
+    ]);
+  }
+
+  let best = candidates[0];
+  let bestScore = Number.POSITIVE_INFINITY;
+  for (const candidate of candidates) {
+    const hits = pathCrossesObstacles(candidate, avoid);
+    const score = pathLength(candidate) + (hits ? 12000 : 0);
+    if (score < bestScore) {
+      bestScore = score;
+      best = candidate;
+    }
+  }
+
+  const d = best
+    .map((point, i) => (i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`))
+    .join(" ");
+  const mid = best[Math.floor(best.length / 2)];
+  return { d, mid };
+}
+
+function seatPassiveOnBreadboard(
+  part: PlacedPart,
+  breadboard: PlacedPart,
+  guide: Guide,
+): boolean {
+  const holePins = guide.connections.flatMap((connection) => {
+    const ends = [connection.from, connection.to];
+    const onBoard = ends.find((end) => end.instanceId === breadboard.instanceId);
+    const onPart = ends.find((end) => end.instanceId === part.instanceId);
+    if (!onBoard || !onPart) return [];
+    return [onBoard.pinId];
+  });
+  if (holePins.length === 0) return false;
+
+  const cols = holePins
+    .map((pinId) => breadboardCol(pinId))
+    .filter((col): col is number => col != null);
+  const isLed = part.catalogId.includes(".led.");
+  const isResistor = part.catalogId.includes("resistor");
+
+  if (cols.length === 0) {
+    part.x = breadboard.x + 48;
+    part.y = breadboard.y + BB_LABEL_H + (isLed ? 36 : 70);
+    part.seated = true;
+    return true;
+  }
+
+  const minCol = Math.min(...cols);
+  const maxCol = Math.max(...cols);
+  const midCol = (minCol + maxCol) / 2;
+  const midX = BB_ORIGIN_X + (midCol - 1) * BB_STEP;
+
+  if (isResistor) {
+    part.x = breadboard.x + midX - 28;
+    part.y = breadboard.y + BB_LABEL_H + 58;
+  } else if (isLed) {
+    part.x = breadboard.x + BB_ORIGIN_X + (maxCol - 1) * BB_STEP - 8;
+    part.y = breadboard.y + BB_LABEL_H + 30;
+  } else {
+    part.x = breadboard.x + midX - 16;
+    part.y = breadboard.y + BB_LABEL_H + 48;
+  }
+  part.seated = true;
+  return true;
 }
 
 function layoutParts(guide: Guide): PlacedPart[] {
@@ -105,47 +367,65 @@ function layoutParts(guide: Guide): PlacedPart[] {
     else modules.push(placed);
   }
 
-  let boardY = 120;
+  let boardY = 140;
   boards.forEach((part, index) => {
-    part.x = 200;
+    part.x = 210;
     part.y = boardY;
-    boardY += index === 0 ? 340 : 260;
+    boardY += index === 0 ? 360 : 260;
   });
 
-  let passiveY = 120;
-  passives.forEach((part) => {
-    const breadboard = part.catalogId.includes("breadboard");
-    part.x = breadboard ? 520 : 560;
-    part.y = passiveY;
-    passiveY += breadboard ? 220 : 110;
+  const breadboards = passives.filter((part) => isBreadboardId(part.catalogId));
+  const otherPassives = passives.filter((part) => !isBreadboardId(part.catalogId));
+
+  let breadboardY = 140;
+  breadboards.forEach((part) => {
+    part.x = 560;
+    part.y = breadboardY;
+    breadboardY += 230;
   });
 
-  let moduleY = 120;
+  const primaryBreadboard = breadboards[0];
+  let freepassiveY = breadboardY;
+  otherPassives.forEach((part) => {
+    if (primaryBreadboard && seatPassiveOnBreadboard(part, primaryBreadboard, guide)) {
+      return;
+    }
+    part.x = primaryBreadboard ? 940 : 560;
+    part.y = freepassiveY;
+    freepassiveY += 110;
+  });
+
+  let moduleY = 140;
   modules.forEach((part) => {
     const tall =
       part.tag?.includes("lcd") ||
       part.tag?.includes("ili9341") ||
       part.tag?.includes("ssd1306");
-    part.x = passives.length > 0 ? 900 : 620;
+    part.x = passives.length > 0 ? 980 : 640;
     part.y = moduleY;
     moduleY += tall ? 280 : 190;
   });
 
-  return [...boards, ...passives, ...modules];
+  return [...boards, ...breadboards, ...otherPassives, ...modules];
 }
 
-function routedPath(
-  from: { x: number; y: number },
-  to: { x: number; y: number },
-  index: number,
-): { d: string; mid: { x: number; y: number } } {
-  const lane = ((index % 5) - 2) * 18;
-  const midX = from.x + (to.x - from.x) * 0.5 + lane;
-  const midY = (from.y + to.y) / 2 + lane * 0.35;
-  return {
-    d: `M ${from.x} ${from.y} L ${midX} ${from.y} L ${midX} ${to.y} L ${to.x} ${to.y}`,
-    mid: { x: midX, y: midY },
-  };
+function boardPowerPins(board: PlacedPart): { vin?: string; gnd?: string; usb?: string } {
+  const catalog = getCatalogPart(board.catalogId);
+  if (!catalog) return {};
+  const ids = catalog.pins.map((pin) => pin.id);
+  const vin =
+    ids.find((id) => id.toUpperCase() === "VIN") ||
+    ids.find((id) => id.toLowerCase() === "vin") ||
+    ids.find((id) => id.toLowerCase() === "vbus") ||
+    ids.find((id) => id === "5V");
+  const gnd =
+    ids.find((id) => id.startsWith("GND")) ||
+    ids.find((id) => id.toLowerCase() === "gnd");
+  const usb =
+    ids.find((id) => id.toUpperCase() === "USB") ||
+    ids.find((id) => id.toLowerCase() === "vbus") ||
+    vin;
+  return { vin, gnd, usb };
 }
 
 function BreadboardVisual({
@@ -227,11 +507,12 @@ function PowerSourceVisual({
           </text>
           <path d="M88 34 H118" stroke="#212121" strokeWidth="3" />
           <rect x="118" y="26" width="22" height="16" rx="2" fill="#37474f" />
+          <circle cx="128" cy="34" r="2.5" fill="#c62828" />
           <text x="18" y="78" fontSize="10" fill="#546e7a" fontFamily="monospace">
             5V USB adapter
           </text>
           <text x="18" y="94" fontSize="9" fill="#78909c" fontFamily="monospace">
-            → board USB / VIN
+            one feed → USB / VIN
           </text>
         </svg>
       </div>
@@ -244,17 +525,25 @@ function PowerSourceVisual({
       className="absolute"
       style={{ left: x, top: y, width: 150 }}
     >
-      <svg viewBox="0 0 150 110" width={150} height={110} aria-label="Battery power">
+      <svg viewBox="0 0 150 120" width={150} height={120} aria-label="Battery power">
         <rect x="16" y="12" width="92" height="48" rx="6" fill="#fff8e1" stroke="#8d6e63" />
         <rect x="24" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
         <rect x="50" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
         <rect x="76" y="20" width="22" height="32" rx="3" fill="#ffecb3" stroke="#8d6e63" />
         <rect x="108" y="28" width="8" height="16" rx="1" fill="#6d4c41" />
-        <text x="24" y="78" fontSize="10" fill="#5d4037" fontFamily="monospace">
+        <circle cx="128" cy="30" r="4" fill="#c62828" stroke="#8d6e63" strokeWidth="1" />
+        <text x="134" y="33" fontSize="9" fill="#c62828" fontFamily="monospace">
+          +
+        </text>
+        <circle cx="40" cy="72" r="4" fill="#212121" stroke="#8d6e63" strokeWidth="1" />
+        <text x="48" y="75" fontSize="9" fill="#212121" fontFamily="monospace">
+          −
+        </text>
+        <text x="24" y="96" fontSize="10" fill="#5d4037" fontFamily="monospace">
           BATTERY PACK
         </text>
-        <text x="24" y="94" fontSize="9" fill="#8d6e63" fontFamily="monospace">
-          + → VIN   − → GND
+        <text x="24" y="112" fontSize="9" fill="#8d6e63" fontFamily="monospace">
+          + → VIN · − → GND
         </text>
       </svg>
     </div>
@@ -290,6 +579,18 @@ function SkeletonPart({
   );
 }
 
+function buildCue(guide: Guide): string {
+  const board = guide.board_id ? getCatalogPart(guide.board_id) : null;
+  const hasBreadboard = guide.parts.some((part) => isBreadboardId(part.catalogId));
+  const hasLed = guide.parts.some((part) => part.catalogId.includes(".led."));
+  const hasResistor = guide.parts.some((part) => part.catalogId.includes("resistor"));
+  if (hasBreadboard && hasLed && hasResistor) {
+    return `Building: ${board?.name ?? "board"} blinks an LED through a breadboard + resistor`;
+  }
+  if (guide.title) return `Building: ${guide.title}`;
+  return "Building: wiring prototype";
+}
+
 export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -303,6 +604,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     null,
   );
   const placed = useMemo(() => layoutParts(guide), [guide]);
+  const cue = useMemo(() => buildCue(guide), [guide]);
 
   useEffect(() => {
     fittedRef.current = false;
@@ -327,7 +629,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       const host = hostRef.current;
       if (!host || cancelled) return;
 
-      const anchors = new Map<string, { x: number; y: number }>();
+      const anchors = new Map<string, Point>();
+      const obstacles: Rect[] = [];
       let maxRight = 900;
       let maxBottom = 520;
 
@@ -341,8 +644,17 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         const offsetY = part.y;
         const width = Math.max(node.offsetWidth, 120);
         const height = Math.max(node.offsetHeight, 80);
-        maxRight = Math.max(maxRight, offsetX + width + 120);
-        maxBottom = Math.max(maxBottom, offsetY + height + 100);
+        maxRight = Math.max(maxRight, offsetX + width + 140);
+        maxBottom = Math.max(maxBottom, offsetY + height + 120);
+
+        if (part.kind === "board") {
+          obstacles.push({
+            x: offsetX - 6,
+            y: offsetY - 6,
+            w: width + 12,
+            h: height + 12,
+          });
+        }
 
         const raw = typeof node.pinInfo === "function" ? node.pinInfo() : node.pinInfo;
         if (Array.isArray(raw) && raw.length > 0) {
@@ -352,30 +664,60 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
               y: offsetY + pin.y,
             });
           }
+        } else if (isBreadboardId(part.catalogId)) {
+          const catalog = getCatalogPart(part.catalogId);
+          catalog?.pins.forEach((pin) => {
+            const local = breadboardHoleLocal(pin.id);
+            if (!local) return;
+            anchors.set(`${part.instanceId}:${pin.id}`, {
+              x: offsetX + local.x,
+              y: offsetY + local.y,
+            });
+          });
         } else {
           const catalog = getCatalogPart(part.catalogId);
           catalog?.pins.forEach((pin, index) => {
-            const breadboard = part.catalogId.includes("breadboard");
             anchors.set(`${part.instanceId}:${pin.id}`, {
-              x: offsetX + (breadboard ? 20 + (index % 7) * 44 : index % 2 === 0 ? 0 : width),
-              y:
-                offsetY +
-                (breadboard
-                  ? 28 + Math.floor(index / 7) * 28
-                  : 28 + Math.floor(index / 2) * 16),
+              x: offsetX + (index % 2 === 0 ? 0 : width),
+              y: offsetY + 28 + Math.floor(index / 2) * 16,
             });
           });
         }
       }
 
-      if (guide.power_source) {
-        const board = placed.find((part) => part.kind === "board");
-        const powerOrigin = { x: 90, y: 70 };
-        const boardTarget = board
-          ? { x: board.x + 40, y: board.y + 20 }
-          : { x: 220, y: 140 };
-        anchors.set("power-source:OUT", powerOrigin);
-        anchors.set("power-source:BOARD", boardTarget);
+      const board = placed.find((part) => part.kind === "board");
+      if (guide.power_source && board) {
+        const powerPins = boardPowerPins(board);
+        if (guide.power_source === "battery") {
+          anchors.set("power-source:+", { x: 152, y: 54 });
+          anchors.set("power-source:-", { x: 64, y: 96 });
+          if (powerPins.vin) {
+            const vin =
+              anchors.get(`${board.instanceId}:${powerPins.vin}`) || {
+                x: board.x + 40,
+                y: board.y + 24,
+              };
+            anchors.set("power-source:VIN", vin);
+          }
+          if (powerPins.gnd) {
+            const gnd =
+              anchors.get(`${board.instanceId}:${powerPins.gnd}`) || {
+                x: board.x + 40,
+                y: board.y + 56,
+              };
+            anchors.set("power-source:GND", gnd);
+          }
+        } else {
+          anchors.set("power-source:OUT", { x: 140, y: 58 });
+          const targetPin = powerPins.usb || powerPins.vin;
+          const target = targetPin
+            ? anchors.get(`${board.instanceId}:${targetPin}`)
+            : undefined;
+          anchors.set(
+            "power-source:BOARD",
+            target || { x: board.x + 40, y: board.y + 20 },
+          );
+        }
       }
 
       const nextWires: Wire[] = [];
@@ -401,7 +743,20 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           ? pinLabel(toPart.catalogId, connection.to.pinId)
           : connection.to.pinId;
         const label = connection.note || `${fromName} → ${toName}`;
-        const route = routedPath(from, to, index);
+        const route = routedPath(from, to, obstacles, index);
+        const span = Math.hypot(to.x - from.x, to.y - from.y);
+        const touchesBreadboard =
+          (fromPart && isBreadboardId(fromPart.catalogId)) ||
+          (toPart && isBreadboardId(toPart.catalogId));
+        const bothOnOrNearBoard =
+          touchesBreadboard &&
+          fromPart &&
+          toPart &&
+          (isBreadboardId(fromPart.catalogId) || fromPart.catalogId.includes("resistor") || fromPart.catalogId.includes(".led.")) &&
+          (isBreadboardId(toPart.catalogId) || toPart.catalogId.includes("resistor") || toPart.catalogId.includes(".led."));
+        const showLabel =
+          Boolean(connection.note) ||
+          (span > 110 && !bothOnOrNearBoard);
         maxRight = Math.max(maxRight, from.x + 40, to.x + 40, route.mid.x + 80);
         maxBottom = Math.max(maxBottom, from.y + 40, to.y + 40, route.mid.y + 40);
         nextWires.push({
@@ -409,26 +764,55 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           color: wireColor(index, label),
           d: route.d,
           label,
+          showLabel,
           mid: route.mid,
           from,
           to,
         });
       });
 
-      if (guide.power_source) {
+      if (guide.power_source === "battery") {
+        const plusFrom = anchors.get("power-source:+");
+        const plusTo = anchors.get("power-source:VIN");
+        const minusFrom = anchors.get("power-source:-");
+        const minusTo = anchors.get("power-source:GND");
+        if (plusFrom && plusTo) {
+          const route = routedPath(plusFrom, plusTo, obstacles, 0);
+          nextWires.unshift({
+            id: "power-plus",
+            color: "#c62828",
+            d: route.d,
+            label: "+ → VIN",
+            showLabel: true,
+            mid: route.mid,
+            from: plusFrom,
+            to: plusTo,
+          });
+        }
+        if (minusFrom && minusTo) {
+          const route = routedPath(minusFrom, minusTo, obstacles, 1);
+          nextWires.unshift({
+            id: "power-minus",
+            color: "#212121",
+            d: route.d,
+            label: "− → GND",
+            showLabel: true,
+            mid: route.mid,
+            from: minusFrom,
+            to: minusTo,
+          });
+        }
+      } else if (guide.power_source === "usb_wall") {
         const from = anchors.get("power-source:OUT");
         const to = anchors.get("power-source:BOARD");
         if (from && to) {
-          const label =
-            guide.power_source === "battery"
-              ? "Battery +/− → VIN/GND"
-              : "USB wall → USB/VIN";
-          const route = routedPath(from, to, 0);
+          const route = routedPath(from, to, obstacles, 0);
           nextWires.unshift({
             id: "power-feed",
-            color: guide.power_source === "battery" ? "#c62828" : "#37474f",
+            color: "#37474f",
             d: route.d,
-            label,
+            label: "USB → VIN",
+            showLabel: true,
             mid: route.mid,
             from,
             to,
@@ -519,9 +903,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   return (
     <div className="diagram-shell bg-[#f4f7f5]">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/80 px-3 py-2">
-        <p className="font-mono text-[11px] text-mute">
-          Zoom {Math.round(zoom * 100)}% · drag to pan · ctrl/⌘+wheel zoom
-        </p>
+        <div className="min-w-0 space-y-0.5">
+          <p className="truncate text-xs font-semibold tracking-tight text-ink">{cue}</p>
+          <p className="font-mono text-[11px] text-mute">
+            Zoom {Math.round(zoom * 100)}% · drag to pan · ctrl/⌘+wheel zoom
+          </p>
+        </div>
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -616,34 +1003,38 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
                 />
                 <circle cx={wire.from.x} cy={wire.from.y} r={3.2} fill={wire.color} />
                 <circle cx={wire.to.x} cy={wire.to.y} r={3.2} fill={wire.color} />
-                <rect
-                  x={wire.mid.x - Math.min(70, wire.label.length * 3.2)}
-                  y={wire.mid.y - 10}
-                  width={Math.min(140, wire.label.length * 6.4 + 12)}
-                  height={18}
-                  rx={3}
-                  fill="#f4f7f5"
-                  stroke={wire.color}
-                  strokeWidth={1}
-                  opacity={0.96}
-                />
-                <text
-                  x={wire.mid.x}
-                  y={wire.mid.y + 3}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                  fill="#1a242b"
-                >
-                  {wire.label}
-                </text>
+                {wire.showLabel ? (
+                  <>
+                    <rect
+                      x={wire.mid.x - Math.min(58, wire.label.length * 3)}
+                      y={wire.mid.y - 9}
+                      width={Math.min(120, wire.label.length * 5.8 + 10)}
+                      height={16}
+                      rx={3}
+                      fill="#f4f7f5"
+                      stroke={wire.color}
+                      strokeWidth={1}
+                      opacity={0.96}
+                    />
+                    <text
+                      x={wire.mid.x}
+                      y={wire.mid.y + 2.5}
+                      textAnchor="middle"
+                      fontSize="9"
+                      fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                      fill="#1a242b"
+                    >
+                      {wire.label}
+                    </text>
+                  </>
+                ) : null}
               </g>
             ))}
           </svg>
 
           {placed.map((part) => {
             const catalog = getCatalogPart(part.catalogId);
-            const isBreadboard = part.catalogId.includes("breadboard");
+            const breadboard = isBreadboardId(part.catalogId);
             const useWokwi = ready && hasWokwiVisual(catalog) && part.tag;
             return (
               <div
@@ -651,7 +1042,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
                 className="absolute z-10"
                 style={{ left: part.x, top: part.y }}
               >
-                {isBreadboard ? (
+                {breadboard ? (
                   <BreadboardVisual instanceId={part.instanceId} name={part.name} />
                 ) : useWokwi ? (
                   createElement(part.tag as string, {
@@ -672,10 +1063,11 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       </div>
 
       <p className="border-t border-line px-3 py-2 text-[11px] text-mute">
-        Visuals from Wokwi Elements (MIT) + custom breadboard/power. Diagram only — not a
-        simulator.
+        Wokwi visuals (MIT) plus breadboard and power. Diagram only, not a simulator.
         {guide.power_source
-          ? ` Power diagram: ${guide.power_source === "battery" ? "battery pack" : "USB wall"}.`
+          ? guide.power_source === "battery"
+            ? " Power: battery + to VIN, − to GND."
+            : " Power: USB wall to USB/VIN."
           : ""}
       </p>
     </div>
