@@ -60,6 +60,10 @@
   }
 }
 
+.motion-trace {
+  animation: trace-draw var(--trace-draw) ease forwards;
+}
+
 @keyframes grid-drift {
   from {
     background-position: 0 0, 0 0;

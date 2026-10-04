@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "mcp:build": "npm --prefix mcp run build",
+    "mcp:dev": "npm --prefix mcp run dev",
+    "seed:recipes": "node scripts/seed-recipes.mjs",
+    "verify:phases": "node scripts/verify-phases.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",

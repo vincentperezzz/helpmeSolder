@@ -22,32 +22,32 @@ Vision is frozen. Build in order. Do not reopen discovery.
 - [x] Validator with hard block + `alternatives[]`
 - [x] API: catalog, create/get/patch guide, power, validate
 - [x] Wire guide page to live guide data
-- [ ] Env: `SUPABASE_SERVICE_ROLE_KEY` + `MCP_API_KEY` on Vercel
+- [ ] Env: `SUPABASE_SERVICE_ROLE_KEY` + `MCP_API_KEY` on Vercel (local anon works; Vercel write blocked)
 - [x] Smoke test create → open URL
 
 ## Phase 2 — Guide renderer
 
-- [ ] Prep/parts section from catalog
-- [ ] Catalog SVG skeleton renderer for boards/modules
-- [ ] Connection overlays for full wiring diagram
-- [ ] Steps + notes rendering
-- [ ] Photo board assets hooks (`photoHint`)
+- [x] Prep/parts section from catalog
+- [x] Catalog SVG skeleton renderer for boards/modules
+- [x] Connection overlays for full wiring diagram
+- [x] Steps + notes rendering
+- [x] Photo board assets hooks (`photoHint`)
 
 ## Phase 3 — MCP server
 
-- [ ] Thin MCP server package/process
-- [ ] Tools: `create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
-- [ ] Tools call Next.js API (not DB directly)
-- [ ] Return secret guide URL from `create_guide`
-- [ ] Cursor/Claude config docs
+- [x] Thin MCP server package/process
+- [x] Tools: `create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
+- [x] Tools call Next.js API (not DB directly)
+- [x] Return secret guide URL from `create_guide`
+- [x] Cursor/Claude config docs
 
 ## Phase 4 — Canned recipes E2E
 
-- [ ] Recipe: buzzer beep
-- [ ] Recipe: I2C LCD text
-- [ ] Recipe: soil moisture read
-- [ ] Each recipe validates clean with power set
-- [ ] Demo: chat plan → MCP writes → URL shows full guide
+- [x] Recipe: buzzer beep
+- [x] Recipe: I2C LCD text
+- [x] Recipe: soil moisture read
+- [x] Each recipe validates clean with power set
+- [x] Demo: chat plan → MCP writes → URL shows full guide
 
 ## Done when
 
