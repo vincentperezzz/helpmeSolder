@@ -27,11 +27,11 @@ Vision is frozen. Build in order. Do not reopen discovery.
 
 ## Phase 2 — Guide renderer
 
-- [ ] Prep/parts section from catalog
-- [ ] Catalog SVG skeleton renderer for boards/modules
-- [ ] Connection overlays for full wiring diagram
-- [ ] Steps + notes rendering
-- [ ] Photo board assets hooks (`photoHint`)
+- [x] Prep/parts section from catalog
+- [x] Catalog SVG skeleton renderer for boards/modules
+- [x] Connection overlays for full wiring diagram
+- [x] Steps + notes rendering
+- [x] Photo board assets hooks (`photoHint`)
 
 ## Phase 3 — MCP server
 

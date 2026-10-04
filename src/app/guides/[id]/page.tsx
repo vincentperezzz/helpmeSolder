@@ -1,5 +1,7 @@
+import { PrepParts } from "@/components/PrepParts";
+import { WiringDiagram } from "@/components/WiringDiagram";
 import { getCatalogPart } from "@/lib/catalog";
-import type { Guide, GuideConnection, PowerSource } from "@/lib/catalog/types";
+import type { PowerSource } from "@/lib/catalog/types";
 import { getGuide } from "@/lib/guides/repository";
 import { validateGuide } from "@/lib/guides/validator";
 
@@ -11,32 +13,6 @@ function powerLabel(source: PowerSource | null): string {
   if (source === "battery") return "Battery";
   if (source === "usb_wall") return "USB wall";
   return "Not set";
-}
-
-function connectionLabel(
-  connection: GuideConnection,
-  guide: Guide,
-): { from: string; to: string; note?: string } {
-  const fromPart = guide.parts.find(
-    (part) => part.instanceId === connection.from.instanceId,
-  );
-  const toPart = guide.parts.find(
-    (part) => part.instanceId === connection.to.instanceId,
-  );
-  const fromName =
-    fromPart?.label ||
-    getCatalogPart(fromPart?.catalogId ?? "")?.name ||
-    connection.from.instanceId;
-  const toName =
-    toPart?.label ||
-    getCatalogPart(toPart?.catalogId ?? "")?.name ||
-    connection.to.instanceId;
-
-  return {
-    from: `${fromName} · ${connection.from.pinId}`,
-    to: `${toName} · ${connection.to.pinId}`,
-    note: connection.note,
-  };
 }
 
 function BrandMark() {
@@ -133,28 +109,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </h2>
           <div className="section-rule w-24" />
         </div>
-        {guide.parts.length === 0 ? (
-          <p className="text-ink-soft">No parts yet.</p>
-        ) : (
-          <ul className="divide-y divide-line border-y border-line">
-            {guide.parts.map((part) => {
-              const catalog = getCatalogPart(part.catalogId);
-              return (
-                <li
-                  key={part.instanceId}
-                  className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-3"
-                >
-                  <span className="font-medium text-ink">
-                    {part.label || catalog?.name || part.catalogId}
-                  </span>
-                  <span className="font-mono text-xs tracking-wide text-mute">
-                    {part.instanceId}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <PrepParts parts={guide.parts} />
       </section>
 
       <section className="motion-rise motion-rise-delay-2 space-y-4">
@@ -164,40 +119,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </h2>
           <div className="section-rule w-24" />
         </div>
-        <div className="diagram-shell flex flex-col justify-between gap-6 px-5 py-6">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-ink">
-              {guide.connections.length} connection
-              {guide.connections.length === 1 ? "" : "s"} recorded
-            </p>
-            <p className="max-w-md text-sm text-ink-soft">
-              Photo boards and catalog SVG land next. This shell holds the
-              wiring map until then.
-            </p>
-          </div>
-          {guide.connections.length > 0 ? (
-            <ul className="space-y-3 border-t border-line pt-4">
-              {guide.connections.map((connection) => {
-                const label = connectionLabel(connection, guide);
-                return (
-                  <li
-                    key={connection.id}
-                    className="grid gap-1 text-sm sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-3"
-                  >
-                    <span className="font-mono text-xs text-ink">{label.from}</span>
-                    <span className="hidden text-copper sm:inline" aria-hidden="true">
-                      →
-                    </span>
-                    <span className="font-mono text-xs text-ink">{label.to}</span>
-                    {label.note ? (
-                      <span className="text-mute sm:col-span-3">{label.note}</span>
-                    ) : null}
-                  </li>
-                );
-              })}
-            </ul>
-          ) : null}
-        </div>
+        <WiringDiagram guide={guide} />
       </section>
 
       <section className="motion-rise motion-rise-delay-3 space-y-4">
