@@ -54,6 +54,7 @@ type Wire = {
   mid: Point;
   from: Point;
   to: Point;
+  points: Point[];
 };
 
 const COLORS = [
@@ -72,6 +73,8 @@ const MAX_ZOOM = 2.4;
 const BB_LABEL_H = 18;
 const BB_ORIGIN_X = 28;
 const BB_STEP = 10;
+const LABEL_H = 16;
+const LABEL_PAD = 6;
 const BB_ROW_Y: Record<string, number> = {
   a: 40,
   b: 50,
@@ -84,6 +87,137 @@ const BB_ROW_Y: Record<string, number> = {
   i: 138,
   j: 148,
 };
+
+function labelSize(text: string): { w: number; h: number } {
+  return {
+    w: Math.min(128, Math.max(36, text.length * 5.6 + 12)),
+    h: LABEL_H,
+  };
+}
+
+function labelRect(center: Point, text: string): Rect {
+  const size = labelSize(text);
+  return {
+    x: center.x - size.w / 2,
+    y: center.y - size.h / 2,
+    w: size.w,
+    h: size.h,
+  };
+}
+
+function rectsOverlap(a: Rect, b: Rect, pad = LABEL_PAD): boolean {
+  return !(
+    a.x + a.w + pad <= b.x ||
+    b.x + b.w + pad <= a.x ||
+    a.y + a.h + pad <= b.y ||
+    b.y + b.h + pad <= a.y
+  );
+}
+
+function samplePathPoints(points: Point[]): Point[] {
+  const samples: Point[] = [];
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const a = points[i];
+    const b = points[i + 1];
+    samples.push(a);
+    samples.push({
+      x: (a.x + b.x) / 2,
+      y: (a.y + b.y) / 2,
+    });
+  }
+  if (points.length > 0) samples.push(points[points.length - 1]);
+  const mid = points[Math.floor(points.length / 2)];
+  if (mid) samples.unshift(mid);
+  return samples;
+}
+
+function labelCandidates(points: Point[]): Point[] {
+  const bases = samplePathPoints(points);
+  const offsets = [
+    { x: 0, y: 0 },
+    { x: 0, y: -18 },
+    { x: 0, y: 18 },
+    { x: 22, y: -14 },
+    { x: -22, y: -14 },
+    { x: 22, y: 14 },
+    { x: -22, y: 14 },
+    { x: 36, y: 0 },
+    { x: -36, y: 0 },
+    { x: 0, y: -32 },
+    { x: 0, y: 32 },
+    { x: 48, y: -24 },
+    { x: -48, y: -24 },
+    { x: 48, y: 24 },
+    { x: -48, y: 24 },
+  ];
+  const out: Point[] = [];
+  for (const base of bases) {
+    for (const offset of offsets) {
+      out.push({ x: base.x + offset.x, y: base.y + offset.y });
+    }
+  }
+  return out;
+}
+
+function resolveLabelPositions(wires: Wire[], obstacles: Rect[]): void {
+  const placed: Rect[] = obstacles.map((obs) => ({
+    x: obs.x,
+    y: obs.y,
+    w: obs.w,
+    h: obs.h,
+  }));
+
+  for (const wire of wires) {
+    if (!wire.showLabel) continue;
+    const candidates = labelCandidates(wire.points);
+    let best: Point | null = null;
+    let bestScore = Number.POSITIVE_INFINITY;
+
+    for (const candidate of candidates) {
+      if (candidate.x < 8 || candidate.y < 8) continue;
+      const box = labelRect(candidate, wire.label);
+      const hitsLabel = placed.some((rect) => rectsOverlap(box, rect, 4));
+      if (hitsLabel) continue;
+      const hitsObstacle = obstacles.some((obs) =>
+        rectsOverlap(box, obs, 2),
+      );
+      const dist =
+        Math.abs(candidate.x - wire.mid.x) + Math.abs(candidate.y - wire.mid.y);
+      const score = dist + (hitsObstacle ? 800 : 0);
+      if (score < bestScore) {
+        bestScore = score;
+        best = candidate;
+      }
+      if (!hitsObstacle && dist < 12) break;
+    }
+
+    if (!best) {
+      for (let ring = 1; ring <= 8 && !best; ring += 1) {
+        const fallbacks = [
+          { x: wire.mid.x, y: wire.mid.y - 20 * ring },
+          { x: wire.mid.x, y: wire.mid.y + 20 * ring },
+          { x: wire.mid.x + 28 * ring, y: wire.mid.y },
+          { x: wire.mid.x - 28 * ring, y: wire.mid.y },
+          { x: wire.mid.x + 24 * ring, y: wire.mid.y - 18 * ring },
+          { x: wire.mid.x - 24 * ring, y: wire.mid.y - 18 * ring },
+        ];
+        for (const candidate of fallbacks) {
+          const box = labelRect(candidate, wire.label);
+          if (placed.some((rect) => rectsOverlap(box, rect, 4))) continue;
+          best = candidate;
+          break;
+        }
+      }
+    }
+
+    if (best) {
+      wire.mid = best;
+      placed.push(labelRect(best, wire.label));
+    } else {
+      wire.showLabel = false;
+    }
+  }
+}
 
 function wireColor(index: number, label: string): string {
   const lower = label.toLowerCase();
@@ -998,6 +1132,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           mid: route.mid,
           from,
           to,
+          points: route.points,
         });
       });
 
@@ -1024,6 +1159,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             mid: route.mid,
             from: plusFrom,
             to: plusTo,
+            points: route.points,
           });
         }
         if (minusFrom && minusTo) {
@@ -1044,6 +1180,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             mid: route.mid,
             from: minusFrom,
             to: minusTo,
+            points: route.points,
           });
         }
       } else if (guide.power_source === "usb_wall") {
@@ -1061,8 +1198,18 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             mid: route.mid,
             from,
             to,
+            points: route.points,
           });
         }
+      }
+
+      resolveLabelPositions(nextWires, obstacles);
+
+      for (const wire of nextWires) {
+        if (!wire.showLabel) continue;
+        const box = labelRect(wire.mid, wire.label);
+        maxRight = Math.max(maxRight, box.x + box.w + 24);
+        maxBottom = Math.max(maxBottom, box.y + box.h + 24);
       }
 
       if (!boardsReady && attempts < 25) {
@@ -1261,10 +1408,10 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
                 {wire.showLabel ? (
                   <>
                     <rect
-                      x={wire.mid.x - Math.min(58, wire.label.length * 3)}
-                      y={wire.mid.y - 9}
-                      width={Math.min(120, wire.label.length * 5.8 + 10)}
-                      height={16}
+                      x={wire.mid.x - labelSize(wire.label).w / 2}
+                      y={wire.mid.y - labelSize(wire.label).h / 2}
+                      width={labelSize(wire.label).w}
+                      height={labelSize(wire.label).h}
                       rx={3}
                       fill="#f4f7f5"
                       stroke={wire.color}
@@ -1273,7 +1420,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
                     />
                     <text
                       x={wire.mid.x}
-                      y={wire.mid.y + 2.5}
+                      y={wire.mid.y + 3}
                       textAnchor="middle"
                       fontSize="9"
                       fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
