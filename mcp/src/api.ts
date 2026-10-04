@@ -72,15 +72,26 @@ export async function validateGuide(id: string) {
   );
 }
 
+const powerSourceMcp = z.enum([
+  "usb_wall",
+  "battery_9v",
+  "battery_2aa",
+  "battery_3aa",
+  "battery_18650",
+  "battery",
+]);
+
 export const setPowerInput = z.object({
   guide_id: z.string(),
-  power_source: z.enum(["battery", "usb_wall"]),
+  power_source: powerSourceMcp,
 });
 
 export async function setPowerSource(input: z.infer<typeof setPowerInput>) {
+  const power_source =
+    input.power_source === "battery" ? "battery_3aa" : input.power_source;
   return api(`/api/guides/${input.guide_id}/power`, {
     method: "PUT",
-    body: JSON.stringify({ power_source: input.power_source }),
+    body: JSON.stringify({ power_source }),
   });
 }
 

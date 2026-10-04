@@ -126,14 +126,50 @@ export const passives: CatalogPart[] = [
     ],
   },
   {
-    id: "passive.power.battery",
-    name: "Battery Pack",
+    id: "passive.power.battery.9v",
+    name: "9V Battery (snap)",
     kind: "passive",
     description:
-      "Battery pack (AA/LiPo). Ask the user before choosing this vs USB wall. Shown on diagram when power_source=battery.",
-    photoHint: "battery-pack",
+      "Classic 9V snap battery. Ask the user which battery type before wiring. Diagram when power_source=battery_9v.",
+    photoHint: "battery-9v",
     pins: [
       { id: "+", label: "+", kinds: ["power"], voltage: "5v" },
+      { id: "-", label: "−", kinds: ["ground"] },
+    ],
+  },
+  {
+    id: "passive.power.battery.2aa",
+    name: "2×AA Battery Holder",
+    kind: "passive",
+    description:
+      "Two AA cells in series (~3V). Ask the user which battery type. Diagram when power_source=battery_2aa.",
+    photoHint: "battery-2aa",
+    pins: [
+      { id: "+", label: "+", kinds: ["power"], voltage: "3v3" },
+      { id: "-", label: "−", kinds: ["ground"] },
+    ],
+  },
+  {
+    id: "passive.power.battery.3aa",
+    name: "3×AA Battery Holder",
+    kind: "passive",
+    description:
+      "Three AA cells in series (~4.5V). Ask the user which battery type. Diagram when power_source=battery_3aa.",
+    photoHint: "battery-3aa",
+    pins: [
+      { id: "+", label: "+", kinds: ["power"], voltage: "5v" },
+      { id: "-", label: "−", kinds: ["ground"] },
+    ],
+  },
+  {
+    id: "passive.power.battery.18650",
+    name: "18650 Li-ion Cell / Holder",
+    kind: "passive",
+    description:
+      "Single 18650 Li-ion (~3.7V). Ask the user which battery type. Diagram when power_source=battery_18650.",
+    photoHint: "battery-18650",
+    pins: [
+      { id: "+", label: "+", kinds: ["power"], voltage: "3v3" },
       { id: "-", label: "−", kinds: ["ground"] },
     ],
   },

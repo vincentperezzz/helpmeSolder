@@ -10,8 +10,11 @@ type GuidePageProps = {
 };
 
 function powerLabel(source: PowerSource | null): string {
-  if (source === "battery") return "Battery";
   if (source === "usb_wall") return "USB wall";
+  if (source === "battery_9v") return "9V battery";
+  if (source === "battery_2aa") return "2×AA holder";
+  if (source === "battery_3aa") return "3×AA holder";
+  if (source === "battery_18650") return "18650 Li-ion";
   return "Not set";
 }
 

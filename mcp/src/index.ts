@@ -58,7 +58,7 @@ server.registerTool(
   "ask_power_source",
   {
     description:
-      "Decision helper for power. Call this when power_source is unknown. Returns the exact question and options to ask the user. Do NOT invent battery vs USB wall — wait for the user's answer, then call set_power_source.",
+      "Decision helper for power. Call this when power_source is unknown. Returns the exact question and options to ask the user. Do NOT invent a battery type or USB wall — wait for the user's answer, then call set_power_source.",
     inputSchema: z.object({
       guide_id: z.string().optional(),
       context: z
@@ -85,34 +85,34 @@ server.registerTool(
         {
           id: "battery_9v",
           label: "9V battery (snap connector)",
-          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          diagram: "Classic 9V snap with +/− leads to VIN and GND.",
           when: "Compact portable builds; check board VIN range (often 7–12V on Uno).",
-          setPowerSource: "battery",
+          setPowerSource: "battery_9v",
         },
         {
           id: "battery_2aa",
           label: "2×AA battery pack (~3V)",
-          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          diagram: "Two-AA holder with red/black leads to VIN and GND.",
           when: "Low-voltage portable; may need 3.3V board or boost — confirm MCU supply.",
-          setPowerSource: "battery",
+          setPowerSource: "battery_2aa",
         },
         {
           id: "battery_3aa",
           label: "3×AA battery pack (~4.5V)",
-          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          diagram: "Three-AA holder with +/− to VIN and GND.",
           when: "Portable with a bit more headroom than 2×AA.",
-          setPowerSource: "battery",
+          setPowerSource: "battery_3aa",
         },
         {
           id: "battery_18650",
           label: "18650 Li-ion cell (~3.7V)",
-          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          diagram: "Cylindrical 18650 in a holder; +/− to VIN and GND.",
           when: "Rechargeable portable; use a protected cell and proper charger — never guess polarity.",
-          setPowerSource: "battery",
+          setPowerSource: "battery_18650",
         },
       ],
       nextStep:
-        "Ask the user the question above. After they pick an option id, call set_power_source with power_source set to that option's setPowerSource (usb_wall or battery). Mention their specific battery kind in steps/notes.",
+        "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (battery_9v, battery_2aa, battery_3aa, battery_18650, or usb_wall).",
       guide_id: guide_id ?? null,
       context: context ?? null,
     });
@@ -152,7 +152,7 @@ server.registerTool(
   "set_power_source",
   {
     description:
-      "Set guide power_source to battery or usb_wall AFTER asking the user (use ask_power_source first if unknown). This chooses which power diagram is drawn on the guide page. Never invent the answer.",
+      "Set guide power_source to a specific battery type or usb_wall AFTER asking the user (use ask_power_source first if unknown). This chooses which power diagram is drawn on the guide page. Never invent the answer.",
     inputSchema: setPowerInput,
   },
   async (input) => {
@@ -228,7 +228,7 @@ server.registerTool(
   "list_catalog",
   {
     description:
-      "List boards, modules, passives (breadboard, resistors, LEDs, pots, buttons, USB wall, battery), and recipes. Use passives whenever a prototype needs current limiting, pull-ups, or a breadboard.",
+      "List boards, modules, passives (breadboard, resistors, LEDs, pots, buttons, USB wall, battery holders), and recipes. Use passives whenever a prototype needs current limiting, pull-ups, or a breadboard.",
     inputSchema: z.object({}),
   },
   async () => {

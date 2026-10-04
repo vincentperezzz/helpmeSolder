@@ -1,4 +1,5 @@
 import { getCatalogPart } from "@/lib/catalog";
+import { POWER_SOURCE_VALUES } from "@/lib/guides/power-source";
 import type {
   Guide,
   GuideConnection,
@@ -41,8 +42,8 @@ export function validateGuide(guide: Guide): ValidationResult {
     issues.push({
       code: "power_source_required",
       message:
-        "Ask the user whether power is a battery pack or a USB wall adapter before wiring. Call ask_power_source, then set_power_source.",
-      alternatives: ["battery", "usb_wall"],
+        "Ask the user which power source (battery type or USB wall) before wiring. Call ask_power_source, then set_power_source.",
+      alternatives: [...POWER_SOURCE_VALUES],
     });
   }
 

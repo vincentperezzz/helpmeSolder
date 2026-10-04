@@ -1,4 +1,9 @@
-export type PowerSource = "battery" | "usb_wall";
+export type PowerSource =
+  | "usb_wall"
+  | "battery_9v"
+  | "battery_2aa"
+  | "battery_3aa"
+  | "battery_18650";
 
 export type PinKind =
   | "digital"
