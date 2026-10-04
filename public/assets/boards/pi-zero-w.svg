@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Raspberry Pi Zero W top-down silhouette.
+  Original artwork for HelpmeSolder. License: CC0.
+  Ports left, GPIO along top (pin1=3V3), microSD right, camera FPC bottom.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180"
+     role="img" aria-label="Raspberry Pi Zero W top view">
+  <title>Raspberry Pi Zero W</title>
+  <defs>
+    <linearGradient id="pcb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a9b4a"/>
+      <stop offset="100%" stop-color="#286832"/>
+    </linearGradient>
+  </defs>
+  <rect x="24" y="28" width="272" height="124" rx="6" fill="url(#pcb)" stroke="#1f5a28" stroke-width="2"/>
+  <circle cx="40" cy="44" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="280" cy="44" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="40" cy="136" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+  <circle cx="280" cy="136" r="5" fill="#1a1a1a" stroke="#c9a227" stroke-width="1.5"/>
+
+  <g id="ports-left">
+    <rect id="mini-hdmi" x="8" y="48" width="22" height="18" rx="2" fill="#2a2a2a"/>
+    <text x="48" y="60" font-family="ui-monospace, monospace" font-size="7" fill="#e8f5e9">HDMI</text>
+    <rect id="usb-otg" x="8" y="78" width="22" height="14" rx="2" fill="#2a2a2a"/>
+    <text x="48" y="88" font-family="ui-monospace, monospace" font-size="7" fill="#e8f5e9">USB</text>
+    <rect id="usb-pwr" x="8" y="102" width="22" height="14" rx="2" fill="#2a2a2a"/>
+    <text x="52" y="112" font-family="ui-monospace, monospace" font-size="7" fill="#e8f5e9">PWR</text>
+  </g>
+
+  <rect id="microsd" x="278" y="70" width="28" height="36" rx="2" fill="#cfd8dc" stroke="#546e7a"/>
+  <text x="268" y="92" text-anchor="end" font-family="ui-monospace, monospace" font-size="8" fill="#e8f5e9">SD</text>
+
+  <rect x="120" y="70" width="48" height="40" rx="2" fill="#1a1a1a"/>
+  <text x="144" y="94" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#eee">SoC</text>
+  <rect x="190" y="78" width="36" height="22" rx="2" fill="#263238" stroke="#90a4ae"/>
+  <text x="208" y="92" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#e8f5e9">WiFi</text>
+
+  <rect id="camera-fpc" x="100" y="140" width="40" height="10" rx="1" fill="#37474f"/>
+  <text x="120" y="158" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#e8f5e9">CAM</text>
+
+  <g id="gpio-header">
+    <circle id="pin-1-3v3" cx="56" cy="22" r="4.5" fill="#ef6c00" stroke="#e65100" data-pin="3V3"/>
+    <text x="56" y="14" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#263238">3V3</text>
+    <circle cx="68" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="80" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="92" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="104" cy="22" r="4.5" fill="#212121" stroke="#000" data-pin="GND"/>
+    <circle cx="116" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="128" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="140" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="152" cy="22" r="4.5" fill="#ef6c00" stroke="#e65100"/>
+    <circle cx="164" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="176" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="188" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="200" cy="22" r="4.5" fill="#212121" stroke="#000"/>
+    <circle cx="212" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="224" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="236" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="248" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="260" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="272" cy="22" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="284" cy="22" r="4.5" fill="#212121" stroke="#000"/>
+
+    <circle id="pin-2-5v" cx="56" cy="36" r="4.5" fill="#c62828" stroke="#8e0000" data-pin="5V"/>
+    <text x="56" y="50" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#263238">5V</text>
+    <circle cx="68" cy="36" r="4.5" fill="#c62828" stroke="#8e0000"/>
+    <circle id="pin-6-gnd" cx="80" cy="36" r="4.5" fill="#212121" stroke="#000" data-pin="GND"/>
+    <text x="80" y="50" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#263238">GND</text>
+    <circle cx="92" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="104" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="116" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="128" cy="36" r="4.5" fill="#212121" stroke="#000"/>
+    <circle cx="140" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="152" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="164" cy="36" r="4.5" fill="#212121" stroke="#000"/>
+    <circle cx="176" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="188" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="200" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="212" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="224" cy="36" r="4.5" fill="#212121" stroke="#000"/>
+    <circle cx="236" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="248" cy="36" r="4.5" fill="#212121" stroke="#000"/>
+    <circle cx="260" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="272" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+    <circle cx="284" cy="36" r="4.5" fill="#f5f5f5" stroke="#37474f"/>
+  </g>
+  <text x="160" y="172" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#546e7a">Pi Zero W  GPIO top, pin1=3V3</text>
+</svg>
