@@ -25,6 +25,10 @@ type WokwiDiagramProps = {
 type PinInfo = { name: string; x: number; y: number };
 type Point = { x: number; y: number };
 type Rect = { x: number; y: number; w: number; h: number };
+type ExitDir = { dx: number; dy: number };
+
+const STUB_BASE = 18;
+const STUB_SPREAD = 4;
 
 type PlacedPart = {
   instanceId: string;
@@ -193,6 +197,114 @@ function pathLength(points: Point[]): number {
   return total;
 }
 
+function stubLength(index: number): number {
+  return STUB_BASE + (index % 3) * STUB_SPREAD;
+}
+
+function stubPoint(pin: Point, dir: ExitDir, len: number): Point {
+  return { x: pin.x + dir.dx * len, y: pin.y + dir.dy * len };
+}
+
+function pinExitDirection(pinLocal: Point, allPinsLocal: Point[]): ExitDir {
+  const minX = Math.min(...allPinsLocal.map((p) => p.x));
+  const maxX = Math.max(...allPinsLocal.map((p) => p.x));
+  const minY = Math.min(...allPinsLocal.map((p) => p.y));
+  const maxY = Math.max(...allPinsLocal.map((p) => p.y));
+  const spanX = maxX - minX;
+  const spanY = maxY - minY;
+  const tol = 7;
+
+  const atTop = pinLocal.y <= minY + tol;
+  const atBottom = pinLocal.y >= maxY - tol;
+  const atLeft = pinLocal.x <= minX + tol;
+  const atRight = pinLocal.x >= maxX - tol;
+
+  if (spanX >= spanY * 0.85) {
+    if (atTop && !atBottom) return { dx: 0, dy: -1 };
+    if (atBottom && !atTop) return { dx: 0, dy: 1 };
+  }
+  if (spanY >= spanX * 0.85) {
+    if (atLeft && !atRight) return { dx: -1, dy: 0 };
+    if (atRight && !atLeft) return { dx: 1, dy: 0 };
+  }
+
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  const vx = pinLocal.x - cx;
+  const vy = pinLocal.y - cy;
+  if (Math.abs(vx) >= Math.abs(vy)) {
+    return { dx: vx >= 0 ? 1 : -1, dy: 0 };
+  }
+  return { dx: 0, dy: vy >= 0 ? 1 : -1 };
+}
+
+function breadboardPinExit(pinId: string): ExitDir {
+  if (pinId === "+") return { dx: 0, dy: -1 };
+  if (pinId === "-") return { dx: 0, dy: 1 };
+  const match = /^([a-j])/i.exec(pinId);
+  if (!match) return { dx: 0, dy: -1 };
+  const row = match[1].toLowerCase();
+  return row <= "e" ? { dx: 0, dy: -1 } : { dx: 0, dy: 1 };
+}
+
+function exitFromBodyCenter(pin: Point, center: Point): ExitDir {
+  const vx = pin.x - center.x;
+  const vy = pin.y - center.y;
+  if (Math.abs(vx) >= Math.abs(vy)) {
+    return { dx: vx >= 0 ? 1 : -1, dy: 0 };
+  }
+  return { dx: 0, dy: vy >= 0 ? 1 : -1 };
+}
+
+function segmentsOverlap(
+  a1: Point,
+  a2: Point,
+  b1: Point,
+  b2: Point,
+  tol = 6,
+): boolean {
+  if (Math.abs(a1.y - a2.y) < 0.5 && Math.abs(b1.y - b2.y) < 0.5) {
+    if (Math.abs(a1.y - b1.y) > tol) return false;
+    const aMin = Math.min(a1.x, a2.x);
+    const aMax = Math.max(a1.x, a2.x);
+    const bMin = Math.min(b1.x, b2.x);
+    const bMax = Math.max(b1.x, b2.x);
+    return aMax > bMin + tol && bMax > aMin + tol;
+  }
+  if (Math.abs(a1.x - a2.x) < 0.5 && Math.abs(b1.x - b2.x) < 0.5) {
+    if (Math.abs(a1.x - b1.x) > tol) return false;
+    const aMin = Math.min(a1.y, a2.y);
+    const aMax = Math.max(a1.y, a2.y);
+    const bMin = Math.min(b1.y, b2.y);
+    const bMax = Math.max(b1.y, b2.y);
+    return aMax > bMin + tol && bMax > aMin + tol;
+  }
+  return false;
+}
+
+function pathWireOverlap(points: Point[], prior: Point[][]): number {
+  let overlap = 0;
+  for (let i = 0; i < points.length - 1; i += 1) {
+    for (const path of prior) {
+      for (let j = 0; j < path.length - 1; j += 1) {
+        if (segmentsOverlap(points[i], points[i + 1], path[j], path[j + 1])) {
+          overlap += 1;
+        }
+      }
+    }
+  }
+  return overlap;
+}
+
+function inflateObstacles(obstacles: Rect[], inset = 10): Rect[] {
+  return obstacles.map((obs) => ({
+    x: obs.x + inset,
+    y: obs.y + inset,
+    w: Math.max(8, obs.w - inset * 2),
+    h: Math.max(8, obs.h - inset * 2),
+  }));
+}
+
 function blockersForWire(from: Point, to: Point, obstacles: Rect[]): Rect[] {
   return obstacles.filter((obs) => {
     const fromInside = pointInRect(from, obs, 6);
@@ -227,99 +339,92 @@ function blockersForWire(from: Point, to: Point, obstacles: Rect[]): Rect[] {
 function routedPath(
   from: Point,
   to: Point,
+  fromDir: ExitDir,
+  toDir: ExitDir,
   obstacles: Rect[],
   index: number,
-): { d: string; mid: Point } {
-  const lane = ((index % 5) - 2) * 16;
-  const blockers = blockersForWire(from, to, obstacles);
-  const avoid = blockers.map((obs) => ({
-    x: obs.x + 8,
-    y: obs.y + 8,
-    w: Math.max(16, obs.w - 16),
-    h: Math.max(16, obs.h - 16),
-  }));
+  priorPaths: Point[][],
+): { d: string; mid: Point; points: Point[] } {
+  const lane = ((index % 7) - 3) * 14;
+  const fromStubLen = stubLength(index);
+  const toStubLen = stubLength(index + 2);
+  const fromStub = stubPoint(from, fromDir, fromStubLen);
+  const toStub = stubPoint(to, toDir, toStubLen);
 
-  const candidates: Point[][] = [];
-  if (blockers.length === 0) {
-    const midX = from.x + (to.x - from.x) * 0.5 + lane;
-    candidates.push([
-      from,
-      { x: midX, y: from.y },
-      { x: midX, y: to.y },
-      to,
-    ]);
-    const midY = (from.y + to.y) / 2 + lane * 0.4;
-    candidates.push([
-      from,
-      { x: from.x, y: midY },
-      { x: to.x, y: midY },
-      to,
-    ]);
-  }
+  const blockers = blockersForWire(fromStub, toStub, obstacles);
+  const avoid = inflateObstacles(obstacles, 8);
 
-  if (blockers.length > 0) {
-    const clearTop =
-      Math.min(...blockers.map((obs) => obs.y)) - 36 - Math.abs(lane);
-    const clearBot =
-      Math.max(...blockers.map((obs) => obs.y + obs.h)) + 36 + Math.abs(lane);
-    const clearRight =
-      Math.max(...blockers.map((obs) => obs.x + obs.w)) + 32 + Math.abs(lane);
-    const clearLeft =
-      Math.min(...blockers.map((obs) => obs.x)) - 32 - Math.abs(lane);
+  const routeCore = (a: Point, b: Point): Point[][] => {
+    const cores: Point[][] = [];
+    const midX = (a.x + b.x) / 2 + lane;
+    cores.push([a, { x: midX, y: a.y }, { x: midX, y: b.y }, b]);
+    const midY = (a.y + b.y) / 2 + lane * 0.55;
+    cores.push([a, { x: a.x, y: midY }, { x: b.x, y: midY }, b]);
+    cores.push([a, { x: b.x, y: a.y }, b]);
+    cores.push([a, { x: a.x, y: b.y }, b]);
 
-    candidates.push([
-      from,
-      { x: from.x, y: clearTop },
-      { x: to.x, y: clearTop },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: from.x, y: clearBot },
-      { x: to.x, y: clearBot },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: from.x, y: clearTop },
-      { x: clearRight, y: clearTop },
-      { x: clearRight, y: to.y },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: from.x, y: clearBot },
-      { x: clearRight, y: clearBot },
-      { x: clearRight, y: to.y },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: clearLeft, y: from.y },
-      { x: clearLeft, y: clearTop },
-      { x: to.x, y: clearTop },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: clearLeft, y: from.y },
-      { x: clearLeft, y: clearBot },
-      { x: to.x, y: clearBot },
-      to,
-    ]);
-    candidates.push([
-      from,
-      { x: clearRight, y: from.y },
-      { x: clearRight, y: to.y },
-      to,
-    ]);
-  }
+    if (blockers.length > 0) {
+      const clearTop =
+        Math.min(...blockers.map((obs) => obs.y)) - 40 - Math.abs(lane);
+      const clearBot =
+        Math.max(...blockers.map((obs) => obs.y + obs.h)) + 40 + Math.abs(lane);
+      const clearRight =
+        Math.max(...blockers.map((obs) => obs.x + obs.w)) + 36 + Math.abs(lane);
+      const clearLeft =
+        Math.min(...blockers.map((obs) => obs.x)) - 36 - Math.abs(lane);
 
-  let best = candidates[0];
+      cores.push([a, { x: a.x, y: clearTop }, { x: b.x, y: clearTop }, b]);
+      cores.push([a, { x: a.x, y: clearBot }, { x: b.x, y: clearBot }, b]);
+      cores.push([
+        a,
+        { x: a.x, y: clearTop },
+        { x: clearRight, y: clearTop },
+        { x: clearRight, y: b.y },
+        b,
+      ]);
+      cores.push([
+        a,
+        { x: a.x, y: clearBot },
+        { x: clearRight, y: clearBot },
+        { x: clearRight, y: b.y },
+        b,
+      ]);
+      cores.push([
+        a,
+        { x: clearLeft, y: a.y },
+        { x: clearLeft, y: clearTop },
+        { x: b.x, y: clearTop },
+        b,
+      ]);
+      cores.push([
+        a,
+        { x: clearLeft, y: a.y },
+        { x: clearLeft, y: clearBot },
+        { x: b.x, y: clearBot },
+        b,
+      ]);
+      cores.push([a, { x: clearRight, y: a.y }, { x: clearRight, y: b.y }, b]);
+      cores.push([a, { x: clearLeft, y: a.y }, { x: clearLeft, y: b.y }, b]);
+    }
+    return cores;
+  };
+
+  const candidates: Point[][] = routeCore(fromStub, toStub).map((core) => [
+    from,
+    ...core,
+    to,
+  ]);
+
+  let best = candidates[0] ?? [from, fromStub, toStub, to];
   let bestScore = Number.POSITIVE_INFINITY;
   for (const candidate of candidates) {
     const hits = pathCrossesObstacles(candidate, avoid);
-    const score = pathLength(candidate) + (hits ? 20000 : 0) + candidate.length * 8;
+    const overlap = pathWireOverlap(candidate, priorPaths);
+    const score =
+      pathLength(candidate) +
+      (hits ? 25000 : 0) +
+      overlap * 900 +
+      candidate.length * 6;
     if (score < bestScore) {
       bestScore = score;
       best = candidate;
@@ -330,7 +435,7 @@ function routedPath(
     .map((point, i) => (i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`))
     .join(" ");
   const mid = best[Math.floor(best.length / 2)];
-  return { d, mid };
+  return { d, mid, points: best };
 }
 
 function seatPassiveOnBreadboard(
@@ -746,6 +851,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       if (!host || cancelled) return;
 
       const anchors = new Map<string, Point>();
+      const exitDirs = new Map<string, ExitDir>();
       const obstacles: Rect[] = [];
       let maxRight = 900;
       let maxBottom = 520;
@@ -784,100 +890,151 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         maxRight = Math.max(maxRight, offsetX + width + 140);
         maxBottom = Math.max(maxBottom, offsetY + height + 120);
 
-        if (part.kind === "board" && hasPins) {
-          const xs = raw.map((pin) => pin.x);
-          const ys = raw.map((pin) => pin.y);
-          const minX = Math.min(...xs);
-          const maxX = Math.max(...xs);
-          const minY = Math.min(...ys);
-          const maxY = Math.max(...ys);
-          obstacles.push({
-            x: offsetX + minX - 14,
-            y: offsetY + minY - 14,
-            w: maxX - minX + 28,
-            h: maxY - minY + 28,
-          });
-        } else if (part.kind === "board") {
-          obstacles.push({
-            x: offsetX - 10,
-            y: offsetY - 10,
-            w: width + 20,
-            h: height + 20,
-          });
-        }
+        const bodyPad = isBreadboardId(part.catalogId) ? 6 : 10;
+        const bodyW = isBreadboardId(part.catalogId) ? 340 : width;
+        const bodyH = isBreadboardId(part.catalogId) ? 198 : height;
+        obstacles.push({
+          x: offsetX - bodyPad,
+          y: offsetY - bodyPad,
+          w: bodyW + bodyPad * 2,
+          h: bodyH + bodyPad * 2,
+        });
 
         if (hasPins) {
+          const locals = raw.map((pin) => ({ x: pin.x, y: pin.y }));
           for (const pin of raw) {
-            anchors.set(`${part.instanceId}:${pin.name}`, {
-              x: offsetX + pin.x,
-              y: offsetY + pin.y,
-            });
+            const key = `${part.instanceId}:${pin.name}`;
+            const global = { x: offsetX + pin.x, y: offsetY + pin.y };
+            anchors.set(key, global);
+            exitDirs.set(key, pinExitDirection({ x: pin.x, y: pin.y }, locals));
           }
         } else if (isBreadboardId(part.catalogId)) {
           const catalog = getCatalogPart(part.catalogId);
           catalog?.pins.forEach((pin) => {
             const local = breadboardHoleLocal(pin.id);
             if (!local) return;
-            anchors.set(`${part.instanceId}:${pin.id}`, {
+            const key = `${part.instanceId}:${pin.id}`;
+            anchors.set(key, {
               x: offsetX + local.x,
               y: offsetY + local.y,
             });
+            exitDirs.set(key, breadboardPinExit(pin.id));
           });
         } else {
           const catalog = getCatalogPart(part.catalogId);
           catalog?.pins.forEach((pin, index) => {
-            anchors.set(`${part.instanceId}:${pin.id}`, {
-              x: offsetX + (index % 2 === 0 ? 0 : width),
+            const key = `${part.instanceId}:${pin.id}`;
+            const onRight = index % 2 !== 0;
+            anchors.set(key, {
+              x: offsetX + (onRight ? width : 0),
               y: offsetY + 28 + Math.floor(index / 2) * 16,
             });
+            exitDirs.set(key, onRight ? { dx: 1, dy: 0 } : { dx: -1, dy: 0 });
           });
         }
       }
+
+      if (guide.power_source) {
+        obstacles.push({ x: 16, y: 16, w: 162, h: 124 });
+      }
+
+      const powerBodyCenter = { x: 99, y: 62 };
+      const defaultExit: ExitDir = { dx: 1, dy: 0 };
 
       const board = placed.find((part) => part.kind === "board");
       if (guide.power_source && board) {
         const powerPins = boardPowerPins(board);
         if (isBatteryPowerSource(guide.power_source)) {
           const wireAnchors = BATTERY_WIRE_ANCHORS[guide.power_source];
-          anchors.set("power-source:+", wireAnchors.plus);
-          anchors.set("power-source:-", wireAnchors.minus);
+          const plusPt = wireAnchors.plus;
+          const minusPt = wireAnchors.minus;
+          anchors.set("power-source:+", plusPt);
+          anchors.set("power-source:-", minusPt);
+          exitDirs.set(
+            "power-source:+",
+            exitFromBodyCenter(plusPt, powerBodyCenter),
+          );
+          exitDirs.set(
+            "power-source:-",
+            exitFromBodyCenter(minusPt, powerBodyCenter),
+          );
           if (powerPins.vin) {
+            const vinKey = `${board.instanceId}:${powerPins.vin}`;
             const vin =
-              anchors.get(`${board.instanceId}:${powerPins.vin}`) || {
+              anchors.get(vinKey) || {
                 x: board.x + 40,
                 y: board.y + 24,
               };
             anchors.set("power-source:VIN", vin);
+            exitDirs.set(
+              "power-source:VIN",
+              exitDirs.get(vinKey) ?? defaultExit,
+            );
           }
           if (powerPins.gnd) {
+            const gndKey = `${board.instanceId}:${powerPins.gnd}`;
             const gnd =
-              anchors.get(`${board.instanceId}:${powerPins.gnd}`) || {
+              anchors.get(gndKey) || {
                 x: board.x + 40,
                 y: board.y + 56,
               };
             anchors.set("power-source:GND", gnd);
+            exitDirs.set(
+              "power-source:GND",
+              exitDirs.get(gndKey) ?? defaultExit,
+            );
           }
         } else {
-          anchors.set("power-source:OUT", { x: 140, y: 58 });
+          const outPt = { x: 140, y: 58 };
+          anchors.set("power-source:OUT", outPt);
+          exitDirs.set(
+            "power-source:OUT",
+            exitFromBodyCenter(outPt, powerBodyCenter),
+          );
           const targetPin = powerPins.usb || powerPins.vin;
           const target = targetPin
             ? anchors.get(`${board.instanceId}:${targetPin}`)
             : undefined;
+          const boardKey = targetPin
+            ? `${board.instanceId}:${targetPin}`
+            : "";
           anchors.set(
             "power-source:BOARD",
             target || { x: board.x + 40, y: board.y + 20 },
           );
+          if (boardKey) {
+            exitDirs.set(
+              "power-source:BOARD",
+              exitDirs.get(boardKey) ?? defaultExit,
+            );
+          }
         }
       }
 
       const nextWires: Wire[] = [];
+      const routedPaths: Point[][] = [];
+      const routeWire = (
+        from: Point,
+        to: Point,
+        fromKey: string,
+        toKey: string,
+        index: number,
+      ) =>
+        routedPath(
+          from,
+          to,
+          exitDirs.get(fromKey) ?? defaultExit,
+          exitDirs.get(toKey) ?? { dx: -defaultExit.dx, dy: -defaultExit.dy },
+          obstacles,
+          index,
+          routedPaths,
+        );
+
       guide.connections.forEach((connection, index) => {
-        const from = anchors.get(
-          `${connection.from.instanceId}:${connection.from.pinId}`,
-        );
-        const to = anchors.get(
-          `${connection.to.instanceId}:${connection.to.pinId}`,
-        );
+        const fromKey = `${connection.from.instanceId}:${connection.from.pinId}`;
+        const toKey = `${connection.to.instanceId}:${connection.to.pinId}`;
+        const from = anchors.get(fromKey);
+        const to = anchors.get(toKey);
         if (!from || !to) return;
 
         const fromPart = guide.parts.find(
@@ -893,7 +1050,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           ? pinLabel(toPart.catalogId, connection.to.pinId)
           : connection.to.pinId;
         const label = connection.note || `${fromName} → ${toName}`;
-        const route = routedPath(from, to, obstacles, index);
+        const route = routeWire(from, to, fromKey, toKey, index);
+        routedPaths.push(route.points);
         const span = Math.hypot(to.x - from.x, to.y - from.y);
         const touchesBreadboard =
           (fromPart && isBreadboardId(fromPart.catalogId)) ||
@@ -927,7 +1085,14 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         const minusFrom = anchors.get("power-source:-");
         const minusTo = anchors.get("power-source:GND");
         if (plusFrom && plusTo) {
-          const route = routedPath(plusFrom, plusTo, obstacles, 0);
+          const route = routeWire(
+            plusFrom,
+            plusTo,
+            "power-source:+",
+            "power-source:VIN",
+            0,
+          );
+          routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-plus",
             color: "#c62828",
@@ -940,7 +1105,14 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           });
         }
         if (minusFrom && minusTo) {
-          const route = routedPath(minusFrom, minusTo, obstacles, 1);
+          const route = routeWire(
+            minusFrom,
+            minusTo,
+            "power-source:-",
+            "power-source:GND",
+            1,
+          );
+          routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-minus",
             color: "#212121",
@@ -956,7 +1128,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         const from = anchors.get("power-source:OUT");
         const to = anchors.get("power-source:BOARD");
         if (from && to) {
-          const route = routedPath(from, to, obstacles, 0);
+          const route = routeWire(from, to, "power-source:OUT", "power-source:BOARD", 0);
+          routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-feed",
             color: "#37474f",
