@@ -1,3 +1,9 @@
+import {
+  getModuleAsset,
+  moduleAssets,
+  type ModuleAsset,
+} from "./module-assets";
+
 export type BoardTerminalPoint = { x: number; y: number };
 
 export type BoardAsset = {
@@ -9,6 +15,9 @@ export type BoardAsset = {
   /** SVG user units matching the file viewBox; keys are catalog pin ids. */
   terminals?: Record<string, BoardTerminalPoint>;
 };
+
+export type { ModuleAsset };
+export { moduleAssets, getModuleAsset };
 
 /**
  * Visual assets for wiring diagrams (BoardAssets pattern, like BatteryAssets).
@@ -85,26 +94,11 @@ export const optionalBoardAssets: Record<string, BoardAsset> = {
   },
 };
 
-export const moduleAssets: Record<string, BoardAsset> = {
-  "module.soil.moisture": {
-    src: "/assets/modules/soil-moisture-capacitive.svg",
-    width: 80,
-    height: 210,
-    caption: "Capacitive soil moisture sensor",
-    license: "CC0 - HelpmeSolder original SVG",
-    terminals: {
-      vcc: { x: 48, y: 42 },
-      gnd: { x: 72, y: 42 },
-      ao: { x: 96, y: 42 },
-      do: { x: 120, y: 42 },
-    },
-  },
-};
-
 export function getBoardAsset(id: string): BoardAsset | undefined {
   return boardAssets[id] ?? optionalBoardAssets[id];
 }
 
-export function getModuleAsset(id: string): BoardAsset | undefined {
-  return moduleAssets[id];
+/** Convenience alias used by BoardAssets.tsx */
+export function getPartDiagramAsset(id: string): BoardAsset | ModuleAsset | undefined {
+  return getBoardAsset(id) ?? getModuleAsset(id);
 }

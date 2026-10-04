@@ -5,26 +5,27 @@ export type ModuleAsset = {
   width: number;
   height: number;
   caption: string;
+  license: string;
+  /** SVG user units matching the file viewBox; keys are catalog pin ids. */
   terminals?: Record<string, ModuleTerminalPoint>;
-  license?: string;
 };
 
 /**
- * Visual assets for module wiring diagrams (sensors, probes, etc.).
+ * Visual assets for module wiring diagrams (sensors/probes without Wokwi).
  * Coordinates are in SVG user units matching each file's viewBox.
  */
 export const moduleAssets: Record<string, ModuleAsset> = {
   "module.soil.moisture": {
     src: "/assets/modules/soil-moisture-capacitive.svg",
-    width: 160,
-    height: 420,
-    caption: "Capacitive soil moisture probe (original CC0 silhouette)",
+    width: 80,
+    height: 210,
+    caption: "Capacitive soil moisture sensor",
     license: "CC0 - HelpmeSolder original SVG",
     terminals: {
-      vcc: { x: 48, y: 42 },
-      gnd: { x: 72, y: 42 },
-      ao: { x: 96, y: 42 },
-      do: { x: 120, y: 42 },
+      VCC: { x: 48, y: 42 },
+      GND: { x: 72, y: 42 },
+      AO: { x: 96, y: 42 },
+      DO: { x: 120, y: 42 },
     },
   },
 };
