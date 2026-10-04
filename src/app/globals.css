@@ -195,14 +195,38 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.45;
+  opacity: 0.35;
+  pointer-events: none;
   background-image:
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 0);
   background-size: 20px 20px;
-  mask-image: linear-gradient(180deg, black 40%, transparent 100%);
+  mask-image: linear-gradient(180deg, black 55%, transparent 100%);
 }
 
 .diagram-shell > * {
   position: relative;
   z-index: 1;
+}
+
+.diagram-viewport {
+  overflow: hidden;
+  height: min(70vh, 640px);
+  touch-action: none;
+  background: transparent;
+}
+
+.diagram-zoom-btn {
+  min-width: 2rem;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 70%, var(--paper));
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.4rem 0.55rem;
+}
+
+.diagram-zoom-btn:hover {
+  border-color: var(--flux);
+  color: var(--flux);
 }

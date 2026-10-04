@@ -41,7 +41,7 @@ server.registerTool(
   "create_guide",
   {
     description:
-      "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog.",
+      "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Before wiring, ask the user how they will power the project (battery pack vs USB wall adapter) — never guess — then call set_power_source.",
     inputSchema: createGuideInput,
   },
   async (input) => {
@@ -54,10 +54,53 @@ server.registerTool(
 );
 
 server.registerTool(
+  "ask_power_source",
+  {
+    description:
+      "Decision helper for power. Call this when power_source is unknown. Returns the exact question and options to ask the user. Do NOT invent battery vs USB wall — wait for the user's answer, then call set_power_source.",
+    inputSchema: z.object({
+      guide_id: z.string().optional(),
+      context: z
+        .string()
+        .optional()
+        .describe("Optional project context (portable, outdoor, bench, etc.)"),
+    }),
+  },
+  async ({ guide_id, context }) => {
+    return ok({
+      mustAskUser: true,
+      question:
+        "How will you power this build — a battery pack, or a USB wall adapter plugged into the board?",
+      whyAsk:
+        "Battery vs USB wall changes the diagram (battery pack vs wall brick) and wiring notes (VIN/GND vs USB/VIN). Never assume.",
+      options: [
+        {
+          id: "battery",
+          label: "Battery pack",
+          diagram: "Shows a battery pack feeding VIN (+) and GND (−).",
+          when:
+            "Portable, outdoor, remote, or no wall outlet. Mind voltage (usually 3.7–9V depending on pack).",
+        },
+        {
+          id: "usb_wall",
+          label: "USB wall adapter",
+          diagram: "Shows a USB wall brick into the board USB / 5V rail.",
+          when: "Bench, indoor, always-on, or powered from a phone charger brick.",
+        },
+      ],
+      nextStep:
+        "Ask the user the question above. After they pick, call set_power_source with battery or usb_wall.",
+      guide_id: guide_id ?? null,
+      context: context ?? null,
+    });
+  },
+);
+
+server.registerTool(
   "set_power_source",
   {
     description:
-      "Set guide power_source to battery or usb_wall. If unknown, ask the user first.",
+      "Set guide power_source to battery or usb_wall AFTER asking the user (use ask_power_source first if unknown). This chooses which power diagram is drawn on the guide page. Never invent the answer.",
     inputSchema: setPowerInput,
   },
   async (input) => {
@@ -132,7 +175,8 @@ server.registerTool(
 server.registerTool(
   "list_catalog",
   {
-    description: "List boards, modules, and recipes available for wiring guides.",
+    description:
+      "List boards, modules, passives (breadboard, resistors, LEDs, pots, buttons, USB wall, battery), and recipes. Use passives whenever a prototype needs current limiting, pull-ups, or a breadboard.",
     inputSchema: z.object({}),
   },
   async () => {
@@ -148,7 +192,7 @@ server.registerTool(
   "validate_guide",
   {
     description:
-      "Validate a guide. Hard-blocks bad pins/parts and returns alternatives[].",
+      "Validate a guide. Hard-blocks bad pins/parts and returns alternatives[]. If needsPowerSource is true, call ask_power_source and ask the user before continuing.",
     inputSchema: z.object({ guide_id: z.string() }),
   },
   async ({ guide_id }) => {

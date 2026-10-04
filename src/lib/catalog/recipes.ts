@@ -73,4 +73,31 @@ export const recipes: Recipe[] = [
     ],
     moduleIds: ["module.soil.moisture"],
   },
+  {
+    id: "recipe.led.resistor",
+    name: "LED + Current Limiting Resistor",
+    summary: "Prototype an LED with a 220Ω resistor on a breadboard.",
+    boardIds: [
+      "board.arduino.uno",
+      "board.arduino.nano",
+      "board.esp32.devkit",
+      "board.pico.rp2040",
+    ],
+    moduleIds: [
+      "passive.breadboard.half",
+      "passive.resistor.220",
+      "passive.led.red",
+    ],
+  },
+  {
+    id: "recipe.dht22",
+    name: "DHT22 Temp/Humidity",
+    summary: "Wire a DHT22 with optional 10k pull-up.",
+    boardIds: [
+      "board.esp32.devkit",
+      "board.arduino.uno",
+      "board.arduino.nano",
+    ],
+    moduleIds: ["module.dht22", "passive.resistor.10k"],
+  },
 ];

@@ -423,6 +423,58 @@ const recipes = [
     ],
     notes: ["D34 is input-only analog on ESP32. Soil module uses skeleton visual."],
   },
+  {
+    title: "LED + Resistor on Breadboard",
+    board_id: "board.arduino.uno",
+    power_source: "usb_wall",
+    parts: [
+      { instanceId: "board1", catalogId: "board.arduino.uno" },
+      { instanceId: "bb1", catalogId: "passive.breadboard.half" },
+      { instanceId: "r1", catalogId: "passive.resistor.220" },
+      { instanceId: "led1", catalogId: "passive.led.red" },
+    ],
+    connections: [
+      {
+        id: "c1",
+        from: { instanceId: "board1", pinId: "5" },
+        to: { instanceId: "r1", pinId: "1" },
+      },
+      {
+        id: "c2",
+        from: { instanceId: "r1", pinId: "2" },
+        to: { instanceId: "led1", pinId: "A" },
+      },
+      {
+        id: "c3",
+        from: { instanceId: "led1", pinId: "C" },
+        to: { instanceId: "board1", pinId: "GND.2" },
+      },
+    ],
+    steps: [
+      {
+        id: "s1",
+        order: 1,
+        title: "Place Uno and breadboard",
+        body: "Seat the Uno next to a half breadboard for the LED/resistor.",
+      },
+      {
+        id: "s2",
+        order: 2,
+        title: "Wire resistor then LED",
+        body: "D5 → 220Ω → LED anode. LED cathode → GND.",
+      },
+      {
+        id: "s3",
+        order: 3,
+        title: "Power from USB wall",
+        body: "Plug the USB wall adapter and drive D5 high to light the LED.",
+      },
+    ],
+    notes: [
+      "Always current-limit LEDs with a resistor.",
+      "Ask the user battery vs USB wall before shipping the guide.",
+    ],
+  },
 ];
 
 const results = [];

@@ -35,7 +35,8 @@ export function validateGuide(guide: Guide): ValidationResult {
   if (!guide.power_source) {
     issues.push({
       code: "power_source_required",
-      message: "Ask the user whether power is battery or usb_wall.",
+      message:
+        "Ask the user whether power is a battery pack or a USB wall adapter before wiring. Call ask_power_source, then set_power_source.",
       alternatives: ["battery", "usb_wall"],
     });
   }
