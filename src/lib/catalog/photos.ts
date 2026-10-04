@@ -1,12 +1,13 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { resolvePartPhoto } from "./part-media";
 
-const EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"] as const;
+const EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".svg"] as const;
 
 export function resolvePhotoPath(photoHint?: string): string | null {
-  if (!photoHint) {
-    return null;
-  }
+  const known = resolvePartPhoto(photoHint);
+  if (known) return known;
+  if (!photoHint) return null;
 
   for (const extension of EXTENSIONS) {
     const absolute = path.join(

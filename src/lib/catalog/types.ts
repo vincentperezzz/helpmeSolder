@@ -26,6 +26,12 @@ export type WokwiPart = {
   attrs?: Record<string, string>;
 };
 
+export type PartVariantNote = {
+  label: string;
+  detail: string;
+  matchesGuide?: boolean;
+};
+
 export type CatalogPart = {
   id: string;
   name: string;
@@ -33,6 +39,10 @@ export type CatalogPart = {
   description: string;
   pins: CatalogPin[];
   photoHint?: string;
+  photoCaption?: string;
+  identify?: string;
+  variants?: PartVariantNote[];
+  watchOuts?: string[];
   wokwi?: WokwiPart;
   displayClass?:
     | "character-lcd"
