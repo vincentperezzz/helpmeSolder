@@ -154,10 +154,26 @@ function segmentHitsRect(a: Point, b: Point, rect: Rect): boolean {
   return false;
 }
 
+function segmentDeepHit(a: Point, b: Point, obstacle: Rect): boolean {
+  if (!segmentHitsRect(a, b, obstacle)) return false;
+  const aInside = pointInRect(a, obstacle, 4);
+  const bInside = pointInRect(b, obstacle, 4);
+  if (aInside && bInside) return true;
+  if (!aInside && !bInside) return true;
+  const len = Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  const maxStub = Math.min(obstacle.w, obstacle.h) * 0.35 + 20;
+  return len > maxStub;
+}
+
 function pathCrossesObstacles(points: Point[], obstacles: Rect[]): boolean {
+  for (let i = 1; i < points.length - 1; i += 1) {
+    for (const obstacle of obstacles) {
+      if (pointInRect(points[i], obstacle, -4)) return true;
+    }
+  }
   for (let i = 0; i < points.length - 1; i += 1) {
     for (const obstacle of obstacles) {
-      if (segmentHitsRect(points[i], points[i + 1], obstacle)) return true;
+      if (segmentDeepHit(points[i], points[i + 1], obstacle)) return true;
     }
   }
   return false;
@@ -213,37 +229,39 @@ function routedPath(
   const lane = ((index % 5) - 2) * 16;
   const blockers = blockersForWire(from, to, obstacles);
   const avoid = blockers.map((obs) => ({
-    x: obs.x + 10,
-    y: obs.y + 10,
-    w: Math.max(20, obs.w - 20),
-    h: Math.max(20, obs.h - 20),
+    x: obs.x + 8,
+    y: obs.y + 8,
+    w: Math.max(16, obs.w - 16),
+    h: Math.max(16, obs.h - 16),
   }));
 
   const candidates: Point[][] = [];
-  const midX = from.x + (to.x - from.x) * 0.5 + lane;
-  candidates.push([
-    from,
-    { x: midX, y: from.y },
-    { x: midX, y: to.y },
-    to,
-  ]);
-  const midY = (from.y + to.y) / 2 + lane * 0.4;
-  candidates.push([
-    from,
-    { x: from.x, y: midY },
-    { x: to.x, y: midY },
-    to,
-  ]);
+  if (blockers.length === 0) {
+    const midX = from.x + (to.x - from.x) * 0.5 + lane;
+    candidates.push([
+      from,
+      { x: midX, y: from.y },
+      { x: midX, y: to.y },
+      to,
+    ]);
+    const midY = (from.y + to.y) / 2 + lane * 0.4;
+    candidates.push([
+      from,
+      { x: from.x, y: midY },
+      { x: to.x, y: midY },
+      to,
+    ]);
+  }
 
   if (blockers.length > 0) {
     const clearTop =
-      Math.min(...blockers.map((obs) => obs.y)) - 30 - Math.abs(lane);
+      Math.min(...blockers.map((obs) => obs.y)) - 36 - Math.abs(lane);
     const clearBot =
-      Math.max(...blockers.map((obs) => obs.y + obs.h)) + 30 + Math.abs(lane);
+      Math.max(...blockers.map((obs) => obs.y + obs.h)) + 36 + Math.abs(lane);
     const clearRight =
-      Math.max(...blockers.map((obs) => obs.x + obs.w)) + 26 + Math.abs(lane);
+      Math.max(...blockers.map((obs) => obs.x + obs.w)) + 32 + Math.abs(lane);
     const clearLeft =
-      Math.min(...blockers.map((obs) => obs.x)) - 26 - Math.abs(lane);
+      Math.min(...blockers.map((obs) => obs.x)) - 32 - Math.abs(lane);
 
     candidates.push([
       from,
@@ -278,13 +296,26 @@ function routedPath(
       { x: to.x, y: clearTop },
       to,
     ]);
+    candidates.push([
+      from,
+      { x: clearLeft, y: from.y },
+      { x: clearLeft, y: clearBot },
+      { x: to.x, y: clearBot },
+      to,
+    ]);
+    candidates.push([
+      from,
+      { x: clearRight, y: from.y },
+      { x: clearRight, y: to.y },
+      to,
+    ]);
   }
 
   let best = candidates[0];
   let bestScore = Number.POSITIVE_INFINITY;
   for (const candidate of candidates) {
     const hits = pathCrossesObstacles(candidate, avoid);
-    const score = pathLength(candidate) + (hits ? 12000 : 0);
+    const score = pathLength(candidate) + (hits ? 20000 : 0) + candidate.length * 8;
     if (score < bestScore) {
       bestScore = score;
       best = candidate;
@@ -625,6 +656,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     if (!ready || !hostRef.current) return;
 
     let cancelled = false;
+    let attempts = 0;
     const measure = () => {
       const host = hostRef.current;
       if (!host || cancelled) return;
@@ -633,31 +665,64 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       const obstacles: Rect[] = [];
       let maxRight = 900;
       let maxBottom = 520;
+      let boardsReady = true;
 
       for (const part of placed) {
         const node = host.querySelector(
           `[data-instance="${part.instanceId}"]`,
         ) as (HTMLElement & { pinInfo?: PinInfo[] | (() => PinInfo[]) }) | null;
-        if (!node) continue;
+        if (!node) {
+          if (part.kind === "board") boardsReady = false;
+          continue;
+        }
 
         const offsetX = part.x;
         const offsetY = part.y;
-        const width = Math.max(node.offsetWidth, 120);
-        const height = Math.max(node.offsetHeight, 80);
+        const rawW = node.offsetWidth;
+        const rawH = node.offsetHeight;
+        const raw = typeof node.pinInfo === "function" ? node.pinInfo() : node.pinInfo;
+        const hasPins = Array.isArray(raw) && raw.length > 0;
+        if (part.kind === "board" && !hasPins) {
+          boardsReady = false;
+        }
+
+        let width = Math.max(rawW, 120);
+        let height = Math.max(rawH, 80);
+        if (hasPins) {
+          const xs = raw.map((pin) => pin.x);
+          const ys = raw.map((pin) => pin.y);
+          width = Math.max(width, Math.max(...xs) - Math.min(...xs) + 36);
+          height = Math.max(height, Math.max(...ys) - Math.min(...ys) + 36);
+        } else if (part.kind === "board") {
+          width = Math.max(width, 160);
+          height = Math.max(height, 220);
+        }
         maxRight = Math.max(maxRight, offsetX + width + 140);
         maxBottom = Math.max(maxBottom, offsetY + height + 120);
 
-        if (part.kind === "board") {
+        if (part.kind === "board" && hasPins) {
+          const xs = raw.map((pin) => pin.x);
+          const ys = raw.map((pin) => pin.y);
+          const minX = Math.min(...xs);
+          const maxX = Math.max(...xs);
+          const minY = Math.min(...ys);
+          const maxY = Math.max(...ys);
           obstacles.push({
-            x: offsetX - 6,
-            y: offsetY - 6,
-            w: width + 12,
-            h: height + 12,
+            x: offsetX + minX - 14,
+            y: offsetY + minY - 14,
+            w: maxX - minX + 28,
+            h: maxY - minY + 28,
+          });
+        } else if (part.kind === "board") {
+          obstacles.push({
+            x: offsetX - 10,
+            y: offsetY - 10,
+            w: width + 20,
+            h: height + 20,
           });
         }
 
-        const raw = typeof node.pinInfo === "function" ? node.pinInfo() : node.pinInfo;
-        if (Array.isArray(raw) && raw.length > 0) {
+        if (hasPins) {
           for (const pin of raw) {
             anchors.set(`${part.instanceId}:${pin.name}`, {
               x: offsetX + pin.x,
@@ -820,6 +885,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         }
       }
 
+      if (!boardsReady && attempts < 25) {
+        attempts += 1;
+        window.setTimeout(measure, 120);
+        return;
+      }
+
       setCanvas({
         width: Math.ceil(maxRight + 40),
         height: Math.ceil(maxBottom + 40),
@@ -844,7 +915,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     const frame = requestAnimationFrame(() => {
       requestAnimationFrame(measure);
     });
-    const timer = window.setTimeout(measure, 120);
+    const timer = window.setTimeout(measure, 160);
 
     return () => {
       cancelled = true;
@@ -1048,6 +1119,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
                   createElement(part.tag as string, {
                     ...part.attrs,
                     "data-instance": part.instanceId,
+                    style: { display: "inline-block" },
                   })
                 ) : (
                   <SkeletonPart
