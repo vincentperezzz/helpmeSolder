@@ -10,6 +10,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from "react";
+import { BatteryAssetVisual, UsbWallVisual } from "@/components/BatteryAssets";
 import { getCatalogPart } from "@/lib/catalog";
 import { getBatteryAsset, type BatteryKind } from "@/lib/catalog/batteries";
 import type { Guide, PowerSource } from "@/lib/catalog/types";
@@ -666,13 +667,7 @@ function PowerSourceVisual({
         className="absolute"
         style={{ left: x, top: y, width: 150 }}
       >
-        <img
-          src="/assets/batteries/usb-wall.svg"
-          alt="USB wall adapter"
-          width={150}
-          height={110}
-          draggable={false}
-        />
+        <UsbWallVisual />
       </div>
     );
   }
@@ -684,14 +679,7 @@ function PowerSourceVisual({
       className="absolute"
       style={{ left: x, top: y, width: asset.width }}
     >
-      <img
-        src={asset.src}
-        alt={asset.label}
-        width={asset.width}
-        height={asset.height}
-        draggable={false}
-      />
-      <p className="mt-1 font-mono text-[9px] text-mute">{asset.caption}</p>
+      <BatteryAssetVisual kind={source} />
     </div>
   );
 }
