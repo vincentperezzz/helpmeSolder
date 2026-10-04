@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HelpmeSolder
 
-## Getting Started
+MCP-powered how-to solder guides for non-EE builders. Not an LLM. Not a simulator.
 
-First, run the development server:
+Claude/Cursor plans in chat → MCP tools write a guide → secret URL shows prep → full wiring diagram → steps. Same URL updates when chat iterates.
+
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind
+- Vercel Hobby (`helpmesolder`)
+- Supabase Postgres (org `perez`, project `helpmesolder`)
+- Thin MCP server → Vercel API → Supabase → `/guides/[id]`
+
+## Phase 0
+
+- App scaffold
+- `GET /api/health`
+- Empty `/guides/[id]` shell
+- Vercel + Supabase projects created
+
+## Local
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Env
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Publishable / anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side API writes (never expose client-side) |
+| `NEXT_PUBLIC_APP_URL` | Canonical app URL for guide links |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## MCP tools (planned)
 
-## Learn More
+`create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
 
-To learn more about Next.js, take a look at the following resources:
+## Architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+Cursor/Claude → MCP server → Next.js API → Supabase guides → /guides/[id]
+```
