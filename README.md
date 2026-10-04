@@ -4,19 +4,20 @@ MCP-powered how-to solder guides for non-EE builders. Not an LLM. Not a simulato
 
 Claude/Cursor plans in chat → MCP tools write a guide → secret URL shows prep → full wiring diagram → steps. Same URL updates when chat iterates.
 
+## Docs
+
+- [`docs/CONTEXT.md`](docs/CONTEXT.md) — frozen one-liner
+- [`docs/PRODUCT.md`](docs/PRODUCT.md) — product lock
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system shape
+- [`docs/HANDOFF.md`](docs/HANDOFF.md) — build handoff
+- [`BUILD_PLAN.md`](BUILD_PLAN.md) — phased checklist
+
 ## Stack
 
 - Next.js (App Router) + TypeScript + Tailwind
 - Vercel Hobby (`helpmesolder`)
 - Supabase Postgres (org `perez`, project `helpmesolder`)
 - Thin MCP server → Vercel API → Supabase → `/guides/[id]`
-
-## Phase 0
-
-- App scaffold
-- `GET /api/health`
-- Empty `/guides/[id]` shell
-- Vercel + Supabase projects created
 
 ## Local
 
@@ -32,15 +33,14 @@ npm run dev
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Publishable / anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-side API writes (never expose client-side) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side API writes (preferred) |
+| `MCP_API_KEY` | Optional bearer key for tool APIs |
 | `NEXT_PUBLIC_APP_URL` | Canonical app URL for guide links |
 
-## MCP tools (planned)
+## Current slice
+
+Phase 0 done. Phase 1 in progress: catalog + guide API + validator.
+
+## MCP tools
 
 `create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
-
-## Architecture
-
-```
-Cursor/Claude → MCP server → Next.js API → Supabase guides → /guides/[id]
-```

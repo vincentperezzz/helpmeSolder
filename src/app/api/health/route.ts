@@ -4,6 +4,6 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     service: "helpmesolder",
-    phase: 0,
+    phase: 1,
   });
 }
