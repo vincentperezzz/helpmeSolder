@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 520" width="220" height="520" role="img" aria-label="ESP8266 NodeMCU simplified top-view wiring diagram">
+  <title>ESP8266 NodeMCU V1.0 style (original simplified top-view, CC0)</title>
+  <!--
+    Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
+    NodeMCU V1.0 / Amica-style 30-pin breadboard layout (layout facts only).
+    USB micro-B at top (low Y). Not a copy of squix78 Fritzing artwork.
+    Left header x=18 (A0 near USB to VIN far).
+    Right header x=202 (D0 near USB to 3V3 far).
+    Catalog pins: 3v3, gnd, vin, d0-d8, a0.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .board { fill: #1e2c5c; stroke: #121a38; stroke-width: 2; }
+      .module { fill: #5f5758; stroke: #3e3839; stroke-width: 1; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .btn { fill: #bec0c2; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #4d4648; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #e8eaf6; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #263238; }
+    ]]></style>
+  </defs>
+
+  <rect class="board" x="36" y="40" width="148" height="440" rx="10"/>
+  <circle cx="52" cy="60" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="168" cy="60" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="52" cy="460" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+  <circle cx="168" cy="460" r="7" fill="none" stroke="#f9a825" stroke-width="3"/>
+
+  <g id="usb-end">
+    <rect class="usb" x="78" y="8" width="64" height="36" rx="3"/>
+    <rect x="90" y="16" width="40" height="16" rx="2" fill="#90a4ae"/>
+    <text class="label" x="110" y="58" text-anchor="middle" font-size="9">USB</text>
+  </g>
+
+  <rect class="module" x="52" y="120" width="72" height="64" rx="2"/>
+  <text class="label" x="88" y="148" text-anchor="middle" font-size="9">ESP-12</text>
+  <text class="label" x="88" y="164" text-anchor="middle" font-size="8">Wi-Fi</text>
+  <path d="M54 118 V88 H118 V118" fill="none" stroke="#8d8578" stroke-width="1.2"/>
+
+  <text class="label" x="110" y="230" text-anchor="middle" font-size="12">NodeMCU</text>
+  <text class="label" x="110" y="248" text-anchor="middle" font-size="9">ESP8266</text>
+
+  <rect class="chip" x="130" y="280" width="36" height="18" rx="2"/>
+  <text class="label" x="148" y="292" text-anchor="middle" font-size="7">UART</text>
+
+  <g id="buttons">
+    <rect class="btn" x="58" y="360" width="26" height="18" rx="3"/>
+    <circle cx="71" cy="369" r="5" fill="#231f20"/>
+    <text class="label" x="71" y="394" text-anchor="middle" font-size="8">FLASH</text>
+    <rect class="btn" x="136" y="360" width="26" height="18" rx="3"/>
+    <circle cx="149" cy="369" r="5" fill="#231f20"/>
+    <text class="label" x="149" y="394" text-anchor="middle" font-size="8">RST</text>
+  </g>
+
+  <g id="left-header">
+    <circle id="pin-a0" class="hole" cx="18" cy="80" r="7"/><text class="pinlbl" x="18" y="74" text-anchor="middle">A0</text>
+    <circle id="pin-rsv1" class="hole" cx="18" cy="105.4" r="7"/>
+    <circle id="pin-rsv2" class="hole" cx="18" cy="130.8" r="7"/>
+    <circle id="pin-sd3" class="hole" cx="18" cy="156.2" r="7"/>
+    <circle id="pin-sd2" class="hole" cx="18" cy="181.6" r="7"/>
+    <circle id="pin-sd1" class="hole" cx="18" cy="207" r="7"/>
+    <circle id="pin-cmd" class="hole" cx="18" cy="232.4" r="7"/>
+    <circle id="pin-sd0" class="hole" cx="18" cy="257.8" r="7"/>
+    <circle id="pin-clk" class="hole" cx="18" cy="283.2" r="7"/>
+    <circle id="pin-gnd-left" class="hole gnd" cx="18" cy="308.6" r="7"/><text class="pinlbl" x="18" y="302" text-anchor="middle">GND</text>
+    <circle id="pin-3v3-left" class="hole v3" cx="18" cy="334" r="7"/><text class="pinlbl" x="18" y="328" text-anchor="middle">3V3</text>
+    <circle id="pin-en" class="hole" cx="18" cy="359.4" r="7"/>
+    <circle id="pin-rst" class="hole" cx="18" cy="384.8" r="7"/>
+    <circle id="pin-gnd-vin" class="hole gnd" cx="18" cy="410.2" r="7"/>
+    <circle id="pin-vin" class="hole pwr" cx="18" cy="435.6" r="7"/><text class="pinlbl" x="18" y="470" text-anchor="middle">VIN</text>
+  </g>
+
+  <g id="right-header">
+    <circle id="pin-d0" class="hole" cx="202" cy="80" r="7"/><text class="pinlbl" x="202" y="74" text-anchor="middle">D0</text>
+    <circle id="pin-d1" class="hole" cx="202" cy="105.4" r="7"/><text class="pinlbl" x="202" y="99" text-anchor="middle">D1</text>
+    <circle id="pin-d2" class="hole" cx="202" cy="130.8" r="7"/><text class="pinlbl" x="202" y="125" text-anchor="middle">D2</text>
+    <circle id="pin-d3" class="hole" cx="202" cy="156.2" r="7"/>
+    <circle id="pin-d4" class="hole" cx="202" cy="181.6" r="7"/>
+    <circle id="pin-3v3" class="hole v3" cx="202" cy="207" r="7"/><text class="pinlbl" x="202" y="201" text-anchor="middle">3V3</text>
+    <circle id="pin-gnd" class="hole gnd" cx="202" cy="232.4" r="7"/><text class="pinlbl" x="202" y="226" text-anchor="middle">GND</text>
+    <circle id="pin-d5" class="hole" cx="202" cy="257.8" r="7"/>
+    <circle id="pin-d6" class="hole" cx="202" cy="283.2" r="7"/>
+    <circle id="pin-d7" class="hole" cx="202" cy="308.6" r="7"/>
+    <circle id="pin-d8" class="hole" cx="202" cy="334" r="7"/><text class="pinlbl" x="202" y="328" text-anchor="middle">D8</text>
+    <circle id="pin-rx" class="hole" cx="202" cy="359.4" r="7"/>
+    <circle id="pin-tx" class="hole" cx="202" cy="384.8" r="7"/>
+    <circle id="pin-gnd-right" class="hole gnd" cx="202" cy="410.2" r="7"/>
+    <circle id="pin-3v3-far" class="hole v3" cx="202" cy="435.6" r="7"/><text class="pinlbl" x="202" y="470" text-anchor="middle">3V3</text>
+  </g>
+</svg>

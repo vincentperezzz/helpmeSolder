@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Raspberry Pi Zero W top-view wiring diagram">
+  <title>Raspberry Pi Zero W (original simplified top-view, CC0)</title>
+  <!--
+    Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
+    Physical layout facts only (not a copy of third-party artwork).
+    Board ~65 x 30 mm (scaled ~x4.5). mini-HDMI / micro-USB ports on short edge (left).
+    40-pin GPIO header along the long top edge (pin 1 = 3V3 nearest SD / right-of-USB side).
+    Orientation: ports LEFT, GPIO along TOP, microSD RIGHT, camera FPC BOTTOM-ish.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .board { fill: #1b7a4a; stroke: #0f4d2e; stroke-width: 2; }
+      .chip { fill: #1a1a1a; }
+      .port { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #e8f5e9; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 7px; fill: #263238; }
+      .caption { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #546e7a; }
+    ]]></style>
+  </defs>
+
+  <rect class="board" x="24" y="28" width="272" height="124" rx="6"/>
+  <!-- mounting holes -->
+  <circle cx="40" cy="44" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="280" cy="44" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="40" cy="136" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="280" cy="136" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+
+  <!-- Left edge ports: mini-HDMI, USB-OTG, power -->
+  <g id="ports-left">
+    <rect class="port" id="mini-hdmi" x="8" y="48" width="22" height="18" rx="2"/>
+    <text class="label" x="48" y="60" font-size="7">HDMI</text>
+    <rect class="port" id="usb-otg" x="8" y="78" width="22" height="14" rx="2"/>
+    <text class="label" x="48" y="88" font-size="7">USB</text>
+    <rect class="port" id="usb-pwr" x="8" y="102" width="22" height="14" rx="2"/>
+    <text class="label" x="52" y="112" font-size="7">PWR</text>
+  </g>
+
+  <!-- microSD on right -->
+  <rect class="port" id="microsd" x="278" y="70" width="28" height="36" rx="2"/>
+  <text class="label" x="268" y="92" text-anchor="end">SD</text>
+
+  <!-- Wireless / SoC -->
+  <rect class="chip" x="120" y="70" width="48" height="40" rx="2"/>
+  <text class="label" x="144" y="94" text-anchor="middle" font-size="7">SoC</text>
+  <rect x="190" y="78" width="36" height="22" rx="2" fill="#263238" stroke="#90a4ae"/>
+  <text class="label" x="208" y="92" text-anchor="middle" font-size="6">WiFi</text>
+
+  <!-- Camera FPC hint (bottom edge) -->
+  <rect id="camera-fpc" x="100" y="140" width="40" height="10" rx="1" fill="#37474f"/>
+  <text class="label" x="120" y="158" text-anchor="middle" font-size="7">CAM</text>
+
+  <!-- 40-pin GPIO: 2 rows of 20 along top. Pin 1 (3V3) near left/port side. -->
+  <g id="gpio-header">
+    <!-- Odd pins (outer / top row): 1,3,5,...,39 -->
+    <circle id="pin-1-3v3" class="hole v3" cx="56" cy="22" r="4.5"/>
+    <text class="pinlbl" x="56" y="14" text-anchor="middle">3V3</text>
+    <circle id="pin-3-gpio2" class="hole" cx="68" cy="22" r="4.5"/>
+    <circle id="pin-5-gpio3" class="hole" cx="80" cy="22" r="4.5"/>
+    <circle id="pin-7-gpio4" class="hole" cx="92" cy="22" r="4.5"/>
+    <circle id="pin-9-gnd" class="hole gnd" cx="104" cy="22" r="4.5"/>
+    <circle id="pin-11-gpio17" class="hole" cx="116" cy="22" r="4.5"/>
+    <circle id="pin-13-gpio27" class="hole" cx="128" cy="22" r="4.5"/>
+    <circle id="pin-15-gpio22" class="hole" cx="140" cy="22" r="4.5"/>
+    <circle id="pin-17-3v3" class="hole v3" cx="152" cy="22" r="4.5"/>
+    <circle id="pin-19-gpio10" class="hole" cx="164" cy="22" r="4.5"/>
+    <circle id="pin-21-gpio9" class="hole" cx="176" cy="22" r="4.5"/>
+    <circle id="pin-23-gpio11" class="hole" cx="188" cy="22" r="4.5"/>
+    <circle id="pin-25-gnd" class="hole gnd" cx="200" cy="22" r="4.5"/>
+    <circle id="pin-27-gpio0" class="hole" cx="212" cy="22" r="4.5"/>
+    <circle id="pin-29-gpio5" class="hole" cx="224" cy="22" r="4.5"/>
+    <circle id="pin-31-gpio6" class="hole" cx="236" cy="22" r="4.5"/>
+    <circle id="pin-33-gpio13" class="hole" cx="248" cy="22" r="4.5"/>
+    <circle id="pin-35-gpio19" class="hole" cx="260" cy="22" r="4.5"/>
+    <circle id="pin-37-gpio26" class="hole" cx="272" cy="22" r="4.5"/>
+    <circle id="pin-39-gnd" class="hole gnd" cx="284" cy="22" r="4.5"/>
+
+    <!-- Even pins (inner / lower row): 2,4,6,...,40 -->
+    <circle id="pin-2-5v" class="hole pwr" cx="56" cy="36" r="4.5"/>
+    <text class="pinlbl" x="56" y="50" text-anchor="middle">5V</text>
+    <circle id="pin-4-5v" class="hole pwr" cx="68" cy="36" r="4.5"/>
+    <circle id="pin-6-gnd" class="hole gnd" cx="80" cy="36" r="4.5"/>
+    <text class="pinlbl" x="80" y="50" text-anchor="middle">GND</text>
+    <circle id="pin-8-gpio14" class="hole" cx="92" cy="36" r="4.5"/>
+    <circle id="pin-10-gpio15" class="hole" cx="104" cy="36" r="4.5"/>
+    <circle id="pin-12-gpio18" class="hole" cx="116" cy="36" r="4.5"/>
+    <circle id="pin-14-gnd" class="hole gnd" cx="128" cy="36" r="4.5"/>
+    <circle id="pin-16-gpio23" class="hole" cx="140" cy="36" r="4.5"/>
+    <circle id="pin-18-gpio24" class="hole" cx="152" cy="36" r="4.5"/>
+    <circle id="pin-20-gnd" class="hole gnd" cx="164" cy="36" r="4.5"/>
+    <circle id="pin-22-gpio25" class="hole" cx="176" cy="36" r="4.5"/>
+    <circle id="pin-24-gpio8" class="hole" cx="188" cy="36" r="4.5"/>
+    <circle id="pin-26-gpio7" class="hole" cx="200" cy="36" r="4.5"/>
+    <circle id="pin-28-gpio1" class="hole" cx="212" cy="36" r="4.5"/>
+    <circle id="pin-30-gnd" class="hole gnd" cx="224" cy="36" r="4.5"/>
+    <circle id="pin-32-gpio12" class="hole" cx="236" cy="36" r="4.5"/>
+    <circle id="pin-34-gnd" class="hole gnd" cx="248" cy="36" r="4.5"/>
+    <circle id="pin-36-gpio16" class="hole" cx="260" cy="36" r="4.5"/>
+    <circle id="pin-38-gpio20" class="hole" cx="272" cy="36" r="4.5"/>
+    <circle id="pin-40-gpio21" class="hole" cx="284" cy="36" r="4.5"/>
+  </g>
+
+  <text class="caption" x="160" y="172" text-anchor="middle">Pi Zero W - ports left, GPIO top, pin1=3V3</text>
+</svg>

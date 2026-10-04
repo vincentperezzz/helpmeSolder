@@ -1,5 +1,4 @@
-import { PrepParts } from "@/components/PrepParts";
-import { WokwiDiagram } from "@/components/WokwiDiagram";
+import { GuideWorkspace } from "@/components/GuideWorkspace";
 import { getCatalogPart } from "@/lib/catalog";
 import type { PowerSource } from "@/lib/catalog/types";
 import { getGuide } from "@/lib/guides/repository";
@@ -124,84 +123,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         </section>
       ) : null}
 
-      <section className="motion-rise motion-rise-delay-1 space-y-3">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div className="space-y-2">
-            <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-              Wiring Whiteboard
-            </h2>
-            <div className="section-rule w-24" />
-          </div>
-          <p className="max-w-xl text-xs text-mute sm:text-sm">
-            Freeform canvas — drag to pan, scroll to move, Full for a Wokwi-style immersive board.
-          </p>
-        </div>
-        <WokwiDiagram guide={guide} />
-      </section>
-
-      <div className="grid gap-8 lg:grid-cols-2">
-        <aside className="motion-rise motion-rise-delay-2 space-y-10">
-          <section className="space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                Prep / Parts
-              </h2>
-              <div className="section-rule w-24" />
-            </div>
-            <PrepParts parts={guide.parts} />
-          </section>
-        </aside>
-
-        <aside className="motion-rise motion-rise-delay-2 space-y-10">
-          <section className="space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                Steps
-              </h2>
-              <div className="section-rule w-24" />
-            </div>
-            {orderedSteps.length === 0 ? (
-              <p className="text-ink-soft">No steps yet.</p>
-            ) : (
-              <ol className="space-y-6">
-                {orderedSteps.map((step) => (
-                  <li key={step.id} className="grid gap-2 sm:grid-cols-[2.5rem_1fr]">
-                    <span className="brand-mark text-xl text-copper">
-                      {String(step.order).padStart(2, "0")}
-                    </span>
-                    <div className="space-y-1">
-                      <p className="font-semibold tracking-tight text-ink">
-                        {step.title}
-                      </p>
-                      <p className="text-sm leading-relaxed text-ink-soft">
-                        {step.body}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </section>
-
-          {guide.notes.length > 0 ? (
-            <section className="space-y-4 pb-4">
-              <div className="space-y-2">
-                <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                  Notes
-                </h2>
-                <div className="section-rule w-24" />
-              </div>
-              <ul className="space-y-2 text-sm text-ink-soft">
-                {guide.notes.map((note) => (
-                  <li key={note} className="border-l-2 border-copper/50 pl-4">
-                    {note}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-        </aside>
-      </div>
+      <GuideWorkspace guide={guide} orderedSteps={orderedSteps} />
     </main>
   );
 }

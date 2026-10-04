@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" width="360" height="240" role="img" aria-label="Raspberry Pi 5 top-view wiring diagram">
+  <title>Raspberry Pi 5 (original simplified top-view, CC0)</title>
+  <!--
+    Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
+    Same 40-pin GPIO header convention as Pi 4; USB-C + dual micro-HDMI left,
+    Ethernet + USB right, GPIO along top, pin 1 = 3V3 near left.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .board { fill: #1b7a4a; stroke: #0f4d2e; stroke-width: 2; }
+      .chip { fill: #1a1a1a; }
+      .port { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1; }
+      .metal { fill: #90a4ae; stroke: #546e7a; stroke-width: 1; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #e8f5e9; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 7px; fill: #263238; }
+      .caption { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #546e7a; }
+    ]]></style>
+  </defs>
+
+  <rect class="board" x="28" y="36" width="304" height="176" rx="6"/>
+  <circle cx="44" cy="52" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="316" cy="52" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="44" cy="196" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+  <circle cx="316" cy="196" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
+
+  <g id="ports-left">
+    <rect class="port" id="usbc-pwr" x="10" y="70" width="24" height="16" rx="2"/>
+    <text class="label" x="52" y="81">USB-C</text>
+    <rect class="port" id="hdmi0" x="10" y="100" width="24" height="14" rx="2"/>
+    <text class="label" x="52" y="110">HDMI0</text>
+    <rect class="port" id="hdmi1" x="10" y="122" width="24" height="14" rx="2"/>
+    <text class="label" x="52" y="132">HDMI1</text>
+    <rect id="uart-debug" x="14" y="148" width="18" height="10" rx="1" fill="#37474f"/>
+    <text class="label" x="52" y="156">UART</text>
+  </g>
+
+  <g id="ports-right">
+    <rect class="metal" id="ethernet" x="308" y="60" width="36" height="32" rx="2"/>
+    <text class="label" x="300" y="78" text-anchor="end">ETH</text>
+    <rect class="metal" id="usb3-top" x="308" y="100" width="36" height="28" rx="2"/>
+    <rect class="metal" id="usb2-bot" x="308" y="136" width="36" height="28" rx="2"/>
+    <text class="label" x="300" y="128" text-anchor="end">USB</text>
+  </g>
+
+  <rect class="port" id="microsd" x="140" y="200" width="48" height="18" rx="2"/>
+  <text class="label" x="164" y="228" text-anchor="middle">microSD</text>
+
+  <rect class="chip" x="140" y="100" width="56" height="48" rx="3"/>
+  <text class="label" x="168" y="128" text-anchor="middle">BCM2712</text>
+  <rect x="220" y="108" width="40" height="28" rx="2" fill="#37474f"/>
+  <text class="label" x="240" y="125" text-anchor="middle" font-size="7">RAM</text>
+  <rect x="90" y="150" width="36" height="20" rx="2" fill="#263238" stroke="#90a4ae"/>
+  <text class="label" x="108" y="163" text-anchor="middle" font-size="6">RP1</text>
+
+  <g id="gpio-header">
+    <circle id="pin-1-3v3" class="hole v3" cx="64" cy="24" r="4.5"/>
+    <text class="pinlbl" x="64" y="16" text-anchor="middle">3V3</text>
+    <circle id="pin-3-gpio2" class="hole" cx="76" cy="24" r="4.5"/>
+    <circle id="pin-5-gpio3" class="hole" cx="88" cy="24" r="4.5"/>
+    <circle id="pin-7-gpio4" class="hole" cx="100" cy="24" r="4.5"/>
+    <circle id="pin-9-gnd" class="hole gnd" cx="112" cy="24" r="4.5"/>
+    <circle id="pin-11-gpio17" class="hole" cx="124" cy="24" r="4.5"/>
+    <circle id="pin-13-gpio27" class="hole" cx="136" cy="24" r="4.5"/>
+    <circle id="pin-15-gpio22" class="hole" cx="148" cy="24" r="4.5"/>
+    <circle id="pin-17-3v3" class="hole v3" cx="160" cy="24" r="4.5"/>
+    <circle id="pin-19-gpio10" class="hole" cx="172" cy="24" r="4.5"/>
+    <circle id="pin-21-gpio9" class="hole" cx="184" cy="24" r="4.5"/>
+    <circle id="pin-23-gpio11" class="hole" cx="196" cy="24" r="4.5"/>
+    <circle id="pin-25-gnd" class="hole gnd" cx="208" cy="24" r="4.5"/>
+    <circle id="pin-27-gpio0" class="hole" cx="220" cy="24" r="4.5"/>
+    <circle id="pin-29-gpio5" class="hole" cx="232" cy="24" r="4.5"/>
+    <circle id="pin-31-gpio6" class="hole" cx="244" cy="24" r="4.5"/>
+    <circle id="pin-33-gpio13" class="hole" cx="256" cy="24" r="4.5"/>
+    <circle id="pin-35-gpio19" class="hole" cx="268" cy="24" r="4.5"/>
+    <circle id="pin-37-gpio26" class="hole" cx="280" cy="24" r="4.5"/>
+    <circle id="pin-39-gnd" class="hole gnd" cx="292" cy="24" r="4.5"/>
+
+    <circle id="pin-2-5v" class="hole pwr" cx="64" cy="38" r="4.5"/>
+    <text class="pinlbl" x="64" y="54" text-anchor="middle">5V</text>
+    <circle id="pin-4-5v" class="hole pwr" cx="76" cy="38" r="4.5"/>
+    <circle id="pin-6-gnd" class="hole gnd" cx="88" cy="38" r="4.5"/>
+    <text class="pinlbl" x="88" y="54" text-anchor="middle">GND</text>
+    <circle id="pin-8-gpio14" class="hole" cx="100" cy="38" r="4.5"/>
+    <circle id="pin-10-gpio15" class="hole" cx="112" cy="38" r="4.5"/>
+    <circle id="pin-12-gpio18" class="hole" cx="124" cy="38" r="4.5"/>
+    <circle id="pin-14-gnd" class="hole gnd" cx="136" cy="38" r="4.5"/>
+    <circle id="pin-16-gpio23" class="hole" cx="148" cy="38" r="4.5"/>
+    <circle id="pin-18-gpio24" class="hole" cx="160" cy="38" r="4.5"/>
+    <circle id="pin-20-gnd" class="hole gnd" cx="172" cy="38" r="4.5"/>
+    <circle id="pin-22-gpio25" class="hole" cx="184" cy="38" r="4.5"/>
+    <circle id="pin-24-gpio8" class="hole" cx="196" cy="38" r="4.5"/>
+    <circle id="pin-26-gpio7" class="hole" cx="208" cy="38" r="4.5"/>
+    <circle id="pin-28-gpio1" class="hole" cx="220" cy="38" r="4.5"/>
+    <circle id="pin-30-gnd" class="hole gnd" cx="232" cy="38" r="4.5"/>
+    <circle id="pin-32-gpio12" class="hole" cx="244" cy="38" r="4.5"/>
+    <circle id="pin-34-gnd" class="hole gnd" cx="256" cy="38" r="4.5"/>
+    <circle id="pin-36-gpio16" class="hole" cx="268" cy="38" r="4.5"/>
+    <circle id="pin-38-gpio20" class="hole" cx="280" cy="38" r="4.5"/>
+    <circle id="pin-40-gpio21" class="hole" cx="292" cy="38" r="4.5"/>
+  </g>
+
+  <text class="caption" x="180" y="16" text-anchor="middle">Pi 5 - GPIO top, USB-C left, ETH/USB right</text>
+</svg>

@@ -10,7 +10,12 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { BatteryAssetVisual, UsbWallVisual } from "@/components/BatteryAssets";
+import { BoardAssetVisual } from "@/components/BoardAssets";
 import { getCatalogPart } from "@/lib/catalog";
+import {
+  getDiagramAsset,
+  prefersDiagramAsset,
+} from "@/lib/catalog/board-assets";
 import { getBatteryAsset, type BatteryKind } from "@/lib/catalog/batteries";
 import type { Guide, PowerSource } from "@/lib/catalog/types";
 import {
@@ -21,6 +26,8 @@ import { hasWokwiVisual, wokwiAttrs } from "@/lib/catalog/wokwi";
 
 type WokwiDiagramProps = {
   guide: Guide;
+  enlarged?: boolean;
+  onEnlargedChange?: (enlarged: boolean) => void;
 };
 
 type PinInfo = { name: string; x: number; y: number };
@@ -69,6 +76,10 @@ const COLORS = [
 
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3.2;
+
+function clampZoom(value: number) {
+  return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
+}
 const BB_PITCH = 10;
 const BB_COLS = 30;
 const BB_MARGIN_X = 24;
@@ -1013,7 +1024,11 @@ function buildCue(guide: Guide): string {
   return "Building: wiring prototype";
 }
 
-export function WokwiDiagram({ guide }: WokwiDiagramProps) {
+export function WokwiDiagram({
+  guide,
+  enlarged = false,
+  onEnlargedChange,
+}: WokwiDiagramProps) {
   const shellRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -1038,11 +1053,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     const onFs = () => {
       const active = document.fullscreenElement === shellRef.current;
       setFullscreen(active);
+      if (active) onEnlargedChange?.(true);
       fittedRef.current = false;
     };
     document.addEventListener("fullscreenchange", onFs);
     return () => document.removeEventListener("fullscreenchange", onFs);
-  }, []);
+  }, [onEnlargedChange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1086,7 +1102,14 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         const rawH = node.offsetHeight;
         const raw = typeof node.pinInfo === "function" ? node.pinInfo() : node.pinInfo;
         const hasPins = Array.isArray(raw) && raw.length > 0;
-        if (part.kind === "board" && !hasPins) {
+        const diagramAsset = getDiagramAsset(part.catalogId);
+        const useDiagramAsset =
+          Boolean(diagramAsset) &&
+          prefersDiagramAsset(
+            part.catalogId,
+            Boolean(hasWokwiVisual(getCatalogPart(part.catalogId))),
+          );
+        if (part.kind === "board" && !hasPins && !useDiagramAsset) {
           boardsReady = false;
         }
 
@@ -1097,6 +1120,9 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           const ys = raw.map((pin) => pin.y);
           width = Math.max(width, Math.max(...xs) - Math.min(...xs) + 36);
           height = Math.max(height, Math.max(...ys) - Math.min(...ys) + 36);
+        } else if (useDiagramAsset && diagramAsset) {
+          width = Math.max(width, diagramAsset.width);
+          height = Math.max(height, diagramAsset.height);
         } else if (part.kind === "board") {
           width = Math.max(width, 160);
           height = Math.max(height, 220);
@@ -1146,11 +1172,30 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           });
         } else {
           const catalog = getCatalogPart(part.catalogId);
+          const terminalLocals = diagramAsset?.terminals
+            ? Object.values(diagramAsset.terminals)
+            : [];
           catalog?.pins.forEach((pin, index) => {
             const key = `${part.instanceId}:${pin.id}`;
+            const named =
+              diagramAsset?.terminals?.[pin.id] ||
+              diagramAsset?.terminals?.[pin.id.toLowerCase()] ||
+              diagramAsset?.terminals?.[pin.id.toUpperCase()];
+            if (named) {
+              anchors.set(key, {
+                x: offsetX + named.x,
+                y: offsetY + named.y,
+              });
+              exitDirs.set(
+                key,
+                pinExitDirection(named, terminalLocals.length ? terminalLocals : [named]),
+              );
+              return;
+            }
             const onRight = index % 2 !== 0;
+            const assetW = diagramAsset?.width ?? width;
             anchors.set(key, {
-              x: offsetX + (onRight ? width : 0),
+              x: offsetX + (onRight ? assetW : 0),
               y: offsetY + 28 + Math.floor(index / 2) * 16,
             });
             exitDirs.set(key, onRight ? { dx: 1, dy: 0 } : { dx: -1, dy: 0 });
@@ -1458,10 +1503,6 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     };
   }, [ready, placed, guide.connections, guide.power_source, guide.parts]);
 
-  const clampZoom = useCallback((value: number) => {
-    return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
-  }, []);
-
   const fitToViewport = useCallback(() => {
     const viewport = viewportRef.current;
     if (!viewport) {
@@ -1477,7 +1518,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     fittedRef.current = true;
     setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
     setPan({ x: 40, y: 40 });
-  }, [canvas.height, canvas.width, clampZoom]);
+  }, [canvas.height, canvas.width]);
 
   const toggleFullscreen = useCallback(async () => {
     const shell = shellRef.current;
@@ -1512,7 +1553,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
 
     viewport.addEventListener("wheel", onWheel, { passive: false });
     return () => viewport.removeEventListener("wheel", onWheel);
-  }, [clampZoom, ready]);
+  }, [ready]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0 && event.button !== 1) return;
@@ -1553,7 +1594,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   return (
     <div
       ref={shellRef}
-      className={`diagram-shell whiteboard-shell bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""}`}
+      className={`diagram-shell whiteboard-shell bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""} ${enlarged ? "is-enlarged" : ""}`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/90 px-3 py-2">
         <div className="min-w-0 space-y-0.5">
@@ -1602,7 +1643,18 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={toggleFullscreen}
+            onClick={() => onEnlargedChange?.(!enlarged)}
+            aria-label={enlarged ? "Show prep and steps again" : "Expand diagram and hide prep"}
+          >
+            {enlarged ? "Side" : "Expand"}
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={async () => {
+              onEnlargedChange?.(true);
+              await toggleFullscreen();
+            }}
             aria-label={fullscreen ? "Exit fullscreen whiteboard" : "Open fullscreen whiteboard"}
           >
             {fullscreen ? "Exit" : "Full"}
@@ -1696,7 +1748,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           {placed.map((part) => {
             const catalog = getCatalogPart(part.catalogId);
             const breadboard = isBreadboardId(part.catalogId);
-            const useWokwi = ready && hasWokwiVisual(catalog) && part.tag;
+            const hasWokwi = Boolean(hasWokwiVisual(catalog) && part.tag);
+            const diagramAsset = getDiagramAsset(part.catalogId);
+            const useAsset =
+              Boolean(diagramAsset) &&
+              prefersDiagramAsset(part.catalogId, hasWokwi);
+            const useWokwi = ready && hasWokwi && !useAsset;
             return (
               <div
                 key={part.instanceId}
@@ -1705,6 +1762,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
               >
                 {breadboard ? (
                   <BreadboardVisual instanceId={part.instanceId} name={part.name} />
+                ) : useAsset && diagramAsset ? (
+                  <BoardAssetVisual
+                    instanceId={part.instanceId}
+                    name={part.name}
+                    asset={diagramAsset}
+                  />
                 ) : useWokwi ? (
                   createElement(part.tag as string, {
                     ...part.attrs,

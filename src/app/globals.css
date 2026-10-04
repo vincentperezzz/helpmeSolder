@@ -238,6 +238,14 @@ body {
   background: #e8eef0;
 }
 
+.whiteboard-shell.is-enlarged {
+  min-height: min(92vh, 960px);
+}
+
+.whiteboard-shell.is-enlarged .diagram-viewport {
+  height: min(88vh, 920px);
+}
+
 .whiteboard-shell.is-fullscreen .diagram-viewport,
 .whiteboard-shell:fullscreen .diagram-viewport {
   height: auto;
