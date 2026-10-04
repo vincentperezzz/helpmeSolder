@@ -22,7 +22,7 @@ Vision is frozen. Build in order. Do not reopen discovery.
 - [x] Validator with hard block + `alternatives[]`
 - [x] API: catalog, create/get/patch guide, power, validate
 - [x] Wire guide page to live guide data
-- [ ] Env: `SUPABASE_SERVICE_ROLE_KEY` + `MCP_API_KEY` on Vercel
+- [ ] Env: `SUPABASE_SERVICE_ROLE_KEY` + `MCP_API_KEY` on Vercel (local anon works; Vercel write blocked)
 - [x] Smoke test create → open URL
 
 ## Phase 2 — Guide renderer

@@ -43,4 +43,4 @@ Phases 0–2 done in app. MCP lives in `mcp/`. Seed recipes with `npm run seed:r
 
 ## MCP
 
-See [`mcp/README.md`](mcp/README.md) for Cursor/Claude config and tools.
+See [`mcp/README.md`](mcp/README.md) and [`docs/mcp.cursor.example.json`](docs/mcp.cursor.example.json).

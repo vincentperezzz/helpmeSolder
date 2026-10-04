@@ -1,4 +1,5 @@
 import type { Guide } from "@/lib/catalog/types";
+import { resolvePhotoPath } from "@/lib/catalog/photos";
 import { layoutGuideDiagram, wirePath } from "@/lib/diagram/layout";
 
 type WiringDiagramProps = {
@@ -56,75 +57,78 @@ export function WiringDiagram({ guide }: WiringDiagramProps) {
           />
         ))}
 
-        {layout.parts.map((part) => (
-          <g key={part.instanceId}>
-            <rect
-              x={part.x}
-              y={part.y}
-              width={part.width}
-              height={part.height}
-              rx={part.kind === "board" ? 10 : 8}
-              fill={part.kind === "board" ? "#d7e2dc" : "#e8efeb"}
-              stroke="#2c3a42"
-              strokeWidth={1.4}
-            />
-            <rect
-              x={part.x + 10}
-              y={part.y + 10}
-              width={part.width - 20}
-              height={18}
-              rx={4}
-              fill="#f5f8f6"
-              stroke="#1f5a56"
-              strokeWidth={1}
-              opacity={0.9}
-            />
-            <text
-              x={part.x + part.width / 2}
-              y={part.y + 23}
-              textAnchor="middle"
-              fontSize={10}
-              fontFamily="var(--font-mono), ui-monospace, monospace"
-              fill="#1f5a56"
-            >
-              {part.name.length > 18 ? `${part.name.slice(0, 16)}…` : part.name}
-            </text>
-            {part.photoHint ? (
+        {layout.parts.map((part) => {
+          const photoSrc = resolvePhotoPath(part.photoHint);
+          return (
+            <g key={part.instanceId}>
+              <rect
+                x={part.x}
+                y={part.y}
+                width={part.width}
+                height={part.height}
+                rx={part.kind === "board" ? 10 : 8}
+                fill={part.kind === "board" ? "#d7e2dc" : "#e8efeb"}
+                stroke="#2c3a42"
+                strokeWidth={1.4}
+              />
+              <rect
+                x={part.x + 10}
+                y={part.y + 10}
+                width={part.width - 20}
+                height={18}
+                rx={4}
+                fill="#f5f8f6"
+                stroke="#1f5a56"
+                strokeWidth={1}
+                opacity={0.9}
+              />
               <text
                 x={part.x + part.width / 2}
-                y={part.y + part.height - 10}
+                y={part.y + 23}
                 textAnchor="middle"
-                fontSize={8}
+                fontSize={10}
                 fontFamily="var(--font-mono), ui-monospace, monospace"
-                fill="#4f5f67"
+                fill="#1f5a56"
               >
-                photo:{part.photoHint}
+                {part.name.length > 18 ? `${part.name.slice(0, 16)}…` : part.name}
               </text>
-            ) : null}
-            {part.pins.map((pin) => (
-              <g key={`${part.instanceId}-${pin.pinId}`}>
-                <circle
-                  cx={pin.x}
-                  cy={pin.y}
-                  r={4.5}
-                  fill={pinFill(pin.kinds)}
-                  stroke="#121a20"
-                  strokeWidth={1}
-                />
+              {part.photoHint ? (
                 <text
-                  x={pin.side === "left" ? pin.x + 10 : pin.x - 10}
-                  y={pin.y + 3}
-                  textAnchor={pin.side === "left" ? "start" : "end"}
+                  x={part.x + part.width / 2}
+                  y={part.y + part.height - 10}
+                  textAnchor="middle"
                   fontSize={8}
                   fontFamily="var(--font-mono), ui-monospace, monospace"
-                  fill="#2c3a42"
+                  fill="#4f5f67"
                 >
-                  {pin.label}
+                  {photoSrc ? photoSrc : `photo:${part.photoHint}`}
                 </text>
-              </g>
-            ))}
-          </g>
-        ))}
+              ) : null}
+              {part.pins.map((pin) => (
+                <g key={`${part.instanceId}-${pin.pinId}`}>
+                  <circle
+                    cx={pin.x}
+                    cy={pin.y}
+                    r={4.5}
+                    fill={pinFill(pin.kinds)}
+                    stroke="#121a20"
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={pin.side === "left" ? pin.x + 10 : pin.x - 10}
+                    y={pin.y + 3}
+                    textAnchor={pin.side === "left" ? "start" : "end"}
+                    fontSize={8}
+                    fontFamily="var(--font-mono), ui-monospace, monospace"
+                    fill="#2c3a42"
+                  >
+                    {pin.label}
+                  </text>
+                </g>
+              ))}
+            </g>
+          );
+        })}
       </svg>
     </div>
   );
