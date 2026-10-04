@@ -4,9 +4,10 @@
     Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
     Inspired by the public Raspberry Pi Pico pinout (physical layout facts only);
     not a copy of proprietary or third-party artwork.
-    Board outline ~21×51 mm (scaled ×10). USB micro-B at the top (yH0).
-    Left header x=18 (GP0 near USB ’ GP15 at bottom). Right header x=192 (VBUS near USB ’ GP16 at bottom).
-    Pin pitch H 25.4 units (2.54 mm × 10).
+    Board outline ~21x51 mm (scaled x10). USB micro-B at the top (low Y).
+    Left header x=18 (GP0 near USB to GP15 at bottom).
+    Right header x=192 (VBUS near USB to GP16 at bottom).
+    Pin pitch ~25.4 units (2.54 mm x 10).
   -->
   <defs>
     <style type="text/css"><![CDATA[
@@ -24,74 +25,53 @@
     ]]></style>
   </defs>
 
-  <!-- Board body -->
   <rect class="board" x="28" y="28" width="154" height="464" rx="8"/>
-  <!-- Mounting holes (approx) -->
   <circle cx="48" cy="52" r="6" fill="none" stroke="#f9a825" stroke-width="3"/>
   <circle cx="162" cy="52" r="6" fill="none" stroke="#f9a825" stroke-width="3"/>
   <circle cx="48" cy="468" r="6" fill="none" stroke="#f9a825" stroke-width="3"/>
   <circle cx="162" cy="468" r="6" fill="none" stroke="#f9a825" stroke-width="3"/>
 
-  <!-- USB micro-B (top / USB end) -->
   <g id="usb-end">
     <rect class="usb" x="70" y="8" width="70" height="36" rx="3"/>
     <rect x="82" y="14" width="46" height="18" rx="2" fill="#90a4ae"/>
     <text class="label" x="105" y="58" text-anchor="middle">USB</text>
   </g>
 
-  <!-- BOOTSEL + LED -->
   <rect class="btn" id="bootsel" x="48" y="92" width="28" height="18" rx="3"/>
   <text class="label" x="62" y="126" text-anchor="middle">BOOT</text>
   <circle cx="148" cy="100" r="5" fill="#90ff00" stroke="#33691e" stroke-width="1"/>
   <text class="label" x="148" y="118" text-anchor="middle">LED</text>
 
-  <!-- RP2040 package (simplified) -->
   <rect class="chip" x="78" y="200" width="54" height="54" rx="2"/>
   <text class="label" x="105" y="232" text-anchor="middle" font-size="8">RP2040</text>
-
-  <!-- Flash package -->
   <rect x="88" y="280" width="34" height="18" rx="1" fill="#37474f"/>
 
-  <!-- Left column: pin 1 (GP0) near USB ’ pin 20 (GP15) -->
-  <!-- y0 = 70, pitch = 21 (approx 2.1mm*10 for readable spacing in this simplified view) -->
-  <!-- Using pitch 21 over 19 intervals from y=70 to y=469 ’ matches length better with pitch ~21 -->
   <g id="left-header">
-    <!-- GP0 -->
     <circle id="pin-gp0" class="hole" cx="18" cy="70" r="7"/>
     <text class="pinlbl" x="18" y="64" text-anchor="middle">GP0</text>
-    <!-- GP1 -->
     <circle id="pin-gp1" class="hole" cx="18" cy="91" r="7"/>
-    <!-- GND -->
     <circle id="pin-gnd-1" class="hole gnd" cx="18" cy="112" r="7"/>
     <text class="pinlbl" x="18" y="106" text-anchor="middle">GND</text>
-    <!-- GP2GP5 -->
     <circle id="pin-gp2" class="hole" cx="18" cy="133" r="7"/>
     <circle id="pin-gp3" class="hole" cx="18" cy="154" r="7"/>
     <circle id="pin-gp4" class="hole" cx="18" cy="175" r="7"/>
     <circle id="pin-gp5" class="hole" cx="18" cy="196" r="7"/>
-    <!-- GND -->
     <circle id="pin-gnd-2" class="hole gnd" cx="18" cy="217" r="7"/>
-    <!-- GP6GP9 -->
     <circle id="pin-gp6" class="hole" cx="18" cy="238" r="7"/>
     <circle id="pin-gp7" class="hole" cx="18" cy="259" r="7"/>
     <circle id="pin-gp8" class="hole" cx="18" cy="280" r="7"/>
     <circle id="pin-gp9" class="hole" cx="18" cy="301" r="7"/>
-    <!-- GND -->
     <circle id="pin-gnd-3" class="hole gnd" cx="18" cy="322" r="7"/>
-    <!-- GP10GP13 -->
     <circle id="pin-gp10" class="hole" cx="18" cy="343" r="7"/>
     <circle id="pin-gp11" class="hole" cx="18" cy="364" r="7"/>
     <circle id="pin-gp12" class="hole" cx="18" cy="385" r="7"/>
     <circle id="pin-gp13" class="hole" cx="18" cy="406" r="7"/>
-    <!-- GND -->
     <circle id="pin-gnd-4" class="hole gnd" cx="18" cy="427" r="7"/>
-    <!-- GP14GP15 -->
     <circle id="pin-gp14" class="hole" cx="18" cy="448" r="7"/>
     <circle id="pin-gp15" class="hole" cx="18" cy="469" r="7"/>
     <text class="pinlbl" x="18" y="488" text-anchor="middle">GP15</text>
   </g>
 
-  <!-- Right column: pin 40 (VBUS) near USB ’ pin 21 (GP16) -->
   <g id="right-header">
     <circle id="pin-vbus" class="hole pwr" cx="192" cy="70" r="7"/>
     <text class="pinlbl" x="192" y="64" text-anchor="middle">VBUS</text>
@@ -99,7 +79,7 @@
     <circle id="pin-gnd-8" class="hole gnd" cx="192" cy="112" r="7"/>
     <text class="pinlbl" x="192" y="106" text-anchor="middle">GND</text>
     <circle id="pin-3v3-en" class="hole" cx="192" cy="133" r="7"/>
-    <circle id="pin-3v3" class="hole" style="fill:#ef6c00;stroke:#e65100" cx="192" cy="154" r="7"/>
+    <circle id="pin-3v3" class="hole v3" cx="192" cy="154" r="7"/>
     <text class="pinlbl" x="192" y="148" text-anchor="middle">3V3</text>
     <circle id="pin-adc-vref" class="hole" cx="192" cy="175" r="7"/>
     <circle id="pin-gp28" class="hole" cx="192" cy="196" r="7"/>
@@ -119,12 +99,11 @@
     <text class="pinlbl" x="192" y="488" text-anchor="middle">GP16</text>
   </g>
 
-  <!-- Debug SWD pads (bottom edge, optional anchors) -->
   <g id="debug">
     <circle id="pin-swclk" class="hole" cx="78" cy="500" r="5"/>
     <circle id="pin-dbg-gnd" class="hole gnd" cx="105" cy="500" r="5"/>
     <circle id="pin-swdio" class="hole" cx="132" cy="500" r="5"/>
   </g>
 
-  <text class="caption" x="105" y="18" text-anchor="middle">Pico RP2040 · USB end</text>
+  <text class="caption" x="105" y="18" text-anchor="middle">Pico RP2040 - USB end</text>
 </svg>
