@@ -35,19 +35,19 @@ Vision is frozen. Build in order. Do not reopen discovery.
 
 ## Phase 3 — MCP server
 
-- [ ] Thin MCP server package/process
-- [ ] Tools: `create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
-- [ ] Tools call Next.js API (not DB directly)
-- [ ] Return secret guide URL from `create_guide`
-- [ ] Cursor/Claude config docs
+- [x] Thin MCP server package/process
+- [x] Tools: `create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
+- [x] Tools call Next.js API (not DB directly)
+- [x] Return secret guide URL from `create_guide`
+- [x] Cursor/Claude config docs
 
 ## Phase 4 — Canned recipes E2E
 
-- [ ] Recipe: buzzer beep
-- [ ] Recipe: I2C LCD text
-- [ ] Recipe: soil moisture read
-- [ ] Each recipe validates clean with power set
-- [ ] Demo: chat plan → MCP writes → URL shows full guide
+- [x] Recipe: buzzer beep
+- [x] Recipe: I2C LCD text
+- [x] Recipe: soil moisture read
+- [x] Each recipe validates clean with power set
+- [x] Demo: chat plan → MCP writes → URL shows full guide
 
 ## Done when
 

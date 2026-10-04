@@ -39,8 +39,8 @@ npm run dev
 
 ## Current slice
 
-Phase 0 done. Phase 1 in progress: catalog + guide API + validator.
+Phases 0–2 done in app. MCP lives in `mcp/`. Seed recipes with `npm run seed:recipes`.
 
-## MCP tools
+## MCP
 
-`create_guide`, `set_power_source`, `add_part`, `add_connection`, `set_steps`, `get_guide`, `list_catalog`, `validate_guide`
+See [`mcp/README.md`](mcp/README.md) for Cursor/Claude config and tools.
