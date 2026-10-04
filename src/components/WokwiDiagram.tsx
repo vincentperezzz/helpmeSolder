@@ -298,10 +298,15 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   const [canvas, setCanvas] = useState({ width: 1100, height: 560 });
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const fittedRef = useRef(false);
   const dragRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(
     null,
   );
   const placed = useMemo(() => layoutParts(guide), [guide]);
+
+  useEffect(() => {
+    fittedRef.current = false;
+  }, [guide.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -436,6 +441,20 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         height: Math.ceil(maxBottom + 40),
       });
       setWires(nextWires);
+
+      const viewport = viewportRef.current;
+      if (viewport && !fittedRef.current) {
+        const nextWidth = Math.ceil(maxRight + 40);
+        const nextHeight = Math.ceil(maxBottom + 40);
+        const fit = Math.min(
+          (viewport.clientWidth - 24) / nextWidth,
+          (viewport.clientHeight - 24) / nextHeight,
+          1,
+        );
+        fittedRef.current = true;
+        setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
+        setPan({ x: 12, y: 12 });
+      }
     };
 
     const frame = requestAnimationFrame(() => {
@@ -516,12 +535,25 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             type="button"
             className="diagram-zoom-btn"
             onClick={() => {
-              setZoom(1);
-              setPan({ x: 0, y: 0 });
+              fittedRef.current = false;
+              const viewport = viewportRef.current;
+              if (!viewport) {
+                setZoom(1);
+                setPan({ x: 0, y: 0 });
+                return;
+              }
+              const fit = Math.min(
+                (viewport.clientWidth - 24) / canvas.width,
+                (viewport.clientHeight - 24) / canvas.height,
+                1,
+              );
+              fittedRef.current = true;
+              setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
+              setPan({ x: 12, y: 12 });
             }}
             aria-label="Reset zoom"
           >
-            Reset
+            Fit
           </button>
           <button
             type="button"
