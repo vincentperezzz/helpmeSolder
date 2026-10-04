@@ -28,6 +28,11 @@ function alternativesForPin(part: GuidePart, wanted: string[]): string[] {
     .slice(0, 6);
 }
 
+function isBreadboardRail(part: GuidePart | undefined, pinId: string): boolean {
+  if (!part?.catalogId.includes("breadboard")) return false;
+  return pinId === "+" || pinId === "-";
+}
+
 export function validateGuide(guide: Guide): ValidationResult {
   const issues: ValidationIssue[] = [];
   const partsByInstance = new Map(guide.parts.map((part) => [part.instanceId, part]));
@@ -66,10 +71,11 @@ export function validateGuide(guide: Guide): ValidationResult {
   const usedPins = new Map<string, string>();
   for (const connection of guide.connections) {
     for (const end of [connection.from, connection.to]) {
+      const part = partsByInstance.get(end.instanceId);
+      if (isBreadboardRail(part, end.pinId)) continue;
       const key = `${end.instanceId}:${end.pinId}`;
       const prior = usedPins.get(key);
       if (prior && prior !== connection.id) {
-        const part = partsByInstance.get(end.instanceId);
         issues.push({
           code: "pin_already_used",
           message: `Pin ${end.pinId} on ${end.instanceId} is used more than once.`,
