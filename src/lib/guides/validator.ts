@@ -31,7 +31,15 @@ function alternativesForPin(part: GuidePart, wanted: string[]): string[] {
 
 function isBreadboardRail(part: GuidePart | undefined, pinId: string): boolean {
   if (!part?.catalogId.includes("breadboard")) return false;
-  return pinId === "+" || pinId === "-";
+  return (
+    pinId === "+" ||
+    pinId === "-" ||
+    pinId === "+.t" ||
+    pinId === "-.t" ||
+    pinId === "+.b" ||
+    pinId === "-.b" ||
+    /^[+-]\.[tb](\.\d+)?$/.test(pinId)
+  );
 }
 
 export function validateGuide(guide: Guide): ValidationResult {

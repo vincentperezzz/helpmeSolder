@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
-  type WheelEvent as ReactWheelEvent,
 } from "react";
 import { BatteryAssetVisual, UsbWallVisual } from "@/components/BatteryAssets";
 import { getCatalogPart } from "@/lib/catalog";
@@ -68,24 +67,34 @@ const COLORS = [
   "#ad1457",
 ];
 
-const MIN_ZOOM = 0.45;
-const MAX_ZOOM = 2.4;
-const BB_LABEL_H = 18;
-const BB_ORIGIN_X = 28;
-const BB_STEP = 10;
+const MIN_ZOOM = 0.25;
+const MAX_ZOOM = 3.2;
+const BB_PITCH = 10;
+const BB_COLS = 30;
+const BB_MARGIN_X = 24;
+const BB_WIDTH = BB_MARGIN_X * 2 + (BB_COLS - 1) * BB_PITCH;
+const BB_HEIGHT = 196;
+const BB_ORIGIN_X = BB_MARGIN_X;
+const BB_STEP = BB_PITCH;
 const LABEL_H = 16;
 const LABEL_PAD = 6;
+const BB_RAIL_Y = {
+  topPlus: 14,
+  topMinus: 24,
+  botPlus: 172,
+  botMinus: 182,
+} as const;
 const BB_ROW_Y: Record<string, number> = {
-  a: 40,
-  b: 50,
-  c: 60,
-  d: 70,
-  e: 80,
-  f: 108,
-  g: 118,
-  h: 128,
-  i: 138,
-  j: 148,
+  a: 42,
+  b: 52,
+  c: 62,
+  d: 72,
+  e: 82,
+  f: 112,
+  g: 122,
+  h: 132,
+  i: 142,
+  j: 152,
 };
 
 function labelSize(text: string): { w: number; h: number } {
@@ -263,26 +272,56 @@ function isBreadboardId(catalogId: string): boolean {
   return catalogId.includes("breadboard");
 }
 
-function breadboardHoleLocal(pinId: string): Point | null {
-  if (pinId === "+" ) {
-    return { x: BB_ORIGIN_X + 2 * BB_STEP, y: BB_LABEL_H + 17 };
+function parseBreadboardRail(
+  pinId: string,
+): { side: "t" | "b"; polarity: "+" | "-"; col: number } | null {
+  if (pinId === "+") return { side: "t", polarity: "+", col: 2 };
+  if (pinId === "-") return { side: "b", polarity: "-", col: 2 };
+  if (pinId === "+.t") return { side: "t", polarity: "+", col: 2 };
+  if (pinId === "-.t") return { side: "t", polarity: "-", col: 2 };
+  if (pinId === "+.b") return { side: "b", polarity: "+", col: 2 };
+  if (pinId === "-.b") return { side: "b", polarity: "-", col: 2 };
+  const match = /^([+-])\.(t|b)\.(\d+)$/i.exec(pinId);
+  if (!match) return null;
+  const col = Number(match[3]);
+  if (col < 1 || col > BB_COLS) return null;
+  return {
+    polarity: match[1] as "+" | "-",
+    side: match[2].toLowerCase() as "t" | "b",
+    col,
+  };
+}
+
+function breadboardRailY(side: "t" | "b", polarity: "+" | "-"): number {
+  if (side === "t") {
+    return polarity === "+" ? BB_RAIL_Y.topPlus : BB_RAIL_Y.topMinus;
   }
-  if (pinId === "-") {
-    return { x: BB_ORIGIN_X + 8 * BB_STEP, y: BB_LABEL_H + 163 };
+  return polarity === "+" ? BB_RAIL_Y.botPlus : BB_RAIL_Y.botMinus;
+}
+
+function breadboardHoleLocal(pinId: string): Point | null {
+  const rail = parseBreadboardRail(pinId);
+  if (rail) {
+    return {
+      x: BB_ORIGIN_X + (rail.col - 1) * BB_STEP,
+      y: breadboardRailY(rail.side, rail.polarity),
+    };
   }
   const match = /^([a-j])(\d+)$/i.exec(pinId);
   if (!match) return null;
   const row = match[1].toLowerCase();
   const col = Number(match[2]);
   const rowY = BB_ROW_Y[row];
-  if (!rowY || col < 1 || col > 30) return null;
+  if (!rowY || col < 1 || col > BB_COLS) return null;
   return {
     x: BB_ORIGIN_X + (col - 1) * BB_STEP,
-    y: BB_LABEL_H + rowY,
+    y: rowY,
   };
 }
 
 function breadboardCol(pinId: string): number | null {
+  const rail = parseBreadboardRail(pinId);
+  if (rail) return rail.col;
   const match = /^[a-j](\d+)$/i.exec(pinId);
   return match ? Number(match[1]) : null;
 }
@@ -389,8 +428,10 @@ function pinExitDirection(pinLocal: Point, allPinsLocal: Point[]): ExitDir {
 }
 
 function breadboardPinExit(pinId: string): ExitDir {
-  if (pinId === "+") return { dx: 0, dy: -1 };
-  if (pinId === "-") return { dx: 0, dy: 1 };
+  const rail = parseBreadboardRail(pinId);
+  if (rail) {
+    return rail.side === "t" ? { dx: 0, dy: -1 } : { dx: 0, dy: 1 };
+  }
   const match = /^([a-j])/i.exec(pinId);
   if (!match) return { dx: 0, dy: -1 };
   const row = match[1].toLowerCase();
@@ -607,10 +648,18 @@ function seatPassiveOnBreadboard(
     .filter((col): col is number => col != null);
   const isLed = part.catalogId.includes(".led.");
   const isResistor = part.catalogId.includes("resistor");
+  const usesTopRail = holePins.some((pinId) => {
+    const rail = parseBreadboardRail(pinId);
+    return rail?.side === "t";
+  });
+  const usesBotRail = holePins.some((pinId) => {
+    const rail = parseBreadboardRail(pinId);
+    return rail?.side === "b";
+  });
 
   if (cols.length === 0) {
     part.x = breadboard.x + 48;
-    part.y = breadboard.y + BB_LABEL_H + (isLed ? 36 : 70);
+    part.y = breadboard.y + (isLed ? 42 : 70);
     part.seated = true;
     return true;
   }
@@ -622,13 +671,20 @@ function seatPassiveOnBreadboard(
 
   if (isResistor) {
     part.x = breadboard.x + midX - 28;
-    part.y = breadboard.y + BB_LABEL_H + 58;
+    part.y = breadboard.y + BB_ROW_Y.e - 8;
   } else if (isLed) {
-    part.x = breadboard.x + BB_ORIGIN_X + (maxCol - 1) * BB_STEP - 8;
-    part.y = breadboard.y + BB_LABEL_H + 30;
+    const colX = BB_ORIGIN_X + (maxCol - 1) * BB_STEP;
+    part.x = breadboard.x + colX - 10;
+    if (usesTopRail && !usesBotRail) {
+      part.y = breadboard.y + BB_ROW_Y.a - 6;
+    } else if (usesBotRail && !usesTopRail) {
+      part.y = breadboard.y + BB_ROW_Y.j - 20;
+    } else {
+      part.y = breadboard.y + BB_ROW_Y.a - 4;
+    }
   } else {
     part.x = breadboard.x + midX - 16;
-    part.y = breadboard.y + BB_LABEL_H + 48;
+    part.y = breadboard.y + BB_ROW_Y.c - 4;
   }
   part.seated = true;
   return true;
@@ -657,21 +713,21 @@ function layoutParts(guide: Guide): PlacedPart[] {
     else modules.push(placed);
   }
 
-  let boardY = 140;
+  let boardY = 120;
   boards.forEach((part, index) => {
-    part.x = 210;
+    part.x = 120;
     part.y = boardY;
-    boardY += index === 0 ? 360 : 260;
+    boardY += index === 0 ? 380 : 280;
   });
 
   const breadboards = passives.filter((part) => isBreadboardId(part.catalogId));
   const otherPassives = passives.filter((part) => !isBreadboardId(part.catalogId));
 
-  let breadboardY = 140;
+  let breadboardY = 120;
   breadboards.forEach((part) => {
-    part.x = 560;
+    part.x = 620;
     part.y = breadboardY;
-    breadboardY += 230;
+    breadboardY += BB_HEIGHT + 56;
   });
 
   const primaryBreadboard = breadboards[0];
@@ -680,20 +736,20 @@ function layoutParts(guide: Guide): PlacedPart[] {
     if (primaryBreadboard && seatPassiveOnBreadboard(part, primaryBreadboard, guide)) {
       return;
     }
-    part.x = primaryBreadboard ? 940 : 560;
+    part.x = primaryBreadboard ? 1040 : 620;
     part.y = freepassiveY;
-    freepassiveY += 110;
+    freepassiveY += 120;
   });
 
-  let moduleY = 140;
+  let moduleY = 120;
   modules.forEach((part) => {
     const tall =
       part.tag?.includes("lcd") ||
       part.tag?.includes("ili9341") ||
       part.tag?.includes("ssd1306");
-    part.x = passives.length > 0 ? 980 : 640;
+    part.x = passives.length > 0 ? 1080 : 700;
     part.y = moduleY;
-    moduleY += tall ? 280 : 190;
+    moduleY += tall ? 300 : 200;
   });
 
   return [...boards, ...breadboards, ...otherPassives, ...modules];
@@ -725,48 +781,133 @@ function BreadboardVisual({
   instanceId: string;
   name: string;
 }) {
-  const cols = 30;
   const rowsTop = ["a", "b", "c", "d", "e"];
   const rowsBot = ["f", "g", "h", "i", "j"];
-  const hole = (cx: number, cy: number, key: string) => (
-    <circle key={key} cx={cx} cy={cy} r={1.6} fill="#9aa3a8" />
+  const hole = (cx: number, cy: number, key: string, fill = "#8f979c") => (
+    <circle key={key} cx={cx} cy={cy} r={1.55} fill={fill} />
   );
+  const colX = (col: number) => BB_ORIGIN_X + (col - 1) * BB_STEP;
 
   return (
-    <div data-instance={instanceId} className="select-none" style={{ width: 340 }}>
-      <p className="mb-1 text-[10px] font-semibold tracking-wide text-ink-soft">
+    <div
+      data-instance={instanceId}
+      className="relative select-none"
+      style={{ width: BB_WIDTH, height: BB_HEIGHT }}
+    >
+      <p className="pointer-events-none absolute -top-4 left-0 text-[10px] font-semibold tracking-wide text-ink-soft">
         {name}
       </p>
-      <svg viewBox="0 0 340 180" width={340} height={180} aria-label={name}>
-        <rect x="0" y="0" width="340" height="180" rx="6" fill="#f7f2e8" stroke="#c2b59a" />
-        <rect x="8" y="10" width="324" height="14" fill="#f0d9d5" />
-        <rect x="8" y="156" width="324" height="14" fill="#d7e4f0" />
-        <text x="14" y="20" fontSize="9" fill="#c62828" fontFamily="monospace">
+      <svg
+        viewBox={`0 0 ${BB_WIDTH} ${BB_HEIGHT}`}
+        width={BB_WIDTH}
+        height={BB_HEIGHT}
+        aria-label={name}
+      >
+        <rect
+          x="0"
+          y="0"
+          width={BB_WIDTH}
+          height={BB_HEIGHT}
+          rx="5"
+          fill="#f4efe4"
+          stroke="#b9ae96"
+        />
+        <rect x="6" y="6" width={BB_WIDTH - 12} height={26} rx="2" fill="#f3d6d1" />
+        <rect x="6" y={BB_HEIGHT - 32} width={BB_WIDTH - 12} height={26} rx="2" fill="#d6e3f1" />
+        <line
+          x1="10"
+          y1={BB_RAIL_Y.topPlus}
+          x2={BB_WIDTH - 10}
+          y2={BB_RAIL_Y.topPlus}
+          stroke="#c62828"
+          strokeWidth="1.4"
+          opacity="0.55"
+        />
+        <line
+          x1="10"
+          y1={BB_RAIL_Y.topMinus}
+          x2={BB_WIDTH - 10}
+          y2={BB_RAIL_Y.topMinus}
+          stroke="#1565c0"
+          strokeWidth="1.4"
+          opacity="0.55"
+        />
+        <line
+          x1="10"
+          y1={BB_RAIL_Y.botPlus}
+          x2={BB_WIDTH - 10}
+          y2={BB_RAIL_Y.botPlus}
+          stroke="#c62828"
+          strokeWidth="1.4"
+          opacity="0.55"
+        />
+        <line
+          x1="10"
+          y1={BB_RAIL_Y.botMinus}
+          x2={BB_WIDTH - 10}
+          y2={BB_RAIL_Y.botMinus}
+          stroke="#1565c0"
+          strokeWidth="1.4"
+          opacity="0.55"
+        />
+        <text x="8" y={BB_RAIL_Y.topPlus + 3} fontSize="8" fill="#c62828" fontFamily="monospace">
           +
         </text>
-        <text x="14" y="166" fontSize="9" fill="#1565c0" fontFamily="monospace">
+        <text x="8" y={BB_RAIL_Y.topMinus + 3} fontSize="8" fill="#1565c0" fontFamily="monospace">
           −
         </text>
-        {Array.from({ length: cols }, (_, col) => {
-          const x = 28 + col * 10;
+        <text x="8" y={BB_RAIL_Y.botPlus + 3} fontSize="8" fill="#c62828" fontFamily="monospace">
+          +
+        </text>
+        <text x="8" y={BB_RAIL_Y.botMinus + 3} fontSize="8" fill="#1565c0" fontFamily="monospace">
+          −
+        </text>
+        {Array.from({ length: BB_COLS }, (_, i) => {
+          const col = i + 1;
+          const x = colX(col);
           return (
             <g key={`rail-${col}`}>
-              {hole(x, 17, `p-${col}`)}
-              {hole(x, 163, `g-${col}`)}
+              {hole(x, BB_RAIL_Y.topPlus, `tp-${col}`, "#b07171")}
+              {hole(x, BB_RAIL_Y.topMinus, `tm-${col}`, "#6f86a8")}
+              {hole(x, BB_RAIL_Y.botPlus, `bp-${col}`, "#b07171")}
+              {hole(x, BB_RAIL_Y.botMinus, `bm-${col}`, "#6f86a8")}
             </g>
           );
         })}
-        {rowsTop.map((row, rowIndex) =>
-          Array.from({ length: cols }, (_, col) =>
-            hole(28 + col * 10, 40 + rowIndex * 10, `${row}${col}`),
-          ),
+        {rowsTop.map((row) =>
+          Array.from({ length: BB_COLS }, (_, i) => {
+            const col = i + 1;
+            return hole(colX(col), BB_ROW_Y[row], `${row}${col}`);
+          }),
         )}
-        {rowsBot.map((row, rowIndex) =>
-          Array.from({ length: cols }, (_, col) =>
-            hole(28 + col * 10, 108 + rowIndex * 10, `${row}${col}`),
-          ),
+        {rowsBot.map((row) =>
+          Array.from({ length: BB_COLS }, (_, i) => {
+            const col = i + 1;
+            return hole(colX(col), BB_ROW_Y[row], `${row}${col}`);
+          }),
         )}
-        <line x1="20" y1="90" x2="320" y2="90" stroke="#d7cbb3" strokeWidth="2" />
+        <rect
+          x="16"
+          y="94"
+          width={BB_WIDTH - 32}
+          height="10"
+          rx="2"
+          fill="#e7dcc8"
+          opacity="0.95"
+        />
+        {[5, 10, 15, 20, 25, 30].map((col) => (
+          <text
+            key={`n-${col}`}
+            x={colX(col)}
+            y="102"
+            textAnchor="middle"
+            fontSize="7"
+            fill="#8a7f6c"
+            fontFamily="monospace"
+          >
+            {col}
+          </text>
+        ))}
       </svg>
     </div>
   );
@@ -873,13 +1014,15 @@ function buildCue(guide: Guide): string {
 }
 
 export function WokwiDiagram({ guide }: WokwiDiagramProps) {
+  const shellRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [wires, setWires] = useState<Wire[]>([]);
-  const [canvas, setCanvas] = useState({ width: 1100, height: 560 });
+  const [canvas, setCanvas] = useState({ width: 1400, height: 820 });
   const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [pan, setPan] = useState({ x: 40, y: 40 });
+  const [fullscreen, setFullscreen] = useState(false);
   const fittedRef = useRef(false);
   const dragRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(
     null,
@@ -890,6 +1033,16 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   useEffect(() => {
     fittedRef.current = false;
   }, [guide.id]);
+
+  useEffect(() => {
+    const onFs = () => {
+      const active = document.fullscreenElement === shellRef.current;
+      setFullscreen(active);
+      fittedRef.current = false;
+    };
+    document.addEventListener("fullscreenchange", onFs);
+    return () => document.removeEventListener("fullscreenchange", onFs);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -914,8 +1067,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       const anchors = new Map<string, Point>();
       const exitDirs = new Map<string, ExitDir>();
       const obstacles: Rect[] = [];
-      let maxRight = 900;
-      let maxBottom = 520;
+      let maxRight = 1200;
+      let maxBottom = 720;
       let boardsReady = true;
 
       for (const part of placed) {
@@ -951,14 +1104,24 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
         maxRight = Math.max(maxRight, offsetX + width + 140);
         maxBottom = Math.max(maxBottom, offsetY + height + 120);
 
-        const bodyPad = isBreadboardId(part.catalogId) ? 6 : 10;
-        const bodyW = isBreadboardId(part.catalogId) ? 340 : width;
-        const bodyH = isBreadboardId(part.catalogId) ? 198 : height;
+        const bodyPad = isBreadboardId(part.catalogId) ? 2 : 10;
+        const bodyW = isBreadboardId(part.catalogId)
+          ? (BB_COLS - 1) * BB_STEP + 12
+          : width;
+        const bodyH = isBreadboardId(part.catalogId)
+          ? BB_ROW_Y.j - BB_ROW_Y.a + 18
+          : height;
+        const bodyX = isBreadboardId(part.catalogId)
+          ? offsetX + BB_ORIGIN_X - 6
+          : offsetX - bodyPad;
+        const bodyY = isBreadboardId(part.catalogId)
+          ? offsetY + BB_ROW_Y.a - 8
+          : offsetY - bodyPad;
         obstacles.push({
-          x: offsetX - bodyPad,
-          y: offsetY - bodyPad,
-          w: bodyW + bodyPad * 2,
-          h: bodyH + bodyPad * 2,
+          x: bodyX,
+          y: bodyY,
+          w: bodyW + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
+          h: bodyH + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
         });
 
         if (hasPins) {
@@ -1119,7 +1282,38 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           ? pinLabel(toPart.catalogId, connection.to.pinId)
           : connection.to.pinId;
         const label = connection.note || `${fromName} → ${toName}`;
-        const route = routeWire(from, to, fromKey, toKey, index);
+        const fromRail = parseBreadboardRail(connection.from.pinId);
+        const toRail = parseBreadboardRail(connection.to.pinId);
+        const sameBoardRailBridge =
+          fromPart &&
+          toPart &&
+          fromPart.instanceId === toPart.instanceId &&
+          isBreadboardId(fromPart.catalogId) &&
+          fromRail &&
+          toRail;
+
+        let route: { d: string; mid: Point; points: Point[] };
+        if (sameBoardRailBridge && fromRail && toRail) {
+          const edgeX =
+            from.x + (fromRail.col >= BB_COLS - 2 || toRail.col >= BB_COLS - 2 ? 14 : -14);
+          const points: Point[] = [
+            from,
+            { x: edgeX, y: from.y },
+            { x: edgeX, y: to.y },
+            to,
+          ];
+          route = {
+            points,
+            mid: points[1],
+            d: points
+              .map((point, i) =>
+                i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`,
+              )
+              .join(" "),
+          };
+        } else {
+          route = routeWire(from, to, fromKey, toKey, index);
+        }
         routedPaths.push(route.points);
         const span = Math.hypot(to.x - from.x, to.y - from.y);
         const touchesBreadboard =
@@ -1132,7 +1326,7 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           (isBreadboardId(fromPart.catalogId) || fromPart.catalogId.includes("resistor") || fromPart.catalogId.includes(".led.")) &&
           (isBreadboardId(toPart.catalogId) || toPart.catalogId.includes("resistor") || toPart.catalogId.includes(".led."));
         const showLabel =
-          Boolean(connection.note) ||
+          (Boolean(connection.note) && !/^Bridge/i.test(connection.note || "")) ||
           (span > 110 && !bothOnOrNearBoard);
         maxRight = Math.max(maxRight, from.x + 40, to.x + 40, route.mid.x + 80);
         maxBottom = Math.max(maxBottom, from.y + 40, to.y + 40, route.mid.y + 40);
@@ -1232,23 +1426,23 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       }
 
       setCanvas({
-        width: Math.ceil(maxRight + 40),
-        height: Math.ceil(maxBottom + 40),
+        width: Math.ceil(maxRight + 160),
+        height: Math.ceil(maxBottom + 160),
       });
       setWires(nextWires);
 
       const viewport = viewportRef.current;
       if (viewport && !fittedRef.current) {
-        const nextWidth = Math.ceil(maxRight + 40);
-        const nextHeight = Math.ceil(maxBottom + 40);
+        const nextWidth = Math.ceil(maxRight + 160);
+        const nextHeight = Math.ceil(maxBottom + 160);
         const fit = Math.min(
-          (viewport.clientWidth - 24) / nextWidth,
-          (viewport.clientHeight - 24) / nextHeight,
-          1,
+          (viewport.clientWidth - 48) / nextWidth,
+          (viewport.clientHeight - 48) / nextHeight,
+          1.15,
         );
         fittedRef.current = true;
         setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
-        setPan({ x: 12, y: 12 });
+        setPan({ x: 40, y: 40 });
       }
     };
 
@@ -1268,15 +1462,60 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
     return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
   }, []);
 
-  const onWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
-    if (!event.ctrlKey && !event.metaKey) return;
-    event.preventDefault();
-    const delta = event.deltaY > 0 ? -0.1 : 0.1;
-    setZoom((current) => clampZoom(current + delta));
-  };
+  const fitToViewport = useCallback(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      setZoom(1);
+      setPan({ x: 40, y: 40 });
+      return;
+    }
+    const fit = Math.min(
+      (viewport.clientWidth - 48) / Math.max(canvas.width, 1),
+      (viewport.clientHeight - 48) / Math.max(canvas.height, 1),
+      1.15,
+    );
+    fittedRef.current = true;
+    setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
+    setPan({ x: 40, y: 40 });
+  }, [canvas.height, canvas.width, clampZoom]);
+
+  const toggleFullscreen = useCallback(async () => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    try {
+      if (document.fullscreenElement === shell) {
+        await document.exitFullscreen();
+      } else {
+        await shell.requestFullscreen();
+      }
+    } catch {
+      setFullscreen((value) => !value);
+    }
+  }, []);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      if (event.ctrlKey || event.metaKey) {
+        const delta = event.deltaY > 0 ? -0.12 : 0.12;
+        setZoom((current) => clampZoom(current + delta));
+        return;
+      }
+      setPan((current) => ({
+        x: current.x - event.deltaX,
+        y: current.y - event.deltaY,
+      }));
+    };
+
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    return () => viewport.removeEventListener("wheel", onWheel);
+  }, [clampZoom, ready]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return;
+    if (event.button !== 0 && event.button !== 1) return;
     dragRef.current = {
       x: event.clientX,
       y: event.clientY,
@@ -1312,12 +1551,15 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
   }
 
   return (
-    <div className="diagram-shell bg-[#f4f7f5]">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/80 px-3 py-2">
+    <div
+      ref={shellRef}
+      className={`diagram-shell whiteboard-shell bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""}`}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/90 px-3 py-2">
         <div className="min-w-0 space-y-0.5">
           <p className="truncate text-xs font-semibold tracking-tight text-ink">{cue}</p>
           <p className="font-mono text-[11px] text-mute">
-            Zoom {Math.round(zoom * 100)}% · drag to pan · ctrl/⌘+wheel zoom
+            Whiteboard · Zoom {Math.round(zoom * 100)}% · drag / scroll to pan · ctrl/⌘+wheel zoom
           </p>
         </div>
         <div className="flex items-center gap-1">
@@ -1332,24 +1574,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={() => {
-              fittedRef.current = false;
-              const viewport = viewportRef.current;
-              if (!viewport) {
-                setZoom(1);
-                setPan({ x: 0, y: 0 });
-                return;
-              }
-              const fit = Math.min(
-                (viewport.clientWidth - 24) / canvas.width,
-                (viewport.clientHeight - 24) / canvas.height,
-                1,
-              );
-              fittedRef.current = true;
-              setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
-              setPan({ x: 12, y: 12 });
-            }}
-            aria-label="Reset zoom"
+            onClick={fitToViewport}
+            aria-label="Fit diagram"
           >
             Fit
           </button>
@@ -1360,6 +1586,26 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
             aria-label="Zoom in"
           >
             +
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={() => {
+              setZoom(1);
+              setPan({ x: 40, y: 40 });
+              fittedRef.current = true;
+            }}
+            aria-label="Reset view"
+          >
+            100%
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={toggleFullscreen}
+            aria-label={fullscreen ? "Exit fullscreen whiteboard" : "Open fullscreen whiteboard"}
+          >
+            {fullscreen ? "Exit" : "Full"}
           </button>
         </div>
       </div>
@@ -1373,7 +1619,6 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       <div
         ref={viewportRef}
         className="diagram-viewport cursor-grab active:cursor-grabbing"
-        onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -1381,11 +1626,12 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       >
         <div
           ref={hostRef}
-          className="relative origin-top-left"
+          className="diagram-world relative origin-top-left"
           style={{
             width: canvas.width,
             height: canvas.height,
-            minHeight: 420,
+            minWidth: 1200,
+            minHeight: 720,
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
           }}
         >
@@ -1479,7 +1725,8 @@ export function WokwiDiagram({ guide }: WokwiDiagramProps) {
       </div>
 
       <p className="border-t border-line px-3 py-2 text-[11px] text-mute">
-        Wokwi visuals (MIT) plus breadboard and power. Diagram only, not a simulator.
+        Freeform wiring whiteboard — drag like Wokwi, Full for immersion. Diagram only, not a
+        simulator.
         {guide.power_source
           ? isBatteryPowerSource(guide.power_source)
             ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`

@@ -185,10 +185,16 @@ body {
 .diagram-shell {
   position: relative;
   overflow: hidden;
-  min-height: 16rem;
+  min-height: 20rem;
   border: 1px solid var(--line-strong);
   background:
     linear-gradient(180deg, color-mix(in oklab, var(--mat) 55%, white), color-mix(in oklab, var(--paper-deep) 70%, white));
+}
+
+.whiteboard-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: min(82vh, 860px);
 }
 
 .diagram-shell::before {
@@ -210,9 +216,33 @@ body {
 
 .diagram-viewport {
   overflow: hidden;
-  height: min(70vh, 640px);
+  flex: 1 1 auto;
+  height: min(78vh, 820px);
+  min-height: 28rem;
   touch-action: none;
-  background: transparent;
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 12%, transparent) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.diagram-world {
+  will-change: transform;
+}
+
+.whiteboard-shell.is-fullscreen,
+.whiteboard-shell:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  border: none;
+  background: #e8eef0;
+}
+
+.whiteboard-shell.is-fullscreen .diagram-viewport,
+.whiteboard-shell:fullscreen .diagram-viewport {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .diagram-zoom-btn {

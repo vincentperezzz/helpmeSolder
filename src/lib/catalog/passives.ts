@@ -5,14 +5,25 @@ function rail(id: string, label: string, kinds: CatalogPart["pins"][number]["kin
 }
 
 function breadboardHolePins(): CatalogPart["pins"] {
-  const cols = [1, 5, 10, 15, 20, 25, 30];
-  const rows = ["a", "e", "f", "j"] as const;
+  const cols = Array.from({ length: 30 }, (_, i) => i + 1);
+  const rows = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"] as const;
   const holes = cols.flatMap((col) =>
     rows.map((row) => rail(`${row}${col}`, `${row}${col}`, ["digital", "analog"])),
   );
+  const railHoles = cols.flatMap((col) => [
+    rail(`+.t.${col}`, `+ top ${col}`, ["power"], "5v"),
+    rail(`-.t.${col}`, `− top ${col}`, ["ground"]),
+    rail(`+.b.${col}`, `+ bot ${col}`, ["power"], "5v"),
+    rail(`-.b.${col}`, `− bot ${col}`, ["ground"]),
+  ]);
   return [
-    rail("+", "+ rail", ["power"], "5v"),
-    rail("-", "- rail", ["ground"]),
+    rail("+", "+ rail (top)", ["power"], "5v"),
+    rail("-", "− rail (bottom)", ["ground"]),
+    rail("+.t", "+ rail (top)", ["power"], "5v"),
+    rail("-.t", "− rail (top)", ["ground"]),
+    rail("+.b", "+ rail (bottom)", ["power"], "5v"),
+    rail("-.b", "− rail (bottom)", ["ground"]),
+    ...railHoles,
     ...holes,
   ];
 }
@@ -22,7 +33,8 @@ export const passives: CatalogPart[] = [
     id: "passive.breadboard.half",
     name: "Breadboard (half)",
     kind: "passive",
-    description: "Half-size solderless breadboard for prototype wiring. Custom MIT-style visual.",
+    description:
+      "Half-size solderless breadboard (400 tie-points). Outer red + / blue − rails are for power & ground; center columns a–e and f–j are the component grid.",
     photoHint: "breadboard-half",
     pins: breadboardHolePins(),
   },

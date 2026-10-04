@@ -80,7 +80,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
       : "Wire the parts on the diagram, then follow the steps.";
 
   return (
-    <main className="guide-shell mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="guide-shell mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
       <header className="motion-rise space-y-3">
         <BrandMark />
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -124,18 +124,23 @@ export default async function GuidePage({ params }: GuidePageProps) {
         </section>
       ) : null}
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.9fr)]">
-        <section className="motion-rise motion-rise-delay-1 space-y-3">
+      <section className="motion-rise motion-rise-delay-1 space-y-3">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="space-y-2">
             <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-              Wiring Diagram
+              Wiring Whiteboard
             </h2>
             <div className="section-rule w-24" />
           </div>
-          <WokwiDiagram guide={guide} />
-        </section>
+          <p className="max-w-xl text-xs text-mute sm:text-sm">
+            Freeform canvas — drag to pan, scroll to move, Full for a Wokwi-style immersive board.
+          </p>
+        </div>
+        <WokwiDiagram guide={guide} />
+      </section>
 
-        <aside className="motion-rise motion-rise-delay-2 space-y-10 lg:border-l lg:border-line lg:pl-8">
+      <div className="grid gap-8 lg:grid-cols-2">
+        <aside className="motion-rise motion-rise-delay-2 space-y-10">
           <section className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
@@ -145,7 +150,9 @@ export default async function GuidePage({ params }: GuidePageProps) {
             </div>
             <PrepParts parts={guide.parts} />
           </section>
+        </aside>
 
+        <aside className="motion-rise motion-rise-delay-2 space-y-10">
           <section className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
