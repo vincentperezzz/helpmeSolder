@@ -78,7 +78,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-5">
-          <h1 className="brand-mark motion-rise text-[clamp(3.4rem,10vw,7.5rem)] leading-[0.9]">
+          <h1 className="brand-mark motion-rise text-[clamp(2.8rem,9vw,7.5rem)] leading-[0.9]">
             HelpmeSolder
           </h1>
           <p className="motion-rise motion-rise-delay-1 max-w-2xl text-[clamp(1.35rem,3vw,2.1rem)] font-medium tracking-tight text-ink">
