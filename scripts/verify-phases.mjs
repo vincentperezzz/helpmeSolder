@@ -26,11 +26,11 @@ async function api(path, init) {
 
 const catalog = await api("/api/catalog");
 if (catalog.boards?.length !== 6) fail(`expected 6 boards, got ${catalog.boards?.length}`);
-if (catalog.modules?.length !== 13) fail(`expected 13 modules, got ${catalog.modules?.length}`);
+if (catalog.modules?.length !== 40) fail(`expected 40 modules, got ${catalog.modules?.length}`);
 if (catalog.passives?.length !== 10) {
   fail(`expected 10 passives, got ${catalog.passives?.length}`);
 }
-if (catalog.recipes?.length !== 8) fail(`expected 8 recipes, got ${catalog.recipes?.length}`);
+if (catalog.recipes?.length !== 16) fail(`expected 16 recipes, got ${catalog.recipes?.length}`);
 
 const displayModules = (catalog.modules || []).filter((m) => m.displayClass);
 if (displayModules.length < 6) {

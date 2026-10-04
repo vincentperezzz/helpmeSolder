@@ -379,7 +379,7 @@ const recipes = [
   {
     title: "Soil Moisture Read",
     board_id: "board.esp32.devkit",
-    power_source: "battery",
+    power_source: "battery_3aa",
     parts: [
       { instanceId: "board1", catalogId: "board.esp32.devkit" },
       { instanceId: "soil1", catalogId: "module.soil.moisture" },
@@ -388,17 +388,17 @@ const recipes = [
       {
         id: "c1",
         from: { instanceId: "board1", pinId: "3V3" },
-        to: { instanceId: "soil1", pinId: "vcc" },
+        to: { instanceId: "soil1", pinId: "VCC" },
       },
       {
         id: "c2",
         from: { instanceId: "board1", pinId: "GND.1" },
-        to: { instanceId: "soil1", pinId: "gnd" },
+        to: { instanceId: "soil1", pinId: "GND" },
       },
       {
         id: "c3",
         from: { instanceId: "board1", pinId: "D34" },
-        to: { instanceId: "soil1", pinId: "ao" },
+        to: { instanceId: "soil1", pinId: "AO" },
       },
     ],
     steps: [
