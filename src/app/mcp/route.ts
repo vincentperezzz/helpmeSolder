@@ -10,6 +10,7 @@ import {
   checkRateLimit,
 } from "@/lib/api/rate-limit";
 import { recordPartRequestLater } from "@/lib/requests/record";
+import { recordCatalogSearchLater } from "@/lib/requests/search";
 import { createMcpServer } from "@/lib/mcp/tools";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +31,7 @@ async function handle(request: NextRequest): Promise<Response> {
       appUrl: getAppUrl(request),
       recordCreator: () => recordClientLater("creator", request),
       recordMiss: (miss) => recordPartRequestLater({ ...miss, request }),
+      recordSearch: (search) => recordCatalogSearchLater({ ...search, request }),
       rateLimit: (bucket) => {
         const limited = checkRateLimit(
           request,

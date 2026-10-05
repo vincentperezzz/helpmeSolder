@@ -16,7 +16,10 @@ vi.mock("@/lib/requests/record", () => ({
   resolveAlias: vi.fn(),
 }));
 
+vi.mock("@/lib/requests/search", () => ({ recordCatalogSearchLater: vi.fn() }));
+
 import { recordClientLater } from "@/lib/analytics/clients";
+import { recordCatalogSearchLater } from "@/lib/requests/search";
 import { recordPartRequestLater, resolveAlias } from "@/lib/requests/record";
 import { createGuide, getGuide, updateGuide } from "@/lib/guides/repository";
 import { DELETE, GET, POST } from "./route";
@@ -64,6 +67,7 @@ describe("remote MCP endpoint", () => {
     vi.mocked(getGuide).mockReset();
     vi.mocked(updateGuide).mockReset();
     vi.mocked(recordPartRequestLater).mockReset();
+    vi.mocked(recordCatalogSearchLater).mockReset();
     vi.mocked(resolveAlias).mockReset().mockResolvedValue(null);
   });
   afterEach(() => {
@@ -163,11 +167,44 @@ describe("remote MCP endpoint", () => {
     );
   });
 
-  it("search_catalog returns close parts and records nothing", async () => {
+  it("search_catalog returns close parts and records the search once, not a part request", async () => {
     const result = await callTool("search_catalog", { query: "DHT 22" });
     const data = JSON.parse(result.content[0].text);
     expect(data.results[0].id).toBe("module.dht22");
     expect(recordPartRequestLater).not.toHaveBeenCalled();
+    expect(recordCatalogSearchLater).toHaveBeenCalledTimes(1);
+    expect(recordCatalogSearchLater).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: "DHT 22",
+        source: "search_catalog",
+        resultCount: data.results.length,
+        topMatchId: "module.dht22",
+      }),
+    );
+  });
+
+  it("search_catalog records a search with no match as zero results", async () => {
+    const result = await callTool("search_catalog", { query: "zzqxv unobtainium" });
+    const data = JSON.parse(result.content[0].text);
+    expect(data.results).toEqual([]);
+    expect(recordCatalogSearchLater).toHaveBeenCalledWith(
+      expect.objectContaining({ resultCount: 0, topMatchId: undefined }),
+    );
+  });
+
+  it("ask_sensor records its intent once with the match count", async () => {
+    const result = await callTool("ask_sensor", { intent: "measure distance" });
+    expect(JSON.parse(result.content[0].text).intent).toBe("measure distance");
+    expect(recordCatalogSearchLater).toHaveBeenCalledTimes(1);
+    expect(recordCatalogSearchLater).toHaveBeenCalledWith(
+      expect.objectContaining({ query: "measure distance", source: "ask_sensor" }),
+    );
+  });
+
+  it("ask_sensor does not record an empty or missing intent", async () => {
+    await callTool("ask_sensor", {});
+    await callTool("ask_sensor", { intent: "   " });
+    expect(recordCatalogSearchLater).not.toHaveBeenCalled();
   });
 
   it("request_part records an unsupported part", async () => {

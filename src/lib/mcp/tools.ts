@@ -16,6 +16,7 @@ import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
 import { STRONG_MATCH, suggestClosest } from "@/lib/requests/normalize";
 import { resolveAlias, type PartRequestInput } from "@/lib/requests/record";
+import type { CatalogSearchInput } from "@/lib/requests/search";
 import { sensorCategories } from "./sensor-options";
 
 export type ToolContext = {
@@ -27,6 +28,8 @@ export type ToolContext = {
   recordCreator: () => void;
   /** Records a part the catalog does not have. Best-effort, never throws. */
   recordMiss: (miss: PartRequestInput) => void;
+  /** Records a catalog search and its outcome. Best-effort, never throws. */
+  recordSearch: (search: CatalogSearchInput) => void;
 };
 
 type GuidePatch = Parameters<typeof updateGuide>[1];
@@ -202,8 +205,18 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
           .describe("What the user said they want to measure or detect"),
       },
     },
-    ({ guide_id, intent }) =>
-      Promise.resolve(
+    ({ guide_id, intent }) => {
+      if (intent && intent.trim() !== "") {
+        const matches = suggestClosest(intent, 8);
+        ctx.recordSearch({
+          query: intent,
+          source: "ask_sensor",
+          resultCount: matches.length,
+          topMatchId: matches[0]?.id,
+          topScore: matches[0]?.score,
+        });
+      }
+      return Promise.resolve(
         textResult({
           mustAskUser: true,
           question:
@@ -216,7 +229,8 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
           guide_id: guide_id ?? null,
           intent: intent ?? null,
         }),
-      ),
+      );
+    },
   );
 
   server.registerTool(
@@ -388,17 +402,25 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
       inputSchema: { query: z.string().max(200) },
     },
     ({ query }) =>
-      safely(async () =>
-        textResult({
+      safely(async () => {
+        const matches = suggestClosest(query, 8);
+        ctx.recordSearch({
           query,
-          results: suggestClosest(query, 8).map((part) => ({
+          source: "search_catalog",
+          resultCount: matches.length,
+          topMatchId: matches[0]?.id,
+          topScore: matches[0]?.score,
+        });
+        return textResult({
+          query,
+          results: matches.map((part) => ({
             id: part.id,
             name: part.name,
             kind: part.kind,
             description: part.description.split(/(?<=[.!?])\s/)[0].slice(0, 160),
           })),
-        }),
-      ),
+        });
+      }),
   );
 
   server.registerTool(
