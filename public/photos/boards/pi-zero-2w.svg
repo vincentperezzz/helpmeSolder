@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Raspberry Pi Zero 2 W: small green board with a silver chip cover, a 40 pin header footprint along the top edge, a micro SD slot, mini HDMI and two micro USB ports">
+  <title>Raspberry Pi Zero 2 W: small green board with a silver chip cover, a 40 pin header footprint along the top edge, a micro SD slot, mini HDMI and two micro USB ports</title>
+  <ellipse cx="160" cy="190" rx="124" ry="8" fill="#121a20" opacity="0.16"/>
+  <rect x="36" y="66" width="248" height="112" rx="12" fill="#2f8f46" stroke="#0d3a1c" stroke-width="2"/>
+  <rect x="39" y="69" width="242" height="106" rx="10" fill="none" stroke="#fff" stroke-opacity="0.14"/>
+  <rect x="98" y="75" width="175.4" height="10" rx="1.5" fill="#0a0d10"/><circle cx="104" cy="80" r="2.2" fill="#d7c27a"/><circle cx="112.6" cy="80" r="2.2" fill="#d7c27a"/><circle cx="121.2" cy="80" r="2.2" fill="#d7c27a"/><circle cx="129.8" cy="80" r="2.2" fill="#d7c27a"/><circle cx="138.4" cy="80" r="2.2" fill="#d7c27a"/><circle cx="147" cy="80" r="2.2" fill="#d7c27a"/><circle cx="155.6" cy="80" r="2.2" fill="#d7c27a"/><circle cx="164.2" cy="80" r="2.2" fill="#d7c27a"/><circle cx="172.8" cy="80" r="2.2" fill="#d7c27a"/><circle cx="181.4" cy="80" r="2.2" fill="#d7c27a"/><circle cx="190" cy="80" r="2.2" fill="#d7c27a"/><circle cx="198.6" cy="80" r="2.2" fill="#d7c27a"/><circle cx="207.2" cy="80" r="2.2" fill="#d7c27a"/><circle cx="215.8" cy="80" r="2.2" fill="#d7c27a"/><circle cx="224.4" cy="80" r="2.2" fill="#d7c27a"/><circle cx="233" cy="80" r="2.2" fill="#d7c27a"/><circle cx="241.6" cy="80" r="2.2" fill="#d7c27a"/><circle cx="250.2" cy="80" r="2.2" fill="#d7c27a"/><circle cx="258.8" cy="80" r="2.2" fill="#d7c27a"/><circle cx="267.4" cy="80" r="2.2" fill="#d7c27a"/>
+  <rect x="98" y="85" width="175.4" height="10" rx="1.5" fill="#0a0d10"/><circle cx="104" cy="90" r="2.2" fill="#d7c27a"/><circle cx="112.6" cy="90" r="2.2" fill="#d7c27a"/><circle cx="121.2" cy="90" r="2.2" fill="#d7c27a"/><circle cx="129.8" cy="90" r="2.2" fill="#d7c27a"/><circle cx="138.4" cy="90" r="2.2" fill="#d7c27a"/><circle cx="147" cy="90" r="2.2" fill="#d7c27a"/><circle cx="155.6" cy="90" r="2.2" fill="#d7c27a"/><circle cx="164.2" cy="90" r="2.2" fill="#d7c27a"/><circle cx="172.8" cy="90" r="2.2" fill="#d7c27a"/><circle cx="181.4" cy="90" r="2.2" fill="#d7c27a"/><circle cx="190" cy="90" r="2.2" fill="#d7c27a"/><circle cx="198.6" cy="90" r="2.2" fill="#d7c27a"/><circle cx="207.2" cy="90" r="2.2" fill="#d7c27a"/><circle cx="215.8" cy="90" r="2.2" fill="#d7c27a"/><circle cx="224.4" cy="90" r="2.2" fill="#d7c27a"/><circle cx="233" cy="90" r="2.2" fill="#d7c27a"/><circle cx="241.6" cy="90" r="2.2" fill="#d7c27a"/><circle cx="250.2" cy="90" r="2.2" fill="#d7c27a"/><circle cx="258.8" cy="90" r="2.2" fill="#d7c27a"/><circle cx="267.4" cy="90" r="2.2" fill="#d7c27a"/>
+  <rect x="110" y="104" width="46" height="46" rx="3" fill="#cfd5d9" stroke="#6d777d" stroke-width="1.4"/>
+  <text x="133" y="131" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" fill="#33404a" text-anchor="middle" opacity="0.92">RP3A0</text>
+  <rect x="26" y="102" width="34" height="38" rx="2" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.4"/>
+  <rect x="30" y="108" width="26" height="26" rx="1.5" fill="#14181b"/>
+  <rect x="170" y="164" width="30" height="14" rx="2" fill="#aeb6bb" stroke="#6d777d"/>
+  <rect x="212" y="164" width="22" height="14" rx="2" fill="#aeb6bb" stroke="#6d777d"/>
+  <rect x="244" y="164" width="22" height="14" rx="2" fill="#aeb6bb" stroke="#6d777d"/>
+  <rect x="236" y="106" width="22" height="26" rx="2" fill="#2a2f35" stroke="#05070a"/>
+  <circle cx="64" cy="76" r="4" fill="#d7e9d8" stroke="#0d3a1c"/>
+  <circle cx="64" cy="168" r="4" fill="#d7e9d8" stroke="#0d3a1c"/>
+  <circle cx="256" cy="76" r="4" fill="#d7e9d8" stroke="#0d3a1c"/>
+  <circle cx="256" cy="150" r="4" fill="#d7e9d8" stroke="#0d3a1c"/>
+  <text x="190" y="130" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.92">Zero 2 W</text>
+</svg>

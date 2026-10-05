@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Teensy 4.0: small dark red board with a micro USB port, a silver push button, a large black ARM chip and two rows of pins along the long sides">
+  <title>Teensy 4.0: small dark red board with a micro USB port, a silver push button, a large black ARM chip and two rows of pins along the long sides</title>
+  <ellipse cx="160" cy="176" rx="124" ry="7" fill="#121a20" opacity="0.16"/>
+  <rect x="40" y="88" width="240" height="64" rx="5" fill="#7a1f1c" stroke="#05070a" stroke-width="2"/>
+  <rect x="43" y="91" width="234" height="58" rx="3" fill="none" stroke="#fff" stroke-opacity="0.14"/>
+  <rect x="76" y="90" width="188.8" height="10" rx="1.5" fill="#0a0d10"/><circle cx="82" cy="95" r="2.2" fill="#d7c27a"/><circle cx="92.4" cy="95" r="2.2" fill="#d7c27a"/><circle cx="102.8" cy="95" r="2.2" fill="#d7c27a"/><circle cx="113.2" cy="95" r="2.2" fill="#d7c27a"/><circle cx="123.6" cy="95" r="2.2" fill="#d7c27a"/><circle cx="134" cy="95" r="2.2" fill="#d7c27a"/><circle cx="144.4" cy="95" r="2.2" fill="#d7c27a"/><circle cx="154.8" cy="95" r="2.2" fill="#d7c27a"/><circle cx="165.2" cy="95" r="2.2" fill="#d7c27a"/><circle cx="175.6" cy="95" r="2.2" fill="#d7c27a"/><circle cx="186" cy="95" r="2.2" fill="#d7c27a"/><circle cx="196.4" cy="95" r="2.2" fill="#d7c27a"/><circle cx="206.8" cy="95" r="2.2" fill="#d7c27a"/><circle cx="217.2" cy="95" r="2.2" fill="#d7c27a"/><circle cx="227.6" cy="95" r="2.2" fill="#d7c27a"/><circle cx="238" cy="95" r="2.2" fill="#d7c27a"/><circle cx="248.4" cy="95" r="2.2" fill="#d7c27a"/><circle cx="258.8" cy="95" r="2.2" fill="#d7c27a"/>
+  <rect x="76" y="140" width="188.8" height="10" rx="1.5" fill="#0a0d10"/><circle cx="82" cy="145" r="2.2" fill="#d7c27a"/><circle cx="92.4" cy="145" r="2.2" fill="#d7c27a"/><circle cx="102.8" cy="145" r="2.2" fill="#d7c27a"/><circle cx="113.2" cy="145" r="2.2" fill="#d7c27a"/><circle cx="123.6" cy="145" r="2.2" fill="#d7c27a"/><circle cx="134" cy="145" r="2.2" fill="#d7c27a"/><circle cx="144.4" cy="145" r="2.2" fill="#d7c27a"/><circle cx="154.8" cy="145" r="2.2" fill="#d7c27a"/><circle cx="165.2" cy="145" r="2.2" fill="#d7c27a"/><circle cx="175.6" cy="145" r="2.2" fill="#d7c27a"/><circle cx="186" cy="145" r="2.2" fill="#d7c27a"/><circle cx="196.4" cy="145" r="2.2" fill="#d7c27a"/><circle cx="206.8" cy="145" r="2.2" fill="#d7c27a"/><circle cx="217.2" cy="145" r="2.2" fill="#d7c27a"/><circle cx="227.6" cy="145" r="2.2" fill="#d7c27a"/><circle cx="238" cy="145" r="2.2" fill="#d7c27a"/><circle cx="248.4" cy="145" r="2.2" fill="#d7c27a"/><circle cx="258.8" cy="145" r="2.2" fill="#d7c27a"/>
+  <rect x="34" y="110" width="26" height="20" rx="3" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="40" y="115" width="16" height="10" rx="2" fill="#14181b"/>
+  <rect x="70" y="113" width="12" height="14" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="73" y="117" width="6" height="6" rx="3" fill="#6d777d"/>
+  <rect x="128" y="104" width="34" height="34" rx="2" fill="#14181b" stroke="#05070a" stroke-width="1"/>
+  <circle cx="133" cy="109" r="1.4" fill="#50606a"/>
+  <text x="145" y="123.33333333333333" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" fill="#cfd6db" text-anchor="middle">iMXRT</text>
+  <rect x="178" y="112" width="16" height="7" rx="3" fill="#c9cfd3" stroke="#6d777d" stroke-width="1"/>
+  <rect x="212" y="108" width="5" height="3" fill="#b9a67a"/><rect x="212" y="124" width="5" height="3" fill="#b9a67a"/>
+  <rect x="246" y="117" width="8" height="5" rx="1.2" fill="#e8a93b" stroke="#121a20" stroke-width="0.8"/>
+  <text x="222" y="138" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.92">TEENSY 4.0</text>
+</svg>

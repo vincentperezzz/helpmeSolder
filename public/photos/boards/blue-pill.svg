@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="STM32 Blue Pill: blue board with a micro USB port, a black STM32 chip, a silver crystal, a reset button and two long rows of pins with two yellow jumpers">
+  <title>STM32 Blue Pill: blue board with a micro USB port, a black STM32 chip, a silver crystal, a reset button and two long rows of pins with two yellow jumpers</title>
+  <ellipse cx="160" cy="196" rx="128" ry="8" fill="#121a20" opacity="0.16"/>
+  <rect x="34" y="62" width="252" height="114" rx="5" fill="#1f5fbf" stroke="#05070a" stroke-width="2"/>
+  <rect x="37" y="65" width="246" height="108" rx="3" fill="none" stroke="#fff" stroke-opacity="0.14"/>
+  <rect x="72" y="65" width="209.6" height="10" rx="1.5" fill="#0a0d10"/><circle cx="78" cy="70" r="2.2" fill="#d7c27a"/><circle cx="88.4" cy="70" r="2.2" fill="#d7c27a"/><circle cx="98.8" cy="70" r="2.2" fill="#d7c27a"/><circle cx="109.2" cy="70" r="2.2" fill="#d7c27a"/><circle cx="119.6" cy="70" r="2.2" fill="#d7c27a"/><circle cx="130" cy="70" r="2.2" fill="#d7c27a"/><circle cx="140.4" cy="70" r="2.2" fill="#d7c27a"/><circle cx="150.8" cy="70" r="2.2" fill="#d7c27a"/><circle cx="161.2" cy="70" r="2.2" fill="#d7c27a"/><circle cx="171.6" cy="70" r="2.2" fill="#d7c27a"/><circle cx="182" cy="70" r="2.2" fill="#d7c27a"/><circle cx="192.4" cy="70" r="2.2" fill="#d7c27a"/><circle cx="202.8" cy="70" r="2.2" fill="#d7c27a"/><circle cx="213.2" cy="70" r="2.2" fill="#d7c27a"/><circle cx="223.6" cy="70" r="2.2" fill="#d7c27a"/><circle cx="234" cy="70" r="2.2" fill="#d7c27a"/><circle cx="244.4" cy="70" r="2.2" fill="#d7c27a"/><circle cx="254.8" cy="70" r="2.2" fill="#d7c27a"/><circle cx="265.2" cy="70" r="2.2" fill="#d7c27a"/><circle cx="275.6" cy="70" r="2.2" fill="#d7c27a"/>
+  <rect x="72" y="163" width="209.6" height="10" rx="1.5" fill="#0a0d10"/><circle cx="78" cy="168" r="2.2" fill="#d7c27a"/><circle cx="88.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="98.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="109.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="119.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="130" cy="168" r="2.2" fill="#d7c27a"/><circle cx="140.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="150.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="161.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="171.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="182" cy="168" r="2.2" fill="#d7c27a"/><circle cx="192.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="202.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="213.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="223.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="234" cy="168" r="2.2" fill="#d7c27a"/><circle cx="244.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="254.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="265.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="275.6" cy="168" r="2.2" fill="#d7c27a"/>
+  <rect x="28" y="109" width="26" height="20" rx="3" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="34" y="114" width="16" height="10" rx="2" fill="#14181b"/>
+  <rect x="62" y="108" width="14" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="66" y="111" width="6" height="6" rx="3" fill="#6d777d"/>
+  <rect x="124" y="98" width="40" height="40" rx="2" fill="#14181b" stroke="#05070a" stroke-width="1"/>
+  <circle cx="129" cy="103" r="1.4" fill="#50606a"/>
+  <text x="144" y="120.66666666666667" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" fill="#cfd6db" text-anchor="middle">STM32</text>
+  <rect x="184" y="112" width="16" height="7" rx="3" fill="#c9cfd3" stroke="#6d777d" stroke-width="1"/>
+  <rect x="210" y="94" width="26" height="9" rx="1.5" fill="#f2c94c" stroke="#8c7a2a"/>
+  <rect x="210" y="108" width="26" height="9" rx="1.5" fill="#f2c94c" stroke="#8c7a2a"/>
+  <rect x="246" y="116" width="8" height="5" rx="1.2" fill="#d33a3a" stroke="#121a20" stroke-width="0.8"/>
+  <rect x="110" y="140" width="40" height="8" rx="1" fill="#0a0d10"/>
+  <rect x="224" y="127" width="30" height="10" rx="1.5" fill="#0a0d10"/><circle cx="230" cy="132" r="2.2" fill="#d7c27a"/><circle cx="236" cy="132" r="2.2" fill="#d7c27a"/><circle cx="242" cy="132" r="2.2" fill="#d7c27a"/><circle cx="248" cy="132" r="2.2" fill="#d7c27a"/>
+  <text x="190" y="150" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.92">BLUE PILL</text>
+</svg>
