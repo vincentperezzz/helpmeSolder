@@ -57,7 +57,7 @@ export type CategoryCoverage = CategoryDef & {
   drawings: number;
   thumbnails: number;
   percent: { drawing: number; thumbnail: number };
-  /** Parts missing a drawing or a thumbnail. */
+  /** Parts missing a thumbnail. A part without a dedicated drawing still shows as a generic box in the diagram. */
   missing: number;
 };
 
@@ -194,10 +194,10 @@ export function buildCoverage(catalog: CatalogInput = listCatalog()): CoverageRe
         drawings,
         thumbnails,
         percent: { drawing: percentOf(drawings, rows.length), thumbnail: percentOf(thumbnails, rows.length) },
-        missing: rows.filter((r) => !r.hasDrawing || !r.hasThumbnail).length,
+        missing: rows.filter((r) => !r.hasThumbnail).length,
       };
     }),
-    missing: all.filter((r) => !r.hasDrawing || !r.hasThumbnail),
+    missing: all.filter((r) => !r.hasThumbnail),
     percent: {
       drawing: percentOf(withDrawing, all.length),
       thumbnail: percentOf(withThumbnail, all.length),

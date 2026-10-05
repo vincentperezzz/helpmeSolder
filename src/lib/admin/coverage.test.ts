@@ -137,7 +137,7 @@ describe("built-in drawings", () => {
     expect(hasBuiltInDrawing("module.dht22")).toBe(false);
   });
 
-  it("reports no catalog part as missing a drawing or thumbnail", () => {
+  it("reports no catalog part as missing a thumbnail", () => {
     const report = buildCoverage();
     expect(report.missing.map((row) => row.id)).toEqual([]);
   });

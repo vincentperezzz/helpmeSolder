@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { boards } from "./boards";
 import { getCatalogPart, getRecipe, isDeprecatedPart, listCatalog, listCatalogIncludingDeprecated, replacementFor } from "./index";
-import { modules } from "./modules";
 import { partCategory, resolvePartPhoto } from "./part-media";
-import { passives } from "./passives";
 import { photoQueriesFor } from "./photo-queries";
 import {
   buildSnapshot,
@@ -16,6 +13,8 @@ import {
 } from "./registry";
 import { recipes } from "./recipes";
 import { SEED_SNAPSHOT } from "./seed";
+
+const { boards, modules, passives } = SEED_SNAPSHOT;
 import type { CatalogPart } from "./types";
 
 const rows = (over: Partial<RawRows> = {}): RawRows => ({
