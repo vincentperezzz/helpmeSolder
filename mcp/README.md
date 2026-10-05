@@ -1,3 +1,7 @@
+> **Legacy local server.** The recommended way to use HelpmeSolder is the hosted
+> remote MCP endpoint at `https://<your-host>/mcp` (nothing to install). This
+> stdio server remains for offline/local development against a local API.
+
 # HelpmeSolder MCP
 
 Thin MCP server for Cursor/Claude. Tools call the Next.js API. No hosted LLM.

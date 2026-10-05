@@ -14,60 +14,23 @@ const CLIENTS: { id: ClientId; label: string }[] = [
 
 const DEPLOYED_ORIGIN = "https://helpmesolder.vercel.app";
 
-function apiOrigin(): string {
+function mcpUrl(): string {
   const configured = process.env.NEXT_PUBLIC_APP_URL;
-  return configured && !configured.includes("localhost")
-    ? configured
-    : DEPLOYED_ORIGIN;
+  const origin =
+    configured && !configured.includes("localhost") ? configured : DEPLOYED_ORIGIN;
+  return `${origin.replace(/\/$/, "")}/mcp`;
 }
 
-function jsonConfig(origin: string): string {
-  return JSON.stringify(
-    {
-      mcpServers: {
-        helpmesolder: {
-          command: "node",
-          args: ["/ABSOLUTE/PATH/TO/helpmeSolder/mcp/dist/index.js"],
-          env: {
-            HELPMESOLDER_API_URL: origin,
-          },
-        },
-      },
-    },
-    null,
-    2,
-  );
+function urlConfig(key: "url" | "serverUrl", url: string): string {
+  return JSON.stringify({ mcpServers: { helpmesolder: { [key]: url } } }, null, 2);
 }
 
-function claudeCodeCommand(origin: string): string {
-  return [
-    "claude mcp add helpmesolder \\",
-    `  -e HELPMESOLDER_API_URL=${origin} \\`,
-    "  -- node /ABSOLUTE/PATH/TO/helpmeSolder/mcp/dist/index.js",
-  ].join("\n");
-}
-
-function codexToml(origin: string): string {
-  return [
-    "[mcp_servers.helpmesolder]",
-    'command = "node"',
-    'args = ["/ABSOLUTE/PATH/TO/helpmeSolder/mcp/dist/index.js"]',
-    "",
-    "[mcp_servers.helpmesolder.env]",
-    `HELPMESOLDER_API_URL = "${origin}"`,
-  ].join("\n");
-}
-
-function codexCommand(origin: string): string {
-  return [
-    "codex mcp add helpmesolder \\",
-    `  --env HELPMESOLDER_API_URL=${origin} \\`,
-    "  -- node /ABSOLUTE/PATH/TO/helpmeSolder/mcp/dist/index.js",
-  ].join("\n");
+function codexToml(url: string): string {
+  return ["[mcp_servers.helpmesolder]", `url = "${url}"`].join("\n");
 }
 
 export function SetupGuide() {
-  const origin = apiOrigin();
+  const url = mcpUrl();
   const [client, setClient] = useState<ClientId>("claude");
   const index = CLIENTS.findIndex((item) => item.id === client);
 
@@ -105,15 +68,18 @@ export function SetupGuide() {
             <code className="font-mono text-sm">--scope user</code> to make it
             available in every project.
           </p>
-          <CopyBlock label="terminal" code={claudeCodeCommand(origin)} />
+          <CopyBlock
+            label="terminal"
+            code={`claude mcp add --transport http helpmesolder ${url}`}
+          />
           <p className="text-ink-soft">
-            <strong>Claude Desktop:</strong> open{" "}
-            <strong>Settings → Developer → Edit Config</strong> and merge this
-            into{" "}
-            <code className="font-mono text-sm">claude_desktop_config.json</code>
-            , then restart the app.
+            <strong>Claude Desktop and claude.ai:</strong> open{" "}
+            <strong>Settings → Connectors → Add custom connector</strong> and
+            paste the URL. If your version has no custom connectors, use the{" "}
+            <code className="font-mono text-sm">mcp-remote</code> bridge in{" "}
+            <code className="font-mono text-sm">claude_desktop_config.json</code>.
           </p>
-          <CopyBlock label="claude_desktop_config.json" code={jsonConfig(origin)} />
+          <CopyBlock label="server URL" code={url} />
         </>
       )}
       {client === "codex" && (
@@ -123,19 +89,20 @@ export function SetupGuide() {
             <code className="font-mono text-sm">~/.codex/config.toml</code>{" "}
             yourself. Restart Codex afterwards.
           </p>
-          <CopyBlock label="terminal" code={codexCommand(origin)} />
-          <CopyBlock label="~/.codex/config.toml" code={codexToml(origin)} />
+          <CopyBlock label="terminal" code={`codex mcp add helpmesolder --url ${url}`} />
+          <CopyBlock label="~/.codex/config.toml" code={codexToml(url)} />
         </>
       )}
       {client === "antigravity" && (
         <>
           <p className="text-ink-soft">
-            In the agent panel open <strong>… → MCP Servers → Manage MCP
-            Servers → View raw config</strong>, merge this into{" "}
+            In the agent panel open{" "}
+            <strong>… → MCP Servers → Manage MCP Servers → View raw config</strong>
+            , merge this into{" "}
             <code className="font-mono text-sm">mcp_config.json</code>, save,
             then refresh the server list.
           </p>
-          <CopyBlock label="mcp_config.json" code={jsonConfig(origin)} />
+          <CopyBlock label="mcp_config.json" code={urlConfig("serverUrl", url)} />
         </>
       )}
       {client === "cursor" && (
@@ -145,7 +112,7 @@ export function SetupGuide() {
             <code className="font-mono text-sm">~/.cursor/mcp.json</code>) and
             paste:
           </p>
-          <CopyBlock label="mcp.json" code={jsonConfig(origin)} />
+          <CopyBlock label="mcp.json" code={urlConfig("url", url)} />
         </>
       )}
     </div>

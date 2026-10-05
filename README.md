@@ -44,4 +44,8 @@ Phases 0–2 done in app. MCP lives in `mcp/`. Seed recipes with `npm run seed:r
 
 ## MCP
 
+Hosted remote MCP (Streamable HTTP): `https://<your-host>/mcp`. Add that URL to Claude, Cursor, Codex or Antigravity; see the homepage setup section. No install needed.
+
+A local stdio server also lives in `mcp/` for development.
+
 See [`mcp/README.md`](mcp/README.md) and [`docs/mcp.cursor.example.json`](docs/mcp.cursor.example.json).

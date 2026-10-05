@@ -29,6 +29,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: "/mcp",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+        ],
+      },
+      {
         source: "/api/:path*",
         headers: [
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
