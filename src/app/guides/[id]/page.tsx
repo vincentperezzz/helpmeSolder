@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GuideWorkspace } from "@/components/GuideWorkspace";
 import { VisitBeacon } from "@/components/VisitBeacon";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { getGuide } from "@/lib/guides/repository";
 import { getExpiryDate, getRetentionDays } from "@/lib/guides/retention";
 
@@ -48,6 +49,7 @@ function StatusPage({
 
 export default async function GuidePage({ params }: GuidePageProps) {
   const { id } = await params;
+  await ensureCatalog();
   let guide = null;
   let loadError: string | null = null;
 

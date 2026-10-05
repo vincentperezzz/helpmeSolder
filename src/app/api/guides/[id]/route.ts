@@ -4,6 +4,7 @@ import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, notFound, parseBody } from "@/lib/api/http";
 import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { getCatalogPart } from "@/lib/catalog";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { recordPartRequestLater } from "@/lib/requests/record";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
 import { powerSourceNullableInputSchema } from "@/lib/guides/power-source";
@@ -58,6 +59,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
   }
 
   return guarded(async () => {
+    await ensureCatalog();
     const { id } = await context.params;
     const guide = await getGuide(id);
     if (!guide) {
@@ -82,6 +84,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   }
 
   return guarded(async () => {
+    await ensureCatalog();
     const { id } = await context.params;
     const existing = await getGuide(id);
     if (!existing) {

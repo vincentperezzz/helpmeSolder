@@ -3,6 +3,7 @@ import { checkRateLimit } from "@/lib/api/rate-limit";
 import { getCatalogPart } from "@/lib/catalog";
 import { PART_PHOTOS_LIMIT } from "@/lib/catalog/commons";
 import { partCategory } from "@/lib/catalog/part-media";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { findPartPhotos } from "@/lib/catalog/photo-chain";
 import { CACHE_EMPTY, CACHE_FAILED, CACHE_FOUND } from "@/lib/catalog/photo-cache";
 
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
   const limited = checkRateLimit(request, PART_PHOTOS_LIMIT);
   if (limited) return limited;
 
+  await ensureCatalog();
   const id = request.nextUrl.searchParams.get("id") ?? "";
   const part = id.length > 0 && id.length <= 64 ? getCatalogPart(id) : undefined;
   if (!part) {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buildCoverage } from "@/lib/admin/coverage";
 import { fetchGuideRows } from "@/lib/admin/data";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { guideUsageCounts } from "@/lib/admin/usage";
 import { guardAdmin } from "../_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "../_components/meta";
@@ -24,6 +25,7 @@ export default async function AdminCatalogPage() {
     );
   }
 
+  await ensureCatalog();
   const coverage = buildCoverage();
   let usage: Map<string, number> | null = null;
   let capped = false;

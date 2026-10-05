@@ -84,3 +84,16 @@ and obvious bots, are not recorded. Empty text is not recorded.
 
 Retention: the daily cleanup cron deletes `catalog_search_hits` older than 180
 days. `catalog_searches` rows are kept until the admin removes them.
+
+## Part catalog in the database
+
+| File | What it does | When |
+| --- | --- | --- |
+| `migrations/0007_catalog.sql` | Creates `public.catalog_parts`, `public.catalog_recipes`, `public.catalog_media`, `public.catalog_history` (append-only: update and delete are revoked from `service_role` and blocked by a trigger), `public.catalog_settings` (single row, `mode` db or seed, `version`), the functions `catalog_save_draft`, `catalog_publish`, `catalog_discard_draft`, `catalog_set_lifecycle`, `catalog_revert`, `catalog_set_mode`, `catalog_part_usage`, `catalog_upsert_media`, and the public Storage bucket `catalog-media` (1 MiB limit, jpeg/png/webp/svg, no client policies). Row level security is on, `anon` and `authenticated` have no access, and only `service_role` can run the functions. Idempotent. | Apply before (or with) the release that reads the catalog from the database. |
+
+The migration is additive: it changes no existing table, and with the new
+tables empty the app behaves exactly as before (the bundled catalog is the
+default). It is therefore safe to run before the code ships, and safe to run
+twice. To apply it, paste the file into the Supabase SQL editor and run it, or
+run `supabase db push`. Rollback DDL is commented at the bottom of the file;
+the fastest kill switch is `update public.catalog_settings set mode = 'seed' where id = 1;`.

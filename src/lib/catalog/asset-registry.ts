@@ -60,12 +60,10 @@
  */
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
-import { boards } from "./boards";
 import { BATTERY_ASSETS, batteryRecordForPart, type BatteryKind } from "./batteries";
 import { getDiagramAsset, prefersDiagramAsset } from "./board-assets";
-import { modules } from "./modules";
+import { listCatalogIncludingDeprecated } from "./index";
 import { partCategory, resolvePartPhoto } from "./part-media";
-import { passives } from "./passives";
 import type { CatalogPart } from "./types";
 
 export type AssetSource = "photo" | "illustration" | "generic" | "none";
@@ -219,7 +217,7 @@ function resolveDrawing(part: CatalogPart, category: string): Drawing {
 }
 
 export function listAssetRecords(): AssetRecord[] {
-  const parts: CatalogPart[] = [...boards, ...modules, ...passives];
+  const parts: CatalogPart[] = listCatalogIncludingDeprecated();
 
   const hintUsers = new Map<string, number>();
   for (const part of parts) {

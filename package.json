@@ -11,6 +11,7 @@
     "mcp:dev": "npm --prefix mcp run dev",
     "seed:recipes": "node scripts/seed-recipes.mjs",
     "verify:phases": "node scripts/verify-phases.mjs",
+    "gen:wokwi-tags": "node scripts/gen-wokwi-tags.mjs",
     "test": "vitest run"
   },
   "dependencies": {
