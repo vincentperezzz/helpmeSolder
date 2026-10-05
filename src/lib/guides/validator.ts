@@ -1,7 +1,15 @@
 import { getCatalogPart } from "@/lib/catalog";
-import { BATTERY_ELECTRICAL, USB_WALL_ELECTRICAL } from "@/lib/catalog/batteries";
+import {
+  BATTERY_ELECTRICAL,
+  POWER_BANK_ELECTRICAL,
+  USB_WALL_ELECTRICAL,
+  getBatteryRecord,
+  isLithiumChemistry,
+  isRechargeableLithium,
+} from "@/lib/catalog/batteries";
 import { POWER_SOURCE_VALUES } from "@/lib/guides/power-source";
 import type {
+  BatteryChemistry,
   CatalogPart,
   CatalogPin,
   Guide,
@@ -218,6 +226,18 @@ export const MCU_3V3_MAX_INPUT = 3.6;
 const EPS = 1e-9;
 const SIGNAL_KINDS = ["digital", "analog", "i2c", "spi", "uart"];
 
+/** Plain-words note on how a cell chemistry's voltage behaves, added to supply-range messages. */
+function cellNote(chemistry: BatteryChemistry | undefined, nominal: number): string {
+  if (isRechargeableLithium(chemistry)) {
+    return " Li-ion/LiPo swings 3.0-4.2V per cell (3.7V nominal).";
+  }
+  if (chemistry === "nimh") {
+    return ` NiMH cells are only 1.2V each, so this pack is ${nominal}V, lower than the same number of 1.5V alkaline cells.`;
+  }
+  if (chemistry === "coin-lithium") return " A coin cell is 3V nominal, 2.0V empty.";
+  return "";
+}
+
 export function issueSeverity(issue: ValidationIssue): ValidationSeverity {
   return issue.severity ?? "error";
 }
@@ -413,8 +433,8 @@ export function checkSupplyRanges(guide: Guide, nets: Net[]): ValidationIssue[] 
 
         const verdict = compareSupply(source, limit);
         if (verdict === "ok") continue;
-        const liIon = src.catalog.electrical?.battery?.chemistry === "li-ion";
-        const cell = liIon ? " Li-ion/LiPo swings 3.0-4.2V (3.7V nominal)." : "";
+        const chemistry = src.catalog.electrical?.battery?.chemistry;
+        const cell = cellNote(chemistry, source.nominal);
         const fits = (nominal: number) =>
           nominal >= limit.min - EPS && nominal <= limit.max + EPS;
         const alternatives = supplyAlternatives(guide, fits, [src, sink]);
@@ -582,12 +602,12 @@ export function checkSupplyPolarity(guide: Guide, nets: Net[]): ValidationIssue[
           (other) => other.part !== item.part && other.pin.kinds.includes("ground"),
         );
         if (grounds.length > 0) {
-          const liIon = item.catalog.electrical?.battery?.chemistry === "li-ion";
+          const fire = isLithiumChemistry(item.catalog.electrical?.battery?.chemistry);
           issues.push({
             code: "reverse_polarity",
             severity: "error",
             message: `${describe(item)} (positive) is wired to ground (${grounds.map(describe).join(", ")}). This shorts the supply${
-              liIon ? " - a shorted Li-ion/LiPo cell can overheat and ignite" : ""
+              fire ? " - a shorted lithium cell or LiPo pack can overheat and ignite" : ""
             }. Check + and - are not swapped.`,
             alternatives: groundAlternatives(guide, item.part.instanceId),
           });
@@ -612,7 +632,9 @@ export function checkSupplyPolarity(guide: Guide, nets: Net[]): ValidationIssue[
 }
 
 function powerSourceSpec(source: PowerSource) {
-  return source === "usb_wall" ? USB_WALL_ELECTRICAL : BATTERY_ELECTRICAL[source];
+  if (source === "usb_wall") return USB_WALL_ELECTRICAL;
+  if (source === "power_bank") return POWER_BANK_ELECTRICAL;
+  return BATTERY_ELECTRICAL[source];
 }
 
 /**
@@ -640,7 +662,34 @@ export function checkPowerSourceVsBoard(guide: Guide): ValidationIssue[] {
       code: "power_source_needs_regulation",
       severity: "warning",
       message: `${guide.power_source} is ${spec.nominal}V nominal, which no power pin on ${board.name} accepts directly. Add a regulator (buck) or boost converter between the supply and the board.`,
-      alternatives: POWER_SOURCE_VALUES.filter((candidate) => accepts(candidate)),
+      alternatives: POWER_SOURCE_VALUES.filter((candidate) => accepts(candidate)).slice(0, 8),
+    },
+  ];
+}
+
+/**
+ * A source that can only supply a few milliamps (a coin cell) is allowed, but the
+ * build must be low-power. One warning per guide, whether the cell is a wired part
+ * or only the declared power source.
+ */
+export function checkSupplyCurrent(guide: Guide): ValidationIssue[] {
+  const limited = guide.parts.find(
+    (part) => getCatalogPart(part.catalogId)?.electrical?.battery?.lowCurrent,
+  );
+  const declared =
+    guide.power_source && guide.power_source !== "usb_wall" && guide.power_source !== "power_bank"
+      ? getBatteryRecord(guide.power_source)
+      : undefined;
+  if (!limited && !declared?.lowCurrent) return [];
+  const name = limited
+    ? (limited.label ?? getCatalogPart(limited.catalogId)?.name ?? "The coin cell")
+    : (declared?.label ?? "The coin cell");
+  return [
+    {
+      code: "supply_current_limited",
+      severity: "warning",
+      message: `${name} can only supply a few milliamps. It is fine for a sleeping microcontroller, an LED or a sensor reading, but Wi-Fi/Bluetooth bursts, motors, servos, buzzers and LED strips will make the board reset. Add a 100-470 µF capacitor across the supply and ground, or use a bigger source.`,
+      alternatives: [],
     },
   ];
 }
@@ -653,5 +702,6 @@ export function validateElectrical(guide: Guide): ValidationIssue[] {
     ...checkLogicLevels(guide, nets),
     ...checkSupplyPolarity(guide, nets),
     ...checkPowerSourceVsBoard(guide),
+    ...checkSupplyCurrent(guide),
   ];
 }

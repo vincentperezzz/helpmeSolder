@@ -1,9 +1,10 @@
-export type PowerSource =
-  | "usb_wall"
-  | "battery_9v"
-  | "battery_2aa"
-  | "battery_3aa"
-  | "battery_18650";
+import type { BatteryKind } from "./battery-records";
+
+/**
+ * Every power source a guide can name. The battery / supply ids are generated from
+ * the table in battery-records.ts (add a record there, not here).
+ */
+export type PowerSource = "usb_wall" | "power_bank" | BatteryKind;
 
 export type PinKind =
   | "digital"
@@ -31,7 +32,14 @@ export type PinElectrical = {
   accepts?: VoltageRange;
 };
 
-export type BatteryChemistry = "li-ion" | "alkaline";
+export type BatteryChemistry =
+  | "alkaline"
+  | "nimh"
+  | "lithium"
+  | "coin-lithium"
+  | "li-ion"
+  | "lipo"
+  | "dc-supply";
 
 /** Part-level electrical data. Optional: parts without it are not checked. */
 export type PartElectrical = {
@@ -56,7 +64,12 @@ export type PartElectrical = {
   /** Absolute HIGH threshold in volts. */
   inputHighVolts?: number;
   /** Power parts only. */
-  battery?: { chemistry: BatteryChemistry; cells: number };
+  battery?: {
+    chemistry: BatteryChemistry;
+    cells: number;
+    /** Can only supply a few milliamps (coin cells). */
+    lowCurrent?: boolean;
+  };
 };
 
 export type CatalogPin = {

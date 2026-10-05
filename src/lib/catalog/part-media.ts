@@ -1,4 +1,5 @@
 import { BASIC_PART_MEDIA } from "./media-basic";
+import { BATTERY_PART_MEDIA } from "./media-batteries";
 import { MODULE_PART_MEDIA } from "./media-modules";
 
 const PHOTO_FILES: Record<string, string> = {
@@ -64,6 +65,7 @@ const PHOTO_FILES: Record<string, string> = {
   // Newer illustrations; later entries win over the ones above.
   ...BASIC_PART_MEDIA,
   ...MODULE_PART_MEDIA,
+  ...BATTERY_PART_MEDIA,
 };
 
 export function resolvePartPhoto(photoHint?: string): string | null {

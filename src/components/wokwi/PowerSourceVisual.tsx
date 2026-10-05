@@ -7,21 +7,23 @@ import {
   USB_WALL_SOCKET,
   UsbWallVisual,
 } from "@/components/BatteryAssets";
+import { BATTERY_RECORD_LIST } from "@/lib/catalog/battery-records";
 import { getBatteryAsset, type BatteryAsset, type BatteryKind } from "@/lib/catalog/batteries";
 import type { PowerSource } from "@/lib/catalog/types";
-import type { BatteryPowerSource } from "@/lib/guides/power-source";
+import { isBatteryPowerSource, type BatteryPowerSource } from "@/lib/guides/power-source";
 import { POWER_ORIGIN } from "./constants";
 import type { ExitDir, Point } from "./types";
 
 export const BATTERY_WIRE_ANCHORS: Record<
   BatteryPowerSource,
   { plus: Point; minus: Point; plusExit: ExitDir; minusExit: ExitDir }
-> = (["battery_9v", "battery_2aa", "battery_3aa", "battery_18650"] as BatteryKind[]).reduce(
+> = (BATTERY_RECORD_LIST.map((record) => record.id) as BatteryKind[]).reduce(
   (acc, kind) => {
     const asset = getBatteryAsset(kind);
-    // Cell packs have their minus tab at the bottom, above the caption. The
+    // Packs with their minus tab below the cells have the caption underneath. The
     // wire leaves sideways so it never runs through the caption text.
-    const minusExit = kind === "battery_9v" ? asset.terminals.minusExit : { dx: 1, dy: 0 };
+    const minusExit =
+      asset.terminals.minusExit.dy > 0 ? { dx: 1, dy: 0 } : asset.terminals.minusExit;
     acc[kind] = {
       plus: {
         x: POWER_ORIGIN.x + asset.terminals.plus.x,
@@ -73,7 +75,7 @@ export function PowerSourceVisual({
   /** Extra attributes for the wrapper (tooltip and focus handlers). */
   hover?: HTMLAttributes<HTMLDivElement>;
 }) {
-  if (source === "usb_wall") {
+  if (!isBatteryPowerSource(source)) {
     return (
       <div
         data-instance="power-source"
@@ -81,7 +83,7 @@ export function PowerSourceVisual({
         className={`absolute ${hover?.className ?? ""}`}
         style={{ left: x, top: y, width: USB_WALL_SIZE.width, ...hover?.style }}
       >
-        <UsbWallVisual />
+        <UsbWallVisual bank={source === "power_bank"} />
       </div>
     );
   }

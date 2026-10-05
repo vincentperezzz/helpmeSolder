@@ -72,14 +72,48 @@ export async function validateGuide(id: string) {
   );
 }
 
-const powerSourceMcp = z.enum([
+/**
+ * Valid power_source ids. Mirrors POWER_SOURCE_VALUES in src/lib/guides/power-source.ts
+ * (generated from src/lib/catalog/battery-records.ts); keep the two in step.
+ */
+export const POWER_SOURCE_IDS = [
   "usb_wall",
-  "battery_9v",
+  "power_bank",
+  "battery_1aa",
   "battery_2aa",
   "battery_3aa",
+  "battery_4aa",
+  "battery_6aa",
+  "battery_2aaa",
+  "battery_3aaa",
+  "battery_4aaa",
+  "battery_1c",
+  "battery_1d",
+  "battery_2d",
+  "battery_9v",
+  "battery_2aa_nimh",
+  "battery_3aa_nimh",
+  "battery_4aa_nimh",
+  "battery_6aa_nimh",
+  "battery_2aaa_nimh",
+  "battery_3aaa_nimh",
+  "battery_4aaa_nimh",
+  "battery_2aa_lithium",
+  "battery_3aa_lithium",
+  "battery_2aaa_lithium",
+  "battery_3aaa_lithium",
+  "battery_cr123a",
+  "battery_cr2032",
   "battery_18650",
-  "battery",
-]);
+  "battery_21700",
+  "battery_14500",
+  "battery_lipo_1s",
+  "battery_lipo_2s",
+  "supply_barrel_9v",
+  "supply_barrel_12v",
+] as const;
+
+const powerSourceMcp = z.enum([...POWER_SOURCE_IDS, "battery"]);
 
 export const setPowerInput = z.object({
   guide_id: z.string(),

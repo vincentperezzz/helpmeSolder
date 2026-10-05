@@ -43,12 +43,12 @@ describe("PUT /api/guides/[id]/power", () => {
   });
 
   it("records an unsupported value and still returns the 400", async () => {
-    const res = await put({ power_source: "CR2032 coin cell" });
+    const res = await put({ power_source: "solar panel" });
     expect(res.status).toBe(400);
     expect((await res.json()).error).toBe("Invalid request body");
     expect(updateGuide).not.toHaveBeenCalled();
     expect(recordPartRequestLater).toHaveBeenCalledWith(
-      expect.objectContaining({ name: "CR2032 coin cell", kind: "power", source: "set_power_source" }),
+      expect.objectContaining({ name: "solar panel", kind: "power", source: "set_power_source" }),
     );
   });
 });

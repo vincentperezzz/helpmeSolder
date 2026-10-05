@@ -109,10 +109,13 @@ function partContent(guide: Guide, id: string): TipContent | null {
         detail: `Powers the board. ${asset.caption}.`,
       };
     }
+    const bank = source === "power_bank";
     return {
-      title: "USB wall adapter",
+      title: bank ? "USB power bank" : "USB wall adapter",
       tag: "Power",
-      detail: "A phone charger. Its cable plugs into the board's USB port.",
+      detail: bank
+        ? "A phone power bank. Its cable plugs into the board's USB port."
+        : "A phone charger. Its cable plugs into the board's USB port.",
     };
   }
   const instance = guide.parts.find((part) => part.instanceId === id);
@@ -532,7 +535,7 @@ export function WokwiDiagram({
 
       {!guide.power_source ? (
         <div className="border-b border-warn-line bg-warn-bg px-3 py-2 text-xs text-warn-ink">
-          Power source not set. Ask the user: 9V, 2×AA, 3×AA, 18650, or USB wall?
+          Power source not set. Ask the user which power source to use (USB, AA cells, 9V, coin cell, LiPo...).
         </div>
       ) : null}
 
@@ -854,7 +857,9 @@ export function WokwiDiagram({
         {guide.power_source
           ? isBatteryPowerSource(guide.power_source)
             ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`
-            : " Power: USB wall adapter, cable plugged into the board's USB port."
+            : guide.power_source === "power_bank"
+              ? " Power: USB power bank, cable plugged into the board's USB port."
+              : " Power: USB wall adapter, cable plugged into the board's USB port."
           : ""}
       </p>
       {tooltip}

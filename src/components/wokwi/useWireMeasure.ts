@@ -6,7 +6,7 @@ import {
 } from "@/lib/catalog/board-assets";
 import { getBatteryAsset } from "@/lib/catalog/batteries";
 import type { Guide } from "@/lib/catalog/types";
-import { isBatteryPowerSource } from "@/lib/guides/power-source";
+import { isBatteryPowerSource, isUsbPowerSource } from "@/lib/guides/power-source";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import {
   BB_COLS,
@@ -532,7 +532,7 @@ export function useWireMeasure({
             points: route.points,
           });
         }
-      } else if (guide.power_source === "usb_wall") {
+      } else if (guide.power_source && isUsbPowerSource(guide.power_source)) {
         const from = anchors.get("power-source:OUT");
         const to = anchors.get("power-source:BOARD");
         const usbPort = board ? getBoardUsbPort(board.catalogId) : undefined;
@@ -546,7 +546,7 @@ export function useWireMeasure({
               color: "#78909c",
               d: route.d,
               label: "USB cable into the board's USB port",
-              title: "USB cable from the wall adapter into the board's USB port",
+              title: `USB cable from ${guide.power_source === "power_bank" ? "the power bank" : "the wall adapter"} into the board's USB port`,
               showLabel: true,
               mid: labelNearEnd(route.points),
               from,

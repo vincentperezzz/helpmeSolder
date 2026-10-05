@@ -9,8 +9,10 @@ import {
   updateGuide,
 } from "@/lib/guides/repository";
 import {
+  POWER_OPTIONS,
   POWER_SOURCE_OPTIONS,
   POWER_SOURCE_VALUES,
+  describePowerVoltage,
   matchPowerSource,
 } from "@/lib/guides/power-source";
 import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
@@ -51,7 +53,7 @@ Required order. Do not skip or reorder:
 Catalog: if unsure of an id call search_catalog with a short name. Never invent ids.
 Before choosing any part call get_part_details (or read the search_catalog hint). When buying advice matters (active vs passive buzzer, 3.3 V vs 5 V, I2C vs SPI display), read its identify and watchOuts to the user out loud.
 If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
-If the user wants a power type we do not list (coin cell, LiPo, AAA, solar, mains), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option.
+If the user wants a power type we do not list (solar, mains, a car battery, an unusual battery size), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option. Battery brand names do not matter electrically: pick by chemistry, size and cell count. NiMH cells are 1.2 V each (3 NiMH AA = 3.6 V, 4 = 4.8 V), lower than alkaline (4.5 V and 6 V), which matters for 5 V boards.
 
 Writing steps (readers are beginners who dislike circuit diagrams):
 - The page already generates a "What to solder where" checklist from the connections, so do NOT restate every wire in the steps.
@@ -95,7 +97,14 @@ function electricalInWords(part: CatalogPart): string[] {
     );
   }
   if (e.inputOnlyPins?.length) lines.push(`Input-only pins: ${e.inputOnlyPins.join(", ")}.`);
-  if (e.battery) lines.push(`Battery: ${e.battery.cells} cell(s), ${e.battery.chemistry}.`);
+  if (e.battery) {
+    lines.push(`Battery: ${e.battery.cells} cell(s), ${e.battery.chemistry}.`);
+    if (e.battery.lowCurrent) lines.push("Low current: only a few milliamps, not for motors or Wi-Fi bursts.");
+  }
+  const supplyPin = Object.values(e.pins ?? {}).find((pin) => pin.source?.external)?.source;
+  if (supplyPin) {
+    lines.push(`Supplies ${supplyPin.nominal} V nominal (${supplyPin.min}-${supplyPin.max} V).`);
+  }
   return lines;
 }
 
@@ -266,48 +275,25 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         textResult({
           mustAskUser: true,
           question:
-            "How will you power this build — USB wall adapter, 9V battery, 2×AA, 3×AA, or single 18650 cell?",
+            "How will you power this build? USB (wall adapter or power bank), AA / AAA / C / D batteries (alkaline, rechargeable NiMH or lithium), a 9V battery, a CR2032 coin cell, a LiPo pouch or pack, a Li-ion cell (18650, 21700, 14500, CR123A), or a 9V / 12V wall supply with a barrel plug?",
           whyAsk:
-            "Power choice changes the diagram and VIN/USB wiring notes. Never assume battery type or USB wall.",
-          options: [
-            {
-              id: "usb_wall",
-              label: "USB wall adapter",
-              diagram: "Shows a USB wall brick into the board USB / 5V rail.",
-              when: "Bench, indoor, always-on, or powered from a phone charger brick.",
-              setPowerSource: "usb_wall",
-            },
-            {
-              id: "battery_9v",
-              label: "9V battery (snap connector)",
-              diagram: "Classic 9V snap with +/− leads to VIN and GND.",
-              when: "Compact portable builds; check board VIN range (often 7–12V on Uno).",
-              setPowerSource: "battery_9v",
-            },
-            {
-              id: "battery_2aa",
-              label: "2×AA battery pack (~3V)",
-              diagram: "Two-AA holder with red/black leads to VIN and GND.",
-              when: "Low-voltage portable; may need 3.3V board or boost — confirm MCU supply.",
-              setPowerSource: "battery_2aa",
-            },
-            {
-              id: "battery_3aa",
-              label: "3×AA battery pack (~4.5V)",
-              diagram: "Three-AA holder with +/− to VIN and GND.",
-              when: "Portable with a bit more headroom than 2×AA.",
-              setPowerSource: "battery_3aa",
-            },
-            {
-              id: "battery_18650",
-              label: "18650 Li-ion cell (~3.7V)",
-              diagram: "Cylindrical 18650 in a holder; +/− to VIN and GND.",
-              when: "Rechargeable portable; use a protected cell and proper charger — never guess polarity.",
-              setPowerSource: "battery_18650",
-            },
+            "Power choice changes the diagram, the voltage the board sees and the VIN/USB wiring notes. Never assume battery type, cell count or USB wall. Brand does not matter electrically, only chemistry, size and number of cells.",
+          options: POWER_OPTIONS.map((option) => ({
+            id: option.id,
+            label: option.ask.label,
+            group: option.groupLabel,
+            voltage: describePowerVoltage(option),
+            diagram: option.ask.diagram,
+            when: option.ask.when,
+            setPowerSource: option.id,
+          })),
+          warnings: [
+            "NiMH rechargeable AA/AAA cells are 1.2 V each, not 1.5 V: 3 cells = 3.6 V (alkaline: 4.5 V) and 4 cells = 4.8 V (alkaline: 6 V). That is too low for some 5 V boards.",
+            "14500 Li-ion cells are AA size but 3.7 V: never put them in an AA holder.",
+            "A CR2032 coin cell only supplies a few milliamps: not for motors, servos or Wi-Fi bursts without a capacitor.",
+            "LiPo and Li-ion cells can catch fire if shorted or charged wrongly; JST connector polarity differs between makers.",
           ],
-          nextStep:
-            "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (battery_9v, battery_2aa, battery_3aa, battery_18650, or usb_wall). If the user wants a type not listed (for example a coin cell, LiPo pouch, AAA cells, a solar panel or a mains supply), call set_power_source with its plain name (for example \"CR2032 coin cell\") so it is noted for the site owner, then offer the closest supported option.",
+          nextStep: `Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (one of: ${POWER_SOURCE_VALUES.join(", ")}). If the user wants a type not listed (for example a solar panel, mains power or a car battery), call set_power_source with its plain name (for example "solar panel") so it is noted for the site owner, then offer the closest supported option.`,
           guide_id: guide_id ?? null,
           context: context ?? null,
         }),
@@ -359,7 +345,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "set_power_source",
     {
       description:
-        "Set guide power_source AFTER asking the user (use ask_power_source first if unknown). Supported values: usb_wall, battery_9v, battery_2aa, battery_3aa, battery_18650. If the user wants something else (coin cell, LiPo, AAA, solar, mains), pass its plain name as power_source and an optional description: it is noted for the site owner, the guide is NOT changed, and you must then ask the user which supported option to use. Never invent the answer.",
+        `Set guide power_source AFTER asking the user (use ask_power_source first if unknown). Supported values: ${POWER_SOURCE_VALUES.join(", ")} (see ask_power_source for what each is). If the user wants something else (solar, mains, a car battery, an unlisted battery size), pass its plain name as power_source and an optional description: it is noted for the site owner, the guide is NOT changed, and you must then ask the user which supported option to use. Never invent the answer.`,
       inputSchema: {
         guide_id: z.string(),
         power_source: z
@@ -368,7 +354,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
             z.string().min(1).max(80),
           ])
           .describe(
-            "One of usb_wall, battery_9v, battery_2aa, battery_3aa, battery_18650 (or battery for 3xAA). Any other text is treated as an unsupported power source and only noted.",
+            `One of ${POWER_SOURCE_VALUES.join(", ")} (or battery for 3xAA). Any other text is treated as an unsupported power source and only noted.`,
           ),
         description: z
           .string()
@@ -400,7 +386,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
           message: "That power source is not supported yet. It has been noted for the site owner.",
           supportedOptions: POWER_SOURCE_OPTIONS,
           nextStep:
-            "Tell the user it is not supported yet and ask which supported option to use instead (USB, 9V, 2xAA, 3xAA or 18650). Do not guess.",
+            "Tell the user it is not supported yet and ask which supported option to use instead (call ask_power_source for the list). Do not guess.",
         });
       }),
   );

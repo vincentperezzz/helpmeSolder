@@ -41,7 +41,7 @@ HelpmeSolder is the durable guide surface. The LLM stays in Cursor/Claude. Our M
 
 ## Power (locked)
 
-- LLM sets `battery` or `usb_wall`
+- LLM sets one id from the power table (USB wall or power bank, AA/AAA/C/D alkaline, NiMH or lithium holders, 9V, CR2032, LiPo, Li-ion cells, 9V/12V barrel supply); `battery` still means 3xAA
 - If unknown, API tells the LLM to ask the user
 
 ## Validation (locked)

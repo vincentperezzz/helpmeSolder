@@ -22,6 +22,7 @@ import { recordClientLater } from "@/lib/analytics/clients";
 import { recordCatalogSearchLater } from "@/lib/requests/search";
 import { recordPartRequestLater, resolveAlias } from "@/lib/requests/record";
 import { createGuide, getGuide, updateGuide } from "@/lib/guides/repository";
+import { POWER_SOURCE_VALUES } from "@/lib/guides/power-source";
 import { DELETE, GET, POST } from "./route";
 
 const guide: Guide = {
@@ -87,7 +88,7 @@ describe("remote MCP endpoint", () => {
     const { result } = await res.json();
     expect(result.serverInfo.name).toBe("helpmesolder");
     expect(result.instructions).toContain("ask_power_source");
-    expect(result.instructions).toContain("coin cell");
+    expect(result.instructions).toContain("solar");
   });
 
   it("instructions put the questions before create_guide and name shareUrl", async () => {
@@ -457,7 +458,7 @@ describe("remote MCP endpoint", () => {
   it("set_power_source records an unsupported source and leaves the guide alone", async () => {
     const result = await callTool("set_power_source", {
       guide_id: "g1",
-      power_source: "CR2032 coin cell",
+      power_source: "solar panel",
       description: "tiny badge",
     });
     expect(result.isError).toBeFalsy();
@@ -469,7 +470,7 @@ describe("remote MCP endpoint", () => {
     expect(updateGuide).not.toHaveBeenCalled();
     expect(recordPartRequestLater).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: "CR2032 coin cell",
+        name: "solar panel",
         kind: "power",
         source: "set_power_source",
         note: "tiny badge",
@@ -497,8 +498,56 @@ describe("remote MCP endpoint", () => {
   it("ask_power_source tells the assistant to note unlisted types", async () => {
     const result = await callTool("ask_power_source", {});
     const data = JSON.parse(result.content[0].text);
-    expect(data.nextStep).toContain("coin cell");
+    expect(data.nextStep).toContain("solar panel");
     expect(data.nextStep).toContain("set_power_source");
+  });
+
+  it("ask_power_source offers every id in the power table, including the new batteries", async () => {
+    const result = await callTool("ask_power_source", {});
+    const data = JSON.parse(result.content[0].text);
+    const ids = data.options.map((o: { id: string }) => o.id);
+    expect(ids).toEqual(POWER_SOURCE_VALUES);
+    for (const id of [
+      "usb_wall",
+      "power_bank",
+      "battery_4aa",
+      "battery_3aa_nimh",
+      "battery_2aaa",
+      "battery_1d",
+      "battery_cr2032",
+      "battery_lipo_1s",
+      "battery_lipo_2s",
+      "battery_21700",
+      "battery_14500",
+      "battery_cr123a",
+      "supply_barrel_12v",
+      "battery_9v",
+      "battery_18650",
+    ]) {
+      expect(ids).toContain(id);
+      expect(data.nextStep).toContain(id);
+    }
+    const nimh = data.options.find((o: { id: string }) => o.id === "battery_3aa_nimh");
+    expect(nimh.voltage).toContain("3.6 V nominal");
+    expect(nimh.when).toMatch(/1\.2 V/);
+    expect(data.warnings.join(" ")).toMatch(/14500/);
+  });
+
+  it("set_power_source accepts the new ids and lists them in its schema", async () => {
+    const res = await POST(rpc("tools/list"));
+    const { result } = await res.json();
+    const tool = result.tools.find((t: { name: string }) => t.name === "set_power_source");
+    for (const id of POWER_SOURCE_VALUES) expect(tool.description).toContain(id);
+    const values: string[] =
+      tool.inputSchema.properties.power_source.anyOf?.find((s: { enum?: string[] }) => s.enum)?.enum ?? [];
+    expect(values).toEqual(expect.arrayContaining([...POWER_SOURCE_VALUES, "battery"]));
+    vi.mocked(getGuide).mockResolvedValue(guide);
+    vi.mocked(updateGuide).mockResolvedValue(guide);
+    await callTool("set_power_source", { guide_id: "g1", power_source: "battery_cr2032" });
+    expect(updateGuide).toHaveBeenLastCalledWith("g1", { power_source: "battery_cr2032" });
+    await callTool("set_power_source", { guide_id: "g1", power_source: "3 x AAA NiMH" });
+    expect(updateGuide).toHaveBeenLastCalledWith("g1", { power_source: "battery_3aaa_nimh" });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
   });
 
   it("returns a tool error for a missing guide", async () => {

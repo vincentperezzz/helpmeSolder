@@ -257,3 +257,82 @@ describe("validateGuide: electrical rules", () => {
     expect(codes(usb)).not.toContain("power_source_needs_regulation");
   });
 });
+
+describe("validateGuide: battery chemistries and supplies", () => {
+  const wired = (board: string, power: PowerSource, part: string, plusTo: string) =>
+    guide(
+      board,
+      power,
+      [["b", board], ["p", part]],
+      [["p.+", plusTo], ["p.-", "b.GND.1"]],
+    );
+
+  it("treats 3xAA NiMH (3.6 V) as under-voltage for a 5 V VIN pin and says why", () => {
+    const g = wired(ESP, "battery_3aa_nimh", "passive.power.battery.3aa_nimh", "b.VIN");
+    expectError(g, "supply_under_voltage", NO_ALTS);
+    const message = validateGuide(g).issues.find((i) => i.code === "supply_under_voltage")!.message;
+    expect(message).toContain("3.6V");
+    expect(message).toContain("NiMH cells are only 1.2V each");
+    // The same cells in alkaline (4.5 V) are not under-voltage on this pin.
+    const alk = wired(ESP, "battery_3aa", "passive.power.battery.3aa", "b.VIN");
+    expect(codes(alk)).not.toContain("supply_under_voltage");
+  });
+
+  it("warns (not errors) for 4xAA NiMH (4.8 V) on a 5 V VIN pin because it sags", () => {
+    const g = wired(ESP, "battery_4aa_nimh", "passive.power.battery.4aa_nimh", "b.VIN");
+    expectWarning(g, "supply_voltage_marginal");
+  });
+
+  it("errors when a 2S LiPo (7.4 V) is wired to a 5 V pin", () => {
+    const g = wired(UNO, "battery_lipo_2s", "passive.power.battery.lipo_2s", "b.5V");
+    expectError(g, "supply_over_voltage", NO_ALTS);
+    const ok = wired(UNO, "battery_lipo_2s", "passive.power.battery.lipo_2s", "b.VIN");
+    expect(codes(ok)).not.toContain("supply_over_voltage");
+  });
+
+  it("allows a coin cell into the ESP32 3V3 pin with a current warning", () => {
+    const g = wired(ESP, "battery_cr2032", "passive.power.battery.cr2032", "b.3V3");
+    const r = validateGuide(g);
+    expect(r.ok).toBe(true);
+    expect(codes(g)).toContain("supply_voltage_marginal");
+    expect(codes(g)).not.toContain("supply_over_voltage");
+    expect(codes(g)).not.toContain("supply_under_voltage");
+    const issue = r.issues.find((i) => i.code === "supply_current_limited")!;
+    expect(issue.severity).toBe("warning");
+    expect(issue.message).toMatch(/few milliamps/);
+    expect(issue.message).toMatch(/capacitor/);
+  });
+
+  it("warns about coin-cell current when it is only the declared power source", () => {
+    expectWarning(guide(ESP, "battery_cr2032", [["b", ESP]], []), "supply_current_limited");
+    expect(codes(guide(ESP, "battery_3aa", [["b", ESP]], []))).not.toContain("supply_current_limited");
+  });
+
+  it("checks barrel supplies against the board VIN range", () => {
+    const nine = wired(UNO, "supply_barrel_9v", "passive.power.supply.barrel_9v", "b.VIN");
+    expect(codes(nine)).toEqual([]);
+    const twelve = wired(UNO, "supply_barrel_12v", "passive.power.supply.barrel_12v", "b.VIN");
+    expectWarning(twelve, "supply_voltage_marginal");
+    expectError(
+      wired(UNO, "supply_barrel_12v", "passive.power.supply.barrel_12v", "b.5V"),
+      "supply_over_voltage",
+      NO_ALTS,
+    );
+  });
+
+  it("accepts a power bank like a USB wall adapter", () => {
+    expect(codes(guide(PICO, "power_bank", [["b", PICO]], []))).not.toContain(
+      "power_source_needs_regulation",
+    );
+  });
+
+  it("warns that a declared 2S pack needs regulation on a 3.3 V-only board", () => {
+    expectWarning(guide(PICO, "battery_lipo_2s", [["b", PICO]], []), "power_source_needs_regulation");
+  });
+
+  it("explains that a shorted LiPo can ignite", () => {
+    const g = wired(UNO, "battery_lipo_1s", "passive.power.battery.lipo_1s", "b.GND.1");
+    expectError(g, "reverse_polarity");
+    expect(validateGuide(g).issues.find((i) => i.code === "reverse_polarity")!.message).toMatch(/ignite/);
+  });
+});

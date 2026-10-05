@@ -11,6 +11,7 @@ import {
   createGuideInput,
   getGuide,
   listCatalog,
+  POWER_SOURCE_IDS,
   setPowerInput,
   setPowerSource,
   setSteps,
@@ -71,7 +72,7 @@ server.registerTool(
     return ok({
       mustAskUser: true,
       question:
-        "How will you power this build — USB wall adapter, 9V battery, 2×AA, 3×AA, or single 18650 cell?",
+        "How will you power this build — USB (wall adapter or power bank), AA/AAA/C/D batteries (alkaline, NiMH or lithium), 9V, a CR2032 coin cell, a LiPo or Li-ion cell, or a 9V/12V wall supply?",
       whyAsk:
         "Power choice changes the diagram and VIN/USB wiring notes. Never assume battery type or USB wall.",
       options: [
@@ -111,8 +112,16 @@ server.registerTool(
           setPowerSource: "battery_18650",
         },
       ],
+      moreOptionIds: POWER_SOURCE_IDS.filter(
+        (id) => !["usb_wall", "battery_9v", "battery_2aa", "battery_3aa", "battery_18650"].includes(id),
+      ),
+      warnings: [
+        "NiMH AA/AAA cells are 1.2 V each (3 cells = 3.6 V, 4 = 4.8 V), lower than alkaline (4.5 V, 6 V).",
+        "14500 Li-ion cells are AA size but 3.7 V: never put them in an AA holder.",
+        "A CR2032 coin cell supplies only a few milliamps.",
+      ],
       nextStep:
-        "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (battery_9v, battery_2aa, battery_3aa, battery_18650, or usb_wall).",
+        "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (one of the ids above or in moreOptionIds, for example battery_4aa, battery_3aa_nimh, battery_cr2032, battery_lipo_1s, supply_barrel_12v).",
       guide_id: guide_id ?? null,
       context: context ?? null,
     });
