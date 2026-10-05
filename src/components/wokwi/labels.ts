@@ -5,9 +5,13 @@ import type { Point, Rect, Wire } from "./types";
 /** Widest label pill. Text longer than fits is cut by the caller (see cardText). */
 export const MAX_LABEL_W = 360;
 
+/** Extra width a tag spends on its pointed, punched end (see tagGeometry in cards.ts). */
+export const TAG_TIP = 18;
+
+/** Bounding box of a tag: text body plus the pointed end. Pills and cards share it. */
 export function labelSize(text: string): { w: number; h: number } {
   return {
-    w: Math.min(MAX_LABEL_W, Math.max(52, text.length * 8 + 18)),
+    w: Math.min(MAX_LABEL_W, Math.max(52, text.length * 8 + 14) + TAG_TIP),
     h: LABEL_H,
   };
 }

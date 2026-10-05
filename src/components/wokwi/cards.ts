@@ -28,8 +28,12 @@ export type CardPlacement = {
   rect: Rect;
   /** Point on the wire the card points at. */
   anchor: Point;
-  /** Short line from the card edge to the wire. */
+  /** String from the tag's punched hole to the anchor. */
   leader: { from: Point; to: Point };
+  /** Which end of the tag is pointed (the end facing the anchor). */
+  side: TagSide;
+  /** Centre of the punched hole. */
+  hole: Point;
   /** True when no collision-free spot existed. */
   crowded: boolean;
 };
@@ -41,6 +45,78 @@ export type CardScene = {
   /** Boxes that stay put: pill labels and every badge. */
   fixedRects: Rect[];
 };
+
+export type TagSide = "left" | "right";
+
+const TAG_CHAMFER_X = 12;
+const TAG_CHAMFER_Y = 8;
+const TAG_CORNER = 3;
+/** Width of the coloured cap at the pointed end. */
+const TAG_CAP = 15;
+export const TAG_HOLE_R = 2.6;
+
+export type TagGeometry = {
+  /** Outline of the whole tag. Always inside `rect`. */
+  body: string;
+  /** The coloured band at the pointed end. */
+  cap: string;
+  hole: Point;
+  /** Where the text is centred: the middle of the body past the cap. */
+  textX: number;
+};
+
+/**
+ * Outline of a luggage-style tag filling `rect`: a pointed end with two
+ * chamfered corners and a punched hole, and two softly rounded corners at the
+ * other end. `side` is the pointed end. The shape never leaves `rect`, so the
+ * placer's collision box is the tag's real bounding box.
+ */
+export function tagGeometry(rect: Rect, side: TagSide): TagGeometry {
+  const { x, y, w, h } = rect;
+  const px = (dx: number) => (side === "left" ? x + dx : x + w - dx);
+  const f = (dx: number, dy: number) => `${px(dx).toFixed(1)} ${(y + dy).toFixed(1)}`;
+  const far = w;
+  const body =
+    `M${f(TAG_CHAMFER_X, 0)}L${f(far - TAG_CORNER, 0)}Q${f(far, 0)} ${f(far, TAG_CORNER)}` +
+    `L${f(far, h - TAG_CORNER)}Q${f(far, h)} ${f(far - TAG_CORNER, h)}` +
+    `L${f(TAG_CHAMFER_X, h)}L${f(0, h - TAG_CHAMFER_Y)}L${f(0, TAG_CHAMFER_Y)}Z`;
+  const cap =
+    `M${f(TAG_CHAMFER_X, 0)}L${f(TAG_CAP, 0)}L${f(TAG_CAP, h)}L${f(TAG_CHAMFER_X, h)}` +
+    `L${f(0, h - TAG_CHAMFER_Y)}L${f(0, TAG_CHAMFER_Y)}Z`;
+  return {
+    body,
+    cap,
+    hole: { x: px(7), y: y + h / 2 },
+    textX: px((TAG_CAP + far) / 2),
+  };
+}
+
+/** A string that sags a little: a quadratic curve from the hole to the anchor. */
+export function stringPath(from: Point, to: Point): string {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy);
+  if (len < 1) return `M${from.x} ${from.y}`;
+  // Bow sideways, always toward the lower side so it hangs like a string.
+  let nx = -dy / len;
+  let ny = dx / len;
+  if (ny < 0) {
+    nx = -nx;
+    ny = -ny;
+  }
+  const bow = Math.min(14, len * 0.18);
+  const cx = (from.x + to.x) / 2 + nx * bow;
+  const cy = (from.y + to.y) / 2 + ny * bow;
+  return `M${from.x.toFixed(1)} ${from.y.toFixed(1)}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${to.x.toFixed(1)} ${to.y.toFixed(1)}`;
+}
+
+/** The point `r` away from `anchor` toward `toward`: where a string meets a badge's rim. */
+export function pointToward(anchor: Point, toward: Point, r: number): Point {
+  const dx = toward.x - anchor.x;
+  const dy = toward.y - anchor.y;
+  const len = Math.hypot(dx, dy);
+  return len < 1 ? anchor : { x: anchor.x + (dx / len) * r, y: anchor.y + (dy / len) * r };
+}
 
 /** Do the segments p1-p2 and q1-q2 cross? (Proper intersection of two arbitrary segments.) */
 export function segmentsCross(p1: Point, p2: Point, q1: Point, q2: Point): boolean {
@@ -143,13 +219,17 @@ export function placeCards(requests: CardRequest[], scene: CardScene): CardPlace
 
     const chosen = bestClear ? bestClear.rect : request.relax && bestAny ? bestAny.rect : null;
     if (!chosen) continue;
+    const side: TagSide = anchor.x < chosen.x + chosen.w / 2 ? "left" : "right";
+    const hole = tagGeometry(chosen, side).hole;
     placed.push(chosen);
     out.push({
       id: wire.id,
       text,
       rect: chosen,
       anchor,
-      leader: { from: nearestOnRect(anchor, chosen), to: anchor },
+      leader: { from: hole, to: anchor },
+      side,
+      hole,
       crowded: !bestClear,
     });
   }

@@ -1,5 +1,5 @@
 import { parseBreadboardRail } from "./breadboard";
-import { STUB_BASE, STUB_SPREAD } from "./constants";
+import { BB_ROW_Y, STUB_BASE, STUB_SPREAD } from "./constants";
 import type { ExitDir, Point, Rect } from "./types";
 
 export function pointInRect(point: Point, rect: Rect, pad = 0): boolean {
@@ -161,4 +161,15 @@ export function pathWireOverlap(points: Point[], prior: Point[][]): number {
     }
   }
   return overlap;
+}
+
+/**
+ * Short jumper between two holes or rails of the same breadboard: straight
+ * when they share a column, otherwise up (or down) to a lane, across, and in.
+ */
+export function breadboardJumperPoints(from: Point, to: Point): Point[] {
+  if (Math.abs(from.x - to.x) < 0.5) return [from, to];
+  const topHalf = (from.y + to.y) / 2 < (BB_ROW_Y.e + BB_ROW_Y.f) / 2;
+  const lane = topHalf ? Math.min(from.y, to.y) - 8 : Math.max(from.y, to.y) + 8;
+  return [from, { x: from.x, y: lane }, { x: to.x, y: lane }, to];
 }

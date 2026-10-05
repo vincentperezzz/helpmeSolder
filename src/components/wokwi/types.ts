@@ -1,6 +1,14 @@
 export type PinInfo = { name: string; x: number; y: number };
 export type Point = { x: number; y: number };
 export type Rect = { x: number; y: number; w: number; h: number };
+/** A part drawing that plugs into breadboard holes, turned 0/90/180 degrees about its top-left corner. */
+export type PlugSpec = {
+  w: number;
+  h: number;
+  rotate: 0 | 90 | 180;
+  pins: Record<string, Point>;
+};
+
 export type ExitDir = { dx: number; dy: number };
 
 export type PlacedPart = {
@@ -13,6 +21,10 @@ export type PlacedPart = {
   name: string;
   kind: "board" | "module" | "passive" | "power";
   seated?: boolean;
+  /** Set when the part is plugged into breadboard holes: its pins are turned by this spec. */
+  plug?: PlugSpec;
+  /** CSS transform that turns a plugged part (origin top-left). */
+  transform?: string;
 };
 
 export type UsbConnectorKind = "usb-a" | "usb-c" | "micro-usb" | "mini-usb" | "usb-b";

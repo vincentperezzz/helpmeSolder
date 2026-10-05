@@ -339,6 +339,11 @@ body {
   }
 }
 
+/* Wire name tags: a soft paper shadow lifts them off the picture. */
+.diagram-tag {
+  filter: drop-shadow(0 1px 1.5px rgba(26, 36, 43, 0.32));
+}
+
 .diagram-wire {
   outline: none;
 }

@@ -1,0 +1,136 @@
+/*
+ * Panel tab bar: icon over label, quiet superscript count, and one copper
+ * pill that slides to the active tab. Self-contained; does not rely on guide.css.
+ */
+.ptabs-wrap {
+  flex: none;
+  container-type: inline-size;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, white 55%, var(--ga-panel-bg, var(--paper)));
+}
+
+.ptabs {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 6px;
+  scrollbar-width: none;
+}
+
+.ptabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* The sliding pill. Position and size are set from script as CSS variables. */
+.ptabs-pill {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: var(--ptab-w, 0px);
+  transform: translateX(var(--ptab-x, 0px));
+  border-radius: 12px;
+  background: var(--copper-deep);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--copper-deep) 40%, transparent);
+  pointer-events: none;
+}
+
+.ptab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 0 auto;
+  min-width: 58px;
+  min-height: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--mute);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  scroll-snap-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ptab:hover:not([aria-selected="true"]) {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+}
+
+.ptab[aria-selected="true"] {
+  color: #fff;
+}
+
+.ptab:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: -2px;
+}
+
+.ptab-label {
+  position: relative;
+  display: inline-block;
+}
+
+/* Superscript numeral hung off the label: no pill, no colour of its own. */
+.ptab-count {
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  margin-left: 2px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+
+.ptab[aria-selected="true"] .ptab-count {
+  opacity: 0.85;
+}
+
+/* Very narrow panels: icon plus count only; the label stays for screen readers. */
+@container (max-width: 300px) {
+  .ptab {
+    min-width: 46px;
+    padding-inline: 8px;
+  }
+
+  .ptab-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ptab-count {
+    position: static;
+    margin: 0;
+    font-size: 0.6875rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ptabs[data-ready="true"] .ptabs-pill {
+    transition:
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ptab {
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+}

@@ -283,95 +283,6 @@
   color: #5c170e;
 }
 
-/* ---------- tabs ---------- */
-
-.ga-tabs {
-  display: flex;
-  flex: none;
-  gap: 2px;
-  overflow-x: auto;
-  padding: 0 6px;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in oklab, white 55%, var(--ga-panel-bg));
-  scrollbar-width: none;
-}
-
-.ga-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.ga-tab {
-  position: relative;
-  display: inline-flex;
-  flex: 1 0 auto;
-  min-height: 46px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 11px;
-  border: 0;
-  background: transparent;
-  color: var(--mute);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.ga-tab::after {
-  content: "";
-  position: absolute;
-  right: 8px;
-  bottom: -1px;
-  left: 8px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--copper);
-  opacity: 0;
-  transform: scaleX(0.4);
-}
-
-.ga-tab:hover {
-  color: var(--ink);
-}
-
-.ga-tab[aria-selected="true"] {
-  color: var(--ink);
-}
-
-.ga-tab[aria-selected="true"]::after {
-  opacity: 1;
-  transform: scaleX(1);
-}
-
-.ga-tab:focus-visible {
-  outline-offset: -3px;
-  border-radius: var(--ga-r-sm);
-}
-
-.ga-badge {
-  min-width: 20px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--ink) 9%, transparent);
-  color: var(--ink-soft);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1.1;
-  text-align: center;
-}
-
-.ga-tab[aria-selected="true"] .ga-badge {
-  background: color-mix(in oklab, var(--copper) 16%, transparent);
-  color: var(--copper-deep);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .ga-tab::after {
-    transition: opacity 140ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
 /* ---------- scroll area and panels ---------- */
 
 .ga-scroll {
@@ -489,6 +400,178 @@
   .ga-switch-knob {
     background: ButtonText;
   }
+}
+
+/* ---------- solder strip (sticky controls at the top of the Solder tab) ---------- */
+
+.ga-strip {
+  --ga-hit: 44px;
+  display: grid;
+  gap: 8px;
+}
+
+@media (pointer: fine) and (min-width: 700px) {
+  .ga-strip {
+    --ga-hit: 36px;
+  }
+}
+
+.ga-strip .ga-switch {
+  min-height: var(--ga-hit);
+  flex: none;
+}
+
+.ga-strip-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ga-strip-progress {
+  min-width: 0;
+  flex: 1;
+}
+
+.ga-strip-count {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ga-strip-bar {
+  margin-top: 6px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ink) 10%, transparent);
+}
+
+.ga-strip-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--flux);
+}
+
+.ga-strip-step {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--ga-r-sm);
+  background: #fff;
+}
+
+.ga-strip-step > button {
+  display: inline-flex;
+  min-height: var(--ga-hit);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ga-strip-step > button + button {
+  border-left: 1px solid var(--line-strong);
+}
+
+.ga-strip-step > button:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--copper) 10%, white);
+}
+
+.ga-strip-step > button:disabled {
+  background: color-mix(in oklab, var(--ink) 5%, white);
+  color: var(--mute);
+  cursor: not-allowed;
+}
+
+.ga-strip-step svg,
+.ga-strip-chip svg {
+  flex: none;
+}
+
+.ga-strip-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ga-strip-chip {
+  display: inline-flex;
+  min-height: var(--ga-hit);
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--ga-r-sm);
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ga-strip-chip:hover {
+  border-color: var(--copper);
+}
+
+.ga-strip-chip:has(input:checked) {
+  border-color: var(--flux);
+  background: color-mix(in oklab, var(--flux) 10%, white);
+  color: var(--ink);
+}
+
+.ga-strip-chip input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--flux);
+}
+
+.ga-strip-link {
+  min-height: var(--ga-hit);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--ga-r-sm);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.ga-strip-link:hover {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+
+.ga-strip .ga-switch:focus-visible,
+.ga-strip-step > button:focus-visible,
+.ga-strip-link:focus-visible,
+.ga-strip-chip:has(input:focus-visible) {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+.ga-strip-step > button:focus-visible {
+  outline-offset: -2px;
+}
+
+.ga-strip-chip input:focus-visible {
+  outline: none;
 }
 
 /* ---------- small screens, picture full screen: icon dock and bottom sheet ---------- */

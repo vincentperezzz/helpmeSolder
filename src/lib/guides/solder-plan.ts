@@ -93,6 +93,14 @@ function whyFor(kind: WireKind, a: Resolved, b: Resolved): string | null {
   return null;
 }
 
+/**
+ * A connection that only says "this part leg sits in this breadboard hole".
+ * Nothing is wired or soldered there, so it is not drawn or numbered.
+ */
+export function isPlugConnection(connection: GuideConnection): boolean {
+  return connection.id.startsWith("plug-");
+}
+
 const RANK: Record<WireKind, number> = { ground: 0, power: 1, signal: 2 };
 
 /** Ordered wire list: ground and power first, then signals. Original order is kept within a group. */
@@ -128,6 +136,7 @@ export function buildSolderItems(guide: Guide): WireItem[] {
     };
   });
   return items
+    .filter((entry) => !isPlugConnection(guide.connections[entry.index]))
     .sort((a, b) => RANK[a.item.kind] - RANK[b.item.kind] || a.index - b.index)
     .map((entry) => entry.item);
 }

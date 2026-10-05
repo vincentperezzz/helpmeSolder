@@ -3,8 +3,15 @@ import { getBatteryAsset } from "@/lib/catalog/batteries";
 import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import type { Guide } from "@/lib/catalog/types";
 import { wokwiAttrs } from "@/lib/catalog/wokwi";
-import { breadboardCol, isBreadboardId, parseBreadboardRail } from "./breadboard";
+import { isPlugConnection } from "@/lib/guides/solder-plan";
+import {
+  breadboardCol,
+  breadboardHoleLocal,
+  isBreadboardId,
+  parseBreadboardRail,
+} from "./breadboard";
 import { BB_HEIGHT, BB_ORIGIN_X, BB_ROW_Y, BB_STEP, POWER_ORIGIN } from "./constants";
+import { plugSpecFor, plugTransform, rotatePoint } from "./plug";
 import type { PlacedPart } from "./types";
 
 export function seatPassiveOnBreadboard(
@@ -68,6 +75,32 @@ export function seatPassiveOnBreadboard(
   return true;
 }
 
+/**
+ * Sit a part so its legs go into the holes its `plug-` links name. Returns
+ * false when the part has no such links, so the caller places it elsewhere.
+ */
+export function seatPluggedPart(part: PlacedPart, breadboard: PlacedPart, guide: Guide): boolean {
+  const spec = plugSpecFor(part.catalogId);
+  if (!spec) return false;
+  for (const connection of guide.connections) {
+    if (!isPlugConnection(connection)) continue;
+    const ends = [connection.from, connection.to];
+    const onPart = ends.find((end) => end.instanceId === part.instanceId);
+    const onBoard = ends.find((end) => end.instanceId === breadboard.instanceId);
+    const pin = onPart ? spec.pins[onPart.pinId] : undefined;
+    const hole = onBoard ? breadboardHoleLocal(onBoard.pinId) : null;
+    if (!pin || !hole) continue;
+    const turned = rotatePoint(spec, pin);
+    part.x = breadboard.x + hole.x - turned.x;
+    part.y = breadboard.y + hole.y - turned.y;
+    part.plug = spec;
+    part.transform = plugTransform(spec);
+    part.seated = true;
+    return true;
+  }
+  return false;
+}
+
 export function layoutParts(guide: Guide): PlacedPart[] {
   const boards: PlacedPart[] = [];
   const passives: PlacedPart[] = [];
@@ -118,6 +151,7 @@ export function layoutParts(guide: Guide): PlacedPart[] {
   const primaryBreadboard = breadboards[0];
   let freepassiveY = breadboardY;
   otherPassives.forEach((part) => {
+    if (primaryBreadboard && seatPluggedPart(part, primaryBreadboard, guide)) return;
     if (primaryBreadboard && seatPassiveOnBreadboard(part, primaryBreadboard, guide)) {
       return;
     }
@@ -126,8 +160,11 @@ export function layoutParts(guide: Guide): PlacedPart[] {
     freepassiveY += 120;
   });
 
+  const looseModules = modules.filter(
+    (part) => !(primaryBreadboard && seatPluggedPart(part, primaryBreadboard, guide)),
+  );
   let moduleY = 120;
-  modules.forEach((part) => {
+  looseModules.forEach((part) => {
     const tall =
       part.tag?.includes("lcd") ||
       part.tag?.includes("ili9341") ||

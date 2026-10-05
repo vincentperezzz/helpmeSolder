@@ -22,7 +22,9 @@ import { canvasFromBounds, sceneBounds } from "./bounds";
 import { POWER_WIRE_IDS } from "./focus";
 import { assignLanes, hopPoints, roundedPath } from "./lanes";
 import { breadboardHoleLocal, isBreadboardId, parseBreadboardRail } from "./breadboard";
-import { breadboardPinExit, pinExitDirection } from "./geometry";
+import { breadboardJumperPoints, breadboardPinExit, pinExitDirection } from "./geometry";
+import { isPlugConnection } from "@/lib/guides/solder-plan";
+import { rotatedBox, rotatePoint } from "./plug";
 import {
   assignWireColors,
   labelRect,
@@ -157,11 +159,13 @@ export function useWireMeasure({
               useDiagramAsset && diagramAsset ? diagramAsset.height : 0,
             ) || height;
         const nameRoom = isBreadboardId(part.catalogId) ? 24 : 0;
+        // A plugged part is turned, so its box is the turned one.
+        const plugBox = part.plug ? rotatedBox(part.plug) : null;
         partRects.push({
           x: offsetX - 4,
           y: offsetY - 4 - nameRoom,
-          w: drawnW + 8,
-          h: drawnH + 8 + nameRoom,
+          w: (plugBox?.w ?? drawnW) + 8,
+          h: (plugBox?.h ?? drawnH) + 8 + nameRoom,
         });
 
         const bodyPad = isBreadboardId(part.catalogId) ? 2 : 10;
@@ -186,25 +190,31 @@ export function useWireMeasure({
         const bodyY = isBreadboardId(part.catalogId)
           ? offsetY + BB_ROW_Y.a - 8
           : offsetY - bodyPad;
-        obstacles.push({
-          x: bodyX,
-          y: bodyY,
-          w: bodyW + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
-          h: bodyH + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
-          ...(part.seated
-            ? { soft: true }
-            : isBreadboardId(part.catalogId)
-              ? {}
-              : { hug: true }),
-        });
+        obstacles.push(
+          plugBox
+            ? { x: offsetX, y: offsetY, w: plugBox.w, h: plugBox.h, soft: true }
+            : {
+                x: bodyX,
+                y: bodyY,
+                w: bodyW + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
+                h: bodyH + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
+                ...(part.seated
+                  ? { soft: true }
+                  : isBreadboardId(part.catalogId)
+                    ? {}
+                    : { hug: true }),
+              },
+        );
 
         if (hasPins) {
-          const locals = raw.map((pin) => ({ x: pin.x, y: pin.y }));
+          const turn = (pin: { x: number; y: number }) =>
+            part.plug ? rotatePoint(part.plug, pin) : { x: pin.x, y: pin.y };
+          const locals = raw.map(turn);
           for (const pin of raw) {
             const key = `${part.instanceId}:${pin.name}`;
-            const global = { x: offsetX + pin.x, y: offsetY + pin.y };
-            anchors.set(key, global);
-            exitDirs.set(key, pinExitDirection({ x: pin.x, y: pin.y }, locals));
+            const local = turn(pin);
+            anchors.set(key, { x: offsetX + local.x, y: offsetY + local.y });
+            exitDirs.set(key, pinExitDirection(local, locals));
           }
         } else if (isBreadboardId(part.catalogId)) {
           const catalog = getCatalogPart(part.catalogId);
@@ -394,6 +404,8 @@ export function useWireMeasure({
       const connectionColors = assignWireColors(connectionLabels);
 
       guide.connections.forEach((connection, index) => {
+        // A part leg sitting in a hole is drawn as the part itself, not as a wire.
+        if (isPlugConnection(connection)) return;
         const fromKey = `${connection.from.instanceId}:${connection.from.pinId}`;
         const toKey = `${connection.to.instanceId}:${connection.to.pinId}`;
         const from = anchors.get(fromKey);
@@ -430,6 +442,21 @@ export function useWireMeasure({
           route = {
             points,
             mid: points[1],
+            d: points
+              .map((point, i) =>
+                i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`,
+              )
+              .join(" "),
+          };
+        } else if (
+          fromPart &&
+          fromPart.instanceId === toPart?.instanceId &&
+          isBreadboardId(fromPart.catalogId)
+        ) {
+          const points = breadboardJumperPoints(from, to);
+          route = {
+            points,
+            mid: points[Math.floor(points.length / 2)],
             d: points
               .map((point, i) =>
                 i === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`,

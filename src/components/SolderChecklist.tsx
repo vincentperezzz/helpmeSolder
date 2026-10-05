@@ -20,8 +20,13 @@ type SolderChecklistProps = {
   onHoverChange: (id: string | null) => void;
 };
 
-const controlButton =
-  "min-h-11 rounded-[10px] border border-line-strong bg-white px-4 text-sm font-semibold text-ink hover:border-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flux disabled:cursor-not-allowed disabled:opacity-50";
+function Arrow({ dir }: { dir: "left" | "right" }) {
+  return (
+    <svg aria-hidden width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d={dir === "left" ? "M13 8H3m4-4L3 8l4 4" : "M3 8h10M9 4l4 4-4 4"} />
+    </svg>
+  );
+}
 
 function PowerNote({ text }: { text: string }) {
   return (
@@ -141,16 +146,16 @@ export function SolderChecklist({
           <div
             data-ga-sticky=""
             data-print-hide="true"
-            className="sticky top-0 z-10 -mx-4 -mt-3.5 mb-3 space-y-1 border-b border-line bg-[color-mix(in_oklab,white_90%,var(--paper))] px-4 pt-2.5 pb-1.5"
+            className="ga-strip sticky top-0 z-10 -mx-4 -mt-3.5 mb-3 border-b border-line bg-[color-mix(in_oklab,white_90%,var(--paper))] px-4 py-2"
           >
-            <div className="flex items-center justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-ink" aria-live="polite">
+            <div className="ga-strip-top">
+              <div className="ga-strip-progress">
+                <p className="ga-strip-count" aria-live="polite">
                   {done} of {total} done
                 </p>
-                <div aria-hidden className="mt-1.5 h-1 overflow-hidden rounded-full bg-ink/10">
-                  <div
-                    className="h-full rounded-full bg-flux motion-safe:transition-[width]"
+                <div aria-hidden className="ga-strip-bar">
+                  <span
+                    className="motion-safe:transition-[width]"
                     style={{ width: `${(done / total) * 100}%` }}
                   />
                 </div>
@@ -167,45 +172,40 @@ export function SolderChecklist({
             </div>
 
             {followMode ? (
-              <div className="flex flex-wrap gap-2 pb-1">
-                <button
-                  type="button"
-                  onClick={() => step(-1)}
-                  disabled={focusIndex === 0}
-                  className={controlButton}
-                >
+              <div className="ga-strip-step">
+                <button type="button" onClick={() => step(-1)} disabled={focusIndex === 0}>
+                  <Arrow dir="left" />
                   Previous wire
                 </button>
                 <button
                   type="button"
                   onClick={() => step(1)}
                   disabled={focusIndex === total - 1 || focusId === null}
-                  className={controlButton}
                 >
                   Next wire
+                  <Arrow dir="right" />
                 </button>
               </div>
             ) : null}
 
             {followMode || focusId !== null ? (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-0 pb-1">
-                <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm text-ink-soft">
+              <div className="ga-strip-actions">
+                <label className="ga-strip-chip">
                   <input
                     type="checkbox"
                     checked={hideOthers}
                     onChange={(event) => onHideOthersChange(event.target.checked)}
-                    className="h-5 w-5 accent-[var(--flux)]"
                   />
                   Hide other wires
                 </label>
-                <button type="button" onClick={showAll} className={controlButton}>
+                <button type="button" onClick={showAll} className="ga-strip-link">
                   Show all wires
                 </button>
               </div>
             ) : null}
 
             {followMode && allDone ? (
-              <p role="status" className="pb-1 text-sm font-semibold text-flux">
+              <p role="status" className="text-sm font-semibold text-flux">
                 All wires done
               </p>
             ) : null}
