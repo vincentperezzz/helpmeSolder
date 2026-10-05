@@ -3,6 +3,7 @@ import { HomeSections } from "@/components/HomeSections";
 import { Magnetic } from "@/components/Magnetic";
 import { ScrollLink } from "@/components/ScrollLink";
 import { SiteNav } from "@/components/SiteNav";
+import { VisitBeacon } from "@/components/VisitBeacon";
 import "./home.css";
 
 function WorkbenchPlane() {
@@ -104,6 +105,7 @@ export default function Home() {
       className="relative flex min-h-full flex-1 flex-col overflow-hidden"
     >
       <SiteNav />
+      <VisitBeacon />
       <div className="atmosphere" aria-hidden="true">
         <div className="atmosphere-grid" />
       </div>

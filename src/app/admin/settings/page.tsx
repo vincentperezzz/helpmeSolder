@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { authorizeArea } from "@/lib/admin/credential";
 import { MIN_PASSWORD_LENGTH } from "@/lib/admin/password";
 import { ADMIN_COOKIE, readSessionToken } from "@/lib/admin/session";
 import { loadAdminAuth } from "@/lib/admin/store";
-import { changePasswordAction, logoutAction } from "../actions";
+import { changePasswordAction } from "../actions";
+import { AdminShell } from "../_components/shell";
 
 export const dynamic = "force-dynamic";
 
@@ -59,39 +59,14 @@ export default async function AdminSettingsPage({
   }
 
   const session = readSessionToken((await cookies()).get(ADMIN_COOKIE)?.value, auth.key);
-  if (authorizeArea(session, "settings").kind !== "allow") redirect("/admin");
+  if (!session || authorizeArea(session, "settings").kind !== "allow") redirect("/admin");
 
   const { error, notice } = await searchParams;
   const source = auth.credential.source;
   const message = error ? ERRORS[error] : undefined;
 
   return (
-    <main className="mx-auto w-full max-w-md px-4 py-8 sm:px-6">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-sm text-mute">HelpmeSolder</p>
-          <h1 className="font-display text-2xl font-bold text-ink">Admin settings</h1>
-        </div>
-        <div className="flex items-center gap-2">
-          {session === "full" ? (
-            <Link
-              href="/admin"
-              className="rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-paper-deep"
-            >
-              Back to overview
-            </Link>
-          ) : null}
-          <form action={logoutAction}>
-            <button
-              type="submit"
-              className="rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-paper-deep"
-            >
-              Log out
-            </button>
-          </form>
-        </div>
-      </header>
-
+    <AdminShell session={session} active="settings" title="Admin settings" narrow>
       {source === "default" ? (
         <p role="alert" className="mb-4 rounded-md border border-warn-ink p-3 text-sm text-warn-ink">
           {notice === "default"
@@ -146,7 +121,7 @@ export default async function AdminSettingsPage({
         row in the admin_settings table in the Supabase table editor. The dashboard then falls
         back to the environment value, or to the default password.
       </p>
-    </main>
+    </AdminShell>
   );
 }
 

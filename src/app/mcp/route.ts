@@ -1,6 +1,7 @@
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { NextRequest } from "next/server";
 import { getAppUrl } from "@/lib/api/app-url";
+import { recordClientLater } from "@/lib/analytics/clients";
 import { assertApiAuth } from "@/lib/api/auth";
 import { serverError } from "@/lib/api/http";
 import {
@@ -26,6 +27,7 @@ async function handle(request: NextRequest): Promise<Response> {
   try {
     const server = createMcpServer({
       appUrl: getAppUrl(request),
+      recordCreator: () => recordClientLater("creator", request),
       rateLimit: (bucket) => {
         const limited = checkRateLimit(
           request,

@@ -9,6 +9,9 @@ vi.mock("@/lib/guides/repository", () => ({
   updateGuide: vi.fn(),
 }));
 
+vi.mock("@/lib/analytics/clients", () => ({ recordClientLater: vi.fn() }));
+
+import { recordClientLater } from "@/lib/analytics/clients";
 import { createGuide, getGuide, updateGuide } from "@/lib/guides/repository";
 import { DELETE, GET, POST } from "./route";
 
@@ -100,6 +103,7 @@ describe("remote MCP endpoint", () => {
     expect(result.isError).toBeFalsy();
     expect(JSON.parse(result.content[0].text).url).toBe("http://localhost/guides/g1");
     expect(createGuide).toHaveBeenCalledWith({ title: "T" });
+    expect(recordClientLater).toHaveBeenCalledWith("creator", expect.anything());
   });
 
   it("add_part rejects an unknown catalog id without touching the database", async () => {

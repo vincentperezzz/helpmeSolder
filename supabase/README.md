@@ -33,3 +33,20 @@ stays locked until a new password is chosen.
 **Forgot the password?** Open the Supabase table editor, open `admin_settings`
 and delete the row. The dashboard then falls back to `ADMIN_PASSWORD`, or to the
 default, and asks for a new password again.
+
+## Anonymous usage counts
+
+| File | What it does | When |
+| --- | --- | --- |
+| `migrations/0004_daily_clients.sql` | Creates `public.daily_clients` (`day`, `kind`, `client_hash`), one row per distinct client per UTC day. `kind` is `visitor` (opened the home page or a guide) or `creator` (created a guide). Row level security is on and `anon` and `authenticated` have no access. Idempotent. | Apply before the admin dashboard can show user counts. Without it the app works normally and counting is skipped quietly. |
+
+What is stored: the day, the kind, and a one-way hash. The hash is built from
+a key that changes every day plus the IP and user agent, so it cannot be
+reversed and cannot link the same person across days. No IP address, no user
+agent, no cookie. Requests with `DNT: 1` or `Sec-GPC: 1`, and obvious bots, are
+not counted.
+
+Retention: the daily cleanup cron deletes rows older than 90 days.
+
+Environment: `ANALYTICS_SECRET` (optional). It seeds the daily key. If unset,
+`SUPABASE_SERVICE_ROLE_KEY` is used. Neither is ever logged or stored.

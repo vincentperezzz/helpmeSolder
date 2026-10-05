@@ -20,6 +20,8 @@ export type ToolContext = {
   appUrl: string;
   /** Returns an error message when the caller is over the limit, else null. */
   rateLimit: (bucket: "create" | "write") => string | null;
+  /** Records the caller as an anonymous daily creator. Best-effort, never throws. */
+  recordCreator: () => void;
 };
 
 type GuidePatch = Parameters<typeof updateGuide>[1];
@@ -101,6 +103,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
           return errorResult(limited);
         }
         const guide = await createGuide(input);
+        ctx.recordCreator();
         return textResult({
           guide,
           validation: validateGuide(guide),

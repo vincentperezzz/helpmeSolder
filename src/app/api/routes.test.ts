@@ -7,6 +7,9 @@ vi.mock("@/lib/guides/repository", () => ({
   updateGuide: vi.fn(),
 }));
 
+vi.mock("@/lib/analytics/clients", () => ({ recordClientLater: vi.fn() }));
+
+import { recordClientLater } from "@/lib/analytics/clients";
 import * as repo from "@/lib/guides/repository";
 import { resetRateLimits } from "@/lib/api/rate-limit";
 import { POST as createRoute } from "./guides/route";
@@ -60,6 +63,16 @@ describe("POST /api/guides", () => {
     expect((await bad.json()).error).toBe("Invalid request body");
     const malformed = await createRoute(mk("POST", "{x"));
     expect(malformed.status).toBe(400);
+  });
+
+  it("records the creator only after a successful create", async () => {
+    vi.mocked(recordClientLater).mockClear();
+    mocked.createGuide.mockRejectedValue(new Error("x"));
+    await createRoute(mk("POST", "{}"));
+    expect(recordClientLater).not.toHaveBeenCalled();
+    mocked.createGuide.mockResolvedValue(fakeGuide);
+    await createRoute(mk("POST", "{}"));
+    expect(recordClientLater).toHaveBeenCalledWith("creator", expect.anything());
   });
 
   it("500 generic when repository throws", async () => {
