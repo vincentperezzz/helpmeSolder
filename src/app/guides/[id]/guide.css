@@ -396,6 +396,74 @@
   }
 }
 
+/* ---------- two-option view switch (real parts, schematic) ---------- */
+
+.ga-seg {
+  display: inline-flex;
+  flex: none;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--ga-r-sm);
+  background: color-mix(in oklab, var(--ink) 6%, white);
+}
+
+.ga-seg-btn {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: calc(var(--ga-r-sm) - 2px);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.ga-seg-btn:hover {
+  color: var(--copper-deep);
+}
+
+.ga-seg-btn[aria-checked="true"] {
+  background: var(--copper-deep);
+  color: #fff;
+}
+
+@media (forced-colors: active) {
+  .ga-seg-btn[aria-checked="true"] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+/* ---------- print choice ---------- */
+
+.ga-print-choice {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ga-print-choice input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--copper-deep);
+}
+
+/* The printed schematic waits off screen at page width. print.css shows it. */
+.print-only-schematic {
+  position: absolute;
+  left: -10000px;
+  width: 680px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* ---------- solder strip (sticky controls at the top of the Solder tab) ---------- */
 
 .ga-strip {

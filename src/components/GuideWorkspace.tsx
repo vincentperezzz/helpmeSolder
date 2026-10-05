@@ -25,6 +25,7 @@ import { DrawerHead } from "@/components/guide/DrawerHead";
 import { PHONE_QUERY, snapForKey, type Snap } from "@/components/guide/drawer";
 import { PanelTabs, panelDomId, tabDomId } from "@/components/guide/PanelTabs";
 import { SCROLL_ATTR } from "@/components/guide/scroll";
+import { readView, writeView, type CircuitView } from "@/components/guide/view-storage";
 import { NotesPanel, StepsPanel } from "@/components/guide/TextPanels";
 import { TopBar } from "@/components/guide/TopBar";
 import {
@@ -33,6 +34,7 @@ import {
   type PowerSourceValue,
 } from "@/components/PowerSelector";
 import { PrepParts } from "@/components/PrepParts";
+import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
 import { SolderChecklist } from "@/components/SolderChecklist";
 import { ToolsList, toolsFor } from "@/components/ToolsList";
 import { WokwiDiagram } from "@/components/WokwiDiagram";
@@ -192,6 +194,16 @@ export function GuideWorkspace({
     if (saved !== null) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setBreadboardView(saved);
+    }
+  }, [guide.id]);
+
+  const [view, setView] = useState<CircuitView>("parts");
+
+  useEffect(() => {
+    const saved = readView(guide.id);
+    if (saved !== "parts") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setView(saved);
     }
   }, [guide.id]);
 
@@ -356,10 +368,18 @@ export function GuideWorkspace({
     if (layoutFeedback(shownGuide, next).length > 0) showChecks();
   }
 
+  function chooseView(value: CircuitView) {
+    setView(value);
+    writeView(guide.id, value);
+  }
+
+  const pictureHeading = view === "schematic" ? "Circuit schematic" : "Wiring picture";
+
   return (
     <main
       className="guide-app"
       data-enlarged={enlarged}
+      data-view={view}
     >
       <TopBar
         title={guide.title || "Untitled guide"}
@@ -369,15 +389,16 @@ export function GuideWorkspace({
         checksOpen={checksOpen}
         onToggleChecks={toggleChecks}
         checksId={checksId}
+        printGuide={layoutGuide}
       />
 
       <div className="ga-body">
         <section
-          aria-label="Wiring picture"
+          aria-label={pictureHeading}
           className="ga-stage"
           inert={phone && drawer === "full"}
         >
-          <h2 className="ga-ph">Wiring picture</h2>
+          <h2 className="ga-ph">{pictureHeading}</h2>
           <ControlsBar
             powerFact={fact}
             chosenPower={chosenPower}
@@ -388,19 +409,34 @@ export function GuideWorkspace({
             layoutPreview={isLayoutPreview}
             ownBreadboard={ownBreadboard}
             onBackToOriginal={() => chooseLayout(ownBreadboard)}
+            view={view}
+            onViewChange={chooseView}
           />
           <div className="ga-canvas-frame">
             <div className="ga-canvas-fill">
-              <WokwiDiagram
-                guide={layoutGuide}
-                enlarged={enlarged}
-                onEnlargedChange={setEnlarged}
-                focusedWireIds={focusedWireIds}
-                hideUnfocused={hideOthers}
-                hoveredWireId={hoverId}
-                onHoverWire={setHoverId}
-                onSelectWire={selectWire}
-              />
+              {view === "schematic" ? (
+                <SchematicDiagram
+                  guide={layoutGuide}
+                  enlarged={enlarged}
+                  onEnlargedChange={setEnlarged}
+                  focusedWireIds={focusedWireIds}
+                  hideUnfocused={hideOthers}
+                  hoveredWireId={hoverId}
+                  onHoverWire={setHoverId}
+                  onSelectWire={selectWire}
+                />
+              ) : (
+                <WokwiDiagram
+                  guide={layoutGuide}
+                  enlarged={enlarged}
+                  onEnlargedChange={setEnlarged}
+                  focusedWireIds={focusedWireIds}
+                  hideUnfocused={hideOthers}
+                  hoveredWireId={hoverId}
+                  onHoverWire={setHoverId}
+                  onSelectWire={selectWire}
+                />
+              )}
             </div>
           </div>
         </section>
