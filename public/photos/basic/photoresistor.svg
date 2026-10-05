@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Light sensor module: dark blue board with a red light-dependent resistor and a trimmer"><title>Photoresistor module</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d3a66"/><stop offset="1" stop-color="#1c2546"/></linearGradient></defs>
+<ellipse cx="160" cy="206" rx="120" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="40" y="48" width="240" height="144" rx="8" fill="url(#pcb)" stroke="#0f1630" stroke-width="2"/>
+<rect x="42" y="50" width="236" height="8" rx="4" fill="#fff" opacity="0.12"/>
+<circle cx="60" cy="68" r="6" fill="#e9edef" stroke="#8c969b" stroke-width="2"/><circle cx="60" cy="172" r="6" fill="#e9edef" stroke="#8c969b" stroke-width="2"/>
+<rect x="54" y="90" width="12" height="12" rx="2" fill="#14181c"/><circle cx="60" cy="96" r="3.5" fill="#d9b84a"/><rect x="54" y="106" width="12" height="12" rx="2" fill="#14181c"/><circle cx="60" cy="112" r="3.5" fill="#d9b84a"/><rect x="54" y="122" width="12" height="12" rx="2" fill="#14181c"/><circle cx="60" cy="128" r="3.5" fill="#d9b84a"/><rect x="54" y="138" width="12" height="12" rx="2" fill="#14181c"/><circle cx="60" cy="144" r="3.5" fill="#d9b84a"/>
+<rect x="96" y="76" width="64" height="88" rx="4" fill="none" stroke="#fff" stroke-width="2"/>
+<circle cx="128" cy="120" r="26" fill="#a82b2b" stroke="#6e1212" stroke-width="2"/>
+<circle cx="128" cy="120" r="19" fill="#d8c9a0"/>
+<path d="M116 106h24M116 114h24M116 122h24M116 130h24M116 138h24" stroke="#8a2020" stroke-width="3"/>
+<rect x="180" y="82" width="26" height="12" fill="#e9edef" stroke="#8c969b" stroke-width="1.5"/><rect x="186" y="82" width="12" height="12" fill="#29261c"/>
+<rect x="180" y="106" width="26" height="12" fill="#e9edef" stroke="#8c969b" stroke-width="1.5"/><rect x="186" y="106" width="12" height="12" fill="#29261c"/>
+<rect x="222" y="86" width="34" height="34" rx="4" fill="#2b66c4" stroke="#17408a" stroke-width="2"/>
+<circle cx="239" cy="103" r="10" fill="#e9edef" stroke="#8c969b" stroke-width="2"/><path d="M233 103h12" stroke="#5a656b" stroke-width="2.5"/>
+<rect x="222" y="138" width="34" height="26" rx="3" fill="#14181c"/>
+<circle cx="190" cy="152" r="5" fill="#e23a30"/><circle cx="206" cy="152" r="5" fill="#2fb84a"/>
+</svg>

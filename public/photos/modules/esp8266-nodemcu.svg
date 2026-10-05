@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="ESP8266 NodeMCU board: dark board with a silver ESP-12 Wi-Fi module and gold antenna, a micro USB port, two buttons and two rows of pins">
+  <title>ESP8266 NodeMCU board: dark board with a silver ESP-12 Wi-Fi module and gold antenna, a micro USB port, two buttons and two rows of pins</title>
+  <ellipse cx="160" cy="196" rx="128" ry="8" fill="#121a20" opacity="0.16"/>
+  <rect x="36" y="64" width="248" height="118" rx="5" fill="#16191e" stroke="#05070a" stroke-width="2"/>
+  <rect x="39" y="67" width="242" height="112" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12"/>
+  <rect x="104" y="68" width="170" height="10" rx="1.5" fill="#0a0d10"/>
+  <circle cx="110" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="121" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="132" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="143" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="154" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="165" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="176" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="187" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="198" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="209" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="220" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="231" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="242" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="253" cy="73" r="2.2" fill="#d7c27a"/>
+  <circle cx="264" cy="73" r="2.2" fill="#d7c27a"/>
+  <rect x="104" y="168" width="170" height="10" rx="1.5" fill="#0a0d10"/>
+  <circle cx="110" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="121" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="132" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="143" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="154" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="165" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="176" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="187" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="198" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="209" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="220" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="231" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="242" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="253" cy="173" r="2.2" fill="#d7c27a"/>
+  <circle cx="264" cy="173" r="2.2" fill="#d7c27a"/>
+  <rect x="196" y="84" width="76" height="78" rx="2" fill="#c9cfd3" stroke="#6d777d" stroke-width="1.4"/>
+  <rect x="204" y="92" width="60" height="34" rx="1" fill="#aeb6bb"/>
+  <text x="234" y="114" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" fill="#33404a" text-anchor="middle">ESP-12E</text>
+  <path d="M206 136 H214 V148 H222 V136 H230 V148 H238 V136 H246 V148 H254 V136" stroke="#d7c27a" stroke-width="2.6" fill="none" stroke-linejoin="round"/>
+  <rect x="26" y="102" width="42" height="40" rx="3" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="34" y="110" width="28" height="24" rx="2" fill="#14181b"/>
+  <rect x="80" y="94" width="28" height="26" rx="2" fill="#242b33" stroke="#05070a" stroke-width="1"/>
+  <circle cx="94" cy="107" r="3" fill="#6d777d"/>
+  <rect x="76" y="132" width="18" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="98" y="132" width="18" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="130" y="106" width="26" height="16" rx="1.5" fill="#121a20"/>
+  <circle cx="134" cy="110" r="1.3" fill="#50606a"/>
+  <rect x="133.2" y="103.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="133.2" y="122" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="137.6" y="103.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="137.6" y="122" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="142" y="103.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="142" y="122" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="146.4" y="103.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="146.4" y="122" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="150.8" y="103.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="150.8" y="122" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="163.5" y="109" width="9" height="6" rx="1.2" fill="#3b6fd6" stroke="#121a20" stroke-width="0.8"/>
+  <rect x="165.5" y="110" width="3" height="1.4" rx="0.5" fill="#fff" opacity="0.5"/>
+  <text x="150" y="152" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.9">NodeMCU</text>
+</svg>

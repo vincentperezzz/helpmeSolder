@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="NEMA 17 stepper motor seen from the shaft end: square steel body, round pilot boss with a flatted shaft, four mounting holes and a four wire cable">
+  <title>NEMA 17 stepper motor seen from the shaft end: square steel body, round pilot boss with a flatted shaft, four mounting holes and a four wire cable</title>
+  <ellipse cx="160" cy="226" rx="92" ry="8" fill="#121a20" opacity="0.16"/>
+  <path d="M112 184 C112 206 128 204 128 214" stroke="#d9342b" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M136 184 C136 206 148 204 148 214" stroke="#2a2f33" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M184 184 C184 206 172 204 172 214" stroke="#2f6fd0" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M208 184 C208 206 192 204 192 214" stroke="#e6c13a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <rect x="122" y="212" width="76" height="10" rx="2" fill="#f0efe6" stroke="#9a988a" stroke-width="1"/>
+  <rect x="80" y="22" width="160" height="162" rx="10" fill="#2c3338" stroke="#14181b" stroke-width="2.5"/>
+  <rect x="86" y="28" width="148" height="150" rx="7" fill="#4a545b"/>
+  <rect x="92" y="34" width="136" height="138" rx="5" fill="#6d777d"/>
+  <circle cx="104" cy="46" r="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <circle cx="104" cy="46" r="3.4" fill="#2c3338"/>
+  <circle cx="216" cy="46" r="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <circle cx="216" cy="46" r="3.4" fill="#2c3338"/>
+  <circle cx="104" cy="160" r="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <circle cx="104" cy="160" r="3.4" fill="#2c3338"/>
+  <circle cx="216" cy="160" r="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <circle cx="216" cy="160" r="3.4" fill="#2c3338"/>
+  <circle cx="160" cy="103" r="44" fill="#aeb6bb" stroke="#6d777d" stroke-width="2"/>
+  <circle cx="160" cy="103" r="38" fill="#c9cfd3"/>
+  <circle cx="160" cy="103" r="22" fill="#8f999f" stroke="#6d777d" stroke-width="1.2"/>
+  <circle cx="160" cy="103" r="13" fill="#e1e6e9" stroke="#6d777d" stroke-width="1.5"/>
+  <path d="M153 112 A9 9 0 1 1 167 112 Z" fill="#aeb6bb"/>
+  <path d="M126 80 A40 40 0 0 1 150 66" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.5"/>
+</svg>

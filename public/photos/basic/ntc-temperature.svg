@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Temperature sensor module: blue board with a small NTC bead on two leads"><title>NTC temperature module</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a5a9a"/><stop offset="1" stop-color="#0f3661"/></linearGradient></defs>
+<ellipse cx="160" cy="206" rx="116" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="44" y="52" width="232" height="136" rx="8" fill="url(#pcb)" stroke="#082847" stroke-width="2"/>
+<rect x="46" y="54" width="228" height="8" rx="4" fill="#fff" opacity="0.12"/>
+<circle cx="64" cy="72" r="6" fill="#e9edef" stroke="#8c969b" stroke-width="2"/><circle cx="64" cy="168" r="6" fill="#e9edef" stroke="#8c969b" stroke-width="2"/>
+<rect x="86" y="92" width="12" height="12" rx="2" fill="#14181c"/><circle cx="92" cy="98" r="3.5" fill="#d9b84a"/><rect x="86" y="114" width="12" height="12" rx="2" fill="#14181c"/><circle cx="92" cy="120" r="3.5" fill="#d9b84a"/><rect x="86" y="136" width="12" height="12" rx="2" fill="#14181c"/><circle cx="92" cy="142" r="3.5" fill="#d9b84a"/>
+<path d="M150 104 C190 96 214 100 240 118 M150 140 C190 148 214 142 240 122" fill="none" stroke="#c9d0d4" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="148" cy="104" rx="14" ry="11" fill="#bdc3c7" stroke="#6b767a" stroke-width="2"/>
+<ellipse cx="148" cy="140" rx="14" ry="11" fill="#bdc3c7" stroke="#6b767a" stroke-width="2"/>
+<ellipse cx="250" cy="120" rx="22" ry="17" fill="#2a2e33" stroke="#1b2227" stroke-width="2"/>
+<ellipse cx="243" cy="113" rx="9" ry="5" fill="#fff" opacity="0.35"/>
+<rect x="226" y="154" width="36" height="14" fill="#29261c"/>
+</svg>

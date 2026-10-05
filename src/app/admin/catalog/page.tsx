@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { buildCoverage } from "@/lib/admin/coverage";
 import { fetchGuideRows } from "@/lib/admin/data";
 import { guideUsageCounts } from "@/lib/admin/usage";
@@ -63,6 +64,14 @@ export default async function AdminCatalogPage() {
             <p className="mt-3 text-sm text-ink-soft">
               Of {coverage.total} parts, {coverage.percent.drawing}% have a diagram drawing and{" "}
               {coverage.percent.thumbnail}% have a thumbnail.
+            </p>
+
+            <p className="mt-3 text-sm text-ink-soft">
+              To see the actual images for every part, open the{" "}
+              <Link href="/admin/assets" className="underline">
+                Assets tab
+              </Link>
+              .
             </p>
 
             {!usage ? (

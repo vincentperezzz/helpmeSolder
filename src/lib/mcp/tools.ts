@@ -1,7 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getCatalogPart, listCatalog } from "@/lib/catalog";
-import type { Guide, ValidationResult } from "@/lib/catalog/types";
+import { CATEGORIES, categoryOf } from "@/lib/admin/coverage";
+import type { CatalogPart, Guide, ValidationResult } from "@/lib/catalog/types";
 import {
   createGuide,
   getGuide,
@@ -48,6 +49,7 @@ Required order. Do not skip or reorder:
 5. When validate_guide returns shareUrl, share that link ONCE, as your last message, and mention the retention message it returns (guides are deleted if nobody opens them for a while). get_guide_link returns the same link again later. If there is no shareUrl, read missing[] and finish the guide first.
 
 Catalog: if unsure of an id call search_catalog with a short name. Never invent ids.
+Before choosing any part call get_part_details (or read the search_catalog hint). When buying advice matters (active vs passive buzzer, 3.3 V vs 5 V, I2C vs SPI display), read its identify and watchOuts to the user out loud.
 If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
 If the user wants a power type we do not list (coin cell, LiPo, AAA, solar, mains), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option.
 
@@ -56,6 +58,77 @@ Writing steps (readers are beginners who dislike circuit diagrams):
 - When a step names a pin, use the exact pin label used in the connections (for example "1 (SIG)" or "GND", never "+" or "-" if the pin is labelled otherwise).
 - Order: prepare parts and tools, solder power and ground first, then signal wires, then power up and test.
 - One action per step, plain words, short sentences. Say what to look for at the end (for example "the LED lights").`;
+
+function firstSentence(text: string, max = 160): string {
+  return text.split(/(?<=[.!?])\s/)[0].slice(0, max);
+}
+
+function categoryLabel(part: CatalogPart): string {
+  const id = categoryOf(part.kind, part.id);
+  return CATEGORIES.find((category) => category.id === id)?.label ?? "Other basic parts";
+}
+
+/** Compact catalog entry: enough to pick a part, not its full detail. */
+function compactPart(part: CatalogPart) {
+  return {
+    id: part.id,
+    name: part.name,
+    kind: part.kind,
+    category: categoryLabel(part),
+    summary: firstSentence(part.description),
+  };
+}
+
+/** Electrical limits in plain words. Only states what the catalog knows. */
+function electricalInWords(part: CatalogPart): string[] {
+  const e = part.electrical;
+  if (!e) return [];
+  const lines: string[] = [];
+  if (e.logic) lines.push(`Logic level: ${e.logic === "3v3" ? "3.3 V" : "5 V"}.`);
+  if (e.supply) lines.push(`Supply: ${e.supply.min} to ${e.supply.max} V.`);
+  if (e.logicFollowsSupply) lines.push("Signal levels follow whatever supply voltage it is wired to.");
+  if (e.fiveVTolerantIo === true) lines.push("Pins tolerate 5 V input.");
+  if (e.fiveVTolerantIo === false) lines.push("Pins are NOT 5 V tolerant: never feed them 5 V.");
+  if (e.inputMaxVolts !== undefined) {
+    lines.push(
+      `Signal inputs accept at most ${e.inputMaxVolts} V${e.inputMaxIsHard === false ? " (advisory limit)" : ""}.`,
+    );
+  }
+  if (e.inputOnlyPins?.length) lines.push(`Input-only pins: ${e.inputOnlyPins.join(", ")}.`);
+  if (e.battery) lines.push(`Battery: ${e.battery.cells} cell(s), ${e.battery.chemistry}.`);
+  return lines;
+}
+
+function allCatalogParts(): CatalogPart[] {
+  const { boards, modules, passives } = listCatalog();
+  return [...boards, ...modules, ...passives];
+}
+
+/** Parts in the same family (same first two id segments), easy to confuse with this one. */
+function relatedParts(part: CatalogPart) {
+  const family = (id: string) => id.split(".").slice(0, 2).join(".");
+  return allCatalogParts()
+    .filter((other) => other.id !== part.id && family(other.id) === family(part.id))
+    .slice(0, 6)
+    .map((other) => ({ id: other.id, name: other.name, summary: firstSentence(other.description) }));
+}
+
+function partDetails(part: CatalogPart) {
+  return {
+    id: part.id,
+    name: part.name,
+    kind: part.kind,
+    category: categoryLabel(part),
+    description: part.description,
+    identify: part.identify ?? null,
+    variants: (part.variants ?? []).map(({ label, detail }) => ({ label, detail })),
+    watchOuts: part.watchOuts ?? [],
+    photoCaption: part.photoCaption ?? null,
+    pins: part.pins.map(({ id, label, kinds, voltage }) => ({ id, label, kinds, voltage })),
+    electrical: electricalInWords(part),
+    relatedParts: relatedParts(part),
+  };
+}
 
 const connectionEndpoint = z.object({ instanceId: z.string(), pinId: z.string() });
 
@@ -438,10 +511,20 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "list_catalog",
     {
       description:
-        "List boards, modules, passives (breadboard, resistors, LEDs, pots, buttons, USB wall, battery holders), and recipes. Use passives whenever a prototype needs current limiting, pull-ups, or a breadboard.",
+        "Compact list of boards, modules, passives (breadboard, resistors, LEDs, pots, buttons, USB wall, battery holders), and recipes: id, name, kind, category and a one-line summary. Call get_part_details for full detail. Use passives whenever a prototype needs current limiting, pull-ups, or a breadboard.",
       inputSchema: {},
     },
-    () => safely(async () => textResult(listCatalog())),
+    () =>
+      safely(async () => {
+        const { boards, modules, passives, recipes } = listCatalog();
+        return textResult({
+          boards: boards.map(compactPart),
+          modules: modules.map(compactPart),
+          passives: passives.map(compactPart),
+          recipes,
+          next: "Call get_part_details with an id for pins, variants and watch-outs before choosing a part.",
+        });
+      }),
   );
 
   server.registerTool(
@@ -463,13 +546,42 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         });
         return textResult({
           query,
-          results: matches.map((part) => ({
-            id: part.id,
-            name: part.name,
-            kind: part.kind,
-            description: part.description.split(/(?<=[.!?])\s/)[0].slice(0, 160),
-          })),
+          results: matches.map((part) => {
+            const full = getCatalogPart(part.id);
+            return {
+              id: part.id,
+              name: part.name,
+              kind: part.kind,
+              category: full ? categoryLabel(full) : null,
+              summary: firstSentence(part.description),
+              identify: full?.identify?.slice(0, 200) ?? null,
+            };
+          }),
         });
+      }),
+  );
+
+  server.registerTool(
+    "get_part_details",
+    {
+      description:
+        "Read-only. Full detail of one catalog part by exact id: description, how to identify it, variants, watchOuts, pins, electrical limits in plain words and look-alike related parts. Call it before choosing a part, and read identify/watchOuts to the user when it matters for buying (active vs passive buzzer, 3.3 V vs 5 V, I2C vs SPI display).",
+      inputSchema: { catalog_id: z.string().max(200) },
+    },
+    ({ catalog_id }) =>
+      safely(async () => {
+        const part = getCatalogPart(catalog_id);
+        if (!part) {
+          const close = suggestClosest(catalog_id, 5);
+          const hint =
+            close.length > 0
+              ? ` Closest parts: ${close.map((p) => `${p.id} (${p.name})`).join("; ")}.`
+              : "";
+          return errorResult(
+            `Unknown catalog part "${catalog_id}".${hint} Use search_catalog or list_catalog for exact ids.`,
+          );
+        }
+        return textResult(partDetails(part));
       }),
   );
 

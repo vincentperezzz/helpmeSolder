@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Black round active buzzer with a plus mark and two legs"><title>Active buzzer</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><radialGradient id="top" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#4a5258"/><stop offset="1" stop-color="#14181c"/></radialGradient><linearGradient id="side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#0e1114"/></linearGradient></defs>
+<ellipse cx="160" cy="210" rx="92" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="118" y="160" width="6" height="42" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="196" y="160" width="6" height="34" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<path d="M72 96 V150 A88 24 0 0 0 248 150 V96 Z" fill="url(#side)" stroke="#1b2227" stroke-width="2"/>
+<ellipse cx="160" cy="96" rx="88" ry="30" fill="url(#top)" stroke="#1b2227" stroke-width="2"/>
+<ellipse cx="160" cy="96" rx="22" ry="8" fill="#0e1114" stroke="#5a636a" stroke-width="2"/>
+<path d="M104 90 L116 90 M110 84 L110 96" stroke="#e23a30" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="124" cy="82" rx="30" ry="5" fill="#fff" opacity="0.18" transform="rotate(-12 124 82)"/>
+</svg>
