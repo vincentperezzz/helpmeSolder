@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
+import { readPrintSchematic, writePrintSchematic } from "@/components/guide/view-storage";
+import type { Guide } from "@/lib/catalog/types";
 import "./print.css";
 
 // Width in CSS pixels that the wiring picture is scaled to. A4 and Letter with
@@ -67,7 +71,23 @@ function restorePage(state: PrintState) {
   state.viewport = null;
 }
 
-export function PrintButton() {
+type PrintButtonProps = {
+  /** The guide as drawn. Needed for the "Include schematic" choice. */
+  guide?: Guide;
+};
+
+export function PrintButton({ guide }: PrintButtonProps) {
+  const guideId = guide?.id;
+  const [withSchematic, setWithSchematic] = useState(false);
+  const [stage, setStage] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Read after mount so server and first client render match.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (guideId) setWithSchematic(readPrintSchematic(guideId));
+    setStage(document.querySelector<HTMLElement>(".guide-app .ga-stage"));
+  }, [guideId]);
+
   const canPrint = useSyncExternalStore(noopSubscribe, canPrintNow, canPrintOnServer);
   const stateRef = useRef<PrintState>({ openedDetails: [], stampedEl: null, viewport: null });
 
@@ -95,14 +115,38 @@ export function PrintButton() {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      aria-label="Print this guide"
-      data-print-button
-      className="ga-btn print:hidden"
-    >
-      Print
-    </button>
+    <>
+      {guide ? (
+        <label data-print-hide="true" className="ga-print-choice">
+          <input
+            type="checkbox"
+            checked={withSchematic}
+            onChange={(event) => {
+              setWithSchematic(event.target.checked);
+              writePrintSchematic(guide.id, event.target.checked);
+            }}
+          />
+          <span>Include schematic</span>
+        </label>
+      ) : null}
+      <button
+        type="button"
+        onClick={handleClick}
+        aria-label="Print this guide"
+        data-print-button
+        className="ga-btn print:hidden"
+      >
+        Print
+      </button>
+      {guide && withSchematic && stage
+        ? createPortal(
+            <div className="print-only-schematic" aria-hidden="true" inert>
+              <h2>Circuit schematic</h2>
+              <SchematicDiagram guide={guide} />
+            </div>,
+            stage,
+          )
+        : null}
+    </>
   );
 }

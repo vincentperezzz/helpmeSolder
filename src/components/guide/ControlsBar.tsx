@@ -2,6 +2,8 @@
 
 import { LayoutToggle } from "@/components/LayoutToggle";
 import { PowerSelector, type PowerSourceValue } from "@/components/PowerSelector";
+import { ViewToggle } from "@/components/ViewToggle";
+import type { CircuitView } from "./view-storage";
 import type { PowerSource } from "@/lib/catalog/types";
 import { PowerChip } from "./TopBar";
 
@@ -18,6 +20,8 @@ type ControlsBarProps = {
   layoutPreview: boolean;
   ownBreadboard: boolean;
   onBackToOriginal: () => void;
+  view: CircuitView;
+  onViewChange: (value: CircuitView) => void;
 };
 
 /**
@@ -35,6 +39,8 @@ export function ControlsBar({
   layoutPreview,
   ownBreadboard,
   onBackToOriginal,
+  view,
+  onViewChange,
 }: ControlsBarProps) {
   return (
     <div data-print-hide="true" className="ga-controls">
@@ -52,8 +58,11 @@ export function ControlsBar({
           ) : null}
         </>
       )}
-      <LayoutToggle checked={breadboard} onChange={onBreadboardChange} />
-      {layoutPreview ? (
+      <ViewToggle value={view} onChange={onViewChange} />
+      {view === "parts" ? (
+        <LayoutToggle checked={breadboard} onChange={onBreadboardChange} />
+      ) : null}
+      {layoutPreview && view === "parts" ? (
         <p className="flex min-w-0 flex-wrap items-center gap-x-3 text-xs text-ink-soft sm:ml-auto">
           <span>
             Preview: this guide was written with {ownBreadboard ? "a breadboard" : "direct wires"}.

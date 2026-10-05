@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { PrintButton } from "@/app/guides/[id]/PrintButton";
+import type { Guide } from "@/lib/catalog/types";
 import { StatusPill } from "./Checks";
 import type { GuideChecks } from "./model";
 
@@ -15,6 +16,8 @@ type TopBarProps = {
   checksOpen: boolean;
   onToggleChecks: () => void;
   checksId: string;
+  /** The guide as drawn, used when the viewer prints with the schematic. */
+  printGuide: Guide;
 };
 
 export function PowerChip({ fact }: { fact: string | null }) {
@@ -50,6 +53,7 @@ export function TopBar({
   checksOpen,
   onToggleChecks,
   checksId,
+  printGuide,
 }: TopBarProps) {
   return (
     <header className="ga-bar">
@@ -74,7 +78,7 @@ export function TopBar({
           onToggle={onToggleChecks}
           controlsId={checksId}
         />
-        <PrintButton />
+        <PrintButton guide={printGuide} />
       </div>
     </header>
   );
