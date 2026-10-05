@@ -137,6 +137,8 @@ export type Guide = {
   notes: string[];
   created_at: string;
   updated_at: string;
+  /** Last time the guide was opened or updated; drives automatic cleanup. */
+  last_accessed_at?: string | null;
 };
 
 export type ValidationSeverity = "error" | "warning";

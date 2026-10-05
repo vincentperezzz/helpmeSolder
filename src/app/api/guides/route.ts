@@ -5,6 +5,7 @@ import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, parseBody } from "@/lib/api/http";
 import { CREATE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { createGuide } from "@/lib/guides/repository";
+import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
 
 const createSchema = z.object({
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
         guide,
         validation,
         url: `${appUrl}/guides/${guide.id}`,
+        retention: { days: getRetentionDays(), message: retentionNotice() },
       },
       { status: 201 },
     );

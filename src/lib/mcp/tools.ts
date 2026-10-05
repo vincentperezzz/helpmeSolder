@@ -11,6 +11,7 @@ import {
   POWER_SOURCE_VALUES,
   normalizePowerSource,
 } from "@/lib/guides/power-source";
+import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
 import { sensorCategories } from "./sensor-options";
 
@@ -33,7 +34,7 @@ Flow:
 1. list_catalog to pick a board and parts.
 2. If the power source is unknown call ask_power_source and ASK THE USER (never guess), later set_power_source.
 3. If the build needs a sensor/input and the exact module is unknown call ask_sensor and ASK THE USER.
-4. create_guide, then tell the user the returned url.
+4. create_guide, then tell the user the returned url and mention that the guide is deleted if unopened (see retention.message).
 5. set_power_source, add_part (catalog ids only), add_connection, set_steps.
 6. validate_guide and fix problems using alternatives[].`;
 
@@ -98,6 +99,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
           guide,
           validation: validateGuide(guide),
           url: `${ctx.appUrl}/guides/${guide.id}`,
+          retention: { days: getRetentionDays(), message: retentionNotice() },
         });
       }),
   );
