@@ -5,7 +5,22 @@ const baseModules: CatalogPart[] = [
     id: "module.buzzer.active",
     name: "Buzzer",
     kind: "module",
-    description: "Active buzzer: it beeps by itself when switched on. Pin 1 goes to a GPIO pin on the board, pin 2 goes to ground. A passive buzzer needs a different, tone-playing setup and will not behave the same, so buy an active one.",
+    description:
+      "Active buzzer: it has a tiny oscillator inside, so it makes one fixed beep tone by itself whenever it gets power. You just switch it on (HIGH) and off (LOW) from a digital pin; you cannot change its pitch. Pin 1 (the + pin, usually the longer leg and marked + on top) goes to a GPIO pin on the board, pin 2 goes to ground.",
+    identify:
+      "A black plastic cylinder about 12 mm wide with two legs and a small + mark on top. Active vs passive: the bottom of an active buzzer is usually sealed with black epoxy, while a passive one shows a bare green circuit board underneath. A quick test is to give it a few volts directly: an active one beeps, a passive one only clicks. Read the product listing for the word active.",
+    variants: [
+      { label: "Bare buzzer, 2 legs", detail: "The part this entry describes. The longer leg or the + mark is the signal side." },
+      { label: "Breakout module, 3 pins", detail: "Small board with the buzzer on it, pins labelled S (signal), a middle pin and - (ground). Check the silkscreen before wiring and confirm the listing says active." },
+      { label: "Passive buzzer", detail: "Looks almost identical but needs a tone signal (PWM) from the board, so it is not a drop-in replacement." },
+    ],
+    watchOuts: [
+      "Buy an active buzzer. A passive buzzer on a plain HIGH/LOW pin only clicks and will not beep.",
+      "Check the rated voltage on the label (3.3 V, 3-5 V or 5 V). A 5 V buzzer on a 3.3 V pin works but is quieter.",
+      "Current draw is often around 20-30 mA, which is close to the limit for a weak GPIO pin. For a louder or bigger buzzer, drive it through a transistor.",
+      "Polarity matters: the + pin goes to the signal pin, - to ground. Reversing it gives no sound.",
+    ],
+    photoCaption: "Black cylinder buzzer with a + mark on top and two legs",
     photoHint: "buzzer-active",
     wokwi: { tag: "wokwi-buzzer" },
     pins: [
@@ -17,7 +32,21 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.i2c.1602",
     name: "LCD 1602 (I2C)",
     kind: "module",
-    description: "Small 16x2 text screen with a little circuit board on the back, so it needs only 4 wires.",
+    description:
+      "A 16-column by 2-row character LCD (HD44780-compatible) with a small I2C backpack board soldered to its back, so it needs only 4 wires: GND, VCC (5 V), SDA (data) and SCL (clock). It shows plain text, not pictures. The backpack (usually a PCF8574 chip) turns the I2C signal into the many pins the screen needs. The I2C pins are not level shifted, so they swing to the supply voltage when the module is powered with 5 V.",
+    identify:
+      "A rectangular green or blue board with a window of 2 rows of 16 character cells, a blue or green backlight, and a small extra board on the back with 4 header pins (GND, VCC, SDA, SCL), a blue box-shaped contrast trimmer and a chip. The same screen without the backpack has a row of 16 pins along the top edge (that is the parallel kind). Count the cells: 16x2 is this part; 20x4 is the bigger one.",
+    variants: [
+      { label: "I2C address 0x27 or 0x3F", detail: "The address depends on the backpack chip (PCF8574 is usually 0x27, PCF8574A usually 0x3F). Check the seller's text and be ready to run an I2C scan." },
+      { label: "Backlight colour", detail: "Blue with white text is the most common; green or yellow with black text also exist. This only changes looks." },
+    ],
+    watchOuts: [
+      "Needs 5 V on VCC. At 3.3 V the text is usually faint or invisible.",
+      "If the screen lights up but shows blank boxes or nothing, turn the small blue contrast trimmer on the backpack with a screwdriver.",
+      "The I2C address is not always 0x27; many boards use 0x3F. The solder pads A0, A1, A2 on the backpack change the address.",
+      "On a 3.3 V board such as an ESP32 or Raspberry Pi Pico, the backpack pull-ups go to 5 V, so use a level shifter or a board with 5 V tolerant pins.",
+    ],
+    photoCaption: "16x2 text LCD with a small I2C backpack board on the back",
     photoHint: "lcd-1602-i2c",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd1602", attrs: { pins: "i2c", text: "Hello World" } },
@@ -32,7 +61,21 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.parallel.1602",
     name: "LCD 1602 (parallel)",
     kind: "module",
-    description: "Small 16x2 text screen with a full row of pins (needs more wires than the I2C kind).",
+    description:
+      "A 16-column by 2-row character LCD (HD44780-compatible) with no extra circuit board, so every signal has its own pin. It shows plain text only. In the common 4-bit setup you connect RS, E and D4-D7, power it with 5 V on VDD and tie RW to ground. Pins: VSS ground, VDD 5 V, V0 contrast, RS register select, RW read/write, E enable, D4-D7 data, A backlight anode (+), K backlight cathode (-).",
+    identify:
+      "The same blue or green board as the I2C kind, but with a single row of 16 pin holes along the top edge and no small board on the back. The pins are numbered 1 to 16 on the silkscreen. If you see a second small board with only 4 pins, that is the I2C kind.",
+    variants: [
+      { label: "Backlight colour", detail: "Blue with white text or green/yellow with black text; the wiring is the same either way." },
+      { label: "Pin header not soldered", detail: "Many are sold with a loose strip of pins that you solder on yourself." },
+    ],
+    watchOuts: [
+      "V0 sets the contrast. Wire it to the middle pin of a 10 kohm trimmer connected between 5 V and GND, and turn it until boxes appear. With V0 wired straight to 5 V you see nothing.",
+      "The backlight pins A and K usually need a series resistor (some boards have one built in on the back; check) before A goes to 5 V.",
+      "It needs about 10 wires in 4-bit mode, so check you have enough free pins on the board.",
+      "Tie RW to ground if you never read from the screen.",
+    ],
+    photoCaption: "16x2 text LCD with a single row of 16 pins along the top",
     photoHint: "lcd-1602",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd1602", attrs: { pins: "full", text: "Hello World" } },
@@ -55,7 +98,22 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.i2c.2004",
     name: "LCD 2004 (I2C)",
     kind: "module",
-    description: "Larger 20x4 text screen with a little circuit board on the back, so it needs only 4 wires.",
+    description:
+      "A 20-column by 4-row character LCD (HD44780-compatible) with a small I2C backpack board on the back, so it needs only 4 wires: GND, VCC (5 V), SDA and SCL. It shows plain text only. The I2C pins are not level shifted, so they swing to the supply voltage (5 V).",
+    identify:
+      "A larger board than the 16x2, with 4 rows of 20 character cells and a small board soldered on the back with 4 pins (GND, VCC, SDA, SCL), a contrast trimmer and a chip. The same screen without the backpack has 16 pins in a row along the top (parallel kind). The smaller 16x2 lookalike has only 2 rows.",
+    variants: [
+      { label: "I2C address 0x27 or 0x3F", detail: "Depends on the backpack chip; check the listing and be ready to run an I2C scan." },
+      { label: "Backlight colour", detail: "Blue with white text is common; green also exists." },
+    ],
+    watchOuts: [
+      "Power with 5 V on VCC; at 3.3 V the text is often faint.",
+      "Blank boxes or a lit screen with no text usually means the contrast trimmer on the backpack needs turning.",
+      "Check the I2C address (0x27 or 0x3F). Solder pads A0-A2 on the backpack change it.",
+      "With a 3.3 V board (ESP32, Pico) the backpack pull-ups tie SDA/SCL to 5 V; use a level shifter.",
+      "The backlight makes it draw more current than a 16x2, so give it a solid 5 V supply.",
+    ],
+    photoCaption: "20x4 text LCD with a small I2C backpack board on the back",
     photoHint: "lcd-2004-i2c",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd2004", attrs: { pins: "i2c", text: "Hello 20x4 LCD" } },
@@ -70,7 +128,21 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.parallel.2004",
     name: "LCD 2004 (parallel)",
     kind: "module",
-    description: "Larger 20x4 text screen with a full row of pins (needs more wires than the I2C kind).",
+    description:
+      "A 20-column by 4-row character LCD (HD44780-compatible) with no extra circuit board, so every signal has its own pin. It shows plain text only. In the common 4-bit setup you connect RS, E and D4-D7, power it with 5 V on VDD and tie RW to ground. Pins: VSS ground, VDD 5 V, V0 contrast, RS, RW, E, D4-D7 data, A backlight anode (+), K backlight cathode (-).",
+    identify:
+      "4 rows of 20 character cells and a row of 16 pins along the top edge, with no second board on the back. The smaller 16x2 screen has 2 rows; the I2C kind has a small extra board with only 4 pins.",
+    variants: [
+      { label: "Backlight colour", detail: "Blue with white text or green with black text; the wiring is the same." },
+      { label: "Pin header not soldered", detail: "Often sold with a loose pin strip you solder on yourself." },
+    ],
+    watchOuts: [
+      "V0 sets the contrast: use a 10 kohm trimmer between 5 V and GND with the middle pin on V0, and adjust until boxes appear.",
+      "The backlight A/K pins often need a series resistor; check the back of the board for one before putting A on 5 V.",
+      "Needs about 10 wires in 4-bit mode, so count your free pins.",
+      "Tie RW to ground if you never read from the screen.",
+    ],
+    photoCaption: "20x4 text LCD with a single row of 16 pins along the top",
     photoHint: "lcd-2004",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd2004", attrs: { pins: "full", text: "Hello 20x4 LCD" } },
@@ -93,7 +165,23 @@ const baseModules: CatalogPart[] = [
     id: "module.oled.ssd1306",
     name: "OLED SSD1306",
     kind: "module",
-    description: "Small 128x64 pixel display. On the I2C kind, DATA connects to SDA and CLK connects to SCL.",
+    description:
+      "A small OLED screen (commonly 0.96 inch, 128x64 pixels, one colour) driven by the SSD1306 chip. It draws text and simple graphics and has no backlight. With the common 4-pin I2C kind you use GND, VCC, DATA (SDA) and CLK (SCL) only; the 7-pin SPI kind also uses DC, RST and CS. The chip runs at 3.3 V logic; most breakouts accept 3.3-5 V on the power pin, but check the label.",
+    identify:
+      "A tiny board with a glass window of 128x64 white, blue or yellow/blue pixels. 4 pins (GND, VCC, SCL, SDA) means I2C; 7 pins (GND, VCC, D0, D1, RES, DC, CS) means SPI. A 1.3 inch screen that looks the same is usually an SH1106, which needs a different library, and a 128x32 screen is only half the height.",
+    variants: [
+      { label: "I2C, 4 pins", detail: "GND, VCC, SCL, SDA. The address is usually 0x3C, sometimes 0x3D. The pin order is not the same on every board, so read the silkscreen." },
+      { label: "SPI, 7 pins", detail: "Faster and uses more wires. Some boards have solder resistors that switch between I2C and SPI; check the listing." },
+      { label: "Size and colour", detail: "128x64 is standard, 128x32 also exists. Colours: white, blue, or a yellow top band with blue below." },
+      { label: "SH1106 lookalike", detail: "Usually 1.3 inch; the picture looks shifted by a couple of pixels if the SSD1306 library is used. Check the chip name on the listing." },
+    ],
+    watchOuts: [
+      "Check the pin order on the silkscreen: some boards are GND-VCC-SCL-SDA, others VCC-GND-SCL-SDA, and swapping VCC and GND can destroy the screen.",
+      "The I2C address is usually 0x3C but can be 0x3D; run an I2C scan if you see nothing.",
+      "Prefer powering from 3.3 V on a 3.3 V board; 5 V on the power pin is only safe if the listing says the module accepts it.",
+      "Do not leave a bright static image on screen for hours; OLED pixels burn in.",
+    ],
+    photoCaption: "Small 128x64 OLED screen board with a 4-pin or 7-pin header",
     photoHint: "ssd1306",
     displayClass: "oled",
     wokwi: { tag: "wokwi-ssd1306" },
@@ -112,7 +200,22 @@ const baseModules: CatalogPart[] = [
     id: "module.tft.ili9341",
     name: "TFT ILI9341",
     kind: "module",
-    description: "Small color screen (ILI9341 chip) for text and pictures.",
+    description:
+      "A colour screen (commonly 2.8 inch, 240x320 pixels) driven by the ILI9341 chip over SPI. It can show text, pictures and graphics, and many boards add a touch layer and a microSD slot. The chip runs at 3.3 V logic. Pins: VCC power, GND, CS chip select, RST reset, D/C data-or-command, MOSI data in, SCK clock, LED backlight power, MISO data out (optional if you never read from the screen).",
+    identify:
+      "A board with a glass colour screen, usually 2.8 inch, and a header of 9 to 14 pins on one edge; the chip name ILI9341 is in the listing. Lookalikes: ST7735 (1.8 inch, 128x160), ST7789 (small, 240x240 or 240x320) and ILI9488 (3.5 inch, 320x480). A version with an extra row of T_ pins has a resistive touch layer.",
+    variants: [
+      { label: "With or without touch", detail: "Touch versions add pins named T_CLK, T_CS, T_DIN, T_DO and T_IRQ." },
+      { label: "With microSD slot", detail: "Adds SD_CS, SD_MOSI, SD_MISO and SD_SCK pins." },
+      { label: "Size", detail: "2.4, 2.8 and 3.2 inch boards all use 240x320 pixels." },
+    ],
+    watchOuts: [
+      "Signal pins are 3.3 V. On a 5 V Arduino (Uno/Nano) use a level shifter or voltage dividers on MOSI, SCK, CS, D/C and RST unless the listing says the module has built-in level shifting.",
+      "Check the label for the voltage range of VCC: many red 2.8 inch boards have a regulator and accept 5 V, but the bare screen only takes 3.3 V.",
+      "The LED (backlight) pin usually goes to 3.3 V; a few boards want a resistor in series. Check the listing.",
+      "It needs many pins; use the board's hardware SPI pins for MOSI and SCK.",
+    ],
+    photoCaption: "2.8 inch colour TFT screen board with a pin header on one edge",
     photoHint: "ili9341",
     displayClass: "tft",
     wokwi: { tag: "wokwi-ili9341" },
@@ -133,7 +236,21 @@ const baseModules: CatalogPart[] = [
     name: "Capacitive Soil Moisture Probe",
     kind: "module",
     description:
-      "Capacitive soil moisture PCB (corrosion-resistant vs resistive probes). AO analog read and optional DO digital threshold. Custom SVG skeleton for diagram layout.",
+      "Capacitive soil moisture sensor: a flat board you push into soil that outputs a voltage on AO (analog out) which changes with how wet the soil is. Wetter soil usually gives a lower reading, but test yours. Unlike the older resistive prongs it has no exposed metal electrodes, so it does not corrode as fast. Pins: VCC power, GND, AO analog signal, and DO digital only on versions that have a comparator.",
+    identify:
+      "One long flat PCB, often with a dark coating, a small chip (often a TLC555) and a regulator near the top, a 3-pin connector and a line marking how far down you may insert it. The old resistive kind is different: two bare metal prongs plus a separate small board with a blue trimmer and an LM393 chip. Most capacitive boards (v1.2 and similar) have only 3 pins (VCC, GND, AOUT) and no DO.",
+    variants: [
+      { label: "Capacitive v1.2 style", detail: "3 pins, analog only, usually accepts about 3.3-5.5 V. This is what to buy." },
+      { label: "With DO comparator", detail: "A few versions add a digital output with a threshold trimmer; check the listing for DO." },
+      { label: "Resistive prongs (lookalike)", detail: "Two bare fingers that corrode within weeks; not the same part." },
+    ],
+    watchOuts: [
+      "Calibrate it: record the reading in dry air and in a glass of water, then map your soil readings between those two numbers.",
+      "Do not push it past the marked line; the electronics at the top must stay dry. Seal exposed edges with varnish or nail polish for long-term use.",
+      "Power it from 3.3 V on a 3.3 V board so the AO voltage stays inside the ADC range.",
+      "On an ESP32 use an ADC1 pin; ADC2 pins stop working while WiFi is on.",
+    ],
+    photoCaption: "Long flat capacitive soil moisture sensor board with a 3-pin connector",
     photoHint: "soil-moisture-capacitive",
     pins: [
       { id: "VCC", label: "VCC", kinds: ["power"], voltage: "3v3" },
@@ -146,7 +263,22 @@ const baseModules: CatalogPart[] = [
     id: "module.dht22",
     name: "DHT22 Temp/Humidity",
     kind: "module",
-    description: "Measures air temperature and humidity.",
+    description:
+      "Digital sensor that measures air temperature and humidity (also sold as AM2302). It sends the numbers over a single data wire with its own timing, which is not I2C or 1-Wire, so you need a DHT library. Typical range is -40 to 80 degrees C and 0-100 % humidity, with a new reading about every 2 seconds. Pins on the bare 4-pin sensor, left to right with the grid facing you: VCC, DATA, NC (not connected), GND.",
+    identify:
+      "A white plastic body with a grid of holes on the front and 4 legs (or 3 pins when it is soldered on a small board). Lookalike: the DHT11 has a blue body, a smaller range (0-50 degrees C, 20-80 % humidity) and is less precise; the wiring and library are the same. Check the printed name DHT22 or AM2302 on the side.",
+    variants: [
+      { label: "Bare 4-pin sensor", detail: "VCC, DATA, NC, GND. It needs a 4.7-10 kohm pull-up resistor from DATA to VCC." },
+      { label: "3-pin module on a small board", detail: "Pins are usually labelled +, OUT, - and the pull-up resistor is already on the board." },
+    ],
+    watchOuts: [
+      "With the bare 4-pin sensor, fit a 4.7-10 kohm pull-up between DATA and VCC or the readings fail.",
+      "Do not read it more often than once every 2 seconds.",
+      "It runs from about 3.3 V to 5 V and its data line follows the supply, so on a 3.3 V board power it from 3.3 V.",
+      "Check the pin order on the silkscreen of module versions; it is not the same on every board.",
+      "Keep it away from heat sources (regulators, the board itself) or the readings will be too high.",
+    ],
+    photoCaption: "White DHT22 temperature and humidity sensor with a grid of holes on the front",
     photoHint: "dht22",
     wokwi: { tag: "wokwi-dht22" },
     pins: [
@@ -160,7 +292,21 @@ const baseModules: CatalogPart[] = [
     id: "module.hc-sr04",
     name: "HC-SR04 Ultrasonic",
     kind: "module",
-    description: "Measures distance to an object using sound.",
+    description:
+      "Ultrasonic distance sensor: one round 'speaker' sends a burst of sound and the other 'microphone' listens for the echo, so it measures the distance to an object, roughly 2 cm to 4 m. Pins: VCC (5 V), TRIG (you send a 10 microsecond pulse here), ECHO (a pulse comes back whose length is the distance), GND. It uses two plain digital pins, not I2C.",
+    identify:
+      "A blue board with two silver metal cylinders at the front that look like eyes (marked T and R) and 4 pins on the back edge labelled VCC, Trig, Echo, GND. The HC-SR04P looks the same but works at 3.0-5.5 V; the label on the back says HC-SR04P. Other lookalikes may have a different board colour or an extra pin, so always read the label.",
+    variants: [
+      { label: "HC-SR04 (classic)", detail: "5 V supply, ECHO pin outputs 5 V." },
+      { label: "HC-SR04P or other 3.3 V version", detail: "Works from about 3.3 V and its ECHO is 3.3 V, so it is safe on 3.3 V boards. Check for 3.3 V or 3-5.5 V in the listing." },
+    ],
+    watchOuts: [
+      "The classic HC-SR04 ECHO pin outputs 5 V. On a 3.3 V board (ESP32, ESP8266, Pico) use a voltage divider (for example 1 kohm and 2 kohm) or a level shifter on ECHO, or buy the HC-SR04P.",
+      "Power the classic type with 5 V; it does not work well at 3.3 V.",
+      "Soft surfaces, thin objects and surfaces at a steep angle reflect poorly, and anything closer than about 2 cm cannot be measured.",
+      "Read the length of the ECHO pulse, not a voltage; use pulseIn or a library.",
+    ],
+    photoCaption: "HC-SR04 ultrasonic sensor board with two silver cylinders and four pins",
     photoHint: "hc-sr04",
     wokwi: { tag: "wokwi-hc-sr04" },
     pins: [
@@ -174,7 +320,23 @@ const baseModules: CatalogPart[] = [
     id: "module.servo",
     name: "Servo Motor",
     kind: "module",
-    description: "Small motor that turns to a set angle (for example 0 to 180 degrees).",
+    description:
+      "A small motor that turns its horn to a set angle (usually 0 to 180 degrees) and holds it there. You tell it the angle with a PWM-style pulse on the signal wire (a Servo library does this). Three wires: GND (brown or black), V+ (red, 5 V) and PWM/SIG (orange, yellow or white).",
+    identify:
+      "A small plastic box (the common SG90 is a 9 g servo) with a white plastic horn on top and a 3-wire cable ending in a 3-pin female plug. Lookalikes: the MG90S is the same size with metal gears, the MG996R is larger, and a continuous rotation servo looks identical but spins instead of holding an angle. Check the listing for 180 degree or continuous.",
+    variants: [
+      { label: "SG90 / MG90S (micro)", detail: "Small 9 g size; the MG90S has metal gears and is stronger." },
+      { label: "MG996R (standard)", detail: "Bigger, stronger, and draws far more current." },
+      { label: "Continuous rotation", detail: "Spins at a chosen speed; it does not hold an angle." },
+    ],
+    watchOuts: [
+      "Do not power it from the board's 5 V pin when it moves a load. Servos can draw several hundred milliamps and much more when stalled; use a separate 5 V supply and join the grounds together.",
+      "Supply is about 4.8-6 V; check the label for your model.",
+      "The signal wire usually works with 3.3 V logic, but check the listing for your servo.",
+      "Do not force the horn by hand while powered; it can strip the gears.",
+      "Wire order: brown or black = GND, red = V+, orange or yellow = signal.",
+    ],
+    photoCaption: "Small blue servo motor with a white horn and a three-wire cable",
     photoHint: "servo",
     wokwi: { tag: "wokwi-servo" },
     pins: [
@@ -187,7 +349,23 @@ const baseModules: CatalogPart[] = [
     id: "module.neopixel",
     name: "NeoPixel",
     kind: "module",
-    description: "Color LED you can set to any color from your board.",
+    description:
+      "A colour LED with a tiny chip built in (WS2812B and similar) that you can set to any colour and brightness with a single data wire. Pins: VDD (5 V), VSS (ground), DIN (data in from your board), DOUT (data out, to the DIN of the next LED in a chain). Power is 5 V.",
+    identify:
+      "A 5 x 5 mm square SMD LED with 4 pads, or a tiny breakout board holding one, also sold as strips, rings and matrices. Lookalikes: APA102/DotStar has two signal lines (data and clock); SK6812 and WS2811 are close cousins that mostly work with the same libraries. Check the printed chip name.",
+    variants: [
+      { label: "WS2812B (5 V)", detail: "The standard. Needs a 5 V supply and expects 5 V-level data." },
+      { label: "Single pixel on a board", detail: "Breakout boards with DIN, DOUT, 5 V and GND pads." },
+      { label: "RGBW (SK6812)", detail: "Adds a white LED; needs a library that supports it." },
+    ],
+    watchOuts: [
+      "Each pixel can draw up to about 60 mA at full white; do not power many from the board's pin. Use a separate 5 V supply and join the grounds.",
+      "A 3.3 V data signal is often not enough for a 5 V pixel; use a level shifter when your board is 3.3 V.",
+      "Add a 300-500 ohm resistor in series with the data line and a large capacitor (about 1000 uF) across the power supply.",
+      "Connect GND first, and do not connect or remove the data wire while powered.",
+      "Data goes DIN to DOUT along a chain; wiring it backwards shows nothing.",
+    ],
+    photoCaption: "Single NeoPixel LED on a small board with four pads",
     photoHint: "neopixel",
     wokwi: { tag: "wokwi-neopixel" },
     pins: [
@@ -201,7 +379,21 @@ const baseModules: CatalogPart[] = [
     id: "module.rgb-led",
     name: "RGB LED",
     kind: "module",
-    description: "LED that can show any color by mixing red, green and blue.",
+    description:
+      "An LED with red, green and blue chips in one body, so by changing the brightness of each you can mix any colour. It has 4 legs: one for each colour (R, G, B) and one common leg (COM). In this catalog the common leg is the ground side (common cathode), so you set each colour pin HIGH to light it. Use PWM pins to mix colours.",
+    identify:
+      "A clear or frosted 5 mm LED with 4 legs, where one leg is longer than the other three (the common). A common anode type looks identical; the listing says common cathode or common anode. Lookalikes: a 2-leg flashing LED, and addressable LEDs such as NeoPixel, which also have 4 pins but contain a chip.",
+    variants: [
+      { label: "Common cathode", detail: "The longest leg (COM) goes to ground; each colour pin is driven HIGH. This is what the catalog assumes." },
+      { label: "Common anode", detail: "The longest leg goes to +V and each colour lights when its pin is LOW (the logic is inverted)." },
+    ],
+    watchOuts: [
+      "Each colour needs its own resistor (around 220 ohm at 5 V; check the LED datasheet). Without it the LED or the board pin can burn out.",
+      "Check whether you have a common cathode or a common anode part. Wired for the wrong type, colours show inverted or not at all.",
+      "Leg order from the flat side is usually R, COM (longest), G, B, but confirm for your part.",
+      "Red needs a lower voltage than green or blue, so equal resistors give unequal brightness.",
+    ],
+    photoCaption: "5 mm RGB LED with four legs, one longer than the rest",
     photoHint: "rgb-led",
     wokwi: { tag: "wokwi-rgb-led" },
     pins: [
@@ -215,7 +407,21 @@ const baseModules: CatalogPart[] = [
     id: "module.pir.motion",
     name: "PIR Motion Sensor",
     kind: "module",
-    description: "Detects when a person or animal moves in front of it.",
+    description:
+      "Passive infrared (PIR) motion sensor, typically the HC-SR501 type. It senses when a warm body such as a person or pet moves across its view, and its OUT pin goes HIGH (about 3.3 V) for a few seconds. Pins: VCC (about 5-12 V in), OUT (digital signal), GND. The 3.3 V OUT is safe for both 3.3 V and 5 V boards.",
+    identify:
+      "A board topped with a white plastic dome (a Fresnel lens) over a silver can, with 3 pins and two orange trimmers (potentiometers) next to a jumper. Smaller lookalikes such as the AM312 and HC-SR505 mini sensors have no trimmers and a smaller dome.",
+    variants: [
+      { label: "HC-SR501", detail: "Two trimmers (sensitivity and hold time) and a jumper for single or repeat trigger mode. The pin order is printed under the lens." },
+      { label: "Mini sensors (AM312, HC-SR505)", detail: "Smaller, no trimmers; the supply voltage differs, so check the listing." },
+    ],
+    watchOuts: [
+      "It needs 30-60 seconds after power-up to settle; ignore readings during that time.",
+      "The pin order is printed on the board under the lens (you can lift the dome); do not assume it.",
+      "The two trimmers set the range and how long OUT stays HIGH, so if it stays on too long, turn the time trimmer down.",
+      "Avoid pointing it at sunlight, heaters or air vents, which cause false triggers. It detects movement, not someone standing still.",
+    ],
+    photoCaption: "White-domed PIR motion sensor board with three pins and two orange trimmers",
     photoHint: "pir-motion",
     wokwi: { tag: "wokwi-pir-motion-sensor" },
     pins: [
@@ -228,7 +434,21 @@ const baseModules: CatalogPart[] = [
     id: "module.photoresistor",
     name: "Photoresistor Module",
     kind: "module",
-    description: "Light sensor. Its reading changes with how bright the room is.",
+    description:
+      "Light sensor module: a photoresistor (LDR) plus a small comparator chip on a board. AO gives an analog voltage that changes with brightness, and DO gives a digital HIGH or LOW once the light passes a level you set with the blue trimmer. Pins: VCC (3.3-5 V), GND, DO, AO. Which direction means brighter differs between boards, so test it.",
+    identify:
+      "A small board with a wavy-patterned disc on it (the LDR), an LM393 chip, a blue trimmer and 2 small LEDs, with 4 pins. Do not confuse it with a bare photoresistor (just the 2-leg disc), which needs an extra resistor to work as a voltage divider.",
+    variants: [
+      { label: "4-pin (VCC, GND, DO, AO)", detail: "The most common. Some have only 3 pins (no AO), so confirm AO is present." },
+      { label: "Bare LDR (2 legs)", detail: "A different part: needs a resistor divider and is not this module." },
+    ],
+    watchOuts: [
+      "Check whether your board reads higher or lower in the dark and handle it in code.",
+      "The blue trimmer only changes the DO switching level; AO is not affected.",
+      "Run it from 3.3 V on a 3.3 V board so AO stays inside the ADC range.",
+      "It is slow and not accurate for measuring lux; use it for dark or bright decisions only.",
+    ],
+    photoCaption: "Small light sensor board with a photoresistor disc, a blue trimmer and four pins",
     photoHint: "photoresistor",
     wokwi: { tag: "wokwi-photoresistor-sensor" },
     pins: [
@@ -242,7 +462,21 @@ const baseModules: CatalogPart[] = [
     id: "module.ntc.temperature",
     name: "NTC Temperature Module",
     kind: "module",
-    description: "Temperature sensor. Its reading changes as it gets warmer or cooler.",
+    description:
+      "Temperature module built on an NTC thermistor (a resistor whose value falls as it gets warmer). OUT is an analog voltage you read with an analog input and then convert to degrees with a formula. Pins: GND, VCC (3.3-5 V), OUT. It is a rough sensor, good to about 1-2 degrees C at best after calibration.",
+    identify:
+      "A small board with a tiny glass bead or small black thermistor, a fixed resistor and 3 pins (the KY-013 style). Lookalikes: LM35 and TMP36 are black TO-92 parts that look like transistors and give a linear voltage; DS18B20 is a digital 1-Wire sensor. Some versions also have a comparator, a trimmer and an extra DO pin.",
+    variants: [
+      { label: "3-pin (analog only)", detail: "The one this entry describes." },
+      { label: "4-pin with DO", detail: "Adds a comparator and a digital pin with a trimmer; read the listing." },
+    ],
+    watchOuts: [
+      "The pin order differs between boards; read the silkscreen and do not assume GND-VCC-OUT.",
+      "You need the thermistor's B value (often 3950 for a 10 kohm NTC) and the fixed resistor value from the listing to convert the reading to degrees.",
+      "Power from 3.3 V on a 3.3 V board so OUT stays inside the ADC range.",
+      "It reads slowly, the bare bead is not waterproof, and the board's own heat can skew the reading.",
+    ],
+    photoCaption: "Small thermistor temperature module with three pins",
     photoHint: "ntc-temperature",
     wokwi: { tag: "wokwi-ntc-temperature-sensor" },
     pins: [
@@ -255,7 +489,21 @@ const baseModules: CatalogPart[] = [
     id: "module.flame",
     name: "Flame Sensor",
     kind: "module",
-    description: "Detects the glow of a flame nearby.",
+    description:
+      "Flame sensor: an infrared photodiode that sees the infrared light a flame gives off, plus a comparator chip on a board. DOUT goes HIGH or LOW when the flame is stronger than a level you set with the trimmer, and AOUT gives an analog strength reading. Pins: VCC (3.3-5 V), GND, DOUT, AOUT. It is a hobby sensor and not a safety device.",
+    identify:
+      "A small board with a black or dark red 5 mm LED-shaped photodiode on the front, an LM393 chip, a blue trimmer and two small LEDs, with 3 or 4 pins. It looks like a light sensor module but has a dark infrared eye.",
+    variants: [
+      { label: "4-pin (with AOUT)", detail: "VCC, GND, DOUT, AOUT; the one this entry describes." },
+      { label: "3-pin (digital only)", detail: "No analog output; check the listing." },
+    ],
+    watchOuts: [
+      "Sunlight and bright bulbs also give off infrared and cause false triggers; use it indoors away from them.",
+      "It senses a flame only within a limited range (tens of centimetres), so test and adjust the trimmer.",
+      "Which direction means a stronger flame differs between boards; test it with a lighter at a safe distance.",
+      "Never use it as the only fire safety device.",
+    ],
+    photoCaption: "Flame sensor board with a dark infrared eye, blue trimmer and four pins",
     photoHint: "flame-sensor",
     wokwi: { tag: "wokwi-flame-sensor" },
     pins: [
@@ -269,7 +517,23 @@ const baseModules: CatalogPart[] = [
     id: "module.gas",
     name: "Gas Sensor (MQ)",
     kind: "module",
-    description: "Detects smoke or combustible gas in the air.",
+    description:
+      "MQ-type gas sensor module: a heated sensor that changes resistance when it meets certain gases or smoke. AOUT gives an analog level that rises with gas and DOUT switches at a level you set with the trimmer. Pins: AOUT, DOUT, GND, VCC (5 V). Which gas it responds to depends on the model (MQ-2 smoke and LPG, MQ-135 air quality, MQ-7 carbon monoxide).",
+    identify:
+      "A board with a metal-mesh capped cylinder (the sensor), a blue trimmer, an LM393 chip and 4 pins. The model name (MQ-2, MQ-3, MQ-135 and so on) is printed on the sensor or in the listing; boards of different MQ types look alike, so read it.",
+    variants: [
+      { label: "MQ-2", detail: "Smoke, LPG, propane, hydrogen." },
+      { label: "MQ-135", detail: "General air quality, ammonia, benzene." },
+      { label: "MQ-7 / MQ-3", detail: "Carbon monoxide / alcohol; MQ-7 wants a special heating cycle for best results." },
+    ],
+    watchOuts: [
+      "The sensor has an internal heater: it draws well over 100 mA at 5 V, gets hot, and needs a few minutes to warm up before the reading settles.",
+      "Power from 5 V. AOUT can reach 5 V, so on a 3.3 V board use a voltage divider before the analog pin.",
+      "Readings need calibration; do not trust the raw number as a parts-per-million value.",
+      "This is not a certified gas or smoke alarm; do not rely on it for safety.",
+      "The pin order differs between boards; read the silkscreen.",
+    ],
+    photoCaption: "MQ-type gas sensor board with a metal mesh cylinder and four pins",
     photoHint: "gas-sensor",
     wokwi: { tag: "wokwi-gas-sensor" },
     pins: [
@@ -283,7 +547,22 @@ const baseModules: CatalogPart[] = [
     id: "module.mpu6050",
     name: "MPU6050 IMU",
     kind: "module",
-    description: "Senses movement and tilt. Talks to the board over 4 wires (I2C).",
+    description:
+      "Motion sensor (often sold as the GY-521 board) with a 3-axis accelerometer (movement and tilt) and a 3-axis gyroscope (rotation) in one chip, plus a temperature reading. It talks over I2C (SDA, SCL) and needs a library. Pins: VCC, GND, SCL, SDA, XDA and XCL (extra I2C, leave unconnected), AD0 (address select), INT (interrupt, optional). Supply is about 3.3-5 V through an onboard regulator.",
+    identify:
+      "A small purple or blue board with a tiny square chip marked MPU-6050, an 8-pin header (VCC, GND, SCL, SDA, XDA, XCL, AD0, INT) and mounting holes. Lookalikes: the MPU-9250 is 9-axis (it adds a magnetometer) on a similar board; check the chip name.",
+    variants: [
+      { label: "GY-521", detail: "The common breakout with regulator and pull-ups." },
+      { label: "Clone chips", detail: "Some cheap boards carry a different chip (such as an MPU-6500) that answers differently; check the chip marking if your library cannot find it." },
+    ],
+    watchOuts: [
+      "The address is 0x68 when AD0 is low or left open and 0x69 when AD0 is HIGH.",
+      "The I2C pins are not level shifted and the board's pull-ups go to VCC; on 3.3 V boards power it from 3.3 V.",
+      "Leave XDA, XCL and INT unconnected unless you need them.",
+      "Raw readings have an offset; calibrate with the board lying flat and still.",
+      "Gyro readings drift over time, so combine with the accelerometer if you need an angle.",
+    ],
+    photoCaption: "Small GY-521 MPU6050 board with an 8-pin header and mounting holes",
     photoHint: "mpu6050",
     wokwi: { tag: "wokwi-mpu6050" },
     pins: [
@@ -301,7 +580,22 @@ const baseModules: CatalogPart[] = [
     id: "module.hx711",
     name: "HX711 Load Cell Amp",
     kind: "module",
-    description: "Small board that reads a weight sensor (load cell) and passes the number to your board.",
+    description:
+      "A small amplifier board that reads a load cell (the metal bar weight sensor) with a 24-bit converter and sends the number to your board on two wires, DT (data) and SCK (clock). It uses its own two-wire protocol, not I2C or SPI, so you need an HX711 library. Four pins go to your board: VCC (about 2.7-5.5 V), DT, SCK, GND. The load cell side has screw or solder pads: E+, E- (power to the cell), A+, A- (signal), and sometimes B+ and B-.",
+    identify:
+      "A small red or green board with a tiny 16-pin chip marked HX711, a row of 4 pins on one side (GND, DT, SCK, VCC) and 4 to 6 pads on the other for the load cell wires. Wire colours on 4-wire load cells are often red (E+), black (E-), white (A-) and green (A+), but verify with your load cell datasheet.",
+    variants: [
+      { label: "Standard HX711 board", detail: "The one this entry describes." },
+      { label: "Load cell types", detail: "A 4-wire bar load cell connects directly; 3-wire half-bridge cells (as in bathroom scales) need a combining board or extra resistors." },
+    ],
+    watchOuts: [
+      "You must calibrate: tare (zero) the empty scale, then use a known weight to find the scale factor.",
+      "If the weight reads negative, swap the A+ and A- wires.",
+      "Mount the load cell with the arrow facing the direction of the load and keep the free end from touching the base; otherwise the reading is wrong.",
+      "The default speed is about 10 readings per second; some boards offer 80 via a RATE jumper, check the listing.",
+      "Keep the wires short and away from motors and noise.",
+    ],
+    photoCaption: "Small HX711 load cell amplifier board with a 4-pin header and wire pads",
     photoHint: "hx711",
     wokwi: { tag: "wokwi-hx711" },
     pins: [
@@ -315,7 +609,17 @@ const baseModules: CatalogPart[] = [
     id: "module.heart.beat",
     name: "Heartbeat (Pulse) Sensor",
     kind: "module",
-    description: "Reads your pulse when a fingertip rests on it.",
+    description: "An optical pulse sensor (photoplethysmography): a small LED shines into your fingertip and a light sensor measures how the reflected light changes with each heartbeat. The OUT pin gives an analog voltage that rises and falls with the pulse; read it on an analog (ADC) pin and detect the peaks in code. Powered from VCC (3.3 V to 5 V) and GND. It is for hobby use and is not a medical device.",
+    identify: "A small circular board about the size of a coin (around 16 mm), often with a heart logo, a small green LED window and 3 pins labelled S (signal), + (VCC) and - (GND). Lookalikes: MAX30102 boards are different (I2C, different pins).",
+    variants: [
+      { label: "Pulse Sensor (3-pin)", detail: "Analog signal only; the one used in this guide." },
+      { label: "MAX30102/MAX30100", detail: "A different sensor using I2C with its own pins; do not mix up the pins with this analog one." },
+    ],
+    watchOuts: [
+      "Rest a finger lightly on the sensor; pressing hard cuts off the blood flow and weakens the signal. Keep still, as movement and ambient light change the reading.",
+      "Cover the bare back of the board with tape or nail polish; the exposed contacts can short against your skin.",
+      "Power it from 3.3 V on a 3.3 V board so the signal stays within the ADC range.",
+    ],
     photoHint: "heart-beat",
     wokwi: { tag: "wokwi-heart-beat-sensor" },
     pins: [
@@ -328,7 +632,17 @@ const baseModules: CatalogPart[] = [
     id: "module.big.sound",
     name: "Big Sound Sensor",
     kind: "module",
-    description: "Microphone that picks up sound and boosts it (larger board).",
+    description: "A sound-detector board with an electret microphone, an amplifier stage and a comparator, on a larger board than the small sound sensor. AOUT gives an analog voltage that follows the sound level and DOUT is a digital output that goes active when the sound is louder than a threshold you set with the trimmer pot. It senses loudness, not audio quality, so it cannot record speech. Powered from VCC (3.3 V to 5 V) and GND.",
+    identify: "A board roughly 3 to 5 cm, with a silver microphone capsule on a post, a blue trimmer potentiometer, an LM393 and often an extra amplifier chip, and 4 pins (AOUT, GND, VCC, DOUT). Compared with the small sound sensor, the board is larger and has more components.",
+    variants: [
+      { label: "Pin labels", detail: "Some boards use A0/G/+/D0; the meaning is the same as AOUT/GND/VCC/DOUT." },
+      { label: "With on-board LEDs", detail: "Boards have a power LED and a signal LED; this is normal." },
+    ],
+    watchOuts: [
+      "Set the threshold with the trimmer: turn slowly until the signal LED just stays off in quiet, then it triggers on sound.",
+      "The analog output rests around a mid level and swings up and down; look at the change between samples, not one value.",
+      "Use the same voltage as your board's logic level (3.3 V on 3.3 V boards).",
+    ],
     photoHint: "big-sound",
     wokwi: { tag: "wokwi-big-sound-sensor" },
     pins: [
@@ -342,7 +656,17 @@ const baseModules: CatalogPart[] = [
     id: "module.small.sound",
     name: "Small Sound Sensor",
     kind: "module",
-    description: "Small microphone that picks up sound.",
+    description: "A small sound-detector board with an electret microphone and a comparator chip. It gives you two outputs: AOUT, an analog voltage that follows the sound level, and DOUT, a digital signal that flips when the sound passes a threshold you set with the small blue trimmer potentiometer. It detects loudness only; it does not record audio. Powered from VCC (3.3 V to 5 V) and GND.",
+    identify: "A tiny board, about 3 cm, with a round silver microphone capsule at one end, a small blue trimmer with a screw, an LM393 chip and usually 4 pins (AOUT, GND, VCC, DOUT). The bigger sound sensor has a larger board and a separate preamp; compare sizes and check the pin labels.",
+    variants: [
+      { label: "3-pin version", detail: "Has only one output (digital) and no AOUT pin; check the label." },
+      { label: "Pin order", detail: "AOUT/G/+/DOUT is common, but orders differ, so check the printed labels." },
+    ],
+    watchOuts: [
+      "Adjust the trimmer slowly with a small screwdriver; too sensitive and it triggers constantly.",
+      "AOUT gives a small swing around a baseline, so sample many readings and compare the difference.",
+      "On a 3.3 V board power the module from 3.3 V so outputs do not exceed the pin limit.",
+    ],
     photoHint: "small-sound",
     wokwi: { tag: "wokwi-small-sound-sensor" },
     pins: [
@@ -356,7 +680,18 @@ const baseModules: CatalogPart[] = [
     id: "module.ir.receiver",
     name: "IR Receiver",
     kind: "module",
-    description: "Receives signals from an infrared remote control.",
+    description: "An infrared receiver (a 38 kHz demodulating receiver such as the VS1838B or TSOP-style part) that listens for IR remote controls. It filters out ambient light and outputs a clean digital signal on DAT, which is LOW while it sees a burst of infrared and HIGH otherwise. Your code decodes the pulses with a library (for example IRremote). Pins: GND, VCC (power) and DAT (data out).",
+    identify: "A small black plastic dome (about 5-6 mm) with three legs, often inside a metal shield on bare parts, or on a small board with 3 pins labelled GND, VCC/+, OUT/S. Lookalikes: IR LEDs are clear/blue-tinted and have 2 legs; the pin order of bare receivers varies by model, so check the datasheet or label.",
+    variants: [
+      { label: "Bare 3-leg receiver", detail: "Pin order differs between models (VS1838B, TSOP1738 and similar); verify it for your exact part." },
+      { label: "Breakout board", detail: "Has pins marked and sometimes an LED; easier to wire." },
+      { label: "Carrier frequency", detail: "Most remotes use 38 kHz; check the receiver's label." },
+    ],
+    watchOuts: [
+      "Check the pin order for a bare part before powering; reversing power can destroy it.",
+      "Power it from the same voltage as your board (2.5 V to 5.5 V is typical, check your part) so DAT stays within the board's logic level.",
+      "Bright sunlight and some LED bulbs can swamp it; point the remote straight at it.",
+    ],
     photoHint: "ir-receiver",
     wokwi: { tag: "wokwi-ir-receiver" },
     pins: [
@@ -369,7 +704,17 @@ const baseModules: CatalogPart[] = [
     id: "module.analog.joystick",
     name: "Analog Joystick",
     kind: "module",
-    description: "Thumb joystick that senses left, right, up and down, and clicks when pressed.",
+    description: "A thumb joystick with two analog axes and a push button. VERT and HORZ output a voltage that changes with the stick position: about half the supply voltage when centred, near 0 V at one end and near the supply at the other. Read them on analog (ADC) pins. SEL is the push-button, a digital input that goes LOW when pressed (usually; use INPUT_PULLUP). VCC and GND power it.",
+    identify: "A small board with a black or blue thumb stick on top and 5 pins labelled GND, +5V, VRx, VRy, SW (VERT/HORZ in this guide). Lookalikes: PS2-style joystick modules are the same family; gamepad-style sticks with more pins are different.",
+    variants: [
+      { label: "Pin labels", detail: "VRx/VRy may be marked X/Y; VERT/HORZ here correspond to Y and X axes respectively, but the labels on boards differ so check yours." },
+      { label: "Supply", detail: "Usually marked +5V but often works from 3.3 V; use 3.3 V on a 3.3 V board so the signal stays within the pin range." },
+    ],
+    watchOuts: [
+      "Power it from the same voltage your analog pin can accept: use 3.3 V on 3.3 V boards, otherwise the readings can exceed the ADC limit.",
+      "The centre position is not exactly half scale, so calibrate by reading rest values at startup and add a dead zone in code.",
+      "SEL needs a pull-up (INPUT_PULLUP); without it the button reads randomly.",
+    ],
     photoHint: "analog-joystick",
     wokwi: { tag: "wokwi-analog-joystick" },
     pins: [
@@ -384,7 +729,18 @@ const baseModules: CatalogPart[] = [
     id: "module.ky.040",
     name: "KY-040 Rotary Encoder",
     kind: "module",
-    description: "Knob that senses how far and which way you turn it, and clicks when pressed.",
+    description: "A rotary encoder knob that turns endlessly and reports how far and in which direction: as you turn it, CLK and DT produce two offset digital pulses and your code compares them to tell clockwise from anticlockwise. Pressing the knob closes the SW pin. All three signals are plain digital pins (use interrupts or fast polling for CLK/DT). The module is powered from VCC (3.3 V to 5 V) with a ground at GND.",
+    identify: "A small board with a metal-bodied knob with a shaft that has a flat or a knurled cut, 5 pins labelled GND, + (VCC), SW, DT, CLK. Lookalikes: an ordinary potentiometer is bigger, has 3 pins and stops at the ends.",
+    variants: [
+      { label: "With breakout board", detail: "KY-040 includes pull-up resistors on CLK, DT and SW so you can wire it directly; bare encoders do not." },
+      { label: "Bare encoder", detail: "No resistors; use the board's INPUT_PULLUP." },
+      { label: "Pulses per click", detail: "Encoders give 20 or 24 detents; the exact count is on the datasheet." },
+    ],
+    watchOuts: [
+      "Power the module from 3.3 V on a 3.3 V board: with 5 V power the pull-up resistors would push 5 V into your inputs.",
+      "Mechanical contacts bounce, so add debouncing in code or a small capacitor.",
+      "Some pins are labelled differently (S1/S2/KEY, A/B); the labels CLK/DT may be swapped on some boards, so test the turn direction and swap them in code if needed.",
+    ],
     photoHint: "ky-040",
     wokwi: { tag: "wokwi-ky-040" },
     pins: [
@@ -399,7 +755,18 @@ const baseModules: CatalogPart[] = [
     id: "module.ds1307",
     name: "DS1307 RTC",
     kind: "module",
-    description: "Keeps the time even when the power is off, using a small coin battery (CR2032).",
+    description: "A real-time clock module (DS1307) that keeps the date and time while the main power is off, using a CR2032 coin cell. It talks I2C (SDA data, SCL clock) at fixed address 0x68, and the SQW pin can output a square wave (for example 1 Hz) or act as an alarm-style output. It runs from 5 V (the DS1307 needs 4.5 to 5.5 V), so power it from 5 V.",
+    identify: "A small board, often blue or black, with a DS1307 chip (8-pin), a CR2032 coin cell holder, a 32.768 kHz crystal and a pin header marked GND, VCC/5V, SDA, SCL, SQW. Lookalikes: DS3231 modules look very similar but are more accurate and run on 3.3 V to 5.5 V; check the chip marking.",
+    variants: [
+      { label: "DS1307 module", detail: "Needs 5 V to run reliably, I2C address 0x68; often ships with a 24C32 EEPROM on the same board (address 0x50)." },
+      { label: "DS3231 module", detail: "Same address 0x68 and similar pins but a different, more accurate chip; a different library may be needed. Not the part used here." },
+    ],
+    watchOuts: [
+      "Fit a CR2032 cell (the board usually ships without one) with the plus side up; the clock stops after power loss otherwise.",
+      "Many boards have pull-up resistors on SDA/SCL to 5 V; with a 3.3 V board, check that the I2C lines are not pulled to 5 V.",
+      "Set the time once from your code; it is unset (or wrong) on a fresh battery.",
+      "Do not use a rechargeable battery (LIR2032) unless the board is designed for it; some boards include a charge circuit that is unsafe for a normal CR2032.",
+    ],
     photoHint: "ds1307",
     wokwi: { tag: "wokwi-ds1307" },
     pins: [
@@ -414,7 +781,17 @@ const baseModules: CatalogPart[] = [
     id: "module.tilt.switch",
     name: "Tilt Switch Module",
     kind: "module",
-    description: "Switch that turns on or off when you tilt it.",
+    description: "A small board that senses when it is tilted. A tilt switch is a tiny cylinder with a metal ball inside that closes or opens the circuit when tipped. The board outputs a digital HIGH or LOW on OUT depending on its tilt state, and the code reads it as an ordinary digital input. VCC is the supply (3.3 V to 5 V, check the label) and GND is ground.",
+    identify: "A small module with a 3-pin header (GND, VCC, OUT; some boards use + / - / S) and a tiny black or silver cylinder with two legs, often with a blue or green board and a small LED. Lookalikes: a vibration switch or a plain button on a similar board.",
+    variants: [
+      { label: "Bare tilt switch", detail: "Just the cylinder with 2 legs; needs a pull-up or pull-down resistor and no module electronics." },
+      { label: "Module with output pin", detail: "Three pins and sometimes an LED; works with a plain digital input." },
+    ],
+    watchOuts: [
+      "The ball bounces, so the signal chatters when moved; add debouncing in code or a short delay.",
+      "Mechanical tilt switches react to vibration as well as tilt, so they are not accurate for angle measurement (use an accelerometer for that).",
+      "Which tilt state gives HIGH vs LOW varies; test and adjust the code.",
+    ],
     photoHint: "tilt-switch",
     wokwi: { tag: "wokwi-tilt-switch" },
     pins: [
@@ -427,7 +804,18 @@ const baseModules: CatalogPart[] = [
     id: "module.membrane.keypad",
     name: "Membrane Keypad 4×4",
     kind: "module",
-    description: "Flat keypad with 16 buttons and 8 pins.",
+    description: "A flat 4x4 keypad with 16 buttons (digits 0 to 9, A to D, * and #) that connect in a grid of 4 rows (R1 to R4) and 4 columns (C1 to C4). It has no electronics: pressing a key joins its row pin to its column pin. Your code scans it by setting columns as outputs and reading rows with pull-ups (the Keypad library does this for you). All 8 pins are plain digital pins.",
+    identify: "A thin, flexible plastic pad with a sticky back and 16 printed keys, with a flat ribbon cable ending in 8 pins in a single row. The 3x4 keypads have 12 keys and 7 pins, so count keys and pins.",
+    variants: [
+      { label: "4x4 (16 keys)", detail: "The version used here, with 8 pins." },
+      { label: "3x4 (12 keys)", detail: "Has only 7 pins and no A to D keys; it does not match this wiring." },
+      { label: "Pin order", detail: "Some pads number pins in a different order, so test each row and column before final wiring." },
+    ],
+    watchOuts: [
+      "Use pins that support pull-ups (INPUT_PULLUP) or add resistors; otherwise key presses are read randomly.",
+      "The connector is a plain single row, so you can plug it into a breadboard or header; check the first pin position.",
+      "Keep wires short and do not bend the ribbon sharply near the pad.",
+    ],
     photoHint: "membrane-keypad",
     wokwi: { tag: "wokwi-membrane-keypad", attrs: { columns: "4" } },
     pins: [
@@ -445,7 +833,19 @@ const baseModules: CatalogPart[] = [
     id: "module.microsd",
     name: "microSD Card Module",
     kind: "module",
-    description: "Holds a microSD card so your project can save and read files.",
+    description: "A breakout with a microSD card slot that lets your project save and read files (for example logs or sounds). It talks over SPI: DI (MOSI) carries data to the card, DO (MISO) carries data back, SCK is the clock, CS selects the card, and CD is the card-detect switch. VCC is 3.3 V and the signal pins are 3.3 V logic.",
+    identify: "A small board with a push-pull microSD slot on one end and a row of 6 or 7 pins labelled GND, VCC, SCK, DI/MOSI, DO/MISO, CS (and CD on this model). Many cheap boards also have a 5 V pin and level shifter chips; those lookalikes are not the same, so check the labels.",
+    variants: [
+      { label: "3.3 V only", detail: "The simulated part is 3.3 V: power it from 3.3 V and use 3.3 V logic." },
+      { label: "5 V board with level shifter", detail: "Some boards accept 5 V power and have an onboard regulator and level shifter; labels say 5V/VCC, check before powering." },
+      { label: "Pin names", detail: "DI may be labelled MOSI, DO as MISO." },
+    ],
+    watchOuts: [
+      "Do not drive the SPI pins with 5 V unless your board says it has level shifters; the card is 3.3 V only.",
+      "Format the card as FAT32 and use a small card (up to 32 GB works best); cards can be picky.",
+      "Wire SCK, DI and DO to the board's hardware SPI pins and use a free pin for CS.",
+      "Power the card from a stable 3.3 V source; cards can draw spikes of current while writing.",
+    ],
     photoHint: "microsd",
     wokwi: { tag: "wokwi-microsd-card" },
     pins: [
@@ -462,7 +862,17 @@ const baseModules: CatalogPart[] = [
     id: "module.led.bar.graph",
     name: "LED Bar Graph",
     kind: "module",
-    description: "Row of 10 small lights, like a level meter.",
+    description: "A bar of 10 separate LEDs in one package, used like a level meter or volume indicator. Each LED has its own anode pin (A1 to A10) and its own cathode pin (C1 to C10). Wire each LED as you would a normal LED: current flows from anode through a resistor to a cathode connected to GND, and the LED lights when its anode pin is driven HIGH.",
+    identify: "A flat rectangular block about 25 mm long with 10 small bars in a row (often red, green, yellow or mixed colours) and 20 pins, 10 on each long edge. The label often reads 'LED bar graph' or part number such as 10-segment bar.",
+    variants: [
+      { label: "Colour", detail: "Red, green, yellow, blue or mixed (red to green gradient) bars exist; forward voltage differs by colour." },
+      { label: "Number of segments", detail: "10 is common; other sizes exist, so confirm 10 segments and 20 pins." },
+    ],
+    watchOuts: [
+      "Each LED needs its own series resistor (about 220 to 330 ohm), or the LED and the pin may be damaged.",
+      "Lighting all 10 at once can exceed the board's total pin current limit; keep to a few at full brightness or use a driver chip.",
+      "Pin 1 side is marked; check orientation before soldering or the bar will light in reverse order.",
+    ],
     photoHint: "led-bar-graph",
     wokwi: { tag: "wokwi-led-bar-graph" },
     pins: [
@@ -492,7 +902,18 @@ const baseModules: CatalogPart[] = [
     id: "module.stepper.motor",
     name: "Stepper Motor (NEMA)",
     kind: "module",
-    description: "Motor that turns in precise steps. Has four wires.",
+    description: "A NEMA-style stepper motor turns in precise small steps, so you can control position and speed without feedback. It has two coils and four wires: A+ and A- are one coil, B+ and B- are the other. Each coil needs a separate stepper driver (for example an A4988, DRV8825 or ULN2003-type board) that takes step/direction or coil signals from your board and supplies the motor power from its own supply.",
+    identify: "A square metal motor with a round shaft and a cable or connector of 4 wires (sometimes 6). The label gives the NEMA size (such as NEMA 17), the voltage/current per phase and the step angle (commonly 1.8 degrees). 6-wire and 8-wire motors exist; for this guide use a 4-wire bipolar motor.",
+    variants: [
+      { label: "NEMA 17", detail: "Common size for 3D printers and small projects, 42 mm square." },
+      { label: "Smaller steppers", detail: "28BYJ-48 is a different, small unipolar motor with 5 wires and its own driver board; do not substitute it for this guide." },
+    ],
+    watchOuts: [
+      "Never connect a motor directly to a board pin: use a driver, and give the driver a separate motor supply sized from the motor label with the grounds joined to the board.",
+      "Do not plug or unplug the motor while the supply is on; it can damage the driver.",
+      "Match the driver current limit to the motor's rated current per phase, or the motor and driver will overheat.",
+      "Wire coil pairs correctly (A+/A- together, B+/B- together); if the motor only vibrates, swap one coil's wires.",
+    ],
     photoHint: "stepper-motor",
     wokwi: { tag: "wokwi-stepper-motor" },
     pins: [
@@ -506,7 +927,18 @@ const baseModules: CatalogPart[] = [
     id: "module.7segment",
     name: "7-Segment Display",
     kind: "module",
-    description: "Shows one number from 0 to 9 using lit bars.",
+    description: "A single-digit display made of 7 bar-shaped LEDs (segments A to G) plus a decimal point (DP). Lighting different segments shows digits 0 to 9 and some letters. Each segment pin is a plain digital output driven from your board through its own resistor, and the COM pins are the shared common pin of all segments (COM.1 and COM.2 are the same connection, top and bottom). Whether COM goes to GND or to the supply depends on the type, see variants.",
+    identify: "A small plastic block, about 1 to 2 cm tall, with a figure-8 shape and a decimal point, and 10 pins in two rows of 5 (a 1-digit display). Lookalikes: multi-digit displays have 12 or more pins; 14- or 16-segment ones look more crowded.",
+    variants: [
+      { label: "Common cathode", detail: "COM goes to GND and you set a segment pin HIGH to light it. The simulated part is wired this way; check the part label (CC)." },
+      { label: "Common anode", detail: "COM goes to the supply voltage and a segment lights when its pin is LOW; code must be inverted. Check the label (CA)." },
+      { label: "Colour and size", detail: "Red, green, blue and white versions exist; forward voltage differs by colour." },
+    ],
+    watchOuts: [
+      "Every segment needs its own series resistor (about 220 to 330 ohm at 3.3 to 5 V), or the LED and the board pin can be damaged.",
+      "A GPIO can only supply a small current; lighting all 8 segments at once from one chip can be too much, so for many digits use a driver or shift register.",
+      "Check whether the part is common cathode or common anode before wiring; the wrong type shows inverted or no digits.",
+    ],
     photoHint: "7segment",
     wokwi: { tag: "wokwi-7segment", attrs: { digits: "1" } },
     pins: [
@@ -526,7 +958,17 @@ const baseModules: CatalogPart[] = [
     id: "module.dip.switch.8",
     name: "DIP Switch (8-position)",
     kind: "module",
-    description: "Row of 8 tiny on/off switches.",
+    description: "A block of 8 tiny on/off slide switches in one package, used to set binary options. It has 16 pins in two rows: each switch connects pin Na to pin Nb (1a-1b up to 8a-8b) when it is switched ON, and nothing when OFF. Wire one side of each switch to an input pin and the other to GND (or 3.3 V), with a pull-up or pull-down so the OFF state is not floating.",
+    identify: "A small rectangular blue, red or yellow block with 8 little sliders numbered 1 to 8 and a row of 8 pins on each long edge (16 pins total). Lookalikes: blocks with fewer switches have fewer pins; count the numbers on top.",
+    variants: [
+      { label: "Number of positions", detail: "DIP switches come with 2 to 10 positions; this guide needs the 8-position one with 16 pins." },
+      { label: "Pin pitch", detail: "Standard through-hole DIP spacing (0.1 inch pins) fits a breadboard; check the listing." },
+    ],
+    watchOuts: [
+      "Use the internal pull-up resistors (INPUT_PULLUP) or add resistors, otherwise open switches float and read randomly.",
+      "ON side is marked on the body; check it before wiring so you do not reverse 'on' and 'off'.",
+      "Switches are meant for small signals only, not for powering loads.",
+    ],
     photoHint: "dip-switch-8",
     wokwi: { tag: "wokwi-dip-switch-8" },
     pins: [
@@ -552,7 +994,17 @@ const baseModules: CatalogPart[] = [
     id: "module.slide.switch",
     name: "Slide Switch",
     kind: "module",
-    description: "Slide switch with three pins that picks between two connections.",
+    description: "A slide switch is a small mechanical switch with a sliding knob (SPDT). The middle pin is the common pin; sliding the knob connects it to one outer pin or the other. It passes whatever you wire to it, so for logic use connect the middle pin to an input pin and the outer pins to 3.3 V/5 V on one side and GND on the other.",
+    identify: "A tiny rectangular switch, often with a metal body and a small plastic slider, with 3 pins in a row (some versions have extra mounting legs). Lookalikes: pushbuttons, which spring back; DPDT slide switches, which have 6 pins.",
+    variants: [
+      { label: "Through-hole", detail: "Pins fit a breadboard or soldering; the easiest for beginners." },
+      { label: "Surface mount", detail: "Tiny pads for a PCB, harder to solder by hand." },
+    ],
+    watchOuts: [
+      "The middle pin is the common one: wire it correctly or the output will float.",
+      "Do not leave the input floating: connect the unused side to GND/3.3 V or use the board's input pull-up so the pin has a defined level.",
+      "Small switches are rated for low current (typically a few hundred milliamps); do not use them to switch motors or mains.",
+    ],
     photoHint: "slide-switch",
     wokwi: { tag: "wokwi-slide-switch" },
     pins: [
@@ -565,7 +1017,18 @@ const baseModules: CatalogPart[] = [
     id: "module.slide.potentiometer",
     name: "Slide Potentiometer",
     kind: "module",
-    description: "Slider you push back and forth to give a variable value, like a volume fader.",
+    description: "A slider potentiometer is a variable resistor you push along a track, like a volume fader. It acts as a voltage divider: connect VCC and GND to the ends of the track and read SIG (the wiper) on an analog pin, which gives a voltage from 0 V to the supply voltage depending on slider position. It is an analog input, so it needs an analog-capable pin (ADC), not a plain digital one.",
+    identify: "A rectangular slider with a small plastic knob on a long slot, usually 3 pins on one end (sometimes 5 on the dual-track kind), with a resistance printed on it such as 10K or B10K. Lookalikes: rotary pots have a round knob; dual-gang sliders have more pins.",
+    variants: [
+      { label: "Resistance", detail: "10 kOhm is the common value; any value from about 1 kOhm to 100 kOhm works for reading a voltage, but check the label." },
+      { label: "Linear vs log taper", detail: "'B' means linear (use this to read position); 'A' means audio/log, which reads unevenly." },
+      { label: "Slide length", detail: "Slider travel comes in different lengths (for example 30, 45 or 60 mm)." },
+    ],
+    watchOuts: [
+      "Power it from the same voltage as the board's ADC reference: on a 3.3 V board use 3.3 V, otherwise the signal can exceed what the analog pin tolerates.",
+      "Keep the wiper pin SIG separate from the track end pins; swapping SIG with VCC or GND shorts the supply or gives no useful reading.",
+      "Readings jitter a little; average a few samples in code.",
+    ],
     photoHint: "slide-potentiometer",
     wokwi: { tag: "wokwi-slide-potentiometer" },
     pins: [
@@ -578,7 +1041,18 @@ const baseModules: CatalogPart[] = [
     id: "module.neopixel.matrix",
     name: "NeoPixel Matrix",
     kind: "module",
-    description: "Grid of color LEDs you can light individually.",
+    description: "A grid of NeoPixel (WS2812-style) color LEDs, for example 8x8, where every LED can be any color and brightness using a single data wire. Pins: VCC is 5 V power, GND is ground, DIN is the data input from your board, DOUT passes the signal on to a second matrix. The data line is designed for 5 V logic.",
+    identify: "A square or rectangular flat board covered in rows of small LEDs (commonly 8x8 = 64, also 8x32 or 16x16), with 3 or 4 pads or pins labelled 5V/VCC, GND and DIN (and DOUT). The listing should say WS2812 or NeoPixel. Plain LED matrices (MAX7219 modules or bare red grids) are different and have more pins.",
+    variants: [
+      { label: "Size", detail: "8x8, 8x32 and 16x16 matrices exist; wiring is the same but your code must match the pixel count." },
+      { label: "Flexible vs rigid", detail: "Some are flexible sheets; same wiring, but handle gently." },
+    ],
+    watchOuts: [
+      "Connect GND before the data or power, and never plug it in the wrong way round.",
+      "Each LED can draw up to about 60 mA at full white, so 64 LEDs can pull several amps; keep brightness low in code or use a separate 5 V supply with grounds joined together.",
+      "The data pin expects 5 V logic; with a 3.3 V board it may flicker, so use a level shifter or a short wire with a series resistor of a few hundred ohms.",
+      "Check which side is DIN: a matrix has input and output ends and will not work if you connect the output end.",
+    ],
     photoHint: "neopixel-matrix",
     wokwi: { tag: "wokwi-neopixel-matrix" },
     pins: [
@@ -592,7 +1066,18 @@ const baseModules: CatalogPart[] = [
     id: "module.led.ring",
     name: "NeoPixel LED Ring",
     kind: "module",
-    description: "Ring of color LEDs you can light individually.",
+    description: "A circular ring of NeoPixel (WS2812-style) color LEDs; each LED can be set to any color and brightness separately using a single data wire. Pins: VCC is power, GND is ground, DIN is the data input from your board, DOUT passes the data on to the next ring or strip chained after it. Runs from 5 V; the data line is designed for 5 V logic.",
+    identify: "A flat round circuit board with LEDs around the edge, in rings of 8, 12, 16 or 24 pixels (or more), usually with 3 or 4 pads or pins marked PWR/5V, GND and IN/DIN (and OUT/DOUT). Count the LEDs on the board and check the listing says WS2812 or NeoPixel.",
+    variants: [
+      { label: "Pixel count", detail: "8, 12, 16 and 24 LED rings exist; this guide's wiring is the same, but your code must set the right number of LEDs." },
+      { label: "RGB vs RGBW", detail: "Some rings have a fourth white LED per pixel (SK6812 RGBW); it needs different code, so check the listing." },
+    ],
+    watchOuts: [
+      "Connect GND first; connecting the data line before ground can damage the first LED.",
+      "Each LED can draw up to roughly 60 mA at full white, so a big ring at full brightness can exceed a USB or board 5 V pin; limit brightness in code or use a separate 5 V supply with grounds joined.",
+      "The data pin expects 5 V logic; with a 3.3 V board it often works for short wires but is not guaranteed, so add a level shifter (or a 300-500 ohm resistor on DIN and a capacitor of about 1000 uF across power) if it flickers.",
+      "Solder to the DIN side, not DOUT; the two are not interchangeable. DOUT is only used to chain another ring.",
+    ],
     photoHint: "led-ring",
     wokwi: { tag: "wokwi-led-ring" },
     pins: [
@@ -606,7 +1091,17 @@ const baseModules: CatalogPart[] = [
     id: "module.biaxial.stepper",
     name: "Biaxial Stepper (Gauge)",
     kind: "module",
-    description: "Small motor with two coils, used to move the needle on a gauge.",
+    description: "A tiny stepper motor, normally sold as a car-dashboard style gauge needle motor, moving a needle in small precise steps. This model has two independent motors in one part, so it has 8 pins: A1-, A1+, B1+, B1- for motor 1 and A2-, A2+, B2+, B2- for motor 2. Each motor needs its own driver chip (for example an H-bridge or a dedicated gauge driver); you step them by energising the coils in sequence.",
+    identify: "A very small motor, about the size of a coin or smaller, with a short shaft for a needle and a few tiny pins on one side. Search for 'gauge stepper motor' or 'instrument cluster stepper'. It is easy to confuse with a normal 4-wire stepper; count the pins and shafts and check the listing says dual/two-axis.",
+    variants: [
+      { label: "Single-axis gauge stepper", detail: "Only 4 pins and one shaft; usable, but only drives one motor so it will not match a guide built for two." },
+      { label: "Dual-axis (biaxial)", detail: "8 pins, two shafts/needles; this is what the guide uses." },
+    ],
+    watchOuts: [
+      "Never connect the pins straight to a microcontroller pin: use a stepper/gauge driver chip. A GPIO cannot supply the coil current safely.",
+      "These motors are low voltage and low current and have a limited needle travel; check the datasheet or listing for the supply voltage and the number of degrees it can turn.",
+      "Needle shafts are fragile and press-fit; do not force the needle past its stops.",
+    ],
     photoHint: "biaxial-stepper",
     wokwi: { tag: "wokwi-biaxial-stepper" },
     pins: [
@@ -624,7 +1119,18 @@ const baseModules: CatalogPart[] = [
     id: "module.relay.ks2e",
     name: "KS2E Relay (DPDT)",
     kind: "module",
-    description: "Small electrically controlled switch, with two sets of contacts.",
+    description: "A relay is a small electrically controlled switch: a current through its coil makes a click and flips two separate sets of contacts at once (DPDT = double pole, double throw). Each set has a common pin (P1, P2), a normally closed pin (NC, connected to P when the coil is off) and a normally open pin (NO, connected to P only when the coil is on). The coil pins (COIL1, COIL2) are the control side and are electrically separate from the contacts. The part name 'dc5' in the simulator means a 5 V coil.",
+    identify: "A small rectangular plastic or metal can, roughly the size of a sugar cube to a thumbnail, with 8 pins in two rows and a rating printed on top (for example 5VDC, plus the contact rating). KS2E is the type name, so check the label for coil voltage and contact rating. Lookalikes: single-pole relays have fewer pins, and ready-made relay boards have a screw terminal and a transistor driver already on them.",
+    variants: [
+      { label: "5 V coil", detail: "The version used in this guide; coil voltage is printed on the top, look for 5VDC or DC5V." },
+      { label: "12 V or 24 V coil", detail: "Same shape but needs 12 V or 24 V on the coil; it will not switch reliably from 5 V." },
+    ],
+    watchOuts: [
+      "Never drive the coil straight from a microcontroller pin: a coil needs far more current than a GPIO can give. Use a transistor (or a relay driver module) that switches the coil from a proper 5 V supply.",
+      "Put a flyback diode across the coil (stripe/cathode toward the positive coil side). Without it the voltage spike when the coil turns off can destroy the transistor or reset the board.",
+      "Keep the coil side and the contact side separate. Do not wire mains voltage on a breadboard; check the contact rating printed on the relay before switching anything.",
+      "Take the coil supply from a 5 V pin or external supply, not a 3.3 V pin; a 5 V coil may not pull in at 3.3 V.",
+    ],
     photoHint: "relay-ks2e",
     wokwi: { tag: "wokwi-ks2e-m-dc5" },
     pins: [

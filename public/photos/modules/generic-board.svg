@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Generic development board: dark board with a USB connector, a microcontroller, a radio module and two rows of header pins">
+  <title>Generic development board: dark board with a USB connector, a microcontroller, a radio module and two rows of header pins</title>
+  <ellipse cx="160" cy="216" rx="106" ry="9" fill="#121a20" opacity="0.16"/>
+  <rect x="44" y="50" width="232" height="150" rx="6" fill="#1e2b3b" stroke="#0f1923" stroke-width="2"/>
+  <rect x="47" y="53" width="226" height="144" rx="4" fill="none" stroke="#fff" stroke-opacity="0.12"/>
+  <circle cx="56" cy="62" r="3.8" fill="#b65c2e"/>
+  <circle cx="56" cy="62" r="2.128" fill="#0d1a24"/>
+  <circle cx="264" cy="62" r="3.8" fill="#b65c2e"/>
+  <circle cx="264" cy="62" r="2.128" fill="#0d1a24"/>
+  <circle cx="56" cy="188" r="3.8" fill="#b65c2e"/>
+  <circle cx="56" cy="188" r="2.128" fill="#0d1a24"/>
+  <circle cx="264" cy="188" r="3.8" fill="#b65c2e"/>
+  <circle cx="264" cy="188" r="2.128" fill="#0d1a24"/>
+  <rect x="30" y="102" width="40" height="46" rx="3" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.6"/>
+  <rect x="38" y="110" width="28" height="30" rx="2" fill="#14181b"/>
+  <rect x="76" y="58" width="148" height="10" rx="1.5" fill="#121a20"/>
+  <circle cx="86" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="96" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="106" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="116" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="126" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="136" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="146" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="156" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="166" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="176" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="186" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="196" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="206" cy="63" r="2.1" fill="#d7c27a"/>
+  <circle cx="216" cy="63" r="2.1" fill="#d7c27a"/>
+  <rect x="76" y="182" width="148" height="10" rx="1.5" fill="#121a20"/>
+  <circle cx="86" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="96" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="106" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="116" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="126" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="136" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="146" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="156" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="166" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="176" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="186" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="196" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="206" cy="187" r="2.1" fill="#d7c27a"/>
+  <circle cx="216" cy="187" r="2.1" fill="#d7c27a"/>
+  <rect x="150" y="92" width="56" height="56" rx="3" fill="#121a20" stroke="#33414c" stroke-width="1.4"/>
+  <text x="178" y="124" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="400" fill="#8c98a0" text-anchor="middle">MCU</text>
+  <rect x="94" y="102" width="34" height="34" rx="2" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.2"/>
+  <text x="111" y="123" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" fill="#33404a" text-anchor="middle">WiFi</text>
+  <rect x="232" y="94" width="24" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="232" y="132" width="24" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="231.5" y="161" width="9" height="6" rx="1.2" fill="#3ac26a" stroke="#121a20" stroke-width="0.8"/>
+  <rect x="233.5" y="162" width="3" height="1.4" rx="0.5" fill="#fff" opacity="0.5"/>
+</svg>

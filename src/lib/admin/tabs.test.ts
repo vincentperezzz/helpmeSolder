@@ -3,7 +3,7 @@ import { resolveActiveTab, visibleTabs } from "./tabs";
 
 describe("visibleTabs", () => {
   it("shows every tab for a full session", () => {
-    expect(visibleTabs("full").map((t) => t.id)).toEqual(["overview", "requests", "searches", "catalog", "settings"]);
+    expect(visibleTabs("full").map((t) => t.id)).toEqual(["overview", "requests", "searches", "catalog", "assets", "settings"]);
   });
   it("shows only settings for a restricted session", () => {
     expect(visibleTabs("restricted").map((t) => t.id)).toEqual(["settings"]);

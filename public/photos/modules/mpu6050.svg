@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="MPU6050 motion sensor breakout (GY-521): small blue board with a square black chip, axis arrows and an eight pin header">
+  <title>MPU6050 motion sensor breakout (GY-521): small blue board with a square black chip, axis arrows and an eight pin header</title>
+  <ellipse cx="160" cy="214" rx="84" ry="8" fill="#121a20" opacity="0.16"/>
+  <rect x="104" y="46" width="112" height="12" rx="1.5" fill="#121a20"/>
+  <rect x="109.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="111" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="123.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="125" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="137.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="139" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="151.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="153" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="165.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="167" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="179.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="181" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="193.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="195" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="207.4" y="28" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="209" cy="52" r="2.2" fill="#d7c27a"/>
+  <rect x="92" y="52" width="136" height="142" rx="5" fill="#2459c2" stroke="#173f8c" stroke-width="2"/>
+  <rect x="95" y="55" width="130" height="136" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12"/>
+  <circle cx="104" cy="64" r="3.8" fill="#b65c2e"/>
+  <circle cx="104" cy="64" r="2.128" fill="#0d1a24"/>
+  <circle cx="216" cy="64" r="3.8" fill="#b65c2e"/>
+  <circle cx="216" cy="64" r="2.128" fill="#0d1a24"/>
+  <circle cx="104" cy="182" r="3.8" fill="#b65c2e"/>
+  <circle cx="104" cy="182" r="2.128" fill="#0d1a24"/>
+  <circle cx="216" cy="182" r="3.8" fill="#b65c2e"/>
+  <circle cx="216" cy="182" r="2.128" fill="#0d1a24"/>
+  <text x="111" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">VCC</text>
+  <text x="125" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">GND</text>
+  <text x="139" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">SCL</text>
+  <text x="153" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">SDA</text>
+  <text x="167" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">XDA</text>
+  <text x="181" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">XCL</text>
+  <text x="195" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">AD0</text>
+  <text x="209" y="66" font-family="Arial, Helvetica, sans-serif" font-size="4.3" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.85">INT</text>
+  <rect x="130" y="88" width="60" height="60" rx="2.5" fill="#121a20" stroke="#2c363c" stroke-width="1"/>
+  <circle cx="140" cy="98" r="2.5" fill="#50606a"/>
+  <text x="160" y="122" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="400" fill="#8c98a0" text-anchor="middle">MPU</text>
+  <text x="160" y="134" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="400" fill="#8c98a0" text-anchor="middle">6050</text>
+  <path d="M112 178 L112 152 M112 152 L107 158 M112 152 L117 158 M112 178 L140 178 M140 178 L134 173 M140 178 L134 183" stroke="#e8f0f8" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <text x="120" y="156" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.8">Y</text>
+  <text x="144" y="176" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.8">X</text>
+  <rect x="106" y="100" width="14" height="10" rx="1.5" fill="#121a20"/>
+  <circle cx="110" cy="104" r="1.3" fill="#50606a"/>
+  <rect x="108.67" y="97.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="108.67" y="110" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="112" y="97.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="112" y="110" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="115.33" y="97.5" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="115.33" y="110" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="196" y="160" width="8" height="4" fill="#2a2f33"/>  <rect x="195" y="160" width="1.4" height="4" fill="#c9cfd3"/>  <rect x="203.6" y="160" width="1.4" height="4" fill="#c9cfd3"/>
+  <rect x="208" y="160" width="8" height="4" fill="#2a2f33"/>  <rect x="207" y="160" width="1.4" height="4" fill="#c9cfd3"/>  <rect x="215.6" y="160" width="1.4" height="4" fill="#c9cfd3"/>
+  <rect x="196" y="170" width="8" height="4" fill="#2a2f33"/>  <rect x="195" y="170" width="1.4" height="4" fill="#c9cfd3"/>  <rect x="203.6" y="170" width="1.4" height="4" fill="#c9cfd3"/>
+  <rect x="199.5" y="99" width="9" height="6" rx="1.2" fill="#d9342b" stroke="#121a20" stroke-width="0.8"/>
+  <rect x="201.5" y="100" width="3" height="1.4" rx="0.5" fill="#fff" opacity="0.5"/>
+  <text x="190" y="186" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="400" fill="#e8f0f8" text-anchor="middle" opacity="0.8">GY-521</text>
+</svg>

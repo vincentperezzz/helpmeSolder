@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Blue rotary potentiometer with a white knob and three pins"><title>Rotary potentiometer</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d86b8"/><stop offset="1" stop-color="#045881"/></linearGradient><radialGradient id="knob" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#bcc8d0"/></radialGradient></defs>
+<ellipse cx="160" cy="206" rx="88" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="126" y="170" width="6" height="32" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="157" y="170" width="6" height="32" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="188" y="170" width="6" height="32" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="84" y="36" width="152" height="140" rx="12" fill="url(#body)" stroke="#033a56" stroke-width="2"/>
+<rect x="86" y="38" width="148" height="8" rx="4" fill="#fff" opacity="0.2"/>
+<circle cx="160" cy="104" r="50" fill="#000" opacity="0.25"/>
+<circle cx="160" cy="100" r="46" fill="url(#knob)" stroke="#6b767a" stroke-width="2"/>
+<circle cx="160" cy="100" r="32" fill="none" stroke="#9aa6ad" stroke-width="2"/>
+<rect x="154" y="62" width="12" height="34" rx="3" fill="#045881"/>
+</svg>

@@ -109,7 +109,7 @@ describe("remote MCP endpoint", () => {
     expect(text).not.toMatch(/tell the user the returned url/);
   });
 
-  it("lists all thirteen tools", async () => {
+  it("lists all fourteen tools", async () => {
     const res = await POST(rpc("tools/list"));
     const { result } = await res.json();
     const names = result.tools.map((tool: { name: string }) => tool.name).sort();
@@ -122,6 +122,7 @@ describe("remote MCP endpoint", () => {
         "create_guide",
         "get_guide",
         "get_guide_link",
+        "get_part_details",
         "list_catalog",
         "request_part",
         "search_catalog",
@@ -310,6 +311,59 @@ describe("remote MCP endpoint", () => {
         topMatchId: "module.dht22",
       }),
     );
+  });
+
+  it("search_catalog results carry category, summary and identify hint", async () => {
+    const result = await callTool("search_catalog", { query: "active buzzer" });
+    const data = JSON.parse(result.content[0].text);
+    expect(data.results[0]).toEqual(
+      expect.objectContaining({ id: expect.any(String), category: expect.any(String), summary: expect.any(String) }),
+    );
+    expect(data.results[0]).toHaveProperty("identify");
+  });
+
+  it("list_catalog stays compact with summary and category", async () => {
+    const result = await callTool("list_catalog", {});
+    const data = JSON.parse(result.content[0].text);
+    const part = data.modules.find((p: { id: string }) => p.id === "module.buzzer.active");
+    expect(part.summary).toBeTruthy();
+    expect(part.category).toBeTruthy();
+    expect(part.pins).toBeUndefined();
+    expect(part.watchOuts).toBeUndefined();
+  });
+
+  it("get_part_details returns full detail, plain-word limits and related parts", async () => {
+    const result = await callTool("get_part_details", { catalog_id: "module.buzzer.active" });
+    expect(result.isError).toBeFalsy();
+    const data = JSON.parse(result.content[0].text);
+    expect(data.id).toBe("module.buzzer.active");
+    expect(data.category).toBeTruthy();
+    expect(data.description).toBeTruthy();
+    expect(data.pins.length).toBeGreaterThan(0);
+    expect(Array.isArray(data.watchOuts)).toBe(true);
+    expect(Array.isArray(data.variants)).toBe(true);
+    expect(Array.isArray(data.electrical)).toBe(true);
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("get_part_details lists look-alike family parts (I2C vs parallel LCD)", async () => {
+    const result = await callTool("get_part_details", { catalog_id: "module.lcd.i2c.1602" });
+    const data = JSON.parse(result.content[0].text);
+    expect(data.relatedParts.map((p: { id: string }) => p.id)).toContain("module.lcd.parallel.1602");
+  });
+
+  it("get_part_details on an unknown id suggests close parts", async () => {
+    const result = await callTool("get_part_details", { catalog_id: "DHT 22" });
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("module.dht22");
+  });
+
+  it("get_part_details leaks no internal fields", async () => {
+    const result = await callTool("get_part_details", { catalog_id: "module.dht22" });
+    const text = result.content[0].text;
+    for (const key of ["photoHint", "wokwi", "matchesGuide", "inputHighFraction"]) {
+      expect(text).not.toContain(key);
+    }
   });
 
   it("search_catalog records a search with no match as zero results", async () => {

@@ -28,7 +28,10 @@ Cursor/Claude
 - `add_connection`
 - `set_steps`
 - `get_guide`
-- `list_catalog`
+- `list_catalog` (compact: id, name, kind, category, summary)
+- `search_catalog`
+- `get_part_details` (full detail of one part: identify, variants, watchOuts, pins, electrical limits, look-alikes)
+- `request_part`
 - `validate_guide`
 
 MCP is thin. Business rules live in the Next.js API + shared libs.

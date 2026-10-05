@@ -19,6 +19,7 @@ const HOW_IT_WORKS = [
 
 const TOOLS = [
   { name: "list_catalog", body: "Browse boards, modules, passives and ready-made recipes." },
+  { name: "get_part_details", body: "Read a part in full: how to tell it apart, pins, voltage limits and what to watch out for." },
   { name: "create_guide", body: "Start a guide and get its secret link." },
   { name: "ask_power_source", body: "Ask you how the build is powered, never guessing." },
   { name: "ask_sensor", body: "Ask you which exact sensor or input module to use." },

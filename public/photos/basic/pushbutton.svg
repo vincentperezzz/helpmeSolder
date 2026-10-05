@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Tactile pushbutton: black square body, round red cap, four legs"><title>Tactile pushbutton</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient><radialGradient id="cap" cx="0.35" cy="0.3" r="0.85"><stop offset="0" stop-color="#ff7a6e"/><stop offset="1" stop-color="#b3201a"/></radialGradient></defs>
+<ellipse cx="160" cy="202" rx="96" ry="12" fill="#121a20" opacity="0.16"/>
+<rect x="80" y="71" width="20" height="10" rx="3" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="80" y="143" width="20" height="10" rx="3" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="220" y="71" width="20" height="10" rx="3" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="220" y="143" width="20" height="10" rx="3" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="98" y="52" width="124" height="124" rx="14" fill="url(#body)" stroke="#1b2227" stroke-width="2"/>
+<rect x="108" y="62" width="104" height="104" rx="10" fill="none" stroke="#5a636a" stroke-width="2"/>
+<g fill="#7b858b"><circle cx="113" cy="67" r="3"/><circle cx="207" cy="67" r="3"/><circle cx="113" cy="161" r="3"/><circle cx="207" cy="161" r="3"/></g>
+<circle cx="160" cy="116" r="42" fill="#000" opacity="0.28"/>
+<circle cx="160" cy="112" r="40" fill="url(#cap)" stroke="#7a120e" stroke-width="2"/>
+<ellipse cx="146" cy="96" rx="14" ry="8" fill="#fff" opacity="0.4" transform="rotate(-30 146 96)"/>
+</svg>
