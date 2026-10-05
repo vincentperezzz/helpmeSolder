@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="IR flame sensor: blue board with a dark photodiode on the left, blue trimmer, chip, LEDs and four pins">
+  <title>IR flame sensor: blue board with a dark photodiode on the left, blue trimmer, chip, LEDs and four pins</title>
+  <ellipse cx="168" cy="196" rx="120" ry="10" fill="#121a20" opacity="0.16"/>
+  <rect x="164" y="160" width="48" height="12" rx="1.5" fill="#121a20"/>
+  <rect x="168.4" y="170" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="170" cy="165.5" r="2.2" fill="#d7c27a"/>
+  <rect x="180.4" y="170" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="182" cy="165.5" r="2.2" fill="#d7c27a"/>
+  <rect x="192.4" y="170" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="194" cy="165.5" r="2.2" fill="#d7c27a"/>
+  <rect x="204.4" y="170" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="206" cy="165.5" r="2.2" fill="#d7c27a"/>
+  <rect x="66" y="62" width="214" height="108" rx="5" fill="#1f5fae" stroke="#154a8c" stroke-width="2"/>
+  <rect x="69" y="65" width="208" height="102" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="1"/>
+  <circle cx="78" cy="74" r="5" fill="#b65c2e"/><circle cx="78" cy="74" r="2.8" fill="#0d1a24"/>
+  <circle cx="268" cy="74" r="5" fill="#b65c2e"/><circle cx="268" cy="74" r="2.8" fill="#0d1a24"/>
+  <path d="M70 108 H48" stroke="#c9cfd3" stroke-width="3" stroke-linecap="round"/><path d="M70 126 H48" stroke="#c9cfd3" stroke-width="3" stroke-linecap="round"/>
+  <path d="M56 90 H36 A24 24 0 0 0 36 142 H56 Z" fill="#1c1210" stroke="#000" stroke-width="1.5"/>
+  <rect x="54" y="86" width="9" height="60" rx="2" fill="#2a1f1c" stroke="#000" stroke-width="1"/>
+  <ellipse cx="30" cy="104" rx="8" ry="6" fill="#fff" opacity="0.28"/>
+  <circle cx="34" cy="116" r="9" fill="#5a1f1a" opacity="0.6"/>
+  <circle cx="68" cy="108" r="3" fill="#d7c27a"/><circle cx="68" cy="126" r="3" fill="#d7c27a"/>
+  <rect x="130" y="76" width="30" height="30" rx="2" fill="#2d6fd6" stroke="#0f2f66" stroke-width="1.5"/>
+  <circle cx="145" cy="91" r="9.6" fill="#e2c35a" stroke="#8a6d1c" stroke-width="1"/>
+  <path d="M137.8 94 L152.2 88" stroke="#6b5212" stroke-width="2.2" stroke-linecap="round"/>
+  <rect x="188" y="80" width="32" height="14" rx="1.5" fill="#121a20"/>
+  <circle cx="192" cy="84" r="1.3" fill="#50606a"/>
+  <rect x="191" y="77.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="191" y="94" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="199" y="77.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="199" y="94" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="207" y="77.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="207" y="94" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="215" y="77.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="215" y="94" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="236" y="78" width="9" height="6" rx="1.2" fill="#d9342b" stroke="#121a20" stroke-opacity="0.5" stroke-width="0.8"/>
+  <rect x="238" y="79.2" width="3" height="1.6" rx="0.6" fill="#fff" opacity="0.5"/>
+  <rect x="236" y="92" width="9" height="6" rx="1.2" fill="#d9342b" stroke="#121a20" stroke-opacity="0.5" stroke-width="0.8"/>
+  <rect x="238" y="93.2" width="3" height="1.6" rx="0.6" fill="#fff" opacity="0.5"/>
+  <rect x="178" y="118" width="7" height="4" fill="#2a2f33"/><rect x="176.5" y="118" width="1.5" height="4" fill="#c9cfd3"/><rect x="185" y="118" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="192" y="118" width="7" height="4" fill="#2a2f33"/><rect x="190.5" y="118" width="1.5" height="4" fill="#c9cfd3"/><rect x="199" y="118" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="206" y="118" width="7" height="4" fill="#2a2f33"/><rect x="204.5" y="118" width="1.5" height="4" fill="#c9cfd3"/><rect x="213" y="118" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="222" y="118" width="7" height="4" fill="#2a2f33"/><rect x="220.5" y="118" width="1.5" height="4" fill="#c9cfd3"/><rect x="229" y="118" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="100" y="138" width="6" height="3.5" fill="#2a2f33"/><rect x="98.5" y="138" width="1.5" height="3.5" fill="#c9cfd3"/><rect x="106" y="138" width="1.5" height="3.5" fill="#c9cfd3"/>
+</svg>

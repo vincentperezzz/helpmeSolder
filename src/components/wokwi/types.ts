@@ -15,6 +15,11 @@ export type PlacedPart = {
   seated?: boolean;
 };
 
+export type UsbConnectorKind = "usb-a" | "usb-c" | "micro-usb" | "mini-usb" | "usb-b";
+
+/** A cable plug drawn at the end of a USB cable: `tip` goes into the port, `back` is where the cable joins. */
+export type UsbPlug = { tip: Point; back: Point; kind: UsbConnectorKind };
+
 export type Wire = {
   id: string;
   color: string;
@@ -25,6 +30,10 @@ export type Wire = {
   from: Point;
   to: Point;
   points: Point[];
+  /** Plain-words description for tooltips when the guide has no checklist item for this wire (power wires). */
+  title?: string;
+  /** Drawn as a thick grey USB cable with a plug at each end instead of a hookup wire. */
+  plugs?: UsbPlug[];
 };
 
 /** Diagram canvas size, plus the tight content bounds used for "fit". */

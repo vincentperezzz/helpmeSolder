@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GuideWorkspace } from "@/components/GuideWorkspace";
+import { VisitBeacon } from "@/components/VisitBeacon";
 import { getCatalogPart } from "@/lib/catalog";
 import type { PowerSource } from "@/lib/catalog/types";
 import { getGuide } from "@/lib/guides/repository";
@@ -110,6 +111,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <main className="guide-shell mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+      <VisitBeacon />
       <header className="motion-rise space-y-3">
         <BrandMark />
         <div className="flex flex-wrap items-end justify-between gap-4">

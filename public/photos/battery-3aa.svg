@@ -16,7 +16,7 @@
   <path d="M85 30 V20" fill="none" stroke="#c62828" stroke-width="2"/>
   <path d="M132 30 V14 H97" fill="none" stroke="#c62828" stroke-width="2"/>
   <rect id="term-minus" x="67" y="144" width="36" height="10" rx="2" fill="#212121" stroke="#000" stroke-width="1.5"/>
-  <text x="85" y="166" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121"></text>
+  <text x="85" y="166" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121">&#8722;</text>
   <path d="M38 140 V149 H67" fill="none" stroke="#212121" stroke-width="2"/>
   <path d="M85 140 V144" fill="none" stroke="#212121" stroke-width="2"/>
   <path d="M132 140 V149 H103" fill="none" stroke="#212121" stroke-width="2"/>

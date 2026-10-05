@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Long slide potentiometer with a slot and a knob and three pins"><title>Slide potentiometer</title>
+<ellipse cx="160" cy="190" rx="134" ry="11" fill="#121a20" opacity="0.16"/>
+<g fill="#d9b84a"><rect x="107" y="150" width="6" height="42"/><rect x="157" y="150" width="6" height="42"/><rect x="207" y="150" width="6" height="42"/></g>
+<rect x="20" y="86" width="280" height="66" rx="6" fill="#aab3b6" stroke="#6b767a" stroke-width="2"/>
+<rect x="26" y="92" width="268" height="54" rx="4" fill="#cfd6d8"/>
+<rect x="44" y="108" width="232" height="22" rx="11" fill="#121a20"/>
+<rect x="50" y="113" width="220" height="12" rx="6" fill="#2a3036"/>
+<circle cx="34" cy="119" r="5" fill="#8a9599"/><circle cx="286" cy="119" r="5" fill="#8a9599"/>
+<path d="M60 102v-6M100 102v-6M140 102v-6M180 102v-6M220 102v-6M260 102v-6" stroke="#6b767a" stroke-width="2"/>
+<rect x="104" y="64" width="40" height="78" rx="6" fill="#14181c" stroke="#000" stroke-width="1.5"/>
+<g stroke="#4a5459" stroke-width="2"><path d="M114 76v58M124 76v58M134 76v58"/></g>
+<rect x="104" y="64" width="40" height="8" rx="4" fill="#3a424a"/>
+</svg>

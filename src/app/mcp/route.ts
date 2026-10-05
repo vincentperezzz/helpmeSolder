@@ -1,6 +1,7 @@
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { NextRequest } from "next/server";
 import { getAppUrl } from "@/lib/api/app-url";
+import { recordClientLater } from "@/lib/analytics/clients";
 import { assertApiAuth } from "@/lib/api/auth";
 import { serverError } from "@/lib/api/http";
 import {
@@ -8,6 +9,7 @@ import {
   WRITE_LIMIT,
   checkRateLimit,
 } from "@/lib/api/rate-limit";
+import { recordPartRequestLater } from "@/lib/requests/record";
 import { createMcpServer } from "@/lib/mcp/tools";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +28,8 @@ async function handle(request: NextRequest): Promise<Response> {
   try {
     const server = createMcpServer({
       appUrl: getAppUrl(request),
+      recordCreator: () => recordClientLater("creator", request),
+      recordMiss: (miss) => recordPartRequestLater({ ...miss, request }),
       rateLimit: (bucket) => {
         const limited = checkRateLimit(
           request,

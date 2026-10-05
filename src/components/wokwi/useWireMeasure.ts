@@ -25,9 +25,22 @@ import {
 } from "./constants";
 import { breadboardHoleLocal, isBreadboardId, parseBreadboardRail } from "./breadboard";
 import { breadboardPinExit, pinExitDirection } from "./geometry";
-import { labelRect, pinLabel, resolveLabelPositions, wireColor } from "./labels";
+import {
+  assignWireColors,
+  labelRect,
+  pinLabel,
+  pointAlongPath,
+  resolveLabelPositions,
+} from "./labels";
 import { boardPowerPins } from "./layout";
-import { BATTERY_WIRE_ANCHORS } from "./PowerSourceVisual";
+import {
+  BATTERY_WIRE_ANCHORS,
+  USB_WALL_BOX,
+  USB_WALL_OUT,
+  batteryBlockHeight,
+  powerSourceName,
+} from "./PowerSourceVisual";
+import { PLUG_LENGTH, getBoardUsbPort, plugBack, usbOutward } from "./usb-port";
 import { routedPath, type Obstacle } from "./routing";
 import type { CanvasSize, ExitDir, PinInfo, PlacedPart, Point, Wire } from "./types";
 
@@ -207,18 +220,27 @@ export function useWireMeasure({
       if (guide.power_source) {
         if (isBatteryPowerSource(guide.power_source)) {
           const asset = getBatteryAsset(guide.power_source);
+          // The drawing is crossed only by its own wires; the caption under it
+          // is solid, so no wire or label ever runs over the text.
           obstacles.push({
             x: POWER_ORIGIN.x,
             y: POWER_ORIGIN.y,
             w: asset.width,
-            h: asset.height + 16,
+            h: asset.height,
+          });
+          obstacles.push({
+            x: POWER_ORIGIN.x - 4,
+            y: POWER_ORIGIN.y + asset.height,
+            w: asset.width + 8,
+            h: batteryBlockHeight(asset) - asset.height + 2,
+            hug: true,
           });
         } else {
           obstacles.push({
             x: POWER_ORIGIN.x,
             y: POWER_ORIGIN.y,
-            w: 150,
-            h: 110,
+            w: USB_WALL_BOX.w,
+            h: USB_WALL_BOX.h,
           });
         }
       }
@@ -261,30 +283,31 @@ export function useWireMeasure({
             );
           }
         } else {
-          const outPt = {
-            x: POWER_ORIGIN.x + 128,
-            y: POWER_ORIGIN.y + 38,
-          };
-          anchors.set("power-source:OUT", outPt);
-          exitDirs.set("power-source:OUT", { dx: 1, dy: 0 });
-          const targetPin = powerPins.usb || powerPins.vin;
-          const target = targetPin
-            ? anchors.get(`${board.instanceId}:${targetPin}`)
-            : undefined;
-          const boardKey = targetPin
-            ? `${board.instanceId}:${targetPin}`
-            : "";
-          anchors.set(
-            "power-source:BOARD",
-            target || { x: board.x + 40, y: board.y + 20 },
-          );
-          if (boardKey) {
+          const usbPort = getBoardUsbPort(board.catalogId);
+          if (usbPort) {
+            const outward = usbOutward(usbPort.side);
+            const mouth = { x: board.x + usbPort.x, y: board.y + usbPort.y };
+            anchors.set("power-source:OUT", {
+              x: USB_WALL_OUT.x + PLUG_LENGTH,
+              y: USB_WALL_OUT.y,
+            });
+            exitDirs.set("power-source:OUT", { dx: 1, dy: 0 });
+            anchors.set("power-source:BOARD", plugBack(mouth, outward));
+            exitDirs.set("power-source:BOARD", outward);
+          } else {
+            // No USB connector known for this board: fall back to a 5V wire.
+            anchors.set("power-source:OUT", USB_WALL_OUT);
+            exitDirs.set("power-source:OUT", { dx: 1, dy: 0 });
+            const targetPin = powerPins.usb || powerPins.vin;
+            const boardKey = targetPin ? `${board.instanceId}:${targetPin}` : "";
+            anchors.set(
+              "power-source:BOARD",
+              (boardKey && anchors.get(boardKey)) || { x: board.x + 40, y: board.y + 20 },
+            );
             exitDirs.set(
               "power-source:BOARD",
-              exitDirs.get(boardKey) ?? defaultExit,
+              (boardKey && exitDirs.get(boardKey)) || defaultExit,
             );
-          } else {
-            exitDirs.set("power-source:BOARD", defaultExit);
           }
         }
       }
@@ -308,6 +331,21 @@ export function useWireMeasure({
           routedPaths,
         );
 
+      // Same label string as solder-plan.ts builds, so the diagram colours and
+      // the checklist swatches always match.
+      const connectionLabels = guide.connections.map((connection) => {
+        const fromPart = guide.parts.find((part) => part.instanceId === connection.from.instanceId);
+        const toPart = guide.parts.find((part) => part.instanceId === connection.to.instanceId);
+        const fromName = fromPart
+          ? pinLabel(fromPart.catalogId, connection.from.pinId)
+          : connection.from.pinId;
+        const toName = toPart
+          ? pinLabel(toPart.catalogId, connection.to.pinId)
+          : connection.to.pinId;
+        return connection.note || `${fromName} → ${toName}`;
+      });
+      const connectionColors = assignWireColors(connectionLabels);
+
       guide.connections.forEach((connection, index) => {
         const fromKey = `${connection.from.instanceId}:${connection.from.pinId}`;
         const toKey = `${connection.to.instanceId}:${connection.to.pinId}`;
@@ -321,13 +359,7 @@ export function useWireMeasure({
         const toPart = guide.parts.find(
           (part) => part.instanceId === connection.to.instanceId,
         );
-        const fromName = fromPart
-          ? pinLabel(fromPart.catalogId, connection.from.pinId)
-          : connection.from.pinId;
-        const toName = toPart
-          ? pinLabel(toPart.catalogId, connection.to.pinId)
-          : connection.to.pinId;
-        const label = connection.note || `${fromName} → ${toName}`;
+        const label = connectionLabels[index];
         const fromRail = parseBreadboardRail(connection.from.pinId);
         const toRail = parseBreadboardRail(connection.to.pinId);
         const sameBoardRailBridge =
@@ -380,7 +412,7 @@ export function useWireMeasure({
         contentBottom = Math.max(contentBottom, from.y, to.y, route.mid.y);
         nextWires.push({
           id: connection.id,
-          color: wireColor(index, label),
+          color: connectionColors[index],
           d: route.d,
           label,
           showLabel,
@@ -391,48 +423,47 @@ export function useWireMeasure({
         });
       });
 
-      if (guide.power_source && isBatteryPowerSource(guide.power_source)) {
+      // Label sits on its wire near the board pin it names, a short way along from it.
+      const labelNearEnd = (points: Point[]): Point =>
+        pointAlongPath([...points].reverse(), 44);
+
+      if (guide.power_source && isBatteryPowerSource(guide.power_source) && board) {
+        const powerPins = boardPowerPins(board);
+        const sourceName = powerSourceName(guide.power_source);
+        const vinName = powerPins.vin ? pinLabel(board.catalogId, powerPins.vin) : "VIN";
+        const gndName = powerPins.gnd ? pinLabel(board.catalogId, powerPins.gnd) : "GND";
         const plusFrom = anchors.get("power-source:+");
         const plusTo = anchors.get("power-source:VIN");
         const minusFrom = anchors.get("power-source:-");
         const minusTo = anchors.get("power-source:GND");
+        // Short pill text so it fits on the wire; the full sentence is the tooltip.
         if (plusFrom && plusTo) {
-          const route = routeWire(
-            plusFrom,
-            plusTo,
-            "power-source:+",
-            "power-source:VIN",
-            0,
-          );
+          const route = routeWire(plusFrom, plusTo, "power-source:+", "power-source:VIN", 0);
           routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-plus",
             color: "#c62828",
             d: route.d,
-            label: "+ → VIN",
+            label: `+ to ${vinName}`,
+            title: `${sourceName} + to ${vinName}`,
             showLabel: true,
-            mid: route.mid,
+            mid: labelNearEnd(route.points),
             from: plusFrom,
             to: plusTo,
             points: route.points,
           });
         }
         if (minusFrom && minusTo) {
-          const route = routeWire(
-            minusFrom,
-            minusTo,
-            "power-source:-",
-            "power-source:GND",
-            1,
-          );
+          const route = routeWire(minusFrom, minusTo, "power-source:-", "power-source:GND", 1);
           routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-minus",
             color: "#212121",
             d: route.d,
-            label: "− → GND",
+            label: `− to ${gndName}`,
+            title: `${sourceName} − to ${gndName}`,
             showLabel: true,
-            mid: route.mid,
+            mid: labelNearEnd(route.points),
             from: minusFrom,
             to: minusTo,
             points: route.points,
@@ -441,26 +472,54 @@ export function useWireMeasure({
       } else if (guide.power_source === "usb_wall") {
         const from = anchors.get("power-source:OUT");
         const to = anchors.get("power-source:BOARD");
+        const usbPort = board ? getBoardUsbPort(board.catalogId) : undefined;
         if (from && to) {
           const route = routeWire(from, to, "power-source:OUT", "power-source:BOARD", 0);
           routedPaths.unshift(route.points);
-          nextWires.unshift({
-            id: "power-feed",
-            color: "#37474f",
-            d: route.d,
-            label: "USB → VIN",
-            showLabel: true,
-            mid: route.mid,
-            from,
-            to,
-            points: route.points,
-          });
+          if (usbPort && board) {
+            const mouth = { x: board.x + usbPort.x, y: board.y + usbPort.y };
+            nextWires.unshift({
+              id: "power-feed",
+              color: "#78909c",
+              d: route.d,
+              label: "USB cable into the board's USB port",
+              title: "USB cable from the wall adapter into the board's USB port",
+              showLabel: true,
+              mid: labelNearEnd(route.points),
+              from,
+              to,
+              points: route.points,
+              plugs: [
+                { tip: USB_WALL_OUT, back: from, kind: "usb-a" },
+                { tip: mouth, back: to, kind: usbPort.kind },
+              ],
+            });
+          } else {
+            nextWires.unshift({
+              id: "power-feed",
+              color: "#c62828",
+              d: route.d,
+              label: "5V from the USB adapter to the power pin",
+              title: "5V from the USB adapter to the board's power pin",
+              showLabel: true,
+              mid: labelNearEnd(route.points),
+              from,
+              to,
+              points: route.points,
+            });
+          }
         }
       }
 
       resolveLabelPositions(nextWires, obstacles);
 
       for (const wire of nextWires) {
+        for (const point of wire.points) {
+          maxRight = Math.max(maxRight, point.x + 40);
+          maxBottom = Math.max(maxBottom, point.y + 40);
+          contentRight = Math.max(contentRight, point.x);
+          contentBottom = Math.max(contentBottom, point.y);
+        }
         if (!wire.showLabel) continue;
         const box = labelRect(wire.mid, wire.label);
         maxRight = Math.max(maxRight, box.x + box.w + 24);

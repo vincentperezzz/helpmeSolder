@@ -1,6 +1,6 @@
 import { getCatalogPart } from "@/lib/catalog";
 import type { CatalogPart, Guide, GuideConnection, PinKind } from "@/lib/catalog/types";
-import { wireColor } from "@/components/wokwi/labels";
+import { assignWireColors } from "@/components/wokwi/labels";
 import { isBatteryPowerSource } from "./power-source";
 
 export type WireKind = "ground" | "power" | "signal";
@@ -38,6 +38,8 @@ const COLOR_NAMES: Record<string, string> = {
   "#00838f": "teal",
   "#546e7a": "grey",
   "#ad1457": "pink",
+  "#795548": "brown",
+  "#f9a825": "yellow",
 };
 
 export function colorName(hex: string): string {
@@ -95,12 +97,20 @@ const RANK: Record<WireKind, number> = { ground: 0, power: 1, signal: 2 };
 
 /** Ordered wire list: ground and power first, then signals. Original order is kept within a group. */
 export function buildSolderItems(guide: Guide): WireItem[] {
+  const ends = guide.connections.map((connection: GuideConnection) => ({
+    from: resolveEnd(guide, connection.from),
+    to: resolveEnd(guide, connection.to),
+  }));
+  // Same labels the diagram feeds assignWireColors, so swatches match the picture.
+  const colors = assignWireColors(
+    guide.connections.map(
+      (connection, index) =>
+        connection.note || `${ends[index].from.pinLabel} → ${ends[index].to.pinLabel}`,
+    ),
+  );
   const items = guide.connections.map((connection: GuideConnection, index) => {
-    const from = resolveEnd(guide, connection.from);
-    const to = resolveEnd(guide, connection.to);
-    // Same label the diagram feeds wireColor, so swatches match the picture.
-    const diagramLabel = connection.note || `${from.pinLabel} → ${to.pinLabel}`;
-    const color = wireColor(index, diagramLabel);
+    const { from, to } = ends[index];
+    const color = colors[index];
     const kind = classify(from, to);
     return {
       index,

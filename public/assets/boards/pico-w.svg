@@ -26,7 +26,7 @@
     <text x="100" y="14" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#333">USB</text>
   </g>
 
-  <!-- Wireless module (CYW43439) near USB  distinguishes Pico W -->
+  <!-- Wireless module (CYW43439) near USB - distinguishes Pico W -->
   <g id="wireless" data-feature="wifi">
     <rect x="118" y="52" width="34" height="28" rx="2" fill="#2b2b2b" stroke="#0d0d0d" stroke-width="1"/>
     <rect x="122" y="56" width="26" height="16" rx="1" fill="#3a3a3a"/>

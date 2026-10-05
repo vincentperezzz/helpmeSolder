@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { getAppUrl } from "@/lib/api/app-url";
+import { recordClientLater } from "@/lib/analytics/clients";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, parseBody } from "@/lib/api/http";
 import { CREATE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     const guide = await createGuide(parsed.data);
+    recordClientLater("creator", request);
     const validation = validateGuide(guide);
     const appUrl = getAppUrl(request);
 

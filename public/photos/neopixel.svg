@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Single WS2812 RGB LED on a small round breakout board, glowing in many colours">
+<title>NeoPixel single LED</title>
+<defs>
+<radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".4" stop-color="#ff7ad0" stop-opacity=".35"/><stop offset="1" stop-color="#7ad0ff" stop-opacity="0"/></radialGradient>
+<linearGradient id="rb" x1="0" x2="1"><stop offset="0" stop-color="#ff3b3b"/><stop offset=".5" stop-color="#3bff7a"/><stop offset="1" stop-color="#3b7aff"/></linearGradient>
+</defs>
+<ellipse cx="160" cy="218" rx="95" ry="9" fill="#121a20" opacity=".18"/>
+<circle cx="160" cy="112" r="100" fill="url(#glow)"/>
+<circle cx="160" cy="118" r="82" fill="#1f5a56"/>
+<circle cx="160" cy="118" r="82" fill="none" stroke="#143c39" stroke-width="3"/>
+<g fill="#b65c2e"><circle cx="160" cy="52" r="8"/><circle cx="160" cy="184" r="8"/><circle cx="94" cy="118" r="8"/><circle cx="226" cy="118" r="8"/></g>
+<g fill="#121a20"><circle cx="160" cy="52" r="3"/><circle cx="160" cy="184" r="3"/><circle cx="94" cy="118" r="3"/><circle cx="226" cy="118" r="3"/></g>
+<rect x="116" y="74" width="88" height="88" rx="6" fill="#eef3f0"/>
+<rect x="116" y="74" width="88" height="88" rx="6" fill="none" stroke="#b9c4bf" stroke-width="2"/>
+<path d="M116 74h14l-14 14z" fill="#121a20"/>
+<circle cx="160" cy="118" r="34" fill="#fff" stroke="#d4dcd8" stroke-width="2"/>
+<circle cx="160" cy="118" r="26" fill="url(#rb)" opacity=".9"/>
+<circle cx="160" cy="118" r="11" fill="#fff"/>
+<circle cx="150" cy="106" r="5" fill="#fff" opacity=".6"/>
+</svg>

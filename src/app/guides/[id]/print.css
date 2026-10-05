@@ -1,0 +1,247 @@
+/*
+ * Print layout for the guide page. Everything is inside @media print so the
+ * screen look is untouched. PrintButton.tsx sets a few helper values just
+ * before printing: --print-scale and --print-ratio on .diagram-viewport, and
+ * data-printed on the brand line in the header.
+ */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  /* Remove the fixed, blurred and gridded background layers. */
+  .guide-shell::before,
+  .guide-shell::after,
+  .atmosphere,
+  .atmosphere-grid,
+  .diagram-shell::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .guide-shell {
+    max-width: none !important;
+    width: 100% !important;
+    gap: 14pt !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+
+  /* Black text on white. Skip the picture so wire colours survive. */
+  .guide-shell *:not(.diagram-world, .diagram-world *) {
+    color: #000 !important;
+    text-shadow: none !important;
+  }
+
+  .guide-shell *:not(.diagram-world, .diagram-world *, [style*="background"]) {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep colours the browser would normally drop: wire swatches and the picture. */
+  .guide-shell [style*="background"],
+  .diagram-world {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Reveal anything that starts hidden or moves in. */
+  .motion-rise,
+  .motion-rise-delay-1,
+  .motion-rise-delay-2,
+  .motion-rise-delay-3 {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .motion-trace {
+    animation: none !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* Hide controls that do nothing on paper. */
+  .guide-shell footer button,
+  [data-print-button],
+  [data-print-hide],
+  .guide-shell [role="radiogroup"],
+  .guide-shell div:has(> .diagram-zoom-btn),
+  .diagram-zoom-btn,
+  .guide-shell button[aria-label*=" details for "],
+  .guide-shell nav,
+  .guide-shell .whiteboard-shell p.truncate + p,
+  .guide-shell > div > section.motion-rise > div:first-child > p {
+    display: none !important;
+  }
+
+  /* One column. The picture comes last, the lists first. */
+  .guide-shell > div[class*="grid-cols-1"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16pt !important;
+  }
+
+  .guide-shell > div[class*="grid-cols-1"] > aside {
+    order: 1 !important;
+    position: static !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 14pt !important;
+  }
+
+  .guide-shell > div[class*="grid-cols-1"] > section {
+    order: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .guide-shell > div[class*="grid-cols-1"] aside > section {
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+  }
+
+  /* Plain section headings with a thin rule. */
+  .guide-shell h2 {
+    font-size: 13pt !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2pt;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .guide-shell h1 {
+    font-size: 22pt !important;
+    line-height: 1.1 !important;
+  }
+
+  .section-rule {
+    display: none !important;
+  }
+
+  /* Brand line: "HelpmeSolder · Printed <date>". */
+  .guide-shell > header p.brand-mark[data-printed]::after {
+    content: " \00b7  Printed " attr(data-printed);
+  }
+
+  /* No page breaks inside a row. */
+  .guide-shell li,
+  .guide-shell dl > div,
+  .guide-shell details,
+  .guide-shell footer p {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .guide-shell footer {
+    margin-top: 8pt;
+    font-size: 9pt;
+    border-top: 1px solid #000 !important;
+  }
+
+  /* Parts rows: always show the name text, never a hover or tap hint. */
+  .guide-shell ul.divide-y > li {
+    padding-top: 6pt !important;
+    padding-bottom: 6pt !important;
+  }
+
+  .guide-shell img {
+    max-width: 100%;
+    break-inside: avoid;
+  }
+
+  /* How-to details: show the content even when the browser still has it closed. */
+  .guide-shell details::details-content {
+    content-visibility: visible;
+    display: block;
+  }
+
+  .guide-shell details {
+    border: 1px solid #000 !important;
+    padding: 4pt 8pt;
+  }
+
+  .guide-shell summary {
+    list-style: none;
+    font-weight: 700;
+    cursor: default;
+  }
+
+  .guide-shell summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Tick boxes: an empty square to tick by hand, a check when already done. */
+  .guide-shell input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: none;
+    width: 14pt !important;
+    height: 14pt !important;
+    border: 1.5pt solid #000;
+    border-radius: 2pt;
+    background-color: #fff !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .guide-shell input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2.5 7.5l3 3 6-7' fill='none' stroke='black' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  }
+
+  /* Do not fade ticked rows. */
+  .guide-shell [class*="opacity-"] {
+    opacity: 1 !important;
+  }
+
+  /* Wiring picture: no scroll box, no crop, scaled to the page width. */
+  .diagram-shell,
+  .whiteboard-shell,
+  .whiteboard-shell.is-enlarged,
+  .whiteboard-shell.is-fullscreen {
+    overflow: visible !important;
+    contain: none !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    border: 1px solid #000 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .diagram-viewport {
+    overflow: visible !important;
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: var(--print-ratio, 1400 / 820);
+    touch-action: auto !important;
+    cursor: auto !important;
+    background: none !important;
+    outline: none !important;
+  }
+
+  .diagram-world {
+    transform: scale(var(--print-scale, 0.5)) !important;
+    transform-origin: 0 0 !important;
+    will-change: auto !important;
+    background: #fff;
+  }
+}

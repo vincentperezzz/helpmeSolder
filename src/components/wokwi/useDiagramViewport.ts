@@ -11,12 +11,15 @@ import type { CanvasSize } from "./types";
 
 export function useDiagramViewport({
   guideId,
+  refitKey = "",
   canvas,
   ready,
   enlarged = false,
   onEnlargedChange,
 }: {
   guideId: string;
+  /** Changes when the drawn parts or power source change, so the picture is fitted again. */
+  refitKey?: string;
   canvas: CanvasSize;
   ready: boolean;
   enlarged?: boolean;
@@ -37,7 +40,7 @@ export function useDiagramViewport({
 
   useEffect(() => {
     fittedRef.current = false;
-  }, [guideId]);
+  }, [guideId, refitKey]);
 
   useEffect(() => {
     const onFs = () => {
@@ -107,6 +110,21 @@ export function useDiagramViewport({
     return () => viewport.removeEventListener("wheel", onWheel);
   }, [ready, immersive]);
 
+  // Root cause of the "ghost image" drag: nothing stopped the browser's own
+  // press-and-drag handling (text selection, then dragging the selection or an
+  // <img>/<svg>). Cancel native drag and selection anywhere inside the viewport.
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const block = (event: Event) => event.preventDefault();
+    viewport.addEventListener("dragstart", block, true);
+    viewport.addEventListener("selectstart", block, true);
+    return () => {
+      viewport.removeEventListener("dragstart", block, true);
+      viewport.removeEventListener("selectstart", block, true);
+    };
+  }, [ready]);
+
   const pinchDistance = () => {
     const [a, b] = Array.from(pointersRef.current.values());
     return Math.hypot(a.x - b.x, a.y - b.y);
@@ -115,6 +133,12 @@ export function useDiagramViewport({
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     const isTouch = event.pointerType === "touch";
     if (!isTouch && event.button !== 0 && event.button !== 1) return;
+    // A mouse press anywhere in the viewport, on empty canvas or on a part,
+    // must pan rather than start a text selection or native drag.
+    if (!isTouch) {
+      event.preventDefault();
+      event.currentTarget.focus({ preventScroll: true });
+    }
     pointersRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointersRef.current.size === 2) {
       dragRef.current = null;
@@ -142,6 +166,10 @@ export function useDiagramViewport({
       return;
     }
     if (!dragRef.current) return;
+    if (event.pointerType === "mouse" && event.buttons === 0) {
+      dragRef.current = null;
+      return;
+    }
     const dx = event.clientX - dragRef.current.x;
     const dy = event.clientY - dragRef.current.y;
     setPan({

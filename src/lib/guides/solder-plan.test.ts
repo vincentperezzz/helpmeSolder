@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Guide, PowerSource } from "@/lib/catalog/types";
-import { buildSolderPlan, describePower, hasBreadboard } from "./solder-plan";
+import { SIGNAL_WIRE_PALETTE } from "@/components/wokwi/labels";
+import { buildSolderPlan, colorName, describePower, hasBreadboard } from "./solder-plan";
 
 function make(
   power: PowerSource | null,
@@ -64,6 +65,19 @@ describe("buildSolderPlan", () => {
     expect(ground?.colorName).toBe("black");
     const signal = plan.items.find((i) => i.kind === "signal");
     expect(signal?.colorName).not.toBe("black");
+  });
+
+  it("names every palette colour", () => {
+    for (const hex of SIGNAL_WIRE_PALETTE) expect(colorName(hex)).not.toBe("coloured");
+    expect(colorName("#c62828")).toBe("red");
+    expect(colorName("#212121")).toBe("black");
+  });
+
+  it("gives each signal wire its own colour", () => {
+    const pins = ["D13", "D12", "D14", "D27", "D26", "D25", "D33", "D32", "D4"];
+    const plan = buildSolderPlan(make(null, pins.map((p) => ["buz", "1", "mcu", p])));
+    const colours = plan.items.map((i) => i.color);
+    expect(new Set(colours).size).toBe(pins.length);
   });
 
   it("degrades gracefully for unknown parts and pins", () => {

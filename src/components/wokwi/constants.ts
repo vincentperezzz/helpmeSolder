@@ -1,6 +1,6 @@
 export const STUB_BASE = 18;
 export const STUB_SPREAD = 4;
-export const POWER_ORIGIN = { x: 24, y: 24 };
+export const POWER_ORIGIN = { x: 96, y: 56 };
 
 export const COLORS = [
   "#c62828",

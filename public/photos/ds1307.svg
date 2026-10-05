@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="DS1307 real time clock module with a round coin battery holder and a chip"><title>DS1307 RTC module</title>
+<ellipse cx="160" cy="210" rx="128" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="30" y="30" width="260" height="160" rx="8" fill="#1f6fb5" stroke="#124a7c" stroke-width="2"/>
+<circle cx="46" cy="46" r="5" fill="#eef3f0" stroke="#124a7c"/><circle cx="274" cy="46" r="5" fill="#eef3f0" stroke="#124a7c"/>
+<circle cx="200" cy="104" r="58" fill="#2a3036" stroke="#121a20" stroke-width="2"/>
+<circle cx="200" cy="104" r="48" fill="#cfd6d8" stroke="#8a9599" stroke-width="2"/>
+<circle cx="200" cy="104" r="38" fill="#e4e9ea"/>
+<text x="200" y="102" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#4a5459">CR2032</text>
+<text x="200" y="116" text-anchor="middle" font-family="monospace" font-size="9" fill="#4a5459">3V</text>
+<rect x="52" y="66" width="76" height="34" rx="2" fill="#121a20"/>
+<g fill="#cfd6d8"><rect x="60" y="60" width="5" height="7"/><rect x="60" y="99" width="5" height="7"/><rect x="76" y="60" width="5" height="7"/><rect x="76" y="99" width="5" height="7"/><rect x="92" y="60" width="5" height="7"/><rect x="92" y="99" width="5" height="7"/><rect x="108" y="60" width="5" height="7"/><rect x="108" y="99" width="5" height="7"/></g>
+<circle cx="60" cy="74" r="2.5" fill="#eef3f0"/>
+<text x="92" y="88" text-anchor="middle" font-family="monospace" font-size="9" fill="#eef3f0">DS1307</text>
+<rect x="52" y="116" width="14" height="8" fill="#d9d2c0"/><rect x="76" y="116" width="14" height="8" fill="#d9d2c0"/>
+<rect x="48" y="142" width="110" height="34" rx="2" fill="#121a20"/>
+<g><rect x="59" y="150" width="6" height="12" fill="#d9b84a"/><circle cx="62" cy="156" r="4.5" fill="#121a20"/><circle cx="62" cy="156" r="2" fill="#d9b84a"/><rect x="79" y="150" width="6" height="12" fill="#d9b84a"/><circle cx="82" cy="156" r="4.5" fill="#121a20"/><circle cx="82" cy="156" r="2" fill="#d9b84a"/><rect x="99" y="150" width="6" height="12" fill="#d9b84a"/><circle cx="102" cy="156" r="4.5" fill="#121a20"/><circle cx="102" cy="156" r="2" fill="#d9b84a"/><rect x="119" y="150" width="6" height="12" fill="#d9b84a"/><circle cx="122" cy="156" r="4.5" fill="#121a20"/><circle cx="122" cy="156" r="2" fill="#d9b84a"/><rect x="139" y="150" width="6" height="12" fill="#d9b84a"/><circle cx="142" cy="156" r="4.5" fill="#121a20"/><circle cx="142" cy="156" r="2" fill="#d9b84a"/></g>
+</svg>
