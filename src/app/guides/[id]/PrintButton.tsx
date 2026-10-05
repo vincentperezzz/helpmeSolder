@@ -20,7 +20,7 @@ type PrintState = {
 function preparePage(state: PrintState) {
   // Open every <details> (the soldering how-to) so it prints in full.
   const opened: HTMLDetailsElement[] = [];
-  document.querySelectorAll<HTMLDetailsElement>(".guide-shell details").forEach((el) => {
+  document.querySelectorAll<HTMLDetailsElement>(".guide-app details").forEach((el) => {
     if (!el.open) {
       el.open = true;
       opened.push(el);
@@ -29,12 +29,12 @@ function preparePage(state: PrintState) {
   state.openedDetails.push(...opened);
 
   // Lazy images that are off screen would otherwise print blank.
-  document.querySelectorAll<HTMLImageElement>(".guide-shell img[loading='lazy']").forEach((img) => {
+  document.querySelectorAll<HTMLImageElement>(".guide-app img[loading='lazy']").forEach((img) => {
     img.loading = "eager";
   });
 
-  // Date line next to the brand name in the header, read by print.css.
-  const stamp = document.querySelector<HTMLElement>(".guide-shell > header p.brand-mark");
+  // Date line next to the brand name in the top bar, read by print.css.
+  const stamp = document.querySelector<HTMLElement>(".guide-app .ga-brand");
   if (stamp) {
     stamp.setAttribute(
       "data-printed",
@@ -45,7 +45,7 @@ function preparePage(state: PrintState) {
 
   // The wiring picture is a big canvas scaled with a CSS transform. Work out a
   // scale and box shape that fit the page, and hand them to print.css.
-  const viewport = document.querySelector<HTMLElement>(".guide-shell .diagram-viewport");
+  const viewport = document.querySelector<HTMLElement>(".guide-app .diagram-viewport");
   const world = viewport?.querySelector<HTMLElement>(".diagram-world");
   if (viewport && world && world.offsetWidth > 0 && world.offsetHeight > 0) {
     const scale = Math.min(1, PRINT_PICTURE_WIDTH / world.offsetWidth);
@@ -100,9 +100,9 @@ export function PrintButton() {
       onClick={handleClick}
       aria-label="Print this guide"
       data-print-button
-      className="border border-line-strong px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-copper hover:text-copper-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flux print:hidden"
+      className="ga-btn print:hidden"
     >
-      Print this guide
+      Print
     </button>
   );
 }

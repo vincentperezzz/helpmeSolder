@@ -1,3 +1,4 @@
+import { toolIcon } from "@/components/guide/icons";
 import type { Guide } from "@/lib/catalog/types";
 import { hasBreadboard } from "@/lib/guides/solder-plan";
 
@@ -22,45 +23,58 @@ const JOINT_STEPS = [
   "A good joint is shiny and shaped like a small cone. Dull or blobby means reheat it.",
 ];
 
+export function toolsFor(guide: Guide): string[] {
+  const extra = hasBreadboard(guide)
+    ? "Jumper wires (breadboard wiring needs no soldering)"
+    : "Heat-shrink tubing or electrical tape to cover bare joints";
+  return [...BASE_TOOLS, extra];
+}
+
+/**
+ * Tools, the 60-second how-to and the safety note. Flat on purpose: the
+ * workspace tab around it supplies the heading and the surface.
+ */
 export function ToolsList({ guide }: ToolsListProps) {
   const breadboard = hasBreadboard(guide);
-  const extras = breadboard
-    ? ["Jumper wires (breadboard wiring needs no soldering)"]
-    : ["Heat-shrink tubing or electrical tape to cover bare joints"];
 
   return (
-    <section
-      aria-label="Tools you need"
-      className="rounded-2xl border border-line-strong bg-white/70 p-4 sm:p-5"
-    >
-      <h2 className="font-display text-xl text-ink">Tools you need</h2>
-      <ul className="mt-3 grid gap-1.5 text-sm text-ink-soft sm:grid-cols-2">
-        {[...BASE_TOOLS, ...extras].map((tool) => (
-          <li key={tool} className="flex gap-2">
-            <span aria-hidden className="text-copper">+</span>
-            <span>{tool}</span>
-          </li>
-        ))}
+    <section aria-label="Tools you need" className="space-y-4">
+      <ul className="grid grid-cols-2 gap-2">
+        {toolsFor(guide).map((tool) => {
+          const ToolGlyph = toolIcon(tool);
+          return (
+            <li
+              key={tool}
+              className="flex min-h-24 flex-col items-start gap-2 rounded-[10px] border border-line bg-white/70 p-3 text-sm leading-snug text-ink"
+            >
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-flux/10 text-flux">
+                <ToolGlyph size={20} />
+              </span>
+              <span>{tool}</span>
+            </li>
+          );
+        })}
       </ul>
+
       {breadboard ? (
-        <p className="mt-3 text-sm text-mute">
+        <p className="text-sm leading-relaxed text-mute">
           Parts pushed into a breadboard need no soldering. You only need the iron for
           pieces that are not on the breadboard.
         </p>
       ) : null}
 
-      <details className="mt-4 rounded-xl border border-line bg-paper px-3 py-2">
-        <summary className="min-h-10 cursor-pointer py-2 text-sm font-semibold text-ink">
+      <details className="rounded-[10px] border border-line bg-paper/70 px-3">
+        <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-ink">
           How to solder a joint in 60 seconds
         </summary>
-        <ol className="mt-1 list-decimal space-y-1.5 pb-2 pl-5 text-sm text-ink-soft">
+        <ol className="list-decimal space-y-1.5 pb-3 pl-5 text-sm leading-relaxed text-ink-soft">
           {JOINT_STEPS.map((step) => (
             <li key={step}>{step}</li>
           ))}
         </ol>
       </details>
 
-      <p className="mt-4 rounded-xl border border-warn-line bg-warn-bg px-3 py-2 text-sm text-warn-ink">
+      <p className="rounded-[10px] border border-warn-line bg-warn-bg px-3 py-2.5 text-sm leading-relaxed text-warn-ink">
         Safety: work in a ventilated room, treat the iron as hot at all times and rest it
         in its stand. Never power the build while any wires are touching each other.
       </p>

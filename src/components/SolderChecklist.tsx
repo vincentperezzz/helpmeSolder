@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Switch } from "@/components/guide/Switch";
+import { scrollRowIntoPanel } from "@/components/guide/scroll";
 import type { Guide } from "@/lib/catalog/types";
 import { buildSolderPlan } from "@/lib/guides/solder-plan";
 
@@ -19,7 +21,16 @@ type SolderChecklistProps = {
 };
 
 const controlButton =
-  "min-h-11 rounded-xl border border-line-strong bg-white px-4 text-sm font-semibold text-ink hover:border-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper disabled:cursor-not-allowed disabled:opacity-50";
+  "min-h-11 rounded-[10px] border border-line-strong bg-white px-4 text-sm font-semibold text-ink hover:border-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flux disabled:cursor-not-allowed disabled:opacity-50";
+
+function PowerNote({ text }: { text: string }) {
+  return (
+    <p className="mb-3 rounded-[10px] border border-line bg-paper/70 px-3 py-2 text-sm leading-relaxed text-ink-soft">
+      <span className="font-semibold text-ink">Power: </span>
+      {text}
+    </p>
+  );
+}
 
 const storageKey = (guideId: string) => `helpmesolder:solder-ticks:${guideId}`;
 
@@ -80,10 +91,10 @@ export function SolderChecklist({
     }
   }, [followMode, loaded, focusId, firstOpen, onFocusChange]);
 
-  // A wire picked in the diagram brings its row into view.
+  // A wire picked in the diagram brings its row into view, inside the panel only.
   useEffect(() => {
     if (!focusId) return;
-    rows.current.get(focusId)?.scrollIntoView({ block: "nearest" });
+    scrollRowIntoPanel(rows.current.get(focusId));
   }, [focusId]);
 
   function toggle(id: string) {
@@ -114,63 +125,49 @@ export function SolderChecklist({
     if (target) onFocusChange(target);
   }
 
+  const followHintId = useId();
+
   return (
-    <section
-      aria-label="What to solder where, step by step"
-      className="rounded-2xl border border-line-strong bg-white/70 p-4 sm:p-5"
-    >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="font-display text-xl text-ink">What to solder where</h2>
-        {total > 0 ? (
-          <p className="text-sm font-medium text-flux" aria-live="polite">
-            {done} of {total} done
-          </p>
-        ) : null}
-      </div>
-
-      {plan.power ? (
-        <p className="mt-3 rounded-xl border border-line bg-paper px-3 py-2 text-sm text-ink-soft">
-          <span className="font-semibold text-ink">Power: </span>
-          {plan.power}
-        </p>
-      ) : null}
-
+    <section aria-label="What to solder where, step by step">
       {total === 0 ? (
-        <p className="mt-3 text-sm text-mute">
-          No connections yet. They will appear here once the wiring is added.
-        </p>
+        <div className="space-y-3">
+          {plan.power ? <PowerNote text={plan.power} /> : null}
+          <p className="text-sm text-mute">
+            No connections yet. They will appear here once the wiring is added.
+          </p>
+        </div>
       ) : (
         <>
-          <p className="mt-3 text-sm text-mute">
-            Do these in order. Tick each one when the joint is done. This list
-            matches the wiring picture.
-          </p>
-
-          <div data-print-hide="true" className="mt-3 space-y-2">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={followMode}
-              onClick={() => setFollow(!followMode)}
-              className="flex min-h-11 w-full items-center gap-3 rounded-xl border border-line-strong bg-white px-3 text-left text-sm font-semibold text-ink hover:border-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
-            >
-              <span
-                aria-hidden
-                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-                  followMode ? "bg-flux" : "bg-line-strong"
-                }`}
+          <div
+            data-ga-sticky=""
+            data-print-hide="true"
+            className="sticky top-0 z-10 -mx-4 -mt-3.5 mb-3 space-y-1 border-b border-line bg-[color-mix(in_oklab,white_90%,var(--paper))] px-4 pt-2.5 pb-1.5"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-ink" aria-live="polite">
+                  {done} of {total} done
+                </p>
+                <div aria-hidden className="mt-1.5 h-1 overflow-hidden rounded-full bg-ink/10">
+                  <div
+                    className="h-full rounded-full bg-flux motion-safe:transition-[width]"
+                    style={{ width: `${(done / total) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <Switch
+                checked={followMode}
+                onChange={setFollow}
+                tone="flux"
+                hintId={followHintId}
+                hint="Show one wire at a time in the picture. Tick a joint to move to the next."
               >
-                <span
-                  className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-[left] ${
-                    followMode ? "left-[1.375rem]" : "left-0.5"
-                  }`}
-                />
-              </span>
-              Follow along: show one wire at a time
-            </button>
+                Follow along
+              </Switch>
+            </div>
 
             {followMode ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 pb-1">
                 <button
                   type="button"
                   onClick={() => step(-1)}
@@ -191,7 +188,7 @@ export function SolderChecklist({
             ) : null}
 
             {followMode || focusId !== null ? (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-0 pb-1">
                 <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm text-ink-soft">
                   <input
                     type="checkbox"
@@ -199,7 +196,7 @@ export function SolderChecklist({
                     onChange={(event) => onHideOthersChange(event.target.checked)}
                     className="h-5 w-5 accent-[var(--flux)]"
                   />
-                  Hide the other wires (instead of dimming them)
+                  Hide other wires
                 </label>
                 <button type="button" onClick={showAll} className={controlButton}>
                   Show all wires
@@ -208,13 +205,20 @@ export function SolderChecklist({
             ) : null}
 
             {followMode && allDone ? (
-              <p role="status" className="text-sm font-semibold text-flux">
+              <p role="status" className="pb-1 text-sm font-semibold text-flux">
                 All wires done
               </p>
             ) : null}
           </div>
 
-          <ol className="mt-3 grid gap-2">
+          {plan.power ? <PowerNote text={plan.power} /> : null}
+
+          <p className="mb-3 text-sm leading-relaxed text-mute">
+            Do these in order. Tick each one when the joint is done. This list
+            matches the wiring picture.
+          </p>
+
+          <ol className="grid gap-1.5">
             {plan.items.map((item, index) => {
               const checked = ticked.includes(item.id);
               const selected = focusId === item.id;
@@ -239,14 +243,14 @@ export function SolderChecklist({
                       onHoverChange(null);
                     }
                   }}
-                  className={`flex min-h-14 items-stretch rounded-xl border transition-colors ${
+                  className={`flex min-h-14 items-stretch rounded-[10px] border transition-colors ${
                     selected
                       ? "border-copper bg-copper/10 ring-2 ring-copper/40"
                       : highlighted
                         ? "border-copper bg-copper/5 ring-2 ring-copper/30"
                         : checked
                           ? "border-flux/40 bg-flux/5"
-                          : "border-line bg-white hover:border-line-strong"
+                          : "border-line bg-white/80 hover:border-line-strong"
                   }`}
                 >
                   <label
@@ -266,7 +270,7 @@ export function SolderChecklist({
                     type="button"
                     aria-pressed={selected}
                     onClick={() => onFocusChange(selected ? null : item.id)}
-                    className="min-w-0 flex-1 rounded-r-xl px-3 py-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-copper"
+                    className="min-w-0 flex-1 rounded-r-[10px] px-3 py-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flux"
                   >
                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mute">
                       <span className="font-semibold text-ink">{index + 1}.</span>
@@ -280,7 +284,7 @@ export function SolderChecklist({
                       <span>{item.colorName} wire</span>
                     </span>
                     <span
-                      className={`mt-1 block text-base text-ink ${
+                      className={`mt-1 block text-[15px] leading-snug text-ink ${
                         checked ? "opacity-60" : ""
                       }`}
                     >

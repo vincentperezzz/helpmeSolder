@@ -90,7 +90,26 @@ describe("remote MCP endpoint", () => {
     expect(result.instructions).toContain("coin cell");
   });
 
-  it("lists all twelve tools", async () => {
+  it("instructions put the questions before create_guide and name shareUrl", async () => {
+    const res = await POST(
+      rpc("initialize", {
+        protocolVersion: "2025-03-26",
+        capabilities: {},
+        clientInfo: { name: "test", version: "0" },
+      }),
+    );
+    const { result } = await res.json();
+    const text: string = result.instructions;
+    expect(text).toContain("ASK FIRST");
+    expect(text.indexOf("ASK FIRST")).toBeLessThan(text.indexOf("2. create_guide"));
+    expect(text).toContain("shareUrl");
+    expect(text).toContain("get_guide_link");
+    expect(text).toContain("no gate");
+    expect(text).toMatch(/NO link/);
+    expect(text).not.toMatch(/tell the user the returned url/);
+  });
+
+  it("lists all thirteen tools", async () => {
     const res = await POST(rpc("tools/list"));
     const { result } = await res.json();
     const names = result.tools.map((tool: { name: string }) => tool.name).sort();
@@ -102,6 +121,7 @@ describe("remote MCP endpoint", () => {
         "ask_sensor",
         "create_guide",
         "get_guide",
+        "get_guide_link",
         "list_catalog",
         "request_part",
         "search_catalog",
@@ -112,13 +132,122 @@ describe("remote MCP endpoint", () => {
     );
   });
 
-  it("create_guide returns a link on the request origin", async () => {
+  it("create_guide returns no url and tells the assistant not to share a link yet", async () => {
     vi.mocked(createGuide).mockResolvedValue(guide);
     const result = await callTool("create_guide", { title: "T" });
     expect(result.isError).toBeFalsy();
-    expect(JSON.parse(result.content[0].text).url).toBe("http://localhost/guides/g1");
+    const data = JSON.parse(result.content[0].text);
+    expect(data.url).toBeUndefined();
+    expect(result.content[0].text).not.toContain("/guides/g1");
+    expect(data.guide.id).toBe("g1");
+    expect(data.validation).toBeDefined();
+    expect(data.retention.message).toContain("deleted automatically");
+    expect(data.next).toContain("Do NOT share any link yet");
+    expect(data.next).toContain("validate_guide");
+    expect(data.next).toContain("shareUrl");
     expect(createGuide).toHaveBeenCalledWith({ title: "T" });
     expect(recordClientLater).toHaveBeenCalledWith("creator", expect.anything());
+  });
+
+  describe("share link readiness", () => {
+    const ready: Guide = {
+      ...guide,
+      power_source: "usb_wall",
+      board_id: "board.esp32.devkit",
+      parts: [
+        { instanceId: "mcu", catalogId: "board.esp32.devkit" },
+        { instanceId: "buz", catalogId: "module.buzzer.active" },
+      ],
+      connections: [
+        { id: "c1", from: { instanceId: "mcu", pinId: "D2" }, to: { instanceId: "buz", pinId: "1" } },
+        { id: "c2", from: { instanceId: "mcu", pinId: "GND.1" }, to: { instanceId: "buz", pinId: "2" } },
+      ],
+      steps: [{ id: "s1", title: "Solder", body: "Solder the wires.", order: 1 }],
+    };
+
+    async function validate(g: Guide, tool = "validate_guide") {
+      vi.mocked(getGuide).mockResolvedValue(g);
+      const result = await callTool(tool, { guide_id: g.id });
+      expect(result.isError).toBeFalsy();
+      return JSON.parse(result.content[0].text);
+    }
+
+    it("returns shareUrl and a once-only message when the guide is ready", async () => {
+      vi.stubEnv("GUIDE_RETENTION_DAYS", "21");
+      const data = await validate(ready);
+      expect(data.validation.ok).toBe(true);
+      expect(data.readyToShare).toBe(true);
+      expect(data.shareUrl).toBe("http://localhost/guides/g1");
+      expect(data.missing).toBeUndefined();
+      expect(data.message).toBe(
+        "Share this link with the user once. Mention that guides are deleted if nobody opens them for 21 days.",
+      );
+    });
+
+    it.each([
+      ["power source", { power_source: null }, "power source not set (ask the user"],
+      ["parts", { parts: [], connections: [] }, "no parts yet"],
+      ["connections", { connections: [] }, "no connections yet"],
+      ["steps", { steps: [] }, "no steps yet"],
+    ])("withholds shareUrl when %s is missing", async (_name, patch, expected) => {
+      const data = await validate({ ...ready, ...patch } as Guide);
+      expect(data.readyToShare).toBe(false);
+      expect(data.shareUrl).toBeUndefined();
+      expect(JSON.stringify(data)).not.toContain("/guides/g1");
+      expect(data.missing.some((item: string) => item.includes(expected))).toBe(true);
+      expect(data.next).toContain("Do NOT share a link yet");
+    });
+
+    it("withholds shareUrl and explains validation errors", async () => {
+      const data = await validate({
+        ...ready,
+        connections: [
+          ...ready.connections,
+          { id: "c3", from: { instanceId: "mcu", pinId: "NOPE" }, to: { instanceId: "buz", pinId: "2" } },
+        ],
+      });
+      expect(data.validation.ok).toBe(false);
+      expect(data.readyToShare).toBe(false);
+      expect(data.shareUrl).toBeUndefined();
+      expect(data.missing.some((item: string) => item.startsWith("validation errors: "))).toBe(true);
+    });
+
+    it("lists every missing item for an empty guide, with no duplicate power entry", async () => {
+      const data = await validate(guide);
+      expect(data.readyToShare).toBe(false);
+      expect(data.missing).toHaveLength(4);
+      expect(data.missing.filter((item: string) => item.includes("power"))).toHaveLength(1);
+    });
+
+    it("get_guide_link returns the same readiness result", async () => {
+      expect(await validate(ready, "get_guide_link")).toEqual(await validate(ready));
+      const notReady = await validate({ ...ready, steps: [] }, "get_guide_link");
+      expect(notReady.readyToShare).toBe(false);
+      expect(notReady.shareUrl).toBeUndefined();
+      expect(updateGuide).not.toHaveBeenCalled();
+    });
+
+    it("get_guide_link reports a missing guide", async () => {
+      vi.mocked(getGuide).mockResolvedValue(null);
+      const result = await callTool("get_guide_link", { guide_id: "nope" });
+      expect(result.isError).toBe(true);
+      expect(result.content[0].text).toBe("Guide not found");
+    });
+
+    it("get_guide does not return the link even for a ready guide", async () => {
+      vi.mocked(getGuide).mockResolvedValue(ready);
+      const result = await callTool("get_guide", { guide_id: "g1" });
+      expect(result.content[0].text).not.toContain("/guides/g1");
+      expect(result.content[0].text).not.toContain("shareUrl");
+    });
+
+    it("write tools never return a link", async () => {
+      vi.mocked(getGuide).mockResolvedValue(ready);
+      vi.mocked(updateGuide).mockResolvedValue(ready);
+      const result = await callTool("set_steps", { guide_id: "g1", steps: ready.steps });
+      expect(result.content[0].text).not.toContain("/guides/g1");
+      expect(result.content[0].text).not.toContain("shareUrl");
+    });
   });
 
   it("add_part rejects an unknown catalog id without touching the database", async () => {

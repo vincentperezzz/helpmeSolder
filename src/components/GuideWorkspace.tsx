@@ -1,16 +1,42 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import "@/app/guides/[id]/guide.css";
 import {
-  PowerSelector,
-  powerChoiceLabel,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { ChecksRegion } from "@/components/guide/Checks";
+import { ControlsBar } from "@/components/guide/ControlsBar";
+import {
+  TAB_IDS,
+  TAB_LABELS,
+  buildChecks,
+  defaultTab,
+  readTab,
+  writeTab,
+  type TabId,
+} from "@/components/guide/model";
+import { CloseIcon } from "@/components/guide/icons";
+import { MobileDock } from "@/components/guide/MobileDock";
+import { PanelTabs, panelDomId, tabDomId } from "@/components/guide/PanelTabs";
+import { SCROLL_ATTR } from "@/components/guide/scroll";
+import { NotesPanel, StepsPanel } from "@/components/guide/TextPanels";
+import { TopBar } from "@/components/guide/TopBar";
+import {
   POWER_CHOICES,
+  powerFact,
+  type PowerSourceValue,
 } from "@/components/PowerSelector";
-import { LayoutToggle } from "@/components/LayoutToggle";
 import { PrepParts } from "@/components/PrepParts";
 import { SolderChecklist } from "@/components/SolderChecklist";
-import { ToolsList } from "@/components/ToolsList";
+import { ToolsList, toolsFor } from "@/components/ToolsList";
 import { WokwiDiagram } from "@/components/WokwiDiagram";
+import { getCatalogPart } from "@/lib/catalog";
 import type { Guide, GuideStep, PowerSource } from "@/lib/catalog/types";
 import {
   layoutFeedback,
@@ -18,11 +44,27 @@ import {
   toDirectLayout,
 } from "@/lib/guides/layout-variants";
 import { previewPowerFeedback } from "@/lib/guides/power-preview";
-import { hasBreadboard } from "@/lib/guides/solder-plan";
+import { buildSolderPlan, hasBreadboard } from "@/lib/guides/solder-plan";
+import { validateGuide } from "@/lib/guides/validator";
 
-type GuideWorkspaceProps = {
+/**
+ * Plain data in, nothing server-only inside: the guide page renders this with
+ * a guide from the database, and a preview route can render it with a sample.
+ */
+export type GuideWorkspaceProps = {
   guide: Guide;
   orderedSteps: GuideStep[];
+  /** Already formatted, for example "March 4, 2026". */
+  expiryLabel: string;
+  retentionDays: number;
+};
+
+const PANEL_HEADINGS: Record<TabId, string> = {
+  parts: "Parts you need",
+  tools: "Tools you need",
+  solder: "What to solder where",
+  steps: TAB_LABELS.steps,
+  notes: TAB_LABELS.notes,
 };
 
 const powerKey = (guideId: string) => `helpmesolder:power-choice:${guideId}`;
@@ -87,20 +129,40 @@ function writeFollow(guideId: string, follow: boolean, hide: boolean) {
   }
 }
 
-export function GuideWorkspace({ guide, orderedSteps }: GuideWorkspaceProps) {
-  const [enlarged, setEnlarged] = useState(false);
-  const [selectedPower, setSelectedPower] = useState<PowerSource | null>(
-    guide.power_source,
-  );
+export function GuideWorkspace({
+  guide,
+  orderedSteps,
+  expiryLabel,
+  retentionDays,
+}: GuideWorkspaceProps) {
+  const uid = useId();
+  const checksId = `${uid}-checks`;
+
+  const [enlarged, setEnlargedState] = useState(false);
+  const enlargedRef = useRef(false);
+  // Small screens, picture full screen: the panel becomes a bottom sheet.
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const setEnlarged = useCallback((value: boolean) => {
+    enlargedRef.current = value;
+    setEnlargedState(value);
+    if (!value) setSheetOpen(false);
+  }, []);
+
+  // A guide that names its power source keeps it. Only a guide without one
+  // lets the viewer pick, and that pick is a preview, not the guide's truth.
+  const guidePower = guide.power_source;
+  const [chosenPower, setChosenPower] = useState<PowerSource | null>(null);
+  const selectedPower = guidePower ?? chosenPower;
 
   useEffect(() => {
     // Read after mount so server and first client render match.
+    if (guidePower !== null) return;
     const saved = readPower(guide.id);
     if (saved) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedPower(saved);
+      setChosenPower(saved);
     }
-  }, [guide.id]);
+  }, [guide.id, guidePower]);
 
   const ownBreadboard = hasBreadboard(guide);
   const [breadboardView, setBreadboardView] = useState(ownBreadboard);
@@ -140,17 +202,80 @@ export function GuideWorkspace({ guide, orderedSteps }: GuideWorkspaceProps) {
     [guide.id, followMode],
   );
   const focusedWireIds = useMemo(() => (focusId ? [focusId] : null), [focusId]);
-  const selectWire = useCallback((id: string | null) => {
-    setFocusId((current) => (id === current ? null : id));
-  }, []);
+
+  // ---------- tabs ----------
+
+  const [tab, setTab] = useState<TabId>(() => defaultTab(guide));
+  const tabRef = useRef(tab);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const scrollMemory = useRef<Partial<Record<TabId, number>>>({});
+
+  useEffect(() => {
+    const saved = readTab(guide.id);
+    if (saved) {
+      tabRef.current = saved;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTab(saved);
+    }
+  }, [guide.id]);
+
+  const switchTab = useCallback(
+    (next: TabId, remember: boolean) => {
+      if (remember) writeTab(guide.id, next);
+      const current = tabRef.current;
+      if (next === current) return;
+      const scroller = scrollerRef.current;
+      if (scroller) scrollMemory.current[current] = scroller.scrollTop;
+      tabRef.current = next;
+      setTab(next);
+    },
+    [guide.id],
+  );
+
+  // Each tab opens where it was left. Runs before the checklist scrolls a picked wire into view.
+  useLayoutEffect(() => {
+    const scroller = scrollerRef.current;
+    if (scroller) scroller.scrollTop = scrollMemory.current[tab] ?? 0;
+  }, [tab]);
+
+  // A wire picked in the picture opens the Solder tab. Only the panel scrolls, never the page.
+  const selectWire = useCallback(
+    (id: string | null) => {
+      setFocusId((current) => (id === current ? null : id));
+      if (id) {
+        switchTab("solder", false);
+        if (enlargedRef.current) setSheetOpen(true);
+      }
+    },
+    [switchTab],
+  );
+
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSheetOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [sheetOpen]);
+
+  function openSheet(next: TabId) {
+    switchTab(next, true);
+    setSheetOpen(true);
+  }
+
+  // ---------- what the viewer sees ----------
 
   const shownGuide = useMemo<Guide>(
     () => ({ ...guide, power_source: selectedPower }),
     [guide, selectedPower],
   );
   const feedback = useMemo(
-    () => previewPowerFeedback(guide, shownGuide),
-    [guide, shownGuide],
+    () =>
+      guidePower === null
+        ? previewPowerFeedback(guide, shownGuide)
+        : { damage: [], headsUp: [] },
+    [guide, shownGuide, guidePower],
   );
   const layoutGuide = useMemo<Guide>(
     () => (breadboardView ? toBreadboardLayout(shownGuide) : toDirectLayout(shownGuide)),
@@ -160,234 +285,171 @@ export function GuideWorkspace({ guide, orderedSteps }: GuideWorkspaceProps) {
     () => layoutFeedback(shownGuide, layoutGuide),
     [shownGuide, layoutGuide],
   );
-  const isLayoutPreview = breadboardView !== ownBreadboard;
-  const isPreview = selectedPower !== null && selectedPower !== guide.power_source;
+  const validation = useMemo(() => validateGuide(guide), [guide]);
+  const checks = useMemo(
+    () => buildChecks({ validation, feedback, layoutIssues }),
+    [validation, feedback, layoutIssues],
+  );
+  const [checksOpen, setChecksOpen] = useState(() => !validation.ok);
 
-  function choosePower(value: PowerSource) {
-    setSelectedPower(value);
-    writePower(guide.id, value === guide.power_source ? null : value);
+  const board = guide.board_id ? getCatalogPart(guide.board_id) : null;
+  const counts = useMemo<Partial<Record<TabId, number>>>(
+    () => ({
+      parts: layoutGuide.parts.length,
+      tools: toolsFor(layoutGuide).length,
+      solder: buildSolderPlan(layoutGuide).items.length,
+      steps: orderedSteps.length,
+      notes: guide.notes.length,
+    }),
+    [layoutGuide, orderedSteps.length, guide.notes.length],
+  );
+
+  const isLayoutPreview = breadboardView !== ownBreadboard;
+  const fact = powerFact(guidePower);
+
+  function showChecks() {
+    setEnlarged(false);
+    setChecksOpen(true);
+  }
+
+  function toggleChecks() {
+    if (enlarged) showChecks();
+    else setChecksOpen((open) => !open);
+  }
+
+  function choosePower(value: PowerSourceValue) {
+    if (guidePower !== null) return;
+    setChosenPower(value);
+    writePower(guide.id, value);
+    const fresh = previewPowerFeedback(guide, { ...guide, power_source: value });
+    if (fresh.damage.length + fresh.headsUp.length > 0) showChecks();
+  }
+
+  function clearPower() {
+    setChosenPower(null);
+    writePower(guide.id, null);
   }
 
   function chooseLayout(value: boolean) {
     setBreadboardView(value);
     setFocusId(null);
     writeLayout(guide.id, value === ownBreadboard ? null : value);
-  }
-
-  function backToOriginal() {
-    chooseLayout(ownBreadboard);
-  }
-
-  function backToDefault() {
-    setSelectedPower(guide.power_source);
-    writePower(guide.id, null);
+    const next = value ? toBreadboardLayout(shownGuide) : toDirectLayout(shownGuide);
+    if (layoutFeedback(shownGuide, next).length > 0) showChecks();
   }
 
   return (
-    <div
-      className={
-        enlarged
-          ? "grid min-w-0 grid-cols-1 gap-4"
-          : "grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.85fr)] lg:items-start"
-      }
+    <main
+      className="guide-app"
+      data-enlarged={enlarged}
+      data-sheet={sheetOpen ? "open" : "closed"}
     >
-      <section className="motion-rise motion-rise-delay-1 order-2 min-w-0 max-w-full space-y-3 lg:order-1">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div className="space-y-2">
-            <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-              Wiring picture
-            </h2>
-            <div className="section-rule w-24" />
-          </div>
-          <p className="max-w-xl text-xs text-mute sm:text-sm">
-            {enlarged
-              ? "The parts list and steps are hidden while the picture is big. Turn off Bigger or Full screen to see them again."
-              : "The parts list and steps stay next to the picture. Use Bigger or Full screen to hide them."}
-          </p>
-        </div>
-        {!enlarged ? (
-          <div className="space-y-3">
-            {selectedPower === null ? (
-              <p className="rounded-xl border border-copper/40 bg-paper-deep px-4 py-3 text-base font-medium text-ink">
-                Pick how you will power it so the picture and checklist can show it.
-              </p>
-            ) : null}
-            <div
-              data-print-hide="true"
-              className="flex flex-wrap items-center gap-x-6 gap-y-1 rounded-xl border border-line-strong bg-white/70 px-4"
-            >
-              <PowerSelector value={selectedPower} onChange={choosePower} />
-              <LayoutToggle checked={breadboardView} onChange={chooseLayout} />
-            </div>
-            {selectedPower !== null ? (
-              <p className="hidden px-1 text-xs text-mute sm:block">
-                {POWER_CHOICES.find((choice) => choice.value === selectedPower)?.hint}
-              </p>
-            ) : null}
-            {isPreview ? (
-              <p
-                data-print-hide="true"
-                className="flex flex-wrap items-center gap-x-3 text-sm text-ink-soft"
-              >
-                <span>
-                  You are previewing another way to power it. The guide&apos;s default
-                  is {powerChoiceLabel(guide.power_source)}.
-                </span>
-                <button
-                  type="button"
-                  onClick={backToDefault}
-                  className="min-h-11 text-sm font-semibold text-ink underline underline-offset-2 hover:text-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
-                >
-                  Back to the default
-                </button>
-              </p>
-            ) : null}
-            {isLayoutPreview ? (
-              <p
-                data-print-hide="true"
-                className="flex flex-wrap items-center gap-x-3 text-sm text-ink-soft"
-              >
-                <span>
-                  You are previewing the other layout. This guide was written with{" "}
-                  {ownBreadboard ? "a breadboard" : "direct wires"}.
-                </span>
-                <button
-                  type="button"
-                  onClick={backToOriginal}
-                  className="min-h-11 text-sm font-semibold text-ink underline underline-offset-2 hover:text-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
-                >
-                  Back to the original
-                </button>
-              </p>
-            ) : null}
-            {layoutIssues.length > 0 ? (
-              <div
-                role="status"
-                className="rounded-xl border border-amber-500/30 bg-amber-50/60 px-4 py-3 text-sm text-amber-950"
-              >
-                <p className="font-semibold">Heads up</p>
-                <ul className="mt-1 list-disc space-y-1 pl-5">
-                  {layoutIssues.map((message) => (
-                    <li key={message}>{message}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            {feedback.damage.length > 0 ? (
-              <div
-                role="status"
-                className="rounded-xl border border-amber-500/50 bg-amber-50 px-4 py-3 text-sm text-amber-950"
-              >
-                <p className="font-semibold">This power choice may damage a part:</p>
-                <ul className="mt-1 list-disc space-y-1 pl-5">
-                  {feedback.damage.map((message) => (
-                    <li key={message}>{message}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-            {feedback.headsUp.length > 0 ? (
-              <div
-                role="status"
-                className="rounded-xl border border-amber-500/30 bg-amber-50/60 px-4 py-3 text-sm text-amber-950"
-              >
-                <p className="font-semibold">Heads up</p>
-                <ul className="mt-1 list-disc space-y-1 pl-5">
-                  {feedback.headsUp.map((message) => (
-                    <li key={message}>{message}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-        <WokwiDiagram
-          guide={layoutGuide}
-          enlarged={enlarged}
-          onEnlargedChange={setEnlarged}
-          focusedWireIds={focusedWireIds}
-          hideUnfocused={hideOthers}
-          hoveredWireId={hoverId}
-          onHoverWire={setHoverId}
-          onSelectWire={selectWire}
-        />
-      </section>
+      <TopBar
+        title={guide.title || "Untitled guide"}
+        powerFact={fact}
+        boardName={board?.name ?? null}
+        checks={checks}
+        checksOpen={checksOpen}
+        onToggleChecks={toggleChecks}
+        checksId={checksId}
+      />
 
-      {!enlarged ? (
-        <aside className="motion-rise motion-rise-delay-2 order-1 min-w-0 max-w-full space-y-10 lg:order-2 lg:sticky lg:top-4">
-          <section className="space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                Parts
-              </h2>
-              <div className="section-rule w-24" />
-            </div>
-            <PrepParts parts={layoutGuide.parts} />
-          </section>
-
-          <ToolsList guide={layoutGuide} />
-
-          <SolderChecklist
-            guide={layoutGuide}
-            followMode={followMode}
-            onFollowModeChange={changeFollow}
-            hideOthers={hideOthers}
-            onHideOthersChange={changeHide}
-            focusId={focusId}
-            onFocusChange={setFocusId}
-            hoverId={hoverId}
-            onHoverChange={setHoverId}
+      <div className="ga-body">
+        <section aria-label="Wiring picture" className="ga-stage">
+          <h2 className="ga-ph">Wiring picture</h2>
+          <ControlsBar
+            powerFact={fact}
+            chosenPower={chosenPower}
+            onChoosePower={choosePower}
+            onClearPower={clearPower}
+            breadboard={breadboardView}
+            onBreadboardChange={chooseLayout}
+            layoutPreview={isLayoutPreview}
+            ownBreadboard={ownBreadboard}
+            onBackToOriginal={() => chooseLayout(ownBreadboard)}
           />
-
-          <section className="space-y-4">
-            <div className="space-y-2">
-              <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                Steps
-              </h2>
-              <div className="section-rule w-24" />
+          <div
+            className="ga-canvas-frame"
+            onPointerDownCapture={() => {
+              if (sheetOpen) setSheetOpen(false);
+            }}
+          >
+            <div className="ga-canvas-fill">
+              <WokwiDiagram
+                guide={layoutGuide}
+                enlarged={enlarged}
+                onEnlargedChange={setEnlarged}
+                focusedWireIds={focusedWireIds}
+                hideUnfocused={hideOthers}
+                hoveredWireId={hoverId}
+                onHoverWire={setHoverId}
+                onSelectWire={selectWire}
+              />
             </div>
-            {orderedSteps.length === 0 ? (
-              <p className="text-ink-soft">No steps yet.</p>
-            ) : (
-              <ol className="space-y-6">
-                {orderedSteps.map((step) => (
-                  <li key={step.id} className="grid gap-2 sm:grid-cols-[2.5rem_1fr]">
-                    <span className="brand-mark text-xl text-copper">
-                      {String(step.order).padStart(2, "0")}
-                    </span>
-                    <div className="space-y-1">
-                      <p className="font-semibold tracking-tight text-ink">
-                        {step.title}
-                      </p>
-                      <p className="text-sm leading-relaxed text-ink-soft">
-                        {step.body}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </section>
+          </div>
+        </section>
 
-          {guide.notes.length > 0 ? (
-            <section className="space-y-4 pb-4">
-              <div className="space-y-2">
-                <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                  Notes
-                </h2>
-                <div className="section-rule w-24" />
+        <section aria-label="Build guide" className="ga-panel">
+          <div className="ga-sheet-head" data-print-hide="true">
+            <span aria-hidden className="ga-sheet-handle" />
+            <button type="button" className="ga-sheet-close" onClick={() => setSheetOpen(false)}>
+              <CloseIcon size={18} />
+              <span className="ml-1.5">Close</span>
+            </button>
+          </div>
+          <ChecksRegion
+            id={checksId}
+            checks={checks}
+            open={checksOpen}
+            onClose={() => setChecksOpen(false)}
+          />
+          <PanelTabs
+            prefix={uid}
+            tab={tab}
+            onChange={(next) => switchTab(next, true)}
+            counts={counts}
+          />
+          <div ref={scrollerRef} {...{ [SCROLL_ATTR]: "" }} className="ga-scroll">
+            {TAB_IDS.map((id) => (
+              <div
+                key={id}
+                role="tabpanel"
+                id={panelDomId(uid, id)}
+                aria-labelledby={tabDomId(uid, id)}
+                hidden={tab !== id}
+                tabIndex={0}
+                className="ga-tabpanel"
+              >
+                <h2 className="ga-ph">{PANEL_HEADINGS[id]}</h2>
+                {id === "parts" ? <PrepParts parts={layoutGuide.parts} /> : null}
+                {id === "tools" ? <ToolsList guide={layoutGuide} /> : null}
+                {id === "solder" ? (
+                  <SolderChecklist
+                    guide={layoutGuide}
+                    followMode={followMode}
+                    onFollowModeChange={changeFollow}
+                    hideOthers={hideOthers}
+                    onHideOthersChange={changeHide}
+                    focusId={focusId}
+                    onFocusChange={setFocusId}
+                    hoverId={hoverId}
+                    onHoverChange={setHoverId}
+                  />
+                ) : null}
+                {id === "steps" ? <StepsPanel guideId={guide.id} steps={orderedSteps} /> : null}
+                {id === "notes" ? (
+                  <NotesPanel
+                    notes={guide.notes}
+                    expiryLabel={expiryLabel}
+                    retentionDays={retentionDays}
+                  />
+                ) : null}
               </div>
-              <ul className="space-y-2 text-sm text-ink-soft">
-                {guide.notes.map((note) => (
-                  <li key={note} className="border-l-2 border-copper/50 pl-4">
-                    {note}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-        </aside>
-      ) : null}
-    </div>
+            ))}
+          </div>
+        </section>
+      </div>
+      <MobileDock onOpen={openSheet} onExit={() => setEnlarged(false)} />
+    </main>
   );
 }

@@ -1,11 +1,13 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { computeFit } from "./bounds";
 import { clampZoom } from "./constants";
 import type { CanvasSize } from "./types";
 
@@ -27,19 +29,33 @@ export function useDiagramViewport({
 }) {
   const shellRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 40, y: 40 });
+  const [zoom, setZoomState] = useState(1);
+  const [pan, setPanState] = useState({ x: 0, y: 0 });
   const [fullscreen, setFullscreen] = useState(false);
-  const fittedRef = useRef(false);
-  const dragRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(
+  /** True once the user zoomed or panned by hand since the last fit: then resizes keep the view. */
+  const manualRef = useRef(false);
+  const dragRef = useRef<{ x: number; y: number; panX: number; panY: number; moved: boolean } | null>(
     null,
   );
   const pointersRef = useRef(new Map<number, { x: number; y: number }>());
   const pinchRef = useRef<{ dist: number; zoom: number } | null>(null);
   const immersive = enlarged || fullscreen;
 
+  // Manual changes (buttons, wheel, keys, drag, pinch) stop automatic refitting.
+  const setZoom = useCallback((next: number | ((value: number) => number)) => {
+    manualRef.current = true;
+    setZoomState(next);
+  }, []);
+  const setPan = useCallback(
+    (next: { x: number; y: number } | ((value: { x: number; y: number }) => { x: number; y: number })) => {
+      manualRef.current = true;
+      setPanState(next);
+    },
+    [],
+  );
+
   useEffect(() => {
-    fittedRef.current = false;
+    manualRef.current = false;
   }, [guideId, refitKey]);
 
   useEffect(() => {
@@ -47,28 +63,66 @@ export function useDiagramViewport({
       const active = document.fullscreenElement === shellRef.current;
       setFullscreen(active);
       if (active) onEnlargedChange?.(true);
-      fittedRef.current = false;
+      manualRef.current = false;
     };
     document.addEventListener("fullscreenchange", onFs);
     return () => document.removeEventListener("fullscreenchange", onFs);
   }, [onEnlargedChange]);
 
-  const fitToViewport = useCallback(() => {
+  /** Fit the content box into the viewport now. Returns false while the viewport has no size yet. */
+  const applyFit = useCallback((): boolean => {
     const viewport = viewportRef.current;
-    if (!viewport) {
-      setZoom(1);
-      setPan({ x: 40, y: 40 });
-      return;
+    if (!viewport || viewport.clientWidth < 40 || viewport.clientHeight < 40) return false;
+    const fit = computeFit({ width: viewport.clientWidth, height: viewport.clientHeight }, canvas);
+    setZoomState(fit.zoom);
+    setPanState(fit.pan);
+    return true;
+  }, [canvas]);
+
+  const fitToViewport = useCallback(() => {
+    manualRef.current = false;
+    if (!applyFit()) {
+      setZoomState(1);
+      setPanState({ x: 0, y: 0 });
     }
-    const fit = Math.min(
-      (viewport.clientWidth - 48) / Math.max(canvas.fitWidth ?? canvas.width, 1),
-      (viewport.clientHeight - 48) / Math.max(canvas.fitHeight ?? canvas.height, 1),
-      1.15,
-    );
-    fittedRef.current = true;
-    setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
-    setPan({ x: 40, y: 40 });
-  }, [canvas.fitHeight, canvas.fitWidth, canvas.height, canvas.width]);
+  }, [applyFit]);
+
+  const resetView = useCallback(() => {
+    manualRef.current = true;
+    setZoomState(1);
+    setPanState({ x: 12, y: 12 });
+  }, []);
+
+  const zoomBy = useCallback(
+    (delta: number) => setZoom((value) => clampZoom(value + delta)),
+    [setZoom],
+  );
+
+  // Fit whenever the measured content changes (and nobody moved the view by hand).
+  const measured = canvas.fitWidth !== undefined;
+  useLayoutEffect(() => {
+    if (measured && !manualRef.current) applyFit();
+  }, [measured, applyFit]);
+
+  // Refit when the pane is resized, for example by hiding the side panel or
+  // resizing the window, unless the user has moved the view since the last fit.
+  const applyFitRef = useRef(applyFit);
+  useEffect(() => {
+    applyFitRef.current = applyFit;
+  }, [applyFit]);
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport || typeof ResizeObserver === "undefined") return;
+    let last = { w: viewport.clientWidth, h: viewport.clientHeight };
+    const observer = new ResizeObserver(() => {
+      const next = { w: viewport.clientWidth, h: viewport.clientHeight };
+      if (Math.abs(next.w - last.w) < 1 && Math.abs(next.h - last.h) < 1) return;
+      last = next;
+      if (measured && !manualRef.current) applyFitRef.current();
+    });
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [ready, measured]);
 
   const toggleFullscreen = useCallback(async () => {
     const shell = shellRef.current;
@@ -108,7 +162,7 @@ export function useDiagramViewport({
 
     viewport.addEventListener("wheel", onWheel, { passive: false });
     return () => viewport.removeEventListener("wheel", onWheel);
-  }, [ready, immersive]);
+  }, [ready, immersive, setZoom, setPan]);
 
   // Root cause of the "ghost image" drag: nothing stopped the browser's own
   // press-and-drag handling (text selection, then dragging the selection or an
@@ -153,6 +207,7 @@ export function useDiagramViewport({
       y: event.clientY,
       panX: pan.x,
       panY: pan.y,
+      moved: false,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -172,6 +227,9 @@ export function useDiagramViewport({
     }
     const dx = event.clientX - dragRef.current.x;
     const dy = event.clientY - dragRef.current.y;
+    // A click with a little jitter is not a pan: keep automatic fitting.
+    if (!dragRef.current.moved && Math.hypot(dx, dy) < 4) return;
+    dragRef.current.moved = true;
     setPan({
       x: dragRef.current.panX + dx,
       y: dragRef.current.panY + dy,
@@ -211,12 +269,11 @@ export function useDiagramViewport({
   return {
     shellRef,
     viewportRef,
-    fittedRef,
     zoom,
     pan,
     fullscreen,
-    setZoom,
-    setPan,
+    zoomBy,
+    resetView,
     fitToViewport,
     toggleFullscreen,
     onPointerDown,

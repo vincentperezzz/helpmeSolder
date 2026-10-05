@@ -8,7 +8,7 @@ vi.mock("@/lib/guides/repository", () => ({
   updateGuide: vi.fn(),
 }));
 
-import { createGuide } from "@/lib/guides/repository";
+import { createGuide, getGuide } from "@/lib/guides/repository";
 import { POST } from "./route";
 
 const guide = {
@@ -34,12 +34,13 @@ const rpc = (method: string, params: unknown = {}) =>
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
   });
 
-describe("create_guide retention message", () => {
+describe("retention message", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.stubEnv("MCP_API_KEY", "");
     vi.stubEnv("ALLOW_PUBLIC_API", "true");
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
     vi.stubEnv("GUIDE_RETENTION_DAYS", "21");
     resetRateLimits();
   });
@@ -59,6 +60,41 @@ describe("create_guide retention message", () => {
     expect(payload.retention.message).toContain("21 days");
   });
 
+  it("create_guide result carries no link", async () => {
+    vi.mocked(createGuide).mockResolvedValue(guide);
+    const res = await POST(
+      rpc("tools/call", { name: "create_guide", arguments: {} }),
+    );
+    const { result } = await res.json();
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.url).toBeUndefined();
+    expect(result.content[0].text).not.toContain("/guides/");
+  });
+
+  it("validate_guide mentions the retention days when sharing", async () => {
+    vi.mocked(getGuide).mockResolvedValue({
+      ...guide,
+      power_source: "usb_wall",
+      board_id: "board.esp32.devkit",
+      parts: [
+        { instanceId: "mcu", catalogId: "board.esp32.devkit" },
+        { instanceId: "buz", catalogId: "module.buzzer.active" },
+      ],
+      connections: [
+        { id: "c1", from: { instanceId: "mcu", pinId: "D2" }, to: { instanceId: "buz", pinId: "1" } },
+        { id: "c2", from: { instanceId: "mcu", pinId: "GND.1" }, to: { instanceId: "buz", pinId: "2" } },
+      ],
+      steps: [{ id: "s1", title: "Solder", body: "Solder.", order: 1 }],
+    });
+    const res = await POST(
+      rpc("tools/call", { name: "validate_guide", arguments: { guide_id: "g1" } }),
+    );
+    const { result } = await res.json();
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.shareUrl).toBe("http://localhost/guides/g1");
+    expect(payload.message).toContain("21 days");
+  });
+
   it("tells the model to mention expiry in the instructions", async () => {
     const res = await POST(
       rpc("initialize", {
@@ -68,6 +104,7 @@ describe("create_guide retention message", () => {
       }),
     );
     const { result } = await res.json();
-    expect(result.instructions).toContain("retention.message");
+    expect(result.instructions).toContain("retention message");
+    expect(result.instructions).toContain("shareUrl");
   });
 });

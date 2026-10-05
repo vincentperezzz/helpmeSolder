@@ -2,7 +2,7 @@
  * Print layout for the guide page. Everything is inside @media print so the
  * screen look is untouched. PrintButton.tsx sets a few helper values just
  * before printing: --print-scale and --print-ratio on .diagram-viewport, and
- * data-printed on the brand line in the header.
+ * data-printed on the brand name in the top bar (.ga-brand).
  */
 @media print {
   @page {
@@ -17,8 +17,8 @@
   }
 
   /* Remove the fixed, blurred and gridded background layers. */
-  .guide-shell::before,
-  .guide-shell::after,
+  .guide-app::before,
+  .guide-app::after,
   .atmosphere,
   .atmosphere-grid,
   .diagram-shell::before {
@@ -26,27 +26,140 @@
     content: none !important;
   }
 
-  .guide-shell {
-    max-width: none !important;
-    width: 100% !important;
-    gap: 14pt !important;
+  /* The app shell becomes a normal page: no fixed frame, no inner scrolling. */
+  .guide-app {
+    position: static !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
     padding: 0 !important;
     background: none !important;
   }
 
+  .ga-bar {
+    display: flex !important;
+    flex-wrap: wrap;
+    min-height: 0 !important;
+    padding: 0 0 8pt !important;
+    gap: 4pt 10pt !important;
+  }
+
+  .ga-bar h1 {
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  .ga-bar > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 4pt 10pt !important;
+  }
+
+  .ga-brand {
+    display: block !important;
+  }
+
+  .ga-chip {
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-size: 10pt !important;
+  }
+
+  .ga-body,
+  .guide-app[data-enlarged="true"] .ga-body {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .ga-stage {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 14pt;
+  }
+
+  .ga-canvas-frame,
+  .ga-canvas-fill {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .ga-dock,
+  .ga-sheet-head {
+    display: none !important;
+  }
+
+  .ga-panel,
+  .guide-app[data-enlarged="true"] .ga-panel,
+  .guide-app[data-enlarged="true"][data-sheet="open"] .ga-panel {
+    position: static !important;
+    height: auto !important;
+    padding: 0 !important;
+    animation: none !important;
+    box-shadow: none !important;
+    display: block !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .ga-scroll {
+    overflow: visible !important;
+  }
+
+  /* Every tab on paper, one after another: Parts, Tools, Solder, Steps, Notes. */
+  .ga-tabpanel,
+  .ga-tabpanel[hidden] {
+    display: block !important;
+    min-height: 0 !important;
+    padding: 0 0 14pt !important;
+  }
+
+  .ga-ph {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    margin: 0 0 6pt;
+  }
+
+  .ga-checks,
+  .ga-checks[hidden] {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: 1px solid #000 !important;
+    margin-bottom: 12pt;
+  }
+
+  .ga-checks > div {
+    padding: 6pt 8pt !important;
+  }
+
+  .ga-badge,
+  .ga-pill-count {
+    display: none !important;
+  }
+
   /* Black text on white. Skip the picture so wire colours survive. */
-  .guide-shell *:not(.diagram-world, .diagram-world *) {
+  .guide-app *:not(.diagram-world, .diagram-world *) {
     color: #000 !important;
     text-shadow: none !important;
   }
 
-  .guide-shell *:not(.diagram-world, .diagram-world *, [style*="background"]) {
+  .guide-app *:not(.diagram-world, .diagram-world *, [style*="background"]) {
     background: transparent !important;
     box-shadow: none !important;
   }
 
   /* Keep colours the browser would normally drop: wire swatches and the picture. */
-  .guide-shell [style*="background"],
+  .guide-app [style*="background"],
   .diagram-world {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -69,51 +182,22 @@
   }
 
   /* Hide controls that do nothing on paper. */
-  .guide-shell footer button,
   [data-print-button],
   [data-print-hide],
-  .guide-shell [role="radiogroup"],
-  .guide-shell div:has(> .diagram-zoom-btn),
+  .ga-controls,
+  .ga-tabs,
+  .ga-pill,
+  .guide-app [role="radiogroup"],
+  .guide-app div:has(> .diagram-zoom-btn),
   .diagram-zoom-btn,
-  .guide-shell button[aria-label*=" details for "],
-  .guide-shell nav,
-  .guide-shell .whiteboard-shell p.truncate + p,
-  .guide-shell > div > section.motion-rise > div:first-child > p {
+  .guide-app button[aria-label*=" details for "],
+  .guide-app nav,
+  .guide-app .whiteboard-shell p.truncate + p {
     display: none !important;
   }
 
-  /* One column. The picture comes last, the lists first. */
-  .guide-shell > div[class*="grid-cols-1"] {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 16pt !important;
-  }
-
-  .guide-shell > div[class*="grid-cols-1"] > aside {
-    order: 1 !important;
-    position: static !important;
-    top: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    gap: 14pt !important;
-  }
-
-  .guide-shell > div[class*="grid-cols-1"] > section {
-    order: 2 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .guide-shell > div[class*="grid-cols-1"] aside > section {
-    padding: 0 !important;
-    border-radius: 0 !important;
-    border: 0 !important;
-  }
-
   /* Plain section headings with a thin rule. */
-  .guide-shell h2 {
+  .guide-app h2 {
     font-size: 13pt !important;
     letter-spacing: 0 !important;
     text-transform: none !important;
@@ -123,7 +207,7 @@
     page-break-after: avoid;
   }
 
-  .guide-shell h1 {
+  .guide-app h1 {
     font-size: 22pt !important;
     line-height: 1.1 !important;
   }
@@ -132,60 +216,53 @@
     display: none !important;
   }
 
-  /* Brand line: "HelpmeSolder · Printed <date>". */
-  .guide-shell > header p.brand-mark[data-printed]::after {
+  /* Brand line: "HelpmeSolder - Printed <date>". */
+  .ga-brand[data-printed]::after {
     content: " \00b7  Printed " attr(data-printed);
   }
 
   /* No page breaks inside a row. */
-  .guide-shell li,
-  .guide-shell dl > div,
-  .guide-shell details,
-  .guide-shell footer p {
+  .guide-app li,
+  .guide-app dl > div,
+  .guide-app details {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .guide-shell footer {
-    margin-top: 8pt;
-    font-size: 9pt;
-    border-top: 1px solid #000 !important;
-  }
-
   /* Parts rows: always show the name text, never a hover or tap hint. */
-  .guide-shell ul.divide-y > li {
+  .guide-app ul.divide-y > li {
     padding-top: 6pt !important;
     padding-bottom: 6pt !important;
   }
 
-  .guide-shell img {
+  .guide-app img {
     max-width: 100%;
     break-inside: avoid;
   }
 
   /* How-to details: show the content even when the browser still has it closed. */
-  .guide-shell details::details-content {
+  .guide-app details::details-content {
     content-visibility: visible;
     display: block;
   }
 
-  .guide-shell details {
+  .guide-app details {
     border: 1px solid #000 !important;
     padding: 4pt 8pt;
   }
 
-  .guide-shell summary {
+  .guide-app summary {
     list-style: none;
     font-weight: 700;
     cursor: default;
   }
 
-  .guide-shell summary::-webkit-details-marker {
+  .guide-app summary::-webkit-details-marker {
     display: none;
   }
 
   /* Tick boxes: an empty square to tick by hand, a check when already done. */
-  .guide-shell input[type="checkbox"] {
+  .guide-app input[type="checkbox"] {
     -webkit-appearance: none;
     appearance: none;
     flex: none;
@@ -201,12 +278,12 @@
     print-color-adjust: exact;
   }
 
-  .guide-shell input[type="checkbox"]:checked {
+  .guide-app input[type="checkbox"]:checked {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2.5 7.5l3 3 6-7' fill='none' stroke='black' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
   }
 
   /* Do not fade ticked rows. */
-  .guide-shell [class*="opacity-"] {
+  .guide-app [class*="opacity-"] {
     opacity: 1 !important;
   }
 

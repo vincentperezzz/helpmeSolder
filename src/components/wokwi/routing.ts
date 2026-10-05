@@ -274,6 +274,18 @@ export function blockersForWire(from: Point, to: Point, obstacles: Rect[]): Rect
   });
 }
 
+/**
+ * Bodies a wire from `from` to `to` must not cross: every solid part, plus
+ * breadboards and power sources it is not attached to. Soft parts never block.
+ */
+export function solidObstaclesFor(from: Point, to: Point, obstacles: Obstacle[]): Obstacle[] {
+  return obstacles.filter(
+    (obs) =>
+      !obs.soft &&
+      (obs.hug || (!pointInRect(from, obs, 2) && !pointInRect(to, obs, 2))),
+  );
+}
+
 export function routedPath(
   from: Point,
   to: Point,
@@ -292,13 +304,7 @@ export function routedPath(
   if (fromOwner) fromStub = escapeStub(from, fromDirIn, fromOwner, index).stub;
   if (toOwner) toStub = escapeStub(to, toDirIn, toOwner, index + 2).stub;
 
-  // Bodies this wire must not cross: every solid part, plus breadboards and
-  // power sources it is not attached to. Soft parts never block.
-  const solid = obstacles.filter(
-    (obs) =>
-      !obs.soft &&
-      (obs.hug || (!pointInRect(from, obs, 2) && !pointInRect(to, obs, 2))),
-  );
+  const solid = solidObstaclesFor(from, to, obstacles);
 
   const blockers = blockersForWire(fromStub, toStub, solid);
   const avoid = inflateObstacles(obstacles, 8);
