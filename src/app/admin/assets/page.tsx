@@ -1,5 +1,6 @@
 import { parseShow, parseView } from "@/lib/admin/asset-view";
 import { listAssetRecords } from "@/lib/catalog/asset-registry";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { guardAdmin } from "../_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "../_components/meta";
 import { AdminShell } from "../_components/shell";
@@ -23,6 +24,7 @@ export default async function AdminAssetsPage({ searchParams }: PageProps) {
     );
   }
 
+  await ensureCatalog();
   const params = await searchParams;
   const filter = {
     cat: params.cat ?? "",

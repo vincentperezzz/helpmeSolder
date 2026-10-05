@@ -1,4 +1,5 @@
 import { listCatalog } from "@/lib/catalog";
+import { ensureCatalog } from "@/lib/catalog/server";
 import {
   NOTE_MAX,
   loadRequests,
@@ -73,6 +74,7 @@ export default async function AdminRequestsPage({ searchParams }: PageProps) {
   const status = parseStatusFilter(params.status);
   const kind = parseKindFilter(params.kind);
   const message = params.msg ? MESSAGES[params.msg] : undefined;
+  await ensureCatalog();
   const load = await loadRequests();
   const catalog = catalogData();
 

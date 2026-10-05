@@ -3,6 +3,7 @@ import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, notFound, parseBody } from "@/lib/api/http";
 import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
 import { matchPowerSource, powerSourceInputSchema } from "@/lib/guides/power-source";
 import { recordPartRequestLater } from "@/lib/requests/record";
@@ -46,6 +47,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 
   return guarded(async () => {
+    await ensureCatalog();
     const { id } = await context.params;
     const existing = await getGuide(id);
     if (!existing) {

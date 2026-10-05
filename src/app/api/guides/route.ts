@@ -5,6 +5,7 @@ import { recordClientLater } from "@/lib/analytics/clients";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, parseBody } from "@/lib/api/http";
 import { CREATE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { createGuide } from "@/lib/guides/repository";
 import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
   }
 
   return guarded(async () => {
+    await ensureCatalog();
     const parsed = await parseBody(request, createSchema, { allowEmpty: true });
     if (!parsed.ok) {
       return parsed.response;

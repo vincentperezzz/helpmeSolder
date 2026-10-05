@@ -1,4 +1,5 @@
 import { loadGuideStats, MAX_ROWS } from "@/lib/admin/data";
+import { ensureCatalog } from "@/lib/catalog/server";
 import type { GuideStats } from "@/lib/admin/stats";
 import { countNewRequests } from "@/lib/admin/requests";
 import { hasAnyActivity } from "@/lib/admin/chart";
@@ -35,6 +36,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const { error, changed } = await searchParams;
   if (guard.kind === "login") return <LoginView error={error} />;
 
+  await ensureCatalog();
   const [users, guides, newRequests] = await Promise.all([
     loadUserStats(),
     loadGuides(),

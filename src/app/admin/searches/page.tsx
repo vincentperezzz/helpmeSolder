@@ -1,4 +1,5 @@
 import { listCatalog } from "@/lib/catalog";
+import { ensureCatalog } from "@/lib/catalog/server";
 import {
   NOTE_MAX,
   loadSearches,
@@ -73,6 +74,7 @@ export default async function AdminSearchesPage({ searchParams }: PageProps) {
   const view = parseView(params.view);
   const source = parseSourceFilter(params.source);
   const message = params.msg ? MESSAGES[params.msg] : undefined;
+  await ensureCatalog();
   const load = await loadSearches();
 
   return (

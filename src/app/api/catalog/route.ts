@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded } from "@/lib/api/http";
 import { listCatalog } from "@/lib/catalog";
+import { ensureCatalog } from "@/lib/catalog/server";
 
 export const dynamic = "force-dynamic";
 
@@ -11,5 +12,8 @@ export async function GET(request: NextRequest) {
     return unauthorized;
   }
 
-  return guarded(async () => Response.json(listCatalog()));
+  return guarded(async () => {
+    await ensureCatalog();
+    return Response.json(listCatalog());
+  });
 }

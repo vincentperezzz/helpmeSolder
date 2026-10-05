@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getCatalogPart } from "@/lib/catalog";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { authorizeArea } from "@/lib/admin/credential";
 import {
   isMissingRequestsTable,
@@ -76,6 +77,7 @@ export async function setRequestStatusAction(formData: FormData): Promise<void> 
 
 export async function setRequestAliasAction(formData: FormData): Promise<void> {
   await requireFullSession();
+  await ensureCatalog();
   const target = validateAliasTarget(field(formData, "catalogId"), (id) => Boolean(getCatalogPart(id)));
   if (!target.ok) return back(formData, "bad-part");
   return updateRequest(formData, { mapped_catalog_id: target.id, status: "shipped" }, "alias-saved");

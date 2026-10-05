@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, notFound } from "@/lib/api/http";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { getGuide } from "@/lib/guides/repository";
 import { validateGuide } from "@/lib/guides/validator";
 
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
   }
 
   return guarded(async () => {
+    await ensureCatalog();
     const { id } = await context.params;
     const guide = await getGuide(id);
     if (!guide) {

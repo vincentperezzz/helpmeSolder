@@ -11,6 +11,7 @@ import {
 } from "@/lib/api/rate-limit";
 import { recordPartRequestLater } from "@/lib/requests/record";
 import { recordCatalogSearchLater } from "@/lib/requests/search";
+import { ensureCatalog } from "@/lib/catalog/server";
 import { createMcpServer } from "@/lib/mcp/tools";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +28,7 @@ async function handle(request: NextRequest): Promise<Response> {
   }
 
   try {
+    await ensureCatalog();
     const server = createMcpServer({
       appUrl: getAppUrl(request),
       recordCreator: () => recordClientLater("creator", request),

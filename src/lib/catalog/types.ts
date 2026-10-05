@@ -90,6 +90,20 @@ export type PartVariantNote = {
   matchesGuide?: boolean;
 };
 
+export type PartCategory =
+  | "Board"
+  | "Sensor"
+  | "Display"
+  | "Output"
+  | "Input"
+  | "Power"
+  | "Basic part";
+
+/** Photo search phrases for one part: bare list (Commons/Openverse) or per-source. */
+export type PhotoQueriesOverride =
+  | string[]
+  | { commons: string[]; wikipedia?: string[]; openverse?: string[] };
+
 export type CatalogPart = {
   id: string;
   name: string;
@@ -103,6 +117,12 @@ export type CatalogPart = {
   watchOuts?: string[];
   wokwi?: WokwiPart;
   electrical?: PartElectrical;
+  /** Explicit category; when set it wins over the id/name heuristics. */
+  category?: PartCategory;
+  /** Retired part: still resolvable by id, hidden from lists and pickers. */
+  deprecated?: true;
+  /** Catalog id to prefer instead of a deprecated part. */
+  replacedBy?: string;
   displayClass?:
     | "character-lcd"
     | "oled"
@@ -110,6 +130,9 @@ export type CatalogPart = {
     | "epaper"
     | "matrix";
 };
+
+/** One catalog part plus its optional photo search phrases (the DB `published` shape). */
+export type PartRecord = { part: CatalogPart; photoQueries?: PhotoQueriesOverride };
 
 export type Recipe = {
   id: string;
