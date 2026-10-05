@@ -11,7 +11,13 @@ vi.mock("@/lib/guides/repository", () => ({
 
 vi.mock("@/lib/analytics/clients", () => ({ recordClientLater: vi.fn() }));
 
+vi.mock("@/lib/requests/record", () => ({
+  recordPartRequestLater: vi.fn(),
+  resolveAlias: vi.fn(),
+}));
+
 import { recordClientLater } from "@/lib/analytics/clients";
+import { recordPartRequestLater, resolveAlias } from "@/lib/requests/record";
 import { createGuide, getGuide, updateGuide } from "@/lib/guides/repository";
 import { DELETE, GET, POST } from "./route";
 
@@ -57,6 +63,8 @@ describe("remote MCP endpoint", () => {
     vi.mocked(createGuide).mockReset();
     vi.mocked(getGuide).mockReset();
     vi.mocked(updateGuide).mockReset();
+    vi.mocked(recordPartRequestLater).mockReset();
+    vi.mocked(resolveAlias).mockReset().mockResolvedValue(null);
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -77,7 +85,7 @@ describe("remote MCP endpoint", () => {
     expect(result.instructions).toContain("ask_power_source");
   });
 
-  it("lists all ten tools", async () => {
+  it("lists all twelve tools", async () => {
     const res = await POST(rpc("tools/list"));
     const { result } = await res.json();
     const names = result.tools.map((tool: { name: string }) => tool.name).sort();
@@ -90,6 +98,8 @@ describe("remote MCP endpoint", () => {
         "create_guide",
         "get_guide",
         "list_catalog",
+        "request_part",
+        "search_catalog",
         "set_power_source",
         "set_steps",
         "validate_guide",
@@ -115,6 +125,75 @@ describe("remote MCP endpoint", () => {
     expect(result.isError).toBe(true);
     expect(result.content[0].text).toMatch(/Unknown catalog part/);
     expect(updateGuide).not.toHaveBeenCalled();
+    expect(recordPartRequestLater).toHaveBeenCalledWith(
+      expect.objectContaining({ name: "nope.nothing", source: "add_part" }),
+    );
+  });
+
+  it("add_part miss suggests the closest supported parts", async () => {
+    const result = await callTool("add_part", {
+      guide_id: "g1",
+      instanceId: "x",
+      catalogId: "DHT 21",
+    });
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toContain("module.dht22");
+    expect(result.content[0].text).toContain("request_part");
+  });
+
+  it("add_part uses an admin alias for an unknown id", async () => {
+    vi.mocked(resolveAlias).mockResolvedValue("module.buzzer.active");
+    vi.mocked(getGuide).mockResolvedValue(guide);
+    vi.mocked(updateGuide).mockResolvedValue(guide);
+    const result = await callTool("add_part", { guide_id: "g1", instanceId: "b", catalogId: "buzzer-x" });
+    expect(result.isError).toBeFalsy();
+    expect(updateGuide).toHaveBeenCalledWith("g1", {
+      parts: [{ instanceId: "b", catalogId: "module.buzzer.active", label: undefined }],
+    });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("create_guide records an unknown board_id and still creates the guide", async () => {
+    vi.mocked(createGuide).mockResolvedValue(guide);
+    const result = await callTool("create_guide", { board_id: "board.nope" });
+    expect(result.isError).toBeFalsy();
+    expect(recordPartRequestLater).toHaveBeenCalledWith(
+      expect.objectContaining({ name: "board.nope", source: "add_part" }),
+    );
+  });
+
+  it("search_catalog returns close parts and records nothing", async () => {
+    const result = await callTool("search_catalog", { query: "DHT 22" });
+    const data = JSON.parse(result.content[0].text);
+    expect(data.results[0].id).toBe("module.dht22");
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("request_part records an unsupported part", async () => {
+    const result = await callTool("request_part", {
+      name: "Zorblax 9000 Quantum Flux Sensor",
+      kind: "sensor",
+      reason: "needs I2C",
+      pins: [{ id: "1", label: "SDA" }],
+    });
+    const data = JSON.parse(result.content[0].text);
+    expect(data).toMatchObject({ recorded: true, supported: false });
+    expect(data.nextStep).toMatch(/Never invent a catalog id/);
+    expect(recordPartRequestLater).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "Zorblax 9000 Quantum Flux Sensor",
+        kind: "sensor",
+        source: "request_part",
+        note: "needs I2C",
+      }),
+    );
+  });
+
+  it("request_part answers supported for a strong catalog match without recording", async () => {
+    const result = await callTool("request_part", { name: "HC-SR04" });
+    const data = JSON.parse(result.content[0].text);
+    expect(data).toMatchObject({ supported: true, catalogId: "module.hc-sr04" });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
   });
 
   it("add_part replaces a part with the same instanceId", async () => {

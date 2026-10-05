@@ -14,17 +14,10 @@ export type GuideRow = {
   last_accessed_at?: string | null;
 };
 
-export type CountEntry = { key: string; count: number };
-
 export type GuideStats = {
   total: number;
   created: { today: number; last7: number; last30: number };
-  byBoard: CountEntry[];
-  byPower: CountEntry[];
   validation: { ok: number; warnings: number; blocked: number };
-  avgParts: number;
-  avgConnections: number;
-  topParts: CountEntry[];
   /** null when last_accessed_at is not available. */
   retention: null | {
     neverReopened: number;
@@ -52,28 +45,6 @@ export function countCreatedWindows(
     if (t >= now - 30 * DAY_MS) result.last30++;
   }
   return result;
-}
-
-/** Counts keys, sorted by count (desc) then key. */
-export function countBy<T>(items: T[], keyOf: (item: T) => string): CountEntry[] {
-  const map = new Map<string, number>();
-  for (const item of items) {
-    const key = keyOf(item);
-    map.set(key, (map.get(key) ?? 0) + 1);
-  }
-  return [...map.entries()]
-    .map(([key, count]) => ({ key, count }))
-    .sort((a, b) => b.count - a.count || a.key.localeCompare(b.key));
-}
-
-/** Total use of each catalog id across all guides, top `limit`. */
-export function topPartCounts(partLists: GuidePart[][], limit = 10): CountEntry[] {
-  return countBy(partLists.flat(), (part) => part.catalogId).slice(0, limit);
-}
-
-export function averageOf(values: number[]): number {
-  if (values.length === 0) return 0;
-  return values.reduce((sum, v) => sum + v, 0) / values.length;
 }
 
 export function retentionCounts(
@@ -132,12 +103,7 @@ export function summarizeGuides(
       rows.map((r) => r.created_at),
       now,
     ),
-    byBoard: countBy(rows, (r) => r.board_id ?? "not set"),
-    byPower: countBy(rows, (r) => r.power_source ?? "not set"),
     validation,
-    avgParts: averageOf(rows.map((r) => (r.parts ?? []).length)),
-    avgConnections: averageOf(rows.map((r) => (r.connections ?? []).length)),
-    topParts: topPartCounts(rows.map((r) => r.parts ?? [])),
     retention: hasAccessColumn ? retentionCounts(rows, now, retentionDays) : null,
   };
 }

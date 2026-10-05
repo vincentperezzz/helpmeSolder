@@ -1,11 +1,13 @@
 import { loadGuideStats, MAX_ROWS } from "@/lib/admin/data";
 import type { GuideStats } from "@/lib/admin/stats";
+import { countNewRequests } from "@/lib/admin/requests";
 import { loadUserStats, type DayCount, type KindTotals, type UserLoad } from "@/lib/admin/users";
 import { getRetentionDays } from "@/lib/guides/retention";
 import { loginAction } from "./actions";
 import { guardAdmin } from "./_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "./_components/meta";
 import { AdminShell } from "./_components/shell";
+import Link from "next/link";
 import { Section, Tile, Tiles } from "./_components/ui";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +32,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const { error, changed } = await searchParams;
   if (guard.kind === "login") return <LoginView error={error} />;
 
-  const [users, guides] = await Promise.all([loadUserStats(), loadGuides()]);
+  const [users, guides, newRequests] = await Promise.all([
+    loadUserStats(),
+    loadGuides(),
+    countNewRequests(),
+  ]);
   return (
     <AdminShell session={guard.session} active="overview" title="Admin overview">
       {changed === "1" ? (
@@ -40,14 +46,27 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       ) : null}
       <p className="rounded-md border border-line bg-white/60 p-3 text-sm text-ink-soft">
         What this page shows: counts only. How many people visit, how many guides exist, which
-        boards and power sources they use, whether they pass the safety checks, and which parts
-        and images the site supports. No guide links, titles or content appear here.
+        whether guides pass the safety checks, which parts people asked for that the catalog does
+        not have, and which parts and images the site supports. No guide links, titles or content appear here.
       </p>
 
       <HeadlineTiles users={users} />
 
       <Section title="Users">
         <UsersBlock users={users} />
+      </Section>
+
+      <Section title="Requests">
+        <Link
+          href="/admin/requests"
+          className="block rounded-md border border-line bg-white/60 p-3 hover:bg-paper-deep sm:max-w-xs"
+        >
+          <p className="text-xs text-mute">Parts requested, not started</p>
+          <p className="mt-1 text-2xl font-semibold text-ink">
+            {newRequests === null ? "Not tracking" : newRequests}
+          </p>
+          <p className="mt-1 text-xs text-mute">Open the Requests tab</p>
+        </Link>
       </Section>
 
       <Section title="Guides at a glance">

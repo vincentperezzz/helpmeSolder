@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { safeEqual } from "@/lib/api/auth";
 import { purgeOldClients } from "@/lib/analytics/clients";
+import { purgeOldRequestHits } from "@/lib/requests/record";
 import { guarded, jsonError } from "@/lib/api/http";
 import { deleteExpiredGuides } from "@/lib/guides/repository";
 import { getRetentionDays } from "@/lib/guides/retention";
@@ -8,6 +9,7 @@ import { getRetentionDays } from "@/lib/guides/retention";
 export const dynamic = "force-dynamic";
 
 const ANALYTICS_RETENTION_DAYS = 90;
+const REQUEST_HITS_RETENTION_DAYS = 180;
 
 /** Vercel Cron: deletes guides unopened for GUIDE_RETENTION_DAYS. */
 export async function GET(request: NextRequest) {
@@ -25,6 +27,7 @@ export async function GET(request: NextRequest) {
     const retentionDays = getRetentionDays();
     const deleted = await deleteExpiredGuides(retentionDays);
     await purgeOldClients(ANALYTICS_RETENTION_DAYS);
+    await purgeOldRequestHits(REQUEST_HITS_RETENTION_DAYS);
     return Response.json({ deleted, retentionDays });
   });
 }

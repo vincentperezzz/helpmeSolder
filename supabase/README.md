@@ -50,3 +50,20 @@ Retention: the daily cleanup cron deletes rows older than 90 days.
 
 Environment: `ANALYTICS_SECRET` (optional). It seeds the daily key. If unset,
 `SUPABASE_SERVICE_ROLE_KEY` is used. Neither is ever logged or stored.
+
+## Parts requested but not in the catalog
+
+| File | What it does | When |
+| --- | --- | --- |
+| `migrations/0005_part_requests.sql` | Creates `public.part_requests` (one row per normalized part name, with `demand`, `calls`, `status`, admin alias `mapped_catalog_id`), `public.part_request_hits` (dedupe) and the function `public.record_part_request`. Row level security is on, `anon` and `authenticated` have no access, and only `service_role` can run the function. Idempotent. | Apply before the admin can list missing parts. Without it the app works normally and recording is skipped quietly (one warning, then a 10 minute pause). |
+
+What is recorded: the part name the AI asked for (max 80 characters), an
+optional short reason (max 200), up to 40 example pins, and a count. `demand`
+is the number of distinct anonymous clients per day who asked; it uses the same
+one-way daily hash as the usage counts. No IP address, no user agent, no
+cookie. Requests with `DNT: 1` or `Sec-GPC: 1`, and obvious bots, are not
+recorded. The tool text tells the AI not to put personal information in the
+reason.
+
+Retention: the daily cleanup cron deletes `part_request_hits` older than 180
+days. `part_requests` rows are kept until the admin removes them.

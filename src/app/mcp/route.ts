@@ -9,6 +9,7 @@ import {
   WRITE_LIMIT,
   checkRateLimit,
 } from "@/lib/api/rate-limit";
+import { recordPartRequestLater } from "@/lib/requests/record";
 import { createMcpServer } from "@/lib/mcp/tools";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +29,7 @@ async function handle(request: NextRequest): Promise<Response> {
     const server = createMcpServer({
       appUrl: getAppUrl(request),
       recordCreator: () => recordClientLater("creator", request),
+      recordMiss: (miss) => recordPartRequestLater({ ...miss, request }),
       rateLimit: (bucket) => {
         const limited = checkRateLimit(
           request,

@@ -13,6 +13,8 @@ import {
 } from "@/lib/guides/power-source";
 import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
+import { STRONG_MATCH, suggestClosest } from "@/lib/requests/normalize";
+import { resolveAlias, type PartRequestInput } from "@/lib/requests/record";
 import { sensorCategories } from "./sensor-options";
 
 export type ToolContext = {
@@ -22,6 +24,8 @@ export type ToolContext = {
   rateLimit: (bucket: "create" | "write") => string | null;
   /** Records the caller as an anonymous daily creator. Best-effort, never throws. */
   recordCreator: () => void;
+  /** Records a part the catalog does not have. Best-effort, never throws. */
+  recordMiss: (miss: PartRequestInput) => void;
 };
 
 type GuidePatch = Parameters<typeof updateGuide>[1];
@@ -33,7 +37,8 @@ type ToolResult = {
 
 const INSTRUCTIONS = `HelpmeSolder writes a how-to solder guide (parts prep, wiring diagram, steps) at a secret link.
 Flow:
-1. list_catalog to pick a board and parts.
+1. list_catalog to pick a board and parts. If unsure of an id, call search_catalog with a short name. Never guess or invent ids.
+   If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
 2. If the power source is unknown call ask_power_source and ASK THE USER (never guess), later set_power_source.
 3. If the build needs a sensor/input and the exact module is unknown call ask_sensor and ASK THE USER.
 4. create_guide, then tell the user the returned url and mention that the guide is deleted if unopened (see retention.message).
@@ -104,6 +109,9 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         }
         const guide = await createGuide(input);
         ctx.recordCreator();
+        if (input.board_id && !getCatalogPart(input.board_id)) {
+          ctx.recordMiss({ name: input.board_id, kind: "board", source: "add_part" });
+        }
         return textResult({
           guide,
           validation: validateGuide(guide),
@@ -238,12 +246,26 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         label: z.string().optional(),
       },
     },
-    ({ guide_id, instanceId, catalogId, label }) =>
+    ({ guide_id, instanceId, catalogId: sentId, label }) =>
       safely(async () => {
+        let catalogId = sentId;
         if (!getCatalogPart(catalogId)) {
-          return errorResult(
-            `Unknown catalog part "${catalogId}". Call list_catalog and use an exact id.`,
-          );
+          const alias = await resolveAlias(catalogId);
+          if (alias && getCatalogPart(alias)) {
+            catalogId = alias;
+          } else {
+            ctx.recordMiss({ name: sentId, source: "add_part" });
+            const close = suggestClosest(sentId, 3);
+            const hint =
+              close.length > 0
+                ? ` Closest supported parts: ${close
+                    .map((part) => `${part.id} (${part.name})`)
+                    .join("; ")}. Ask the user which supported alternative to use, or call request_part if nothing fits.`
+                : " Call search_catalog to look for it, or call request_part if nothing fits, then tell the user it is not supported yet.";
+            return errorResult(
+              `Unknown catalog part "${sentId}". Call list_catalog and use an exact id.${hint}`,
+            );
+          }
         }
         return changeGuide(ctx, guide_id, (guide) => ({
           parts: [
@@ -322,6 +344,79 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
       inputSchema: {},
     },
     () => safely(async () => textResult(listCatalog())),
+  );
+
+  server.registerTool(
+    "search_catalog",
+    {
+      description:
+        "Find catalog parts by a short name or description (for example \"DHT22\" or \"ultrasonic distance\"). Returns up to 8 closest parts with their exact ids. Read-only. Use it when unsure of an id before add_part.",
+      inputSchema: { query: z.string().max(200) },
+    },
+    ({ query }) =>
+      safely(async () =>
+        textResult({
+          query,
+          results: suggestClosest(query, 8).map((part) => ({
+            id: part.id,
+            name: part.name,
+            kind: part.kind,
+            description: part.description.split(/(?<=[.!?])\s/)[0].slice(0, 160),
+          })),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "request_part",
+    {
+      description:
+        "Tell the site owner about a part the user needs that is NOT in the catalog (after search_catalog found nothing that fits). Do not put personal information in reason. Then tell the user it is not supported yet and offer the closest supported part. Never invent a catalog id.",
+      inputSchema: {
+        name: z.string().min(1).max(80),
+        kind: z
+          .enum(["board", "sensor", "display", "output", "input", "power", "other"])
+          .optional(),
+        reason: z
+          .string()
+          .max(200)
+          .optional()
+          .describe("Short technical reason only. No personal information."),
+        pins: z
+          .array(
+            z.object({
+              id: z.string().max(30),
+              label: z.string().max(40),
+              kind: z.string().max(20).optional(),
+            }),
+          )
+          .max(40)
+          .optional(),
+      },
+    },
+    ({ name, kind, reason, pins }) =>
+      safely(async () => {
+        const closest = suggestClosest(name, 5);
+        const top = closest[0];
+        if (top && top.score >= STRONG_MATCH) {
+          return textResult({
+            recorded: false,
+            supported: true,
+            catalogId: top.id,
+            name: top.name,
+            message: "This part is already in the catalog. Use this catalog id with add_part.",
+          });
+        }
+        ctx.recordMiss({ name, kind, source: "request_part", pins, note: reason });
+        return textResult({
+          recorded: true,
+          supported: false,
+          message: "This part is not in the catalog yet. It has been noted for the site owner.",
+          closest: closest.map((part) => ({ id: part.id, name: part.name, kind: part.kind })),
+          nextStep:
+            "Tell the user it is not supported yet. Offer the closest supported part or continue without it. Never invent a catalog id.",
+        });
+      }),
   );
 
   server.registerTool(

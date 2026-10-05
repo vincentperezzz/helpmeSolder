@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
-  averageOf,
-  countBy,
   countCreatedWindows,
   retentionCounts,
   summarizeGuides,
-  topPartCounts,
   type GuideRow,
 } from "./stats";
 
@@ -20,30 +17,6 @@ describe("countCreatedWindows", () => {
       now,
     );
     expect(result).toEqual({ today: 1, last7: 3, last30: 4 });
-  });
-});
-
-describe("countBy and topPartCounts", () => {
-  it("sorts by count then key", () => {
-    expect(countBy(["b", "a", "b", "c"], (x) => x)).toEqual([
-      { key: "b", count: 2 },
-      { key: "a", count: 1 },
-      { key: "c", count: 1 },
-    ]);
-  });
-
-  it("returns the top parts across guides", () => {
-    const p = (catalogId: string) => ({ instanceId: catalogId, catalogId });
-    const top = topPartCounts([[p("x"), p("y")], [p("x")], [p("z")]], 2);
-    expect(top).toEqual([
-      { key: "x", count: 2 },
-      { key: "y", count: 1 },
-    ]);
-  });
-
-  it("averages safely", () => {
-    expect(averageOf([])).toBe(0);
-    expect(averageOf([1, 2, 3])).toBe(2);
   });
 });
 
@@ -86,11 +59,7 @@ describe("summarizeGuides", () => {
   it("aggregates without a database", () => {
     const stats = summarizeGuides(rows, { now, retentionDays: 30, hasAccessColumn: true });
     expect(stats.total).toBe(2);
-    expect(stats.byBoard.map((e) => e.key).sort()).toEqual(["board.arduino.uno", "not set"]);
-    expect(stats.byPower.map((e) => e.key).sort()).toEqual(["not set", "usb_wall"]);
     expect(stats.validation.ok + stats.validation.warnings + stats.validation.blocked).toBe(2);
-    expect(stats.avgParts).toBe(0.5);
-    expect(stats.topParts[0]).toEqual({ key: "module.servo", count: 1 });
     expect(stats.retention).not.toBeNull();
   });
 

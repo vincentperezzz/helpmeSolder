@@ -1,11 +1,11 @@
 import type { SessionLevel } from "./session";
 
-export type AdminTabId = "overview" | "guides" | "catalog" | "settings";
+export type AdminTabId = "overview" | "requests" | "catalog" | "settings";
 export type AdminTab = { id: AdminTabId; label: string; href: string };
 
 export const ADMIN_TABS: readonly AdminTab[] = [
   { id: "overview", label: "Overview", href: "/admin" },
-  { id: "guides", label: "Guides", href: "/admin/guides" },
+  { id: "requests", label: "Requests", href: "/admin/requests" },
   { id: "catalog", label: "Catalog", href: "/admin/catalog" },
   { id: "settings", label: "Settings", href: "/admin/settings" },
 ];

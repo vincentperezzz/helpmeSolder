@@ -34,37 +34,6 @@ export function Tiles({ children }: { children: ReactNode }) {
   return <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{children}</div>;
 }
 
-export function BarList({
-  entries,
-  label,
-  empty = "Nothing yet.",
-}: {
-  entries: { label: string; count: number }[];
-  label: string;
-  empty?: string;
-}) {
-  if (entries.length === 0) return <p className="text-sm text-mute">{empty}</p>;
-  const max = Math.max(...entries.map((e) => e.count));
-  return (
-    <ul aria-label={label} className="space-y-2">
-      {entries.map((entry) => (
-        <li key={entry.label} className="text-sm">
-          <div className="flex justify-between gap-3">
-            <span className="min-w-0 break-words text-ink">{entry.label}</span>
-            <span className="shrink-0 tabular-nums text-mute">{entry.count}</span>
-          </div>
-          <div className="mt-1 h-2 rounded bg-paper-deep">
-            <div
-              className="h-2 rounded bg-flux"
-              style={{ width: `${max === 0 ? 2 : Math.max(2, (entry.count / max) * 100)}%` }}
-            />
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function Yes({ value }: { value: boolean }) {
   return value ? (
     <span className="text-flux">Yes</span>
@@ -73,10 +42,19 @@ function Yes({ value }: { value: boolean }) {
   );
 }
 
-export function PartsTable({ caption, rows }: { caption: string; rows: CoverageRow[] }) {
+export function PartsTable({
+  caption,
+  rows,
+  usage,
+}: {
+  caption: string;
+  rows: CoverageRow[];
+  /** Guides containing each part. Null when guides could not be read. */
+  usage: Map<string, number> | null;
+}) {
   return (
     <div className="overflow-x-auto rounded-md border border-line">
-      <table className="w-full min-w-[32rem] text-left text-sm">
+      <table className="w-full min-w-[38rem] text-left text-sm">
         <caption className="px-3 py-2 text-left text-xs text-mute">{caption}</caption>
         <thead className="bg-paper-deep text-xs text-mute">
           <tr>
@@ -85,6 +63,7 @@ export function PartsTable({ caption, rows }: { caption: string; rows: CoverageR
             <th scope="col" className="px-3 py-2 font-medium">Logic</th>
             <th scope="col" className="px-3 py-2 font-medium">Diagram drawing</th>
             <th scope="col" className="px-3 py-2 font-medium">Thumbnail</th>
+            <th scope="col" className="px-3 py-2 font-medium">Used in guides</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +74,9 @@ export function PartsTable({ caption, rows }: { caption: string; rows: CoverageR
               <td className="px-3 py-2 text-ink-soft">{row.logic}</td>
               <td className="px-3 py-2"><Yes value={row.hasDrawing} /></td>
               <td className="px-3 py-2"><Yes value={row.hasThumbnail} /></td>
+              <td className="px-3 py-2 tabular-nums text-ink-soft">
+                {usage ? (usage.get(row.id) ?? 0) : "n/a"}
+              </td>
             </tr>
           ))}
         </tbody>

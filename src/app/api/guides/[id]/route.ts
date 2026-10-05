@@ -3,6 +3,8 @@ import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, notFound, parseBody } from "@/lib/api/http";
 import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
+import { getCatalogPart } from "@/lib/catalog";
+import { recordPartRequestLater } from "@/lib/requests/record";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
 import { powerSourceNullableInputSchema } from "@/lib/guides/power-source";
 import { validateGuide } from "@/lib/guides/validator";
@@ -93,6 +95,12 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
     const guide = await updateGuide(id, parsed.data);
     const validation = validateGuide(guide);
+
+    for (const part of guide.parts) {
+      if (!getCatalogPart(part.catalogId)) {
+        recordPartRequestLater({ name: part.catalogId, source: "api_patch", request });
+      }
+    }
 
     if (!validation.ok) {
       return Response.json(
