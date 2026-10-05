@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { assertApiAuth } from "@/lib/api/auth";
+import { guarded, notFound } from "@/lib/api/http";
 import { getGuide } from "@/lib/guides/repository";
 import { validateGuide } from "@/lib/guides/validator";
 
@@ -13,16 +14,18 @@ export async function POST(request: NextRequest, context: RouteContext) {
     return unauthorized;
   }
 
-  const { id } = await context.params;
-  const guide = await getGuide(id);
-  if (!guide) {
-    return Response.json({ error: "Guide not found" }, { status: 404 });
-  }
+  return guarded(async () => {
+    const { id } = await context.params;
+    const guide = await getGuide(id);
+    if (!guide) {
+      return notFound();
+    }
 
-  const validation = validateGuide(guide);
-  return Response.json({
-    guideId: guide.id,
-    validation,
-    blocked: !validation.ok,
+    const validation = validateGuide(guide);
+    return Response.json({
+      guideId: guide.id,
+      validation,
+      blocked: !validation.ok,
+    });
   });
 }

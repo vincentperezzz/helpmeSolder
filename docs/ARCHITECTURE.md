@@ -61,7 +61,7 @@ Catalog (boards, modules, recipes) lives in repo code for v1 so it versions with
 | PUT | `/api/guides/[id]/power` | Set power source |
 | POST | `/api/guides/[id]/validate` | Validate only |
 
-Optional `MCP_API_KEY` (Bearer / `x-api-key`) gates mutating/tool APIs when set.
+Access: with `ALLOW_PUBLIC_API=true` anyone may call the API (per-IP/key rate limits apply). Otherwise a matching `MCP_API_KEY` (Bearer / `x-api-key`) is required. A key that is presented must always match.
 
 ## Validation
 

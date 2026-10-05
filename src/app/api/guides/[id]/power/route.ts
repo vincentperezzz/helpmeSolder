@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
+import { guarded, notFound, parseBody } from "@/lib/api/http";
+import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
 import { powerSourceInputSchema } from "@/lib/guides/power-source";
 import { validateGuide } from "@/lib/guides/validator";
@@ -19,17 +21,28 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     return unauthorized;
   }
 
-  const { id } = await context.params;
-  const existing = await getGuide(id);
-  if (!existing) {
-    return Response.json({ error: "Guide not found" }, { status: 404 });
+  const limited = checkRateLimit(request, WRITE_LIMIT);
+  if (limited) {
+    return limited;
   }
 
-  const body = schema.parse(await request.json());
-  const guide = await updateGuide(id, { power_source: body.power_source });
+  return guarded(async () => {
+    const { id } = await context.params;
+    const existing = await getGuide(id);
+    if (!existing) {
+      return notFound();
+    }
 
-  return Response.json({
-    guide,
-    validation: validateGuide(guide),
+    const parsed = await parseBody(request, schema);
+    if (!parsed.ok) {
+      return parsed.response;
+    }
+
+    const guide = await updateGuide(id, { power_source: parsed.data.power_source });
+
+    return Response.json({
+      guide,
+      validation: validateGuide(guide),
+    });
   });
 }

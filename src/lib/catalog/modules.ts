@@ -1,6 +1,6 @@
-import type { CatalogPart } from "./types";
+import type { CatalogPart, PartElectrical, VoltageRange } from "./types";
 
-export const modules: CatalogPart[] = [
+const baseModules: CatalogPart[] = [
   {
     id: "module.buzzer.active",
     name: "Buzzer",
@@ -639,3 +639,107 @@ export const modules: CatalogPart[] = [
     ],
   },
 ];
+
+const V5: VoltageRange = { min: 4.5, max: 5.5 };
+const V3_3_ONLY: VoltageRange = { min: 3.0, max: 3.6 };
+/** Typical LM393-style sensor breakout. */
+const V3_5: VoltageRange = { min: 3.3, max: 5.5 };
+
+const lcdI2c: PartElectrical = {
+  supply: V5,
+  logic: "5v",
+  logicFollowsSupply: true,
+  inputHighFraction: 0.7,
+};
+
+const lcdParallel: PartElectrical = {
+  supply: V5,
+  logic: "5v",
+  inputOnlyPins: ["RS", "RW", "E", "D4", "D5", "D6", "D7", "V0"],
+  inputHighVolts: 2.2,
+};
+
+const neopixel: PartElectrical = {
+  supply: { min: 3.5, max: 5.3 },
+  logic: "5v",
+  logicFollowsSupply: true,
+  inputOnlyPins: ["DIN"],
+  inputHighFraction: 0.7,
+};
+
+const sensor3v5: PartElectrical = { supply: V3_5, logic: "5v", logicFollowsSupply: true };
+
+const MODULE_ELECTRICAL: Record<string, PartElectrical> = {
+  "module.lcd.i2c.1602": lcdI2c,
+  "module.lcd.i2c.2004": lcdI2c,
+  "module.lcd.parallel.1602": lcdParallel,
+  "module.lcd.parallel.2004": lcdParallel,
+  "module.oled.ssd1306": {
+    logic: "3v3",
+    pins: {
+      "3V3": { accepts: V3_3_ONLY },
+      VIN: { accepts: V3_5 },
+    },
+    inputOnlyPins: ["CLK", "DC", "RST", "CS"],
+    inputMaxVolts: 3.6,
+    inputMaxIsHard: false,
+  },
+  "module.tft.ili9341": {
+    logic: "3v3",
+    supply: V3_3_ONLY,
+    inputOnlyPins: ["CS", "RST", "D/C", "MOSI", "SCK"],
+    inputMaxVolts: 3.6,
+  },
+  "module.soil.moisture": sensor3v5,
+  "module.dht22": { supply: { min: 3.0, max: 6 }, logic: "5v", logicFollowsSupply: true },
+  "module.hc-sr04": { supply: V5, logic: "5v", inputOnlyPins: ["TRIG"] },
+  "module.servo": { supply: { min: 4.5, max: 6 }, logic: "5v", inputOnlyPins: ["PWM"] },
+  "module.neopixel": neopixel,
+  "module.neopixel.matrix": neopixel,
+  "module.led.ring": neopixel,
+  // HC-SR501 style: wide input range, regulated 3.3V output.
+  "module.pir.motion": { supply: { min: 4.5, max: 12 }, logic: "3v3" },
+  "module.photoresistor": sensor3v5,
+  "module.ntc.temperature": sensor3v5,
+  "module.flame": sensor3v5,
+  "module.gas": { supply: V5, logic: "5v", logicFollowsSupply: true },
+  // GY-521 style breakout with onboard LDO; the I2C pins are not level shifted.
+  "module.mpu6050": {
+    supply: { min: 3.0, max: 5.5 },
+    logic: "3v3",
+    inputOnlyPins: ["AD0", "XCL", "XDA"],
+    inputMaxVolts: 3.6,
+    inputMaxIsHard: false,
+  },
+  "module.hx711": {
+    supply: { min: 2.7, max: 5.5 },
+    logic: "5v",
+    logicFollowsSupply: true,
+    inputOnlyPins: ["SCK"],
+  },
+  "module.heart.beat": sensor3v5,
+  "module.big.sound": sensor3v5,
+  "module.small.sound": sensor3v5,
+  "module.ir.receiver": { supply: { min: 2.5, max: 5.5 }, logic: "5v", logicFollowsSupply: true },
+  "module.analog.joystick": sensor3v5,
+  "module.ky.040": sensor3v5,
+  "module.ds1307": {
+    supply: V5,
+    logic: "5v",
+    logicFollowsSupply: true,
+    inputHighVolts: 2.2,
+  },
+  "module.tilt.switch": sensor3v5,
+  "module.microsd": {
+    logic: "3v3",
+    supply: V3_3_ONLY,
+    inputOnlyPins: ["CS", "SCK", "DI"],
+    inputMaxVolts: 3.6,
+  },
+  "module.slide.potentiometer": sensor3v5,
+};
+
+export const modules: CatalogPart[] = baseModules.map((part) => ({
+  ...part,
+  electrical: MODULE_ELECTRICAL[part.id],
+}));

@@ -1,3 +1,10 @@
+import { HeroMotion } from "@/components/HeroMotion";
+import { HomeSections } from "@/components/HomeSections";
+import { Magnetic } from "@/components/Magnetic";
+import { ScrollLink } from "@/components/ScrollLink";
+import { SiteNav } from "@/components/SiteNav";
+import "./home.css";
+
 function WorkbenchPlane() {
   return (
     <svg
@@ -18,7 +25,7 @@ function WorkbenchPlane() {
         </linearGradient>
       </defs>
       <rect width="1440" height="900" fill="#d7e4de" />
-      <g opacity="0.28" stroke="#152028" strokeWidth="1">
+      <g className="parallax-far" opacity="0.28" stroke="#152028" strokeWidth="1">
         {Array.from({ length: 36 }, (_, i) => (
           <line key={`v-${i}`} x1={i * 40} y1="0" x2={i * 40} y2="900" />
         ))}
@@ -26,6 +33,7 @@ function WorkbenchPlane() {
           <line key={`h-${i}`} x1="0" y1={i * 40} x2="1440" y2={i * 40} />
         ))}
       </g>
+      <g className="parallax-mid">
       <path
         className="motion-trace"
         d="M180 620 C360 520, 480 420, 640 380 S980 340, 1180 260"
@@ -43,13 +51,38 @@ function WorkbenchPlane() {
         strokeWidth="4"
         strokeLinecap="round"
       />
-      <g>
-        <circle cx="640" cy="380" r="34" fill="url(#padGlow)" />
-        <circle cx="640" cy="380" r="12" fill="#eef3f0" />
-        <circle cx="980" cy="340" r="26" fill="#8f4520" />
-        <circle cx="980" cy="340" r="9" fill="#eef3f0" />
-        <circle cx="1180" cy="260" r="22" fill="#2a6b66" />
-        <circle cx="1180" cy="260" r="8" fill="#eef3f0" />
+      <path
+        className="signal"
+        pathLength="1000"
+        d="M180 620 C360 520, 480 420, 640 380 S980 340, 1180 260"
+        fill="none"
+        stroke="#f3c29b"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
+      <path
+        className="signal signal-2"
+        pathLength="1000"
+        d="M220 700 C420 640, 560 560, 760 500 S1040 430, 1260 360"
+        fill="none"
+        stroke="#9fd6cf"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      </g>
+      <g className="parallax-near">
+        <g className="idle-float">
+          <circle className="breathe" cx="640" cy="380" r="34" fill="url(#padGlow)" />
+          <circle cx="640" cy="380" r="12" fill="#eef3f0" />
+        </g>
+        <g className="idle-float" style={{ animationDelay: "-2.4s" }}>
+          <circle className="breathe" cx="980" cy="340" r="26" fill="#8f4520" />
+          <circle cx="980" cy="340" r="9" fill="#eef3f0" />
+        </g>
+        <g className="idle-float" style={{ animationDelay: "-4.6s" }}>
+          <circle className="breathe" cx="1180" cy="260" r="22" fill="#2a6b66" />
+          <circle cx="1180" cy="260" r="8" fill="#eef3f0" />
+        </g>
         <rect
           x="160"
           y="600"
@@ -66,12 +99,16 @@ function WorkbenchPlane() {
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-full flex-1 flex-col overflow-hidden">
+    <main
+      id="top"
+      className="relative flex min-h-full flex-1 flex-col overflow-hidden"
+    >
+      <SiteNav />
       <div className="atmosphere" aria-hidden="true">
         <div className="atmosphere-grid" />
       </div>
 
-      <section className="relative flex min-h-[100svh] flex-1 flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-16">
+      <HeroMotion className="relative flex min-h-[100svh] flex-1 flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-16">
         <div className="pointer-events-none absolute inset-0 opacity-90">
           <WorkbenchPlane />
           <div className="absolute inset-0 bg-gradient-to-t from-[#eef3f0] via-[#eef3f0]/78 to-transparent" />
@@ -89,6 +126,12 @@ export default function Home() {
             link for prep, wiring, and steps.
           </p>
           <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-6 pt-2">
+            <Magnetic>
+              <ScrollLink targetId="setup" className="btn-pad">
+                <span className="btn-pad__face">Set up the MCP</span>
+                <span aria-hidden="true" className="btn-pad__trace" />
+              </ScrollLink>
+            </Magnetic>
             <a
               href="/api/health"
               className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-copper-deep underline decoration-copper/50 underline-offset-6 transition-colors hover:text-copper"
@@ -100,7 +143,8 @@ export default function Home() {
             </span>
           </div>
         </div>
-      </section>
+      </HeroMotion>
+      <HomeSections />
     </main>
   );
 }

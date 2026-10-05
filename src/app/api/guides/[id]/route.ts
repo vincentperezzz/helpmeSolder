@@ -1,9 +1,13 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
+import { guarded, notFound, parseBody } from "@/lib/api/http";
+import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
 import { powerSourceNullableInputSchema } from "@/lib/guides/power-source";
 import { validateGuide } from "@/lib/guides/validator";
+
+export const dynamic = "force-dynamic";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -51,15 +55,17 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return unauthorized;
   }
 
-  const { id } = await context.params;
-  const guide = await getGuide(id);
-  if (!guide) {
-    return Response.json({ error: "Guide not found" }, { status: 404 });
-  }
+  return guarded(async () => {
+    const { id } = await context.params;
+    const guide = await getGuide(id);
+    if (!guide) {
+      return notFound();
+    }
 
-  return Response.json({
-    guide,
-    validation: validateGuide(guide),
+    return Response.json({
+      guide,
+      validation: validateGuide(guide),
+    });
   });
 }
 
@@ -68,27 +74,37 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   if (unauthorized) {
     return unauthorized;
   }
-
-  const { id } = await context.params;
-  const existing = await getGuide(id);
-  if (!existing) {
-    return Response.json({ error: "Guide not found" }, { status: 404 });
+  const limited = checkRateLimit(request, WRITE_LIMIT);
+  if (limited) {
+    return limited;
   }
 
-  const body = patchSchema.parse(await request.json());
-  const guide = await updateGuide(id, body);
-  const validation = validateGuide(guide);
+  return guarded(async () => {
+    const { id } = await context.params;
+    const existing = await getGuide(id);
+    if (!existing) {
+      return notFound();
+    }
 
-  if (!validation.ok) {
-    return Response.json(
-      {
-        guide,
-        validation,
-        blocked: true,
-      },
-      { status: 422 },
-    );
-  }
+    const parsed = await parseBody(request, patchSchema);
+    if (!parsed.ok) {
+      return parsed.response;
+    }
 
-  return Response.json({ guide, validation, blocked: false });
+    const guide = await updateGuide(id, parsed.data);
+    const validation = validateGuide(guide);
+
+    if (!validation.ok) {
+      return Response.json(
+        {
+          guide,
+          validation,
+          blocked: true,
+        },
+        { status: 422 },
+      );
+    }
+
+    return Response.json({ guide, validation, blocked: false });
+  });
 }

@@ -1,0 +1,539 @@
+/* Copper-trace system for the homepage: rails, pads, pad buttons, DIP switch. */
+
+.trace-rail,
+.trace-rail-h {
+  position: absolute;
+  background: linear-gradient(var(--copper), var(--flux));
+  border-radius: 2px;
+}
+
+.trace-rail {
+  left: 15px;
+  top: 1rem;
+  bottom: 1rem;
+  width: 2px;
+  transform-origin: top;
+}
+
+.trace-rail-h {
+  left: 1rem;
+  right: 1rem;
+  top: 15px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--copper), var(--flux));
+  transform-origin: left;
+}
+
+.pad {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2px solid var(--copper-deep);
+  background: var(--copper-deep);
+  color: var(--paper);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  box-shadow: 0 0 0 4px var(--paper), 0 6px 10px -4px rgb(18 26 32 / 0.35);
+}
+
+.trace-scope[data-state="armed"] .trace-rail {
+  transform: scaleY(0);
+}
+
+.trace-scope[data-state="armed"] .trace-rail-h {
+  transform: scaleX(0);
+}
+
+.trace-scope[data-state="armed"] .pad {
+  background: var(--paper);
+  color: var(--copper-deep);
+  transform: scale(0.8);
+}
+
+.trace-scope[data-state="in"] .trace-rail,
+.trace-scope[data-state="in"] .trace-rail-h {
+  transition: transform 1500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trace-scope[data-state="in"] .pad {
+  transition:
+    background-color 320ms ease-out,
+    color 320ms ease-out,
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 240ms + 200ms);
+}
+
+.trace-scope[data-state="in"] .trace-step {
+  animation: step-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 240ms + 250ms);
+}
+
+.trace-scope[data-state="armed"] .trace-step {
+  opacity: 0;
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chamfered copper pad button with a trace that extends on hover. */
+.btn-pad {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-pad__face {
+  --chamfer: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 1.6rem 0.85rem 1.5rem;
+  background: var(--copper-deep);
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  clip-path: polygon(
+    var(--chamfer) 0,
+    100% 0,
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    0 100%,
+    0 var(--chamfer)
+  );
+  transition:
+    background-color 200ms ease-out,
+    transform 120ms ease-out;
+}
+
+.btn-pad__trace {
+  position: relative;
+  display: block;
+  height: 2px;
+  width: 0.5rem;
+  background: var(--copper);
+  transition: width 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-pad__trace::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  border: 2px solid var(--copper);
+  background: var(--paper);
+  transform: translateY(-50%);
+  transition: background-color 200ms ease-out;
+}
+
+.btn-pad:hover .btn-pad__face,
+.btn-pad:focus-visible .btn-pad__face {
+  background: var(--copper);
+}
+
+.btn-pad:hover .btn-pad__trace,
+.btn-pad:focus-visible .btn-pad__trace {
+  width: 3.25rem;
+}
+
+.btn-pad:hover .btn-pad__trace::after,
+.btn-pad:focus-visible .btn-pad__trace::after {
+  background: var(--copper);
+}
+
+.btn-pad:active .btn-pad__face {
+  transform: translateY(1px);
+  background: var(--copper-deep);
+}
+
+.btn-pad:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 6px;
+}
+
+/* DIP-switch segmented control. */
+.dip {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), 1fr);
+  padding: 4px;
+  border-radius: 6px;
+  background: var(--ink);
+  box-shadow: inset 0 2px 6px rgb(0 0 0 / 0.45);
+}
+
+.dip__thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / var(--n, 3));
+  border-radius: 3px;
+  background: linear-gradient(var(--copper), var(--copper-deep));
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.4);
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dip__tab {
+  position: relative;
+  z-index: 1;
+  padding: 0.6rem 0.25rem;
+  color: color-mix(in oklab, var(--paper) 62%, transparent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: color 200ms ease-out;
+}
+
+.dip__tab[aria-selected="true"] {
+  color: var(--paper);
+}
+
+.dip__tab:hover {
+  color: var(--paper);
+}
+
+.dip__tab:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: -4px;
+  border-radius: 3px;
+}
+
+/* Datasheet-style pinout rows. */
+.pinout-row {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 12rem) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.pinout-row__pad {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 9999px;
+  border: 2px solid var(--copper-deep);
+  background: transparent;
+  transform: translateY(1px);
+  transition: background-color 200ms ease-out;
+}
+
+.pinout-row__name {
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pinout-row:hover .pinout-row__pad {
+  background: var(--copper-deep);
+}
+
+.pinout-row:hover .pinout-row__name {
+  transform: translateX(4px);
+}
+
+@media (max-width: 640px) {
+  .pinout-row {
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+  }
+
+  .pinout-row dd {
+    grid-column: 2;
+  }
+}
+
+/* Mounting holes on code panels. */
+.board-panel {
+  position: relative;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 18px 30px -18px rgb(18 26 32 / 0.55);
+}
+
+.board-panel__hole {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--paper-deep);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-scope *,
+  .btn-pad__face,
+  .btn-pad__trace,
+  .dip__thumb,
+  .pinout-row__name {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Top nav that slides in after the hero. */
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-strong);
+  transform: translateY(-100%);
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-nav[data-visible="true"] {
+  transform: translateY(0);
+}
+
+.site-nav__link {
+  position: relative;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  transition: color 200ms ease-out;
+}
+
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--copper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-nav__link:hover,
+.site-nav__link[aria-current="true"] {
+  color: var(--copper-deep);
+}
+
+.site-nav__link:hover::after,
+.site-nav__link[aria-current="true"]::after {
+  transform: scaleX(1);
+}
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .site-nav__link,
+  .site-nav__link::after {
+    transition: none !important;
+  }
+}
+
+/* Mouse-reactive hero: parallax layers, soft glow, magnetic CTA. */
+.parallax-far {
+  transform: translate3d(calc(var(--px, 0) * -6px), calc(var(--py, 0) * -4px), 0);
+}
+
+.parallax-mid {
+  transform: translate3d(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -10px), 0);
+}
+
+.parallax-near {
+  transform: translate3d(calc(var(--px, 0) * -30px), calc(var(--py, 0) * -18px), 0);
+}
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--copper) 22%, transparent),
+    transparent 70%
+  );
+}
+
+[data-active="true"] > .hero-glow {
+  opacity: 1;
+}
+
+.magnetic {
+  display: inline-flex;
+  padding: 1.25rem;
+  margin: -1.25rem;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ambient motion: runs without any pointer input. */
+@media (prefers-reduced-motion: no-preference) {
+  .signal {
+    stroke-dasharray: 40 960;
+    stroke-dashoffset: 40;
+    opacity: 0;
+    animation: signal-run 5200ms cubic-bezier(0.45, 0, 0.25, 1) 2.4s infinite;
+  }
+
+  .signal-2 {
+    animation-duration: 6600ms;
+    animation-delay: 3.6s;
+  }
+
+  @keyframes signal-run {
+    0% {
+      stroke-dashoffset: 40;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: -1000;
+      opacity: 0;
+    }
+  }
+
+  .idle-float {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: idle-float 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes idle-float {
+    from {
+      transform: translate3d(0, -5px, 0);
+    }
+    to {
+      transform: translate3d(0, 6px, 0);
+    }
+  }
+
+  .breathe {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: breathe 4.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes breathe {
+    from {
+      transform: scale(0.94);
+    }
+    to {
+      transform: scale(1.07);
+    }
+  }
+
+  .trace-rail,
+  .trace-rail-h {
+    overflow: hidden;
+  }
+
+  .trace-rail::after,
+  .trace-rail-h::after {
+    content: "";
+    position: absolute;
+    animation: rail-run 3800ms linear 2.6s infinite;
+  }
+
+  .trace-rail::after {
+    left: -1px;
+    right: -1px;
+    top: 0;
+    height: 24%;
+    background: linear-gradient(transparent, rgb(255 233 215 / 0.95), transparent);
+  }
+
+  .trace-rail-h::after {
+    top: -1px;
+    bottom: -1px;
+    left: 0;
+    width: 24%;
+    background: linear-gradient(90deg, transparent, rgb(255 233 215 / 0.95), transparent);
+    animation-name: rail-run-h;
+  }
+
+  .trace-scope[data-state="armed"] .trace-rail::after,
+  .trace-scope[data-state="armed"] .trace-rail-h::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  @keyframes rail-run {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(420%);
+    }
+  }
+
+  @keyframes rail-run-h {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(420%);
+    }
+  }
+
+  .pad::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    border: 2px solid var(--copper);
+    opacity: 0;
+    animation: pad-ping 4.2s ease-out infinite;
+    animation-delay: calc(var(--i, 0) * 700ms + 2.8s);
+  }
+
+  .trace-scope[data-state="armed"] .pad::after {
+    animation: none;
+  }
+
+  @keyframes pad-ping {
+    0% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    55%,
+    100% {
+      opacity: 0;
+      transform: scale(1.9);
+    }
+  }
+
+  .btn-pad__trace::after {
+    animation: dot-pulse 2.6s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    0%,
+    100% {
+      transform: translateY(-50%) scale(1);
+    }
+    50% {
+      transform: translateY(-50%) scale(1.3);
+    }
+  }
+}
