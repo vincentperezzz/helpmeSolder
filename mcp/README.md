@@ -37,7 +37,7 @@ HELPMESOLDER_API_URL=http://localhost:3000 node dist/index.js
 
 ## Cursor MCP config
 
-Add to Cursor MCP settings (example):
+Add to Cursor MCP settings (the same example lives in [`cursor.example.json`](cursor.example.json)):
 
 ```json
 {

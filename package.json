@@ -10,7 +10,6 @@
     "mcp:build": "npm --prefix mcp run build",
     "mcp:dev": "npm --prefix mcp run dev",
     "seed:recipes": "node scripts/seed-recipes.mjs",
-    "verify:phases": "node scripts/verify-phases.mjs",
     "test": "vitest run"
   },
   "dependencies": {
