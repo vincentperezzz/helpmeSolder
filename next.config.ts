@@ -45,21 +45,20 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/api/:path*",
+        // Every API route is uncacheable except /api/part-photos, which sets
+        // its own Cache-Control per response (see below).
+        source: "/api/:path((?!part-photos$).*)",
         headers: [
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
           { key: "Cache-Control", value: "private, no-store, max-age=0" },
         ],
       },
       {
-        // Later block wins: photo lookups are public and safe to cache at the CDN.
+        // No Cache-Control here on purpose: the route sets it per response,
+        // long for found photos and a few minutes for an empty answer. A
+        // blanket long rule would pin an empty answer for a week.
         source: "/api/part-photos",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=604800, stale-while-revalidate=86400",
-          },
-        ],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
     ];
   },

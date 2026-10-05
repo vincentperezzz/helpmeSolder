@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/api/rate-limit";
 import { getCatalogPart } from "@/lib/catalog";
-import {
-  PART_PHOTOS_LIMIT,
-  fetchCommonsImages,
-} from "@/lib/catalog/commons";
+import { PART_PHOTOS_LIMIT } from "@/lib/catalog/commons";
 import { partCategory } from "@/lib/catalog/part-media";
+import { findPartPhotos } from "@/lib/catalog/photo-chain";
+import { CACHE_EMPTY, CACHE_FAILED, CACHE_FOUND } from "@/lib/catalog/photo-cache";
 
 export const dynamic = "force-dynamic";
 
-const FOUND = "public, s-maxage=604800, stale-while-revalidate=86400";
-/** Empty or failed lookups are retried sooner than a week. */
-const RETRY_SOON = "public, s-maxage=3600, stale-while-revalidate=600";
-
 /**
- * Real reference photos for one catalog part, from Wikimedia Commons.
+ * Real reference photos for one catalog part, from free sources in turn:
+ * Wikimedia Commons, Wikipedia, Openverse.
  *
  * Not a proxy: the caller sends a catalog id only. The search text is built
- * here from the catalog name, and only known Commons URLs are returned.
+ * here from the catalog, and only image URLs on known hosts are returned.
+ * Cache-Control is set here, per response, so an empty result is never cached
+ * like a full one.
  */
 export async function GET(request: NextRequest) {
   const limited = checkRateLimit(request, PART_PHOTOS_LIMIT);
@@ -33,19 +31,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { images, ok } = await fetchCommonsImages(part.name, partCategory(part));
-    return NextResponse.json(
-      { images },
-      {
-        headers: {
-          "Cache-Control": ok && images.length > 0 ? FOUND : RETRY_SOON,
-        },
-      },
-    );
+    const { images, complete } = await findPartPhotos(part, partCategory(part));
+    const cache =
+      images.length > 0 ? CACHE_FOUND : complete ? CACHE_EMPTY : CACHE_FAILED;
+    return NextResponse.json({ images }, { headers: { "Cache-Control": cache } });
   } catch {
     return NextResponse.json(
       { images: [] },
-      { headers: { "Cache-Control": RETRY_SOON } },
+      { headers: { "Cache-Control": CACHE_FAILED } },
     );
   }
 }

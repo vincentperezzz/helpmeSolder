@@ -10,7 +10,7 @@ import {
   type RefObject,
 } from "react";
 import { getCatalogPart } from "@/lib/catalog";
-import type { CommonsImage } from "@/lib/catalog/commons";
+import type { PartPhoto } from "@/lib/catalog/photo-shared";
 import {
   googleImagesLookupUrl,
   partCategory,
@@ -185,11 +185,11 @@ function PartCard({
 /* Level 2: the detail view                                                    */
 /* -------------------------------------------------------------------------- */
 
-const photoCache = new Map<string, CommonsImage[]>();
+const photoCache = new Map<string, PartPhoto[]>();
 
-/** Loads Commons photos once per part per page load. Failure reads as "none". */
-function useCommonsPhotos(catalogId?: string): CommonsImage[] | undefined {
-  const [loaded, setLoaded] = useState<{ id: string; images: CommonsImage[] } | null>(
+/** Loads outside photos once per part per page load. Failure reads as "none". */
+function useOutsidePhotos(catalogId?: string): PartPhoto[] | undefined {
+  const [loaded, setLoaded] = useState<{ id: string; images: PartPhoto[] } | null>(
     null,
   );
 
@@ -203,7 +203,7 @@ function useCommonsPhotos(catalogId?: string): CommonsImage[] | undefined {
         if (!res.ok) return [];
         const data: unknown = await res.json();
         const list = (data as { images?: unknown }).images;
-        const images = Array.isArray(list) ? (list as CommonsImage[]).slice(0, 3) : [];
+        const images = Array.isArray(list) ? (list as PartPhoto[]).slice(0, 3) : [];
         photoCache.set(catalogId, images);
         return images;
       })
@@ -230,10 +230,17 @@ function PhotoRowSkeleton() {
   );
 }
 
-function CommonsPhoto({ image }: { image: CommonsImage }) {
+const SOURCE_NAMES: Record<PartPhoto["source"], string> = {
+  commons: "Wikimedia Commons",
+  wikipedia: "Wikipedia",
+  openverse: "Openverse",
+};
+
+function OutsidePhoto({ image }: { image: PartPhoto }) {
+  const sourceName = SOURCE_NAMES[image.source];
   return (
     <a
-      href={image.pageUrl}
+      href={image.sourceUrl}
       target="_blank"
       rel="noopener noreferrer"
       className={`group flex items-center gap-3 p-1 -m-1 hover:bg-paper-deep/50 ${FOCUS}`}
@@ -241,7 +248,7 @@ function CommonsPhoto({ image }: { image: CommonsImage }) {
       <span className="flex aspect-[4/3] w-28 shrink-0 items-center justify-center overflow-hidden border border-line bg-paper-deep">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={image.thumb}
+          src={image.thumbUrl}
           alt={image.title}
           loading="lazy"
           decoding="async"
@@ -252,8 +259,8 @@ function CommonsPhoto({ image }: { image: CommonsImage }) {
       <span className="min-w-0 flex-1 text-[13px] leading-snug">
         <span className="line-clamp-2 block text-ink">{image.title}</span>
         <span className="mt-1 block text-mute underline decoration-line-strong underline-offset-2 group-hover:text-ink">
-          Photo: {image.author}, {image.license}
-          <span className="sr-only"> (opens Wikimedia Commons in a new tab)</span>
+          Photo: {image.author}, {image.license}, via {sourceName}
+          <span className="sr-only"> (opens {sourceName} in a new tab)</span>
         </span>
       </span>
     </a>
@@ -261,13 +268,13 @@ function CommonsPhoto({ image }: { image: CommonsImage }) {
 }
 
 function RealPhotos({ catalogId }: { catalogId?: string }) {
-  const images = useCommonsPhotos(catalogId);
+  const images = useOutsidePhotos(catalogId);
   return (
     <section aria-labelledby="more-photos-h" className="border-t border-line pt-5">
       <h4 id="more-photos-h" className="text-sm font-semibold text-ink">
         More real photos
       </h4>
-      <p className="mt-0.5 text-[13px] text-mute">Open-licensed, from Wikimedia Commons.</p>
+      <p className="mt-0.5 text-[13px] text-mute">Open-licensed, with credit to each photographer.</p>
       <div className="mt-3 space-y-3" aria-busy={images === undefined}>
         {images === undefined ? (
           <>
@@ -278,9 +285,9 @@ function RealPhotos({ catalogId }: { catalogId?: string }) {
             <PhotoRowSkeleton />
           </>
         ) : images.length === 0 ? (
-          <p className="text-sm text-ink-soft">No more photos found.</p>
+          <p className="text-sm text-ink-soft">No outside photo found, showing our illustration.</p>
         ) : (
-          images.map((image) => <CommonsPhoto key={image.pageUrl} image={image} />)
+          images.map((image) => <OutsidePhoto key={image.sourceUrl} image={image} />)
         )}
       </div>
     </section>

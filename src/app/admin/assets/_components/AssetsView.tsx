@@ -14,7 +14,9 @@ import {
   type AssetFilter,
   type AssetView,
 } from "@/lib/admin/asset-view";
+import { getCatalogPart } from "@/lib/catalog";
 import { Section, Tile, Tiles } from "../../_components/ui";
+import { PartImage } from "./PartImage";
 
 const TONES: Record<AssetBadge["tone"], string> = {
   ok: "border-flux/40 bg-flux/10 text-flux",
@@ -31,19 +33,17 @@ function Badge({ badge }: { badge: AssetBadge }) {
   );
 }
 
-function ImageTile({ src, alt, label }: { src: string | null; alt: string; label: string }) {
+function partImage(r: AssetRecord, size: "tile" | "row") {
+  const wokwi = r.drawingKind === "wokwi-element" ? getCatalogPart(r.partId)?.wokwi : undefined;
   return (
-    <figure className="m-0 min-w-0 flex-1">
-      <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-md border border-line bg-paper-deep/60 p-1">
-        {src ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={src} alt={alt} loading="lazy" className="h-full w-full object-contain" />
-        ) : (
-          <span className="px-2 text-center text-xs font-medium text-copper-deep">No image</span>
-        )}
-      </div>
-      <figcaption className="mt-1 text-xs text-mute">{label}</figcaption>
-    </figure>
+    <PartImage
+      name={r.name}
+      thumbnailUrl={r.thumbnailUrl}
+      drawingUrl={r.drawingUrl}
+      wokwi={wokwi ? { tag: wokwi.tag, attrs: wokwi.attrs } : null}
+      drawingNote={drawingLabel(r)}
+      size={size}
+    />
   );
 }
 
@@ -51,21 +51,7 @@ function PartRow({ r }: { r: AssetRecord }) {
   const path = thumbnailFilePath(r.thumbnailUrl);
   return (
     <li className="rounded-md border border-line bg-white/60 p-3 md:grid md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:gap-4">
-      <div className="flex gap-3">
-        <ImageTile src={r.thumbnailUrl} alt={`${r.name} thumbnail`} label="Parts-tab thumbnail" />
-        {r.drawingUrl ? (
-          <ImageTile src={r.drawingUrl} alt={`${r.name} diagram drawing`} label="Diagram drawing" />
-        ) : (
-          <figure className="m-0 min-w-0 flex-1">
-            <div className="flex aspect-[4/3] items-center justify-center rounded-md border border-dashed border-line-strong p-2">
-              <span className="rounded-full bg-paper-deep px-2 py-1 text-center text-xs text-ink-soft [overflow-wrap:anywhere]">
-                {drawingLabel(r)}
-              </span>
-            </div>
-            <figcaption className="mt-1 text-xs text-mute">Diagram drawing</figcaption>
-          </figure>
-        )}
-      </div>
+      <div className="flex">{partImage(r, "row")}</div>
       <div className="mt-3 md:hidden" />
       <div className="min-w-0 md:mt-0"><div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
@@ -112,14 +98,7 @@ function GridTile({ r }: { r: AssetRecord }) {
   const path = thumbnailFilePath(r.thumbnailUrl);
   return (
     <li className="min-w-0 rounded-md border border-line bg-white/60 p-2">
-      <div className="flex aspect-square items-center justify-center overflow-hidden rounded-md border border-line bg-paper-deep/60 p-1">
-        {r.thumbnailUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={r.thumbnailUrl} alt={`${r.name} thumbnail`} loading="lazy" className="h-full w-full object-contain" />
-        ) : (
-          <span className="text-xs font-medium text-copper-deep">No image</span>
-        )}
-      </div>
+      {partImage(r, "tile")}
       <h3 className="mt-2 text-sm font-semibold text-ink [overflow-wrap:anywhere]">{r.name}</h3>
       <div className="mt-1 flex flex-wrap gap-1">
         {badgesFor(r).map((b) => (
@@ -135,10 +114,6 @@ function GridTile({ r }: { r: AssetRecord }) {
             {r.partId} · {r.category}
           </p>
           <p>Diagram: {drawingLabel(r)}</p>
-          {r.drawingUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={r.drawingUrl} alt={`${r.name} diagram drawing`} loading="lazy" className="h-20 w-full rounded-md border border-line bg-paper-deep/60 object-contain" />
-          ) : null}
           <p>Licence: {r.license ?? "Not recorded"}</p>
           <p className="font-mono [overflow-wrap:anywhere]">{path ?? "No thumbnail file"}</p>
           {r.issues.length > 0 ? (
