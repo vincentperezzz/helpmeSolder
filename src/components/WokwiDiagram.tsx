@@ -162,7 +162,6 @@ export function WokwiDiagram({
     canvas,
     ready,
     enlarged,
-    onEnlargedChange,
   });
   const placed = useMemo(() => layoutParts(guide), [guide]);
   const cue = useMemo(() => buildCue(guide), [guide]);
@@ -521,10 +520,7 @@ export function WokwiDiagram({
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={async () => {
-              onEnlargedChange?.(true);
-              await toggleFullscreen();
-            }}
+            onClick={() => void toggleFullscreen()}
             aria-label={fullscreen ? "Exit full screen" : "Show the picture full screen"}
             title={fullscreen ? "Exit full screen" : "Show the picture full screen"}
           >
