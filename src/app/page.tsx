@@ -129,7 +129,7 @@ export default function Home() {
           <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-6 pt-2">
             <Magnetic>
               <ScrollLink targetId="setup" className="btn-pad">
-                <span className="btn-pad__face">Set up in 2 minutes</span>
+                <span className="btn-pad__face">Set up the MCP</span>
                 <span aria-hidden="true" className="btn-pad__trace" />
               </ScrollLink>
             </Magnetic>

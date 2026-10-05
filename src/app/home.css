@@ -537,3 +537,44 @@
     }
   }
 }
+
+/* Tab switch: panel slides in from the direction of the new tab, children stagger. */
+@media (prefers-reduced-motion: no-preference) {
+  .tab-panel > * {
+    animation: tab-in 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .tab-panel > *:nth-child(1) { animation-delay: 0ms; }
+  .tab-panel > *:nth-child(2) { animation-delay: 50ms; }
+  .tab-panel > *:nth-child(3) { animation-delay: 100ms; }
+  .tab-panel > *:nth-child(4) { animation-delay: 150ms; }
+  .tab-panel > *:nth-child(5) { animation-delay: 200ms; }
+  .tab-panel > *:nth-child(n + 6) { animation-delay: 250ms; }
+
+  .tab-step {
+    animation: tab-step-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 45ms + 160ms);
+  }
+
+  @keyframes tab-in {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--dir, 1) * 22px));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes tab-step-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

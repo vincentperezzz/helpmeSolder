@@ -40,7 +40,11 @@ function Steps({ items }: { items: React.ReactNode[] }) {
   return (
     <ol className="flex flex-col gap-3">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-3 text-ink-soft">
+        <li
+          key={i}
+          style={{ "--i": i } as React.CSSProperties}
+          className="tab-step flex items-start gap-3 text-ink-soft"
+        >
           <span
             aria-hidden="true"
             className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-copper font-mono text-xs font-bold text-ink"
@@ -61,7 +65,14 @@ function Who({ children }: { children: React.ReactNode }) {
 export function SetupGuide() {
   const url = mcpUrl();
   const [client, setClient] = useState<ClientId>("app");
+  const [direction, setDirection] = useState<1 | -1>(1);
   const index = CLIENTS.findIndex((item) => item.id === client);
+
+  function select(next: ClientId): void {
+    const nextIndex = CLIENTS.findIndex((item) => item.id === next);
+    setDirection(nextIndex >= index ? 1 : -1);
+    setClient(next);
+  }
 
   return (
     <div className="flex min-w-0 flex-col gap-5">
@@ -86,7 +97,7 @@ export function SetupGuide() {
             type="button"
             role="tab"
             aria-selected={item.id === client}
-            onClick={() => setClient(item.id)}
+            onClick={() => select(item.id)}
             className="dip__tab"
           >
             {item.label}
@@ -94,6 +105,11 @@ export function SetupGuide() {
         ))}
       </div>
 
+      <div
+        key={client}
+        className="tab-panel flex min-w-0 flex-col gap-5"
+        style={{ "--dir": direction } as React.CSSProperties}
+      >
       {client === "app" && (
         <>
           <Who>
@@ -219,6 +235,7 @@ export function SetupGuide() {
           <CopyBlock label="mcp_config.json" code={urlConfig("serverUrl", url)} />
         </>
       )}
+      </div>
 
       <div className="flex flex-col gap-3 border-t border-line-strong pt-5">
         <h4 className="font-display text-lg font-bold text-ink">
