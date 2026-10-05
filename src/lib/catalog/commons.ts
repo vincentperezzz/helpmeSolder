@@ -1,4 +1,22 @@
-import type { PartCategory } from "./part-media";
+import {
+  type FetchLike,
+  type PartPhoto,
+  type SourceResult,
+  SOURCE_TIMEOUT_MS,
+  cleanAuthor,
+  cleanName,
+  dedupePhotos,
+  fileTitle,
+  getJson,
+  isAllowedLicense,
+  isHttpsOn,
+  isImageUrl,
+  metaValue,
+  queryPages,
+  safeLicenseUrl,
+  stripHtml,
+  titleMatches,
+} from "./photo-shared";
 
 /**
  * Wikimedia Commons lookup for real reference photos.
@@ -8,12 +26,9 @@ import type { PartCategory } from "./part-media";
  * fetch) so it can be unit tested without the network.
  */
 
-export const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
-export const COMMONS_USER_AGENT =
-  "HelpmeSolder/1.0 (https://helpmesolder.vercel.app)";
+export { fileTitle, scoreTitle, stripHtml } from "./photo-shared";
 
-/** Seven days, in seconds. */
-export const COMMONS_REVALIDATE_SECONDS = 604800;
+export const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
 
 /** Bucket for the part-photos route: 60 requests per hour per client. */
 export const PART_PHOTOS_LIMIT = {
@@ -22,286 +37,149 @@ export const PART_PHOTOS_LIMIT = {
   windowMs: 60 * 60_000,
 } as const;
 
-export const MAX_COMMONS_IMAGES = 3;
-const SEARCH_LIMIT = 8;
-const FETCH_TIMEOUT_MS = 6000;
-const MAX_AUTHOR_LENGTH = 80;
-/** Share of the part name's identifying words a title must contain. */
-const MIN_SCORE = 0.5;
-
-export type CommonsImage = {
-  thumb: string;
-  pageUrl: string;
-  title: string;
-  author: string;
-  license: string;
-  licenseUrl: string | null;
-};
+export const MAX_PHOTOS = 3;
+const SEARCH_LIMIT = 10;
 
 const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-/** Words in a file title that point at a drawing, not a photo of the part. */
-const NOT_A_PHOTO =
-  /\b(diagram|schematic|logo|pinout|screenshot|icon|flowchart|chart|graph|wiring|drawing|vector|footprint|datasheet)\b/i;
-
-/** Words that carry no identifying power when matching a title. */
-const STOP_WORDS = new Set([
-  "a",
-  "an",
-  "the",
-  "with",
-  "and",
-  "for",
-  "of",
-  "module",
-  "board",
-  "sensor",
-  "snap",
-  "half",
-]);
-
-/** Query words are plain letters and digits, so search syntax cannot leak in. */
-function cleanName(name: string): string {
-  return name
-    .replace(/×/g, "x")
-    .replace(/[^\p{L}\p{N}\s+-]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-/** Search text for a part: its catalog name, plus a noun that steers results. */
-export function buildCommonsQuery(name: string, category: PartCategory): string {
-  const base = cleanName(name);
-  if (!base) return "";
-  if (category === "Board") return `${base} board`;
-  if (category === "Basic part" || category === "Power") return base;
-  return `${base} module`;
-}
+const IMAGEINFO = {
+  prop: "imageinfo",
+  iiprop: "url|extmetadata|mime",
+  iiurlwidth: "480",
+  iiextmetadatafilter: "LicenseShortName|LicenseUrl|Artist|ObjectName",
+  format: "json",
+} as const;
 
 export function buildCommonsUrl(query: string): string {
   const params = new URLSearchParams({
     action: "query",
     generator: "search",
-    gsrsearch: query,
+    gsrsearch: cleanName(query),
     gsrnamespace: "6",
     gsrlimit: String(SEARCH_LIMIT),
-    prop: "imageinfo",
-    iiprop: "url|extmetadata|mime",
-    iiurlwidth: "480",
-    iiextmetadatafilter: "LicenseShortName|LicenseUrl|Artist|ObjectName",
-    format: "json",
+    ...IMAGEINFO,
   });
   return `${COMMONS_API}?${params.toString()}`;
 }
 
-const ENTITIES: Record<string, string> = {
-  amp: "&",
-  lt: "<",
-  gt: ">",
-  quot: '"',
-  apos: "'",
-  nbsp: " ",
-};
-
-/** Remove tags and decode the few entities Commons uses in metadata. */
-export function stripHtml(input: string): string {
-  return input
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, code: string) => {
-      if (code[0] === "#") {
-        const num =
-          code[1] === "x" || code[1] === "X"
-            ? Number.parseInt(code.slice(2), 16)
-            : Number.parseInt(code.slice(1), 10);
-        return Number.isFinite(num) && num > 0 && num < 0x110000
-          ? String.fromCodePoint(num)
-          : " ";
-      }
-      return ENTITIES[code.toLowerCase()] ?? match;
-    })
-    .replace(/\s+/g, " ")
-    .trim();
+/** Imageinfo for specific Commons files, by "File:Name.jpg" title. */
+export function buildCommonsFilesUrl(fileTitles: string[]): string {
+  const params = new URLSearchParams({
+    action: "query",
+    titles: fileTitles.join("|"),
+    ...IMAGEINFO,
+  });
+  return `${COMMONS_API}?${params.toString()}`;
 }
 
-function tokens(text: string): string[] {
-  return text
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
-    .filter(Boolean);
-}
-
-/** "File:Arduino Uno R3 front.jpg" becomes "Arduino Uno R3 front". */
-export function fileTitle(raw: string): string {
-  return raw.replace(/^file:/i, "").replace(/\.[a-z0-9]{2,5}$/i, "").trim();
-}
+type Candidate = { photo: PartPhoto; rank: number };
 
 /**
- * How well a file title matches the part name, from 0 to 1.
- * Only identifying words count (not "module", "board" and the like).
+ * One Commons file page as a photo, or null when it is not a safe, free,
+ * relevant photo. `query` null skips the title check (the caller already
+ * chose the file, as Wikipedia does).
  */
-export function scoreTitle(title: string, partName: string): number {
-  const wanted = tokens(cleanName(partName)).filter((t) => !STOP_WORDS.has(t));
-  if (wanted.length === 0) return 0;
-  const found = new Set(tokens(fileTitle(title)));
-  const compact = tokens(fileTitle(title)).join("");
-  let hits = 0;
-  for (const word of wanted) {
-    if (found.has(word) || (word.length >= 3 && compact.includes(word))) hits += 1;
-  }
-  return hits / wanted.length;
-}
-
-/** A model number such as "esp32" or "sr04": letters mixed with digits. */
-function modelTokens(partName: string): string[] {
-  return tokens(cleanName(partName)).filter((t) => /\d/.test(t) && /[a-z]/.test(t));
-}
-
-function isHttpsOn(url: unknown, host: string): url is string {
-  if (typeof url !== "string") return false;
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === "https:" && parsed.hostname === host;
-  } catch {
-    return false;
-  }
-}
-
-function metaValue(meta: unknown, key: string): string {
-  if (!meta || typeof meta !== "object") return "";
-  const entry = (meta as Record<string, unknown>)[key];
-  if (!entry || typeof entry !== "object") return "";
-  const value = (entry as { value?: unknown }).value;
-  return typeof value === "string" ? value : "";
-}
-
-function safeLicenseUrl(raw: string): string | null {
-  const url = stripHtml(raw);
-  if (!url) return null;
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === "https:" || parsed.protocol === "http:"
-      ? parsed.toString()
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-function clip(text: string, max: number): string {
-  return text.length <= max ? text : `${text.slice(0, max - 3).trimEnd()}...`;
-}
-
-type Candidate = { image: CommonsImage; score: number; rank: number };
-
-function toCandidate(page: unknown, partName: string): Candidate | null {
+export function commonsPageToPhoto(
+  page: unknown,
+  query: string | null,
+  source: PartPhoto["source"] = "commons",
+): Candidate | null {
   if (!page || typeof page !== "object") return null;
-  const record = page as {
-    title?: unknown;
-    index?: unknown;
-    imageinfo?: unknown;
-  };
+  const record = page as { title?: unknown; index?: unknown; imageinfo?: unknown };
   if (typeof record.title !== "string") return null;
   const info = Array.isArray(record.imageinfo) ? record.imageinfo[0] : null;
   if (!info || typeof info !== "object") return null;
-  const { thumburl, descriptionurl, mime, extmetadata } = info as {
+  const { thumburl, url, descriptionurl, mime, extmetadata } = info as {
     thumburl?: unknown;
+    url?: unknown;
     descriptionurl?: unknown;
     mime?: unknown;
     extmetadata?: unknown;
   };
 
   if (typeof mime !== "string" || !ALLOWED_MIME.has(mime)) return null;
-  if (!isHttpsOn(thumburl, "upload.wikimedia.org")) return null;
+  if (!isImageUrl(thumburl)) return null;
+  if (!isImageUrl(url)) return null;
   if (!isHttpsOn(descriptionurl, "commons.wikimedia.org")) return null;
 
   const license = stripHtml(metaValue(extmetadata, "LicenseShortName"));
-  if (!license) return null;
+  if (!isAllowedLicense(license)) return null;
 
   const title = fileTitle(record.title);
-  const nameTokens = new Set(tokens(partName));
-  const rejected = title.match(NOT_A_PHOTO);
-  if (rejected && !nameTokens.has(rejected[0].toLowerCase())) return null;
-
-  const score = scoreTitle(title, partName);
-  // A model number ("esp32", "dht22") is the strongest signal: when the part
-  // has one, the title must carry it and nothing else is required. Otherwise
-  // enough of the name's words must match.
-  const models = modelTokens(partName);
-  if (models.length > 0) {
-    const compact = tokens(title).join("");
-    if (!models.some((m) => compact.includes(m))) return null;
-  } else if (score < MIN_SCORE) {
-    return null;
-  }
-
-  const author =
-    clip(stripHtml(metaValue(extmetadata, "Artist")), MAX_AUTHOR_LENGTH) ||
-    "Unknown author";
+  if (query !== null && !titleMatches(title, query)) return null;
 
   return {
-    image: {
-      thumb: thumburl,
-      pageUrl: descriptionurl,
+    photo: {
+      url,
+      thumbUrl: thumburl,
       title,
-      author,
+      author: cleanAuthor(metaValue(extmetadata, "Artist")),
       license,
       licenseUrl: safeLicenseUrl(metaValue(extmetadata, "LicenseUrl")),
+      sourceUrl: descriptionurl,
+      source,
     },
-    score,
     rank: typeof record.index === "number" ? record.index : 1000,
   };
 }
 
-/** Turn a raw Commons API response into at most `max` safe, relevant images. */
+/** Turn a raw Commons search response into at most `max` safe, relevant photos. */
 export function shapeCommonsResponse(
   json: unknown,
-  partName: string,
-  max: number = MAX_COMMONS_IMAGES,
-): CommonsImage[] {
-  if (!json || typeof json !== "object") return [];
-  const query = (json as { query?: unknown }).query;
-  if (!query || typeof query !== "object") return [];
-  const pages = (query as { pages?: unknown }).pages;
-  const list: unknown[] = Array.isArray(pages)
-    ? pages
-    : pages && typeof pages === "object"
-      ? Object.values(pages)
-      : [];
-
-  return list
-    .map((page) => toCandidate(page, partName))
+  query: string,
+  max: number = MAX_PHOTOS,
+): PartPhoto[] {
+  return queryPages(json)
+    .map((page) => commonsPageToPhoto(page, query))
     .filter((c): c is Candidate => c !== null)
-    .sort((a, b) => b.score - a.score || a.rank - b.rank)
+    .sort((a, b) => a.rank - b.rank)
     .slice(0, max)
-    .map((c) => c.image);
+    .map((c) => c.photo);
 }
 
-type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
-
 /**
- * Look up photos for a part. Never throws: any failure gives an empty list.
- * `ok` is false when the upstream call failed, so callers can cache less.
+ * Search Commons with each query in turn until `max` photos are found.
+ * Never throws; `ok` is false only when every call failed.
  */
-export async function fetchCommonsImages(
-  partName: string,
-  category: PartCategory,
+export async function searchCommons(
+  queries: string[],
   fetchImpl: FetchLike = fetch,
-): Promise<{ images: CommonsImage[]; ok: boolean }> {
-  const query = buildCommonsQuery(partName, category);
-  if (!query) return { images: [], ok: true };
-  try {
-    const response = await fetchImpl(buildCommonsUrl(query), {
-      headers: {
-        "User-Agent": COMMONS_USER_AGENT,
-        Accept: "application/json",
-      },
-      next: { revalidate: COMMONS_REVALIDATE_SECONDS },
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    });
-    if (!response.ok) return { images: [], ok: false };
-    const json: unknown = await response.json();
-    return { images: shapeCommonsResponse(json, partName), ok: true };
-  } catch {
-    return { images: [], ok: false };
+  max: number = MAX_PHOTOS,
+): Promise<SourceResult> {
+  const end = Date.now() + SOURCE_TIMEOUT_MS;
+  let found: PartPhoto[] = [];
+  let attempts = 0;
+  let failures = 0;
+  for (const query of queries) {
+    if (found.length >= max || Date.now() >= end) break;
+    attempts += 1;
+    try {
+      const json = await getJson(
+        buildCommonsUrl(query),
+        fetchImpl,
+        Math.max(1, end - Date.now()),
+      );
+      found = dedupePhotos([...found, ...shapeCommonsResponse(json, query, max)]);
+    } catch {
+      failures += 1;
+    }
   }
+  return { images: found.slice(0, max), ok: attempts === 0 || failures < attempts };
+}
+
+/** Commons imageinfo for known file titles, keyed by file title. */
+export async function fetchCommonsFiles(
+  fileTitles: string[],
+  fetchImpl: FetchLike,
+  source: PartPhoto["source"],
+  timeoutMs: number = SOURCE_TIMEOUT_MS,
+): Promise<Map<string, PartPhoto>> {
+  const out = new Map<string, PartPhoto>();
+  if (fileTitles.length === 0) return out;
+  const json = await getJson(buildCommonsFilesUrl(fileTitles), fetchImpl, timeoutMs);
+  for (const page of queryPages(json)) {
+    const candidate = commonsPageToPhoto(page, null, source);
+    if (candidate) out.set(candidate.photo.title.toLowerCase(), candidate.photo);
+  }
+  return out;
 }
