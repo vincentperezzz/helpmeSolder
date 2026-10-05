@@ -15,11 +15,27 @@ describe("assertApiAuth", () => {
     vi.restoreAllMocks();
   });
 
-  it("503 when key unset in production", async () => {
+  it("503 when nothing is configured in production", async () => {
     vi.stubEnv("MCP_API_KEY", "");
+    vi.stubEnv("ALLOW_PUBLIC_API", "");
     vi.stubEnv("NODE_ENV", "production");
     const res = assertApiAuth(req());
     expect(res?.status).toBe(503);
+  });
+
+  it("allows anonymous requests in production when ALLOW_PUBLIC_API=true", () => {
+    vi.stubEnv("MCP_API_KEY", "");
+    vi.stubEnv("ALLOW_PUBLIC_API", "true");
+    vi.stubEnv("NODE_ENV", "production");
+    expect(assertApiAuth(req())).toBeNull();
+  });
+
+  it("still rejects a wrong key when public access is on and a key is set", () => {
+    vi.stubEnv("MCP_API_KEY", "secret");
+    vi.stubEnv("ALLOW_PUBLIC_API", "true");
+    expect(assertApiAuth(req({ authorization: "Bearer nope" }))?.status).toBe(401);
+    expect(assertApiAuth(req())).toBeNull();
+    expect(assertApiAuth(req({ authorization: "Bearer secret" }))).toBeNull();
   });
 
   it("allows when key unset in development", () => {
@@ -30,6 +46,7 @@ describe("assertApiAuth", () => {
 
   it("401 when key set and token missing or wrong", async () => {
     vi.stubEnv("MCP_API_KEY", "secret");
+    vi.stubEnv("ALLOW_PUBLIC_API", "");
     expect(assertApiAuth(req())?.status).toBe(401);
     expect(assertApiAuth(req({ authorization: "Bearer nope" }))?.status).toBe(401);
     expect(assertApiAuth(req({ "x-api-key": "nope" }))?.status).toBe(401);

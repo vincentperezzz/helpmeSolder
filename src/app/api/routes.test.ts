@@ -35,6 +35,7 @@ const mk = (method: string, body?: string, headers: Record<string, string> = {})
 beforeEach(() => {
   resetRateLimits();
   vi.stubEnv("MCP_API_KEY", "");
+  vi.stubEnv("ALLOW_PUBLIC_API", "");
   vi.stubEnv("NODE_ENV", "development");
   vi.spyOn(console, "error").mockImplementation(() => {});
   vi.spyOn(console, "warn").mockImplementation(() => {});

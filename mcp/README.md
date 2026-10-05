@@ -20,7 +20,7 @@ Thin MCP server for Cursor/Claude. Tools call the Next.js API. No hosted LLM.
 | Variable | Purpose |
 | --- | --- |
 | `HELPMESOLDER_API_URL` | API base URL (default `http://localhost:3000`) |
-| `MCP_API_KEY` | Optional bearer key if the API requires it |
+| `MCP_API_KEY` | Only needed if the API deployment is private (no `ALLOW_PUBLIC_API`) |
 
 ## Run locally
 

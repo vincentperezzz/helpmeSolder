@@ -23,33 +23,45 @@ export function getApiToken(request: NextRequest): string | null {
 
 /**
  * Returns a Response to short-circuit with, or null when the request may proceed.
- * - MCP_API_KEY unset + NODE_ENV=production: fails closed with 503.
- * - MCP_API_KEY unset elsewhere: allowed, with a one-time console warning.
- * - MCP_API_KEY set: token must match (401 otherwise).
+ * - A presented token must match MCP_API_KEY when it is set (401 otherwise).
+ * - No token: allowed when ALLOW_PUBLIC_API=true (rate limits still apply).
+ * - No token, MCP_API_KEY set, public access off: 401.
+ * - No token, no key, public access off: 503 in production, allowed (with a
+ *   one-time warning) elsewhere.
  */
 export function assertApiAuth(request: NextRequest): Response | null {
   const expected = process.env.MCP_API_KEY;
-  if (!expected) {
-    if (process.env.NODE_ENV === "production") {
-      console.error("MCP_API_KEY is not set; refusing API requests in production.");
-      return Response.json(
-        { error: "API authentication is not configured" },
-        { status: 503 },
-      );
-    }
-    if (!warnedMissingKey) {
-      warnedMissingKey = true;
-      console.warn(
-        "[api/auth] MCP_API_KEY is not set; API is unauthenticated (allowed outside production only).",
-      );
-    }
+  const token = getApiToken(request);
+
+  if (expected && token) {
+    return safeEqual(token, expected)
+      ? null
+      : Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (process.env.ALLOW_PUBLIC_API === "true") {
     return null;
   }
 
-  const token = getApiToken(request);
-  if (!token || !safeEqual(token, expected)) {
+  if (expected) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "Neither MCP_API_KEY nor ALLOW_PUBLIC_API is set; refusing API requests in production.",
+    );
+    return Response.json(
+      { error: "API authentication is not configured" },
+      { status: 503 },
+    );
+  }
+
+  if (!warnedMissingKey) {
+    warnedMissingKey = true;
+    console.warn(
+      "[api/auth] MCP_API_KEY is not set; API is unauthenticated (allowed outside production only).",
+    );
+  }
   return null;
 }

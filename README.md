@@ -34,7 +34,8 @@ npm run dev
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Publishable / anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-side API writes (preferred) |
-| `MCP_API_KEY` | Optional bearer key for tool APIs |
+| `ALLOW_PUBLIC_API` | Set `true` to let anyone use the API without a key (rate-limited). Required in production unless `MCP_API_KEY` is set |
+| `MCP_API_KEY` | Optional bearer key. A presented key must match; lets you keep the API private when public access is off |
 | `NEXT_PUBLIC_APP_URL` | Canonical app URL for guide links |
 
 ## Current slice
