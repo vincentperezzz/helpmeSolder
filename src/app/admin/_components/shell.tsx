@@ -37,17 +37,15 @@ export function AdminShell({
   session,
   active,
   title,
-  narrow,
   children,
 }: {
   session: SessionLevel;
   active: AdminTabId;
   title: string;
-  narrow?: boolean;
   children: ReactNode;
 }) {
   return (
-    <main className={`mx-auto w-full px-4 py-8 sm:px-6 ${narrow ? "max-w-md" : "max-w-5xl"}`}>
+    <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-sm text-mute">HelpmeSolder</p>

@@ -8,6 +8,7 @@ import { authorizeArea } from "@/lib/admin/credential";
 import {
   isMissingRequestsTable,
   parseStatus,
+  parseKindFilter,
   parseStatusFilter,
   validateAdminNote,
   validateAliasTarget,
@@ -35,7 +36,9 @@ async function requireFullSession(): Promise<void> {
 function back(formData: FormData, code: string): never {
   const status = parseStatusFilter(field(formData, "back"));
   const params = new URLSearchParams();
+  const kind = parseKindFilter(field(formData, "backKind"));
   if (status !== "all") params.set("status", status);
+  if (kind !== "all") params.set("kind", kind);
   params.set("msg", code);
   redirect(`/admin/requests?${params.toString()}`);
 }

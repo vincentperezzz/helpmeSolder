@@ -1,7 +1,9 @@
 import { loadGuideStats, MAX_ROWS } from "@/lib/admin/data";
 import type { GuideStats } from "@/lib/admin/stats";
 import { countNewRequests } from "@/lib/admin/requests";
-import { loadUserStats, type DayCount, type KindTotals, type UserLoad } from "@/lib/admin/users";
+import { hasAnyActivity } from "@/lib/admin/chart";
+import { loadUserStats, type KindTotals, type UserLoad } from "@/lib/admin/users";
+import { VisitorsChart } from "./_components/VisitorsChart";
 import { getRetentionDays } from "@/lib/guides/retention";
 import { loginAction } from "./actions";
 import { guardAdmin } from "./_components/guard";
@@ -191,34 +193,6 @@ function KindTiles({ label, totals }: { label: string; totals: KindTotals }) {
   );
 }
 
-function shortDay(day: string): string {
-  return new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    timeZone: "UTC",
-  });
-}
-
-function DayBars({ days }: { days: DayCount[] }) {
-  const max = Math.max(1, ...days.map((d) => d.count));
-  return (
-    <ul aria-label="Visitors per day, last 14 days" className="space-y-1.5">
-      {[...days].reverse().map((d) => (
-        <li key={d.day} className="flex items-center gap-3 text-sm">
-          <span className="w-14 shrink-0 text-xs text-mute">{shortDay(d.day)}</span>
-          <div className="h-2 min-w-0 flex-1 rounded bg-paper-deep">
-            <div
-              className="h-2 rounded bg-flux"
-              style={{ width: `${d.count === 0 ? 0 : Math.max(2, (d.count / max) * 100)}%` }}
-            />
-          </div>
-          <span className="w-10 shrink-0 text-right tabular-nums text-mute">{d.count}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function UsersBlock({ users }: { users: UserLoad }) {
   if (users.kind === "missing") {
     return (
@@ -244,19 +218,17 @@ function UsersBlock({ users }: { users: UserLoad }) {
       <KindTiles label="Visitors" totals={stats.visitors} />
       <KindTiles label="Creators" totals={stats.creators} />
       <div>
-        <h3 className="mb-2 text-sm font-semibold text-ink">Visitors per day, last 14 days</h3>
-        <DayBars days={stats.visitorsByDay} />
-        <p className="mt-3 text-sm text-ink-soft">
-          {stats.busiestDay
-            ? `Busiest day in the last 30 days: ${shortDay(stats.busiestDay.day)} with ${stats.busiestDay.count} visitors.`
-            : "No visitors recorded in the last 30 days."}
+        <h3 className="mb-2 text-sm font-semibold text-ink">Visitors per day</h3>
+        <VisitorsChart series={stats.series} />
+        {hasAnyActivity(stats.series) ? null : (
+          <p className="mt-2 text-sm text-ink-soft">No visits recorded yet.</p>
+        )}
+        <p className="mt-3 text-sm text-mute">
+          Counts are anonymous. A person who visits on three different days counts three times
+          because the site cannot recognise people from one day to the next. Nothing is stored
+          that identifies anyone.
         </p>
       </div>
-      <p className="text-sm text-mute">
-        Counts are anonymous. A person who visits on three different days counts three times
-        because the site cannot recognise people from one day to the next. Nothing is stored
-        that identifies anyone.
-      </p>
     </div>
   );
 }

@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
+  askedText,
+  callsText,
+  countByKind,
+  demandBarPercent,
+  filterByKind,
+  kindGroup,
+  parseKindFilter,
+  requestTotals,
+  sourceSentence,
+  STATUS_LABELS,
   filterByStatus,
   isMissingRequestsTable,
   parseStatus,
@@ -42,9 +52,9 @@ describe("sort, filter and summary", () => {
     row("c", { demand: 2, last_seen: "2026-10-04T00:00:00Z", status: "building" }),
     row("d", { demand: 1, status: "shipped" }),
   ];
-  it("sorts by demand then last seen without mutating", () => {
+  it("sorts waiting first, then demand, then last seen, without mutating", () => {
     const copy = [...rows];
-    expect(sortRequests(rows).map((r) => r.key)).toEqual(["b", "c", "a", "d"]);
+    expect(sortRequests(rows).map((r) => r.key)).toEqual(["a", "b", "c", "d"]);
     expect(rows).toEqual(copy);
   });
   it("filters by status", () => {
@@ -120,5 +130,55 @@ describe("isMissingRequestsTable", () => {
     ).toBe(true);
     expect(isMissingRequestsTable({ code: "500", message: "boom" })).toBe(false);
     expect(isMissingRequestsTable(null)).toBe(false);
+  });
+});
+
+describe("redesign helpers", () => {
+  it("uses friendly status labels", () => {
+    expect(STATUS_LABELS.new).toBe("Waiting");
+    expect(STATUS_LABELS.shipped).toBe("Added");
+  });
+  it("groups kinds and filters", () => {
+    expect(kindGroup("Sensor")).toBe("sensor");
+    expect(kindGroup("microcontroller")).toBe("board");
+    expect(kindGroup("module")).toBe("other");
+    expect(kindGroup(null)).toBe("other");
+    expect(parseKindFilter("power")).toBe("power");
+    expect(parseKindFilter("zzz")).toBe("all");
+    const rows = [row("a", { kind: "sensor" }), row("b", { kind: "battery" }), row("c", { kind: null })];
+    expect(filterByKind(rows, "power").map((r) => r.key)).toEqual(["b"]);
+    expect(filterByKind(rows, "all")).toHaveLength(3);
+    expect(countByKind(rows)).toMatchObject({ all: 3, sensor: 1, power: 1, other: 1, board: 0 });
+  });
+  it("sizes demand bars", () => {
+    expect(demandBarPercent(5, 10)).toBe(50);
+    expect(demandBarPercent(10, 10)).toBe(100);
+    expect(demandBarPercent(1, 100)).toBe(4);
+    expect(demandBarPercent(0, 10)).toBe(0);
+    expect(demandBarPercent(3, 0)).toBe(0);
+  });
+  it("words demand correctly", () => {
+    expect(askedText(1)).toBe("1 person asked");
+    expect(askedText(3)).toBe("3 people asked");
+    expect(callsText(3, 3)).toBe("");
+    expect(callsText(2, 5)).toBe("5 requests in total");
+    expect(callsText(1, 1)).toBe("");
+  });
+  it("maps sources to sentences", () => {
+    expect(sourceSentence("request_part")).toBe("The assistant asked for it directly");
+    expect(sourceSentence("add_part")).toBe("Asked while adding a part to a guide");
+    expect(sourceSentence("api_patch")).toBe("Found in a guide update");
+    expect(sourceSentence("set_power_source")).toBe("Asked for as a power source");
+    expect(sourceSentence("other")).toBe("Noted automatically");
+    expect(sourceSentence(null)).toBe("Noted automatically");
+  });
+  it("totals", () => {
+    const rows = [
+      row("a", { demand: 2 }),
+      row("b", { demand: 3, status: "planned" }),
+      row("c", { demand: 1, status: "building" }),
+      row("d", { demand: 4, status: "shipped" }),
+    ];
+    expect(requestTotals(rows)).toEqual({ waiting: 1, inProgress: 2, added: 1, totalAsks: 10 });
   });
 });

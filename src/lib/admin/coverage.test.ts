@@ -4,7 +4,9 @@ import type { CatalogPart } from "@/lib/catalog/types";
 import {
   basicCategory,
   boardFamily,
+  CATEGORIES,
   buildCoverage,
+  categoryOf,
   moduleCategory,
   percentOf,
 } from "./coverage";
@@ -67,5 +69,61 @@ describe("buildCoverage", () => {
     expect(report.moduleGroups.flatMap((g) => g.rows)).toHaveLength(catalog.modules.length);
     expect(report.percent.drawing).toBeGreaterThanOrEqual(0);
     expect(report.percent.thumbnail).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("categories", () => {
+  const report = buildCoverage();
+  const byId = (id: string) => report.categories.find((c) => c.id === id)!;
+
+  it("puts every part in exactly one category", () => {
+    const ids = report.categories.flatMap((c) => c.rows.map((r) => r.id));
+    expect(ids).toHaveLength(report.total);
+    expect(new Set(ids).size).toBe(report.total);
+    expect(report.categories.reduce((n, c) => n + c.count, 0)).toBe(report.total);
+  });
+
+  it("assigns spot checks", () => {
+    const where = (id: string) => report.categories.find((c) => c.rows.some((r) => r.id === id))?.label;
+    expect(where("board.esp32.devkit")).toBe("Microcontrollers");
+    expect(where("board.pi.4b")).toBe("Microcontrollers");
+    expect(where("passive.resistor.220")).toBe("Resistors");
+    expect(where("module.photoresistor")).toBe("Sensors");
+    expect(where("module.microsd")).toBe("Storage and time");
+    expect(where("passive.power.battery.9v")).toBe("Power");
+    expect(where("passive.led.red")).toBe("Lights");
+    expect(where("module.neopixel")).toBe("Lights");
+    expect(where("passive.pushbutton")).toBe("Inputs");
+    expect(where("passive.potentiometer")).toBe("Inputs");
+    expect(where("module.servo")).toBe("Motors and relays");
+    expect(where("passive.breadboard.half")).toBe("Other basic parts");
+  });
+
+  it("sends unknown future parts to other", () => {
+    expect(categoryOf("module", "module.future.thing")).toBe("other");
+    expect(categoryOf("passive", "passive.capacitor.100n")).toBe("other");
+  });
+
+  it("computes per-category coverage", () => {
+    const r = buildCoverage({
+      boards: [],
+      modules: [
+        part("module.dht22", { photoHint: "nope" }),
+        part("module.pir.motion", { photoHint: "nope", wokwi: { tag: "wokwi-pir-motion-sensor" } }),
+      ],
+      passives: [],
+      recipes: [],
+    });
+    const sensors = r.categories.find((c) => c.id === "sensors")!;
+    expect(sensors).toMatchObject({ count: 2, drawings: 1, thumbnails: 0, missing: 2 });
+    expect(sensors.percent).toEqual({ drawing: 50, thumbnail: 0 });
+    expect(r.categories.find((c) => c.id === "displays")).toMatchObject({ count: 0, missing: 0 });
+  });
+
+  it("has unique url-safe anchor ids", () => {
+    const ids = CATEGORIES.map((c) => c.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of ids) expect(id).toMatch(/^[a-z][a-z0-9-]*$/);
+    expect(byId("microcontrollers").count).toBe(listCatalog().boards.length);
   });
 });

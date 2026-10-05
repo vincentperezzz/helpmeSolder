@@ -66,7 +66,8 @@ export default async function AdminSettingsPage({
   const message = error ? ERRORS[error] : undefined;
 
   return (
-    <AdminShell session={session} active="settings" title="Admin settings" narrow>
+    <AdminShell session={session} active="settings" title="Admin settings">
+      <div className="mx-auto w-full max-w-md">
       {source === "default" ? (
         <p role="alert" className="mb-4 rounded-md border border-warn-ink p-3 text-sm text-warn-ink">
           {notice === "default"
@@ -121,6 +122,7 @@ export default async function AdminSettingsPage({
         row in the admin_settings table in the Supabase table editor. The dashboard then falls
         back to the environment value, or to the default password.
       </p>
+      </div>
     </AdminShell>
   );
 }

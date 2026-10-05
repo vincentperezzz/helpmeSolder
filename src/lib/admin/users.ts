@@ -1,10 +1,11 @@
 import { getSupabaseAdmin } from "@/lib/supabase/server";
+import type { DailyPoint } from "./chart";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 export const PAGE_SIZE = 1000;
 /** Safety cap on rows read (30 days of daily unique rows). */
 export const MAX_ROWS = 100_000;
-export const BAR_DAYS = 14;
+export const CHART_DAYS = 30;
 
 export type ClientKind = "visitor" | "creator";
 
@@ -12,15 +13,12 @@ export type ClientKind = "visitor" | "creator";
 export type DailyCounts = Record<ClientKind, Record<string, number>>;
 
 export type KindTotals = { today: number; yesterday: number; last7: number; last30: number };
-export type DayCount = { day: string; count: number };
 
 export type UserStats = {
   visitors: KindTotals;
   creators: KindTotals;
-  /** Oldest first, exactly BAR_DAYS entries ending today (UTC). */
-  visitorsByDay: DayCount[];
-  /** Busiest visitor day in the last 30 days, null when there were no visitors. */
-  busiestDay: DayCount | null;
+  /** Oldest first, exactly CHART_DAYS zero-filled entries ending today (UTC). */
+  series: DailyPoint[];
 };
 
 export type UserLoad =
@@ -53,23 +51,21 @@ function totals(counts: Record<string, number>, now: number): KindTotals {
 
 /** Pure. Windows are whole UTC days: "last 7 days" is today plus the 6 days before it. */
 export function summarizeUsers(daily: DailyCounts, now: number): UserStats {
-  const visitorsByDay: DayCount[] = [];
-  for (let i = BAR_DAYS - 1; i >= 0; i--) {
-    const day = dayOffset(now, i);
-    visitorsByDay.push({ day, count: daily.visitor[day] ?? 0 });
-  }
-  let busiestDay: DayCount | null = null;
-  for (let i = 0; i < 30; i++) {
-    const day = dayOffset(now, i);
-    const count = daily.visitor[day] ?? 0;
-    if (count > 0 && (!busiestDay || count > busiestDay.count)) busiestDay = { day, count };
-  }
   return {
     visitors: totals(daily.visitor, now),
     creators: totals(daily.creator, now),
-    visitorsByDay,
-    busiestDay,
+    series: buildSeries(daily, now),
   };
+}
+
+/** Pure. Oldest first, CHART_DAYS entries ending today (UTC), missing days are zero. */
+export function buildSeries(daily: DailyCounts, now: number, days: number = CHART_DAYS): DailyPoint[] {
+  const series: DailyPoint[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const day = dayOffset(now, i);
+    series.push({ day, visitors: daily.visitor[day] ?? 0, creators: daily.creator[day] ?? 0 });
+  }
+  return series;
 }
 
 type DbError = { message?: string; code?: string } | null;
