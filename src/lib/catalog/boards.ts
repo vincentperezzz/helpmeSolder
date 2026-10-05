@@ -18,9 +18,9 @@ const baseBoards: CatalogPart[] = [
     id: "board.esp32.devkit",
     name: "ESP32 DevKit V1",
     kind: "board",
-    description: "Classic 30-pin ESP32-WROOM DevKit V1 look, 3.3V logic. Wi-Fi + Bluetooth classic/BLE.",
+    description: "Common 30-pin ESP32 board with Wi-Fi and Bluetooth. Works at 3.3V.",
     photoHint: "esp32-devkit",
-    photoCaption: "ESP32 DevKit V1 style board / pinout reference — WROOM module with dual headers.",
+    photoCaption: "ESP32 DevKit V1 board, with a metal-shielded chip in the middle and a row of pins on each side.",
     identify:
       "Look for a dual-row 30-pin board labeled ESP32 DevKit, usually with a micro-USB (or USB-C clone) and an ESP32-WROOM metal can. Chip says ESP32, not ESP32-S2/S3/C3.",
     variants: [
@@ -31,7 +31,7 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "ESP32-S2 / S3 DevKit",
-        detail: "Different chip family. S2 has Wi-Fi only (no Bluetooth). S3 has Wi-Fi + BLE but not classic BT, and often USB-OTG. Pinouts differ.",
+        detail: "Different chip. S2 has Wi-Fi only (no Bluetooth). S3 has Wi-Fi + BLE but not classic BT, and often USB-OTG. Pinouts differ.",
       },
       {
         label: "ESP32-C3 / C6",
@@ -39,13 +39,13 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "ESP32-WROVER",
-        detail: "Same ESP32 family but with PSRAM; module looks longer. Some GPIO reserved for PSRAM — check silkscreen.",
+        detail: "Same ESP32 but with extra memory; the chip module looks longer. Some GPIO reserved for PSRAM. Check silkscreen.",
       },
     ],
     watchOuts: [
-      "Many cheap 'ESP32' listings are S2/S3/C3 — read the module label on the metal can.",
+      "Many cheap 'ESP32' listings are S2/S3/C3. Read the module label on the metal can.",
       "USB-C vs micro-USB is only the connector; it does not tell you the chip variant.",
-      "3.3V logic only — do not feed 5V into GPIO.",
+      "3.3V logic only. Do not feed 5V into GPIO.",
     ],
     wokwi: { tag: "wokwi-esp32-devkit-v1" },
     pins: [
@@ -89,7 +89,7 @@ const baseBoards: CatalogPart[] = [
     photoHint: "arduino-uno",
     photoCaption: "Arduino Uno R3 (or compatible) with the long DIP/SMD MCU and USB-B / USB-C clone port.",
     identify:
-      "Blue (or clone) board with DC barrel jack + USB, labeled UNO R3 or compatible. MCU is ATmega328P on classic R3 — not the larger UNO R4 chip.",
+      "Blue (or clone) board with DC barrel jack + USB, labeled UNO R3 or compatible. MCU is ATmega328P on classic R3. Not the larger UNO R4 chip.",
     variants: [
       {
         label: "Uno R3 (this guide)",
@@ -106,7 +106,7 @@ const baseBoards: CatalogPart[] = [
       },
     ],
     watchOuts: [
-      "If the board says UNO R4, follow R4 docs — not every R3 sketch assumes are identical.",
+      "If the board says UNO R4, follow R4 docs. Not every R3 sketch assumes are identical.",
     ],
     wokwi: { tag: "wokwi-arduino-uno" },
     pins: [
@@ -144,13 +144,13 @@ const baseBoards: CatalogPart[] = [
     kind: "board",
     description: "Classic Nano (ATmega328P), 5V logic, mini USB or USB-C clone.",
     photoHint: "arduino-nano",
-    photoCaption: "Small Nano stick with two long header rows — classic 328P Nano, not Nano 33 / Every.",
+    photoCaption: "Small Nano stick with two long header rows. Classic Nano (328P chip), not Nano 33 / Every.",
     identify:
-      "Tiny board with mini-USB or USB-C, silkscreen often says NANO. Classic has ATmega328P. Nano 33 / Every look similar but are different chips.",
+      "Tiny board with mini-USB or USB-C, silkscreen often says NANO. Classic has ATmega328P. Nano 33 / Every appear similar but are different chips.",
     variants: [
       {
         label: "Nano (classic 328P, this guide)",
-        detail: "5V ATmega328P. Same family as Uno for most sketches.",
+        detail: "5V ATmega328P. Works like the Uno for most sketches.",
         matchesGuide: true,
       },
       {
@@ -197,7 +197,7 @@ const baseBoards: CatalogPart[] = [
     id: "board.arduino.mega",
     name: "Arduino Mega",
     kind: "board",
-    description: "Arduino Mega 2560 style — lots of IO, 5V logic.",
+    description: "Arduino Mega 2560 style. Lots of IO, 5V logic.",
     photoHint: "arduino-mega",
     photoCaption: "Long Mega 2560 board with double header rows and DC jack.",
     identify: "Much longer than an Uno. Label usually MEGA 2560. Extra headers along the top edge.",
@@ -231,9 +231,9 @@ const baseBoards: CatalogPart[] = [
     id: "board.pico.rp2040",
     name: "Raspberry Pi Pico",
     kind: "board",
-    description: "Original Raspberry Pi Pico (RP2040) — no onboard Wi-Fi/Bluetooth.",
+    description: "Original Raspberry Pi Pico (RP2040). No onboard Wi-Fi/Bluetooth.",
     photoHint: "pico",
-    photoCaption: "Green Pico with micro-USB and BOOTSEL button — original Pico, not Pico W.",
+    photoCaption: "Green Pico with micro-USB and BOOTSEL button. Original Pico, not Pico W.",
     identify:
       "Small green board, micro-USB at one end, BOOTSEL button. Original Pico has no metal wireless module near the USB end. Pico W has a wireless package and usually says Pico W.",
     variants: [
@@ -244,7 +244,7 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "Pico W",
-        detail: "Adds Infineon CYW43439 — Wi-Fi + Bluetooth/BLE. Same RP2040 core and mostly same pins, but wireless needs different firmware/libs.",
+        detail: "Adds Infineon CYW43439. Wi-Fi + Bluetooth/BLE. Same RP2040 core and mostly same pins, but wireless needs different firmware/libs.",
       },
       {
         label: "Pico H / WH",
@@ -252,11 +252,11 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "Pico 2 / Pico 2 W",
-        detail: "RP2350 family — not drop-in identical to RP2040 for all software.",
+        detail: "RP2350 chip, not drop-in identical to RP2040 for all software.",
       },
     ],
     watchOuts: [
-      "If you need Bluetooth or Wi-Fi on-board, you want Pico W / WH — not this plain Pico.",
+      "If you need Bluetooth or Wi-Fi on-board, you want Pico W / WH. Not this plain Pico.",
       "3.3V logic. VBUS is 5V from USB; GPIO stays 3.3V.",
     ],
     pins: [
@@ -279,7 +279,7 @@ const baseBoards: CatalogPart[] = [
     kind: "board",
     description: "Pico W (RP2040) with onboard Wi-Fi + Bluetooth/BLE.",
     photoHint: "pico",
-    photoCaption: "Pico W — look for the wireless module near the USB end and Pico W silkscreen.",
+    photoCaption: "Pico W. Look for the wireless module near the USB end and Pico W silkscreen.",
     identify:
       "Same footprint as Pico, but with a CYW43439 wireless package and usually 'Pico W' on the silkscreen.",
     variants: [
@@ -294,7 +294,7 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "Pico (no wireless)",
-        detail: "Original Pico — no onboard Wi-Fi/Bluetooth.",
+        detail: "Original Pico. No onboard Wi-Fi/Bluetooth.",
       },
     ],
     watchOuts: [
@@ -319,9 +319,9 @@ const baseBoards: CatalogPart[] = [
     id: "board.pico.2",
     name: "Raspberry Pi Pico 2",
     kind: "board",
-    description: "Pico 2 (RP2350) — next-gen Pico family.",
+    description: "Pico 2 board, the newer version of the Raspberry Pi Pico.",
     photoHint: "pico",
-    photoCaption: "Pico 2 / RP2350 board — same dual-header stick shape as Pico.",
+    photoCaption: "Pico 2 / RP2350 board. Same dual-header stick shape as Pico.",
     identify: "Looks like a Pico but labeled Pico 2 / RP2350. Not drop-in identical software to RP2040.",
     variants: [
       {
@@ -353,7 +353,7 @@ const baseBoards: CatalogPart[] = [
     id: "board.pi.zero.w",
     name: "Raspberry Pi Zero W",
     kind: "board",
-    description: "Pi Zero W — mini Linux SBC with Wi-Fi/Bluetooth and 40-pin header.",
+    description: "Pi Zero W. Mini Linux SBC with Wi-Fi/Bluetooth and 40-pin header.",
     photoHint: "pico",
     photoCaption: "Tiny Pi Zero W with mini-HDMI and 40-pin GPIO.",
     identify: "Credit-card-small board labeled Zero W, with camera connector and mini connectors.",
@@ -368,7 +368,7 @@ const baseBoards: CatalogPart[] = [
         detail: "Quad-core upgrade; same connector idea, different SoC.",
       },
     ],
-    watchOuts: ["This is a full Linux computer — wiring guides differ from Pico MCU projects."],
+    watchOuts: ["This is a full Linux computer. Wiring guides differ from Pico MCU projects."],
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
@@ -379,7 +379,7 @@ const baseBoards: CatalogPart[] = [
     id: "board.pi.3b.plus",
     name: "Raspberry Pi 3 Model B+",
     kind: "board",
-    description: "Pi 3 B+ — classic full-size Pi with 40-pin GPIO.",
+    description: "Raspberry Pi 3 B+, a full-size small computer with 40 pins.",
     photoHint: "pico",
     photoCaption: "Full-size Raspberry Pi 3 B+ with Ethernet and USB ports.",
     identify: "Credit-card Pi with Ethernet, 4× USB, labeled 3 Model B+.",
@@ -390,7 +390,7 @@ const baseBoards: CatalogPart[] = [
         matchesGuide: true,
       },
     ],
-    watchOuts: ["Linux SBC — not an MCU DevKit."],
+    watchOuts: ["Linux SBC. Not an MCU DevKit."],
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
@@ -401,7 +401,7 @@ const baseBoards: CatalogPart[] = [
     id: "board.pi.4b",
     name: "Raspberry Pi 4 Model B",
     kind: "board",
-    description: "Pi 4 B — dual micro-HDMI, USB-C power, 40-pin GPIO.",
+    description: "Pi 4 B. Dual micro-HDMI, USB-C power, 40-pin GPIO.",
     photoHint: "pico",
     photoCaption: "Raspberry Pi 4 Model B with dual micro-HDMI.",
     identify: "Dual micro-HDMI, USB-C power input, labeled Raspberry Pi 4.",
@@ -423,7 +423,7 @@ const baseBoards: CatalogPart[] = [
     id: "board.pi.5",
     name: "Raspberry Pi 5",
     kind: "board",
-    description: "Pi 5 — current full-size Pi with 40-pin GPIO.",
+    description: "Pi 5. Current full-size Pi with 40-pin GPIO.",
     photoHint: "pico",
     photoCaption: "Raspberry Pi 5 board with PCIe FPC and dual micro-HDMI.",
     identify: "Labeled Raspberry Pi 5; has a PCIe FPC connector near the board edge.",
@@ -434,7 +434,7 @@ const baseBoards: CatalogPart[] = [
         matchesGuide: true,
       },
     ],
-    watchOuts: ["Power requirements are stricter than Pi 4 — use a capable USB-C PD supply."],
+    watchOuts: ["Power requirements are stricter than Pi 4. Use a capable USB-C PD supply."],
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
@@ -445,11 +445,11 @@ const baseBoards: CatalogPart[] = [
     id: "board.esp8266.nodemcu",
     name: "ESP8266 NodeMCU",
     kind: "board",
-    description: "NodeMCU ESP8266 (Wi-Fi only — no Bluetooth).",
+    description: "NodeMCU ESP8266 (Wi-Fi only. No Bluetooth).",
     photoHint: "esp8266-nodemcu",
-    photoCaption: "NodeMCU-style ESP8266 board with Wi-Fi antenna area — not an ESP32.",
+    photoCaption: "NodeMCU-style ESP8266 board with Wi-Fi antenna area. Not an ESP32.",
     identify:
-      "Usually says NodeMCU or ESP8266 on the silkscreen. Single-core Wi-Fi MCU. No Bluetooth. Do not confuse with ESP32 DevKits that look similar.",
+      "Usually says NodeMCU or ESP8266 on the silkscreen. Single-core Wi-Fi MCU. No Bluetooth. Do not confuse with ESP32 boards that appear similar.",
     variants: [
       {
         label: "NodeMCU ESP8266 (this guide)",
@@ -458,15 +458,15 @@ const baseBoards: CatalogPart[] = [
       },
       {
         label: "ESP-01 / ESP-12 bare modules",
-        detail: "Same chip family, tiny pinouts — not the NodeMCU breadboard layout.",
+        detail: "Same chip, tiny pin layout. Not the NodeMCU breadboard layout.",
       },
       {
         label: "ESP32 boards",
-        detail: "Different chip. Has Bluetooth options and different pins — not interchangeable with ESP8266 wiring.",
+        detail: "Different chip. Has Bluetooth options and different pins. Not interchangeable with ESP8266 wiring.",
       },
     ],
     watchOuts: [
-      "ESP8266 has Wi-Fi but no Bluetooth — if a project needs BT, use ESP32 / Pico W instead.",
+      "ESP8266 has Wi-Fi but no Bluetooth. If a project needs BT, use ESP32 / Pico W instead.",
     ],
     pins: [
       power("3v3", "3V", "3v3"),

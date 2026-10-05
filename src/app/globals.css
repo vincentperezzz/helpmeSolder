@@ -185,6 +185,10 @@ body {
 .diagram-shell {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  contain: inline-size;
   min-height: 20rem;
   border: 1px solid var(--line-strong);
   background:
@@ -194,7 +198,23 @@ body {
 .whiteboard-shell {
   display: flex;
   flex-direction: column;
-  min-height: min(82vh, 860px);
+  min-height: 0;
+}
+
+@media (min-width: 1024px) {
+  .whiteboard-shell {
+    min-height: min(82vh, 860px);
+  }
+
+  .diagram-viewport {
+    height: min(78vh, 820px);
+    min-height: 28rem;
+  }
+}
+
+.diagram-viewport:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: -2px;
 }
 
 .diagram-shell::before {
@@ -217,9 +237,14 @@ body {
 .diagram-viewport {
   overflow: hidden;
   flex: 1 1 auto;
-  height: min(78vh, 820px);
-  min-height: 28rem;
-  touch-action: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: min(70vh, 480px);
+  min-height: 0;
+  /* One-finger swipes scroll the page; pinch is handled in JS. */
+  touch-action: pan-y;
+  overscroll-behavior: auto;
   background:
     radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 12%, transparent) 1px, transparent 0);
   background-size: 24px 24px;
@@ -244,6 +269,8 @@ body {
 
 .whiteboard-shell.is-enlarged .diagram-viewport {
   height: min(88vh, 920px);
+  min-height: 0;
+  touch-action: none;
 }
 
 .whiteboard-shell.is-fullscreen .diagram-viewport,
@@ -251,6 +278,7 @@ body {
   height: auto;
   min-height: 0;
   flex: 1 1 auto;
+  touch-action: none;
 }
 
 .diagram-zoom-btn {
@@ -261,7 +289,8 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   line-height: 1;
-  padding: 0.4rem 0.55rem;
+  padding: 0.55rem 0.7rem;
+  min-height: 2.25rem;
 }
 
 .diagram-zoom-btn:hover {

@@ -74,7 +74,7 @@ function PartDetails({
             </p>
           ) : null}
           <p className="text-xs leading-relaxed text-ink-soft">
-            {catalog?.description || "Catalog part"}
+            {catalog?.description || "Part"}
           </p>
           <a
             href={googleImagesLookupUrl(lookupQ)}
@@ -99,7 +99,7 @@ function PartDetails({
       {matching.length > 0 || others.length > 0 ? (
         <section className="space-y-2">
           <h4 className="text-[11px] font-semibold tracking-[0.14em] text-mute uppercase">
-            Variants — pick the right one
+            Versions: pick the right one
           </h4>
           <ul className="space-y-2">
             {matching.map((variant) => (
@@ -156,7 +156,7 @@ function PrepPartRow({ part }: { part: GuidePart }) {
 
   useEffect(() => {
     if (!open) return;
-    const onDoc = (event: MouseEvent) => {
+    const onDoc = (event: PointerEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) {
         setOpen(false);
       }
@@ -164,20 +164,16 @@ function PrepPartRow({ part }: { part: GuidePart }) {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
-    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("pointerdown", onDoc);
     document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("pointerdown", onDoc);
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
 
   return (
-    <li
-      ref={rootRef}
-      className="relative py-3"
-      onMouseLeave={() => setOpen(false)}
-    >
+    <li ref={rootRef} className="relative py-3">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <button
           type="button"
@@ -185,27 +181,27 @@ function PrepPartRow({ part }: { part: GuidePart }) {
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((value) => !value)}
-          onMouseEnter={() => setOpen(true)}
         >
           <PartThumb catalog={catalog} name={name} />
           <div className="min-w-0 pt-0.5">
             <p className="font-medium text-ink group-hover:text-flux">{name}</p>
             <p className="text-sm text-ink-soft">
-              {catalog?.description || "Catalog part"}
+              {catalog?.description || "Part"}
             </p>
             {hasVariants ? (
-              <p className="mt-1 text-[11px] font-medium tracking-wide text-copper">
-                Has lookalike variants — hover or open details
+              <p className="mt-1 text-xs font-medium text-copper">
+                Your board may look slightly different. Tap to see versions.
               </p>
             ) : (
-              <p className="mt-1 text-[11px] text-mute">Hover or click for photo details</p>
+              <p className="mt-1 text-xs text-mute">Tap for photo and notes</p>
             )}
           </div>
         </button>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="border border-line px-2 py-1 font-mono text-[11px] tracking-wide text-ink hover:border-flux hover:text-flux"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center border border-line px-3 font-mono text-xs tracking-wide text-ink hover:border-flux hover:text-flux"
+            aria-label={`${open ? "Close" : "More"} details for ${name}`}
             aria-expanded={open}
             aria-controls={panelId}
             onClick={() => setOpen((value) => !value)}

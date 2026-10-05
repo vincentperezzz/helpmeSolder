@@ -52,11 +52,11 @@ const basePassives: CatalogPart[] = [
       },
       {
         label: "Mini (no rails)",
-        detail: "Tiny boards often have no +/− rails — you jump power into the grid instead.",
+        detail: "Tiny boards often have no +/− rails. You jump power into the grid instead.",
       },
     ],
     watchOuts: [
-      "Top and bottom power rails are separate — bridge them if you need power on both sides.",
+      "Top and bottom power rails are separate. Bridge them if you need power on both sides.",
     ],
     pins: breadboardHolePins(),
   },
@@ -64,9 +64,9 @@ const basePassives: CatalogPart[] = [
     id: "passive.resistor.220",
     name: "Resistor 220Ω",
     kind: "passive",
-    description: "Current-limiting resistor (red-red-brown). Wokwi MIT visual.",
+    description: "Small part that limits how much current flows, which protects LEDs. Red-red-brown stripes.",
     photoHint: "resistor-220",
-    photoCaption: "Through-hole carbon film resistor — check color bands for value.",
+    photoCaption: "Through-hole carbon film resistor. Check color bands for value.",
     identify: "Small axial resistor. 220Ω bands are typically red-red-brown (plus tolerance band).",
     variants: [
       {
@@ -89,7 +89,7 @@ const basePassives: CatalogPart[] = [
     id: "passive.resistor.1k",
     name: "Resistor 1kΩ",
     kind: "passive",
-    description: "1k pull-up/down or series resistor. Wokwi MIT visual.",
+    description: "Small resistor (1k). Used to protect parts or hold a pin steady.",
     photoHint: "resistor-1k",
     photoCaption: "Through-hole 1kΩ resistor (brown-black-red bands typical).",
     identify: "Axial resistor. 1kΩ is commonly brown-black-red.",
@@ -103,10 +103,10 @@ const basePassives: CatalogPart[] = [
     id: "passive.resistor.10k",
     name: "Resistor 10kΩ",
     kind: "passive",
-    description: "10k pull-up/down resistor. Wokwi MIT visual.",
+    description: "Small resistor (10k). Used to hold a pin steady at on or off.",
     photoHint: "resistor-10k",
     photoCaption: "Through-hole 10kΩ resistor (brown-black-orange bands typical).",
-    identify: "Axial resistor. 10kΩ is commonly brown-black-orange — popular for pull-ups.",
+    identify: "Axial resistor. 10kΩ is commonly brown-black-orange. Popular for pull-ups.",
     wokwi: { tag: "wokwi-resistor", attrs: { value: "10000" } },
     pins: [
       { id: "1", label: "1", kinds: ["digital", "analog", "power"] },
@@ -117,9 +117,9 @@ const basePassives: CatalogPart[] = [
     id: "passive.led.red",
     name: "LED (red)",
     kind: "passive",
-    description: "Through-hole LED. A = anode, C = cathode. Wokwi MIT visual.",
+    description: "Small light. The longer leg (A) goes toward power, the shorter leg (C) toward ground.",
     photoHint: "led-red",
-    photoCaption: "5mm through-hole LED — long leg is usually anode (+).",
+    photoCaption: "5mm through-hole LED. Long leg is usually anode (+).",
     identify:
       "Plastic dome LED. Longer lead = anode (A), flat edge on the body marks cathode (C).",
     variants: [
@@ -130,7 +130,7 @@ const basePassives: CatalogPart[] = [
       },
       {
         label: "SMD / addressable LEDs",
-        detail: "Different footprint and wiring (e.g. WS2812) — not this part.",
+        detail: "Different footprint and wiring (e.g. WS2812). Not this part.",
       },
     ],
     wokwi: { tag: "wokwi-led", attrs: { color: "red", label: "LED" } },
@@ -143,9 +143,9 @@ const basePassives: CatalogPart[] = [
     id: "passive.led.green",
     name: "LED (green)",
     kind: "passive",
-    description: "Through-hole green LED. Wokwi MIT visual.",
+    description: "Small green light. The longer leg goes toward power.",
     photoHint: "led-green",
-    photoCaption: "5mm green through-hole LED — polarity same as red LED.",
+    photoCaption: "5mm green through-hole LED. Polarity same as red LED.",
     identify: "Same through-hole LED shape as red; color of the plastic dome is green.",
     wokwi: { tag: "wokwi-led", attrs: { color: "green", label: "LED" } },
     pins: [
@@ -157,7 +157,7 @@ const basePassives: CatalogPart[] = [
     id: "passive.potentiometer",
     name: "Potentiometer",
     kind: "passive",
-    description: "10k trim pot for contrast/volume/analog input. Wokwi MIT visual.",
+    description: "Small dial you turn with a screwdriver to adjust a setting like brightness or volume.",
     photoHint: "potentiometer",
     photoCaption: "Rotary potentiometer / trim pot with three legs.",
     identify: "Three-leg variable resistor. Outer legs are ends of the track; middle is the wiper.",
@@ -172,9 +172,9 @@ const basePassives: CatalogPart[] = [
     id: "passive.pushbutton",
     name: "Pushbutton",
     kind: "passive",
-    description: "Tactile momentary switch. Wokwi MIT visual.",
+    description: "Push button that is on only while you press it.",
     photoHint: "pushbutton",
-    photoCaption: "4-pin tactile pushbutton — pins short in pairs when pressed.",
+    photoCaption: "4-pin tactile pushbutton. Pins short in pairs when pressed.",
     identify: "Square tactile switch. Opposite corners are typically connected when pressed.",
     wokwi: { tag: "wokwi-pushbutton", attrs: { color: "red" } },
     pins: [
@@ -205,7 +205,7 @@ const basePassives: CatalogPart[] = [
     description:
       "Classic 9V snap battery. Both + and − snaps sit on top. Wires leave those top terminals.",
     photoHint: "battery-9v",
-    photoCaption: "9V rectangular cell — both snap terminals on the top face.",
+    photoCaption: "9V rectangular cell. Both snap terminals on the top face.",
     identify: "Rectangular 9V. Both snaps on top: larger = usually negative, smaller = positive.",
     pins: [
       { id: "+", label: "+ (top snap)", kinds: ["power"], voltage: "5v" },
@@ -217,9 +217,9 @@ const basePassives: CatalogPart[] = [
     name: "2×AA Batteries",
     kind: "passive",
     description:
-      "Two AA cells (~3V). Positive nubs on top, flat negatives on bottom — wires leave those ends.",
+      "Two AA cells (~3V). Positive nubs on top, flat negatives on bottom. Wires leave those ends.",
     photoHint: "battery-2aa",
-    photoCaption: "2×AA holder — + on the top end, − on the bottom end.",
+    photoCaption: "2×AA holder. + on the top end, − on the bottom end.",
     identify: "Two AA cells in a holder. Spring side is usually −; nub side is +.",
     pins: [
       { id: "+", label: "+ (top)", kinds: ["power"], voltage: "3v3" },
@@ -231,9 +231,9 @@ const basePassives: CatalogPart[] = [
     name: "3×AA Batteries",
     kind: "passive",
     description:
-      "Three AA cells (~4.5V). Positive on top, negative on bottom — wires leave those ends.",
+      "Three AA cells (~4.5V). Positive on top, negative on bottom. Wires leave those ends.",
     photoHint: "battery-3aa",
-    photoCaption: "3×AA holder — + on top, − on bottom.",
+    photoCaption: "3×AA holder. + on top, − on bottom.",
     identify: "Three AA cells. Same polarity convention as 2×AA holders.",
     pins: [
       { id: "+", label: "+ (top)", kinds: ["power"], voltage: "5v" },
@@ -247,7 +247,7 @@ const basePassives: CatalogPart[] = [
     description:
       "Single 18650 Li-ion (~3.7V). Button + on top, flat − on bottom.",
     photoHint: "battery-18650",
-    photoCaption: "18650 cell — button + on top, flat − on bottom.",
+    photoCaption: "18650 cell. Button + on top, flat − on bottom.",
     identify: "Cylindrical Li-ion ~18×65mm. Raised button is +; flat end is −. Needs a protected holder.",
     watchOuts: [
       "Do not reverse polarity. Prefer a holder with protection for beginners.",

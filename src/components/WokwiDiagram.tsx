@@ -9,11 +9,12 @@ import {
 } from "@/lib/catalog/board-assets";
 import { getBatteryAsset } from "@/lib/catalog/batteries";
 import type { Guide } from "@/lib/catalog/types";
+import type { CanvasSize } from "@/components/wokwi/types";
 import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import { isBreadboardId } from "./wokwi/breadboard";
 import { BreadboardVisual } from "./wokwi/BreadboardVisual";
-import { POWER_ORIGIN, clampZoom } from "./wokwi/constants";
+import { LABEL_FONT, POWER_ORIGIN, clampZoom } from "./wokwi/constants";
 import { buildCue } from "./wokwi/cue";
 import { labelSize } from "./wokwi/labels";
 import { layoutParts } from "./wokwi/layout";
@@ -36,7 +37,7 @@ export function WokwiDiagram({
 }: WokwiDiagramProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const ready = useWokwiReady();
-  const [canvas, setCanvas] = useState({ width: 1400, height: 820 });
+  const [canvas, setCanvas] = useState<CanvasSize>({ width: 1400, height: 820 });
   const {
     shellRef,
     viewportRef,
@@ -51,7 +52,8 @@ export function WokwiDiagram({
     onPointerDown,
     onPointerMove,
     onPointerUp,
-  } = useDiagramViewport({ guideId: guide.id, canvas, ready, onEnlargedChange });
+    onKeyDown,
+  } = useDiagramViewport({ guideId: guide.id, canvas, ready, enlarged, onEnlargedChange });
   const placed = useMemo(() => layoutParts(guide), [guide]);
   const cue = useMemo(() => buildCue(guide), [guide]);
   const wires = useWireMeasure({
@@ -82,34 +84,38 @@ export function WokwiDiagram({
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/90 px-3 py-2">
         <div className="min-w-0 space-y-0.5">
           <p className="truncate text-xs font-semibold tracking-tight text-ink">{cue}</p>
-          <p className="font-mono text-[11px] text-mute">
-            Whiteboard · Zoom {Math.round(zoom * 100)}% · drag / scroll to pan · ctrl/⌘+wheel zoom
+          <p className="text-[11px] text-mute">
+            Zoom {Math.round(zoom * 100)}%. Drag to move. Hold Ctrl/Cmd and scroll, or use the
+            buttons, to zoom.
           </p>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           <button
             type="button"
             className="diagram-zoom-btn"
             onClick={() => setZoom((value) => clampZoom(value - 0.15))}
             aria-label="Zoom out"
+            title="Zoom out"
           >
-            −
-          </button>
-          <button
-            type="button"
-            className="diagram-zoom-btn"
-            onClick={fitToViewport}
-            aria-label="Fit diagram"
-          >
-            Fit
+            <span aria-hidden="true">− </span>Zoom out
           </button>
           <button
             type="button"
             className="diagram-zoom-btn"
             onClick={() => setZoom((value) => clampZoom(value + 0.15))}
             aria-label="Zoom in"
+            title="Zoom in"
           >
-            +
+            <span aria-hidden="true">+ </span>Zoom in
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={fitToViewport}
+            aria-label="Fit the whole picture on screen"
+            title="Fit the whole picture on screen"
+          >
+            Fit all
           </button>
           <button
             type="button"
@@ -119,17 +125,20 @@ export function WokwiDiagram({
               setPan({ x: 40, y: 40 });
               fittedRef.current = true;
             }}
-            aria-label="Reset view"
+            aria-label="Reset view to actual size"
+            title="Reset view to actual size"
           >
-            100%
+            Reset view
           </button>
           <button
             type="button"
             className="diagram-zoom-btn"
             onClick={() => onEnlargedChange?.(!enlarged)}
-            aria-label={enlarged ? "Show prep and steps again" : "Expand diagram and hide prep"}
+            aria-pressed={enlarged}
+            aria-label={enlarged ? "Make the picture smaller and show the steps again" : "Make the picture bigger"}
+            title={enlarged ? "Make the picture smaller and show the steps again" : "Make the picture bigger"}
           >
-            {enlarged ? "Side" : "Expand"}
+            {enlarged ? "Smaller" : "Bigger"}
           </button>
           <button
             type="button"
@@ -138,9 +147,10 @@ export function WokwiDiagram({
               onEnlargedChange?.(true);
               await toggleFullscreen();
             }}
-            aria-label={fullscreen ? "Exit fullscreen whiteboard" : "Open fullscreen whiteboard"}
+            aria-label={fullscreen ? "Exit full screen" : "Show the picture full screen"}
+            title={fullscreen ? "Exit full screen" : "Show the picture full screen"}
           >
-            {fullscreen ? "Exit" : "Full"}
+            {fullscreen ? "Exit full screen" : "Full screen"}
           </button>
         </div>
       </div>
@@ -154,6 +164,10 @@ export function WokwiDiagram({
       <div
         ref={viewportRef}
         className="diagram-viewport cursor-grab active:cursor-grabbing"
+        tabIndex={0}
+        role="group"
+        aria-label="Wiring picture viewer. Arrow keys move the picture, plus and minus zoom."
+        onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -162,9 +176,12 @@ export function WokwiDiagram({
         <div
           ref={hostRef}
           className="diagram-world relative origin-top-left"
+          role="img"
+          aria-label={`Wiring picture for ${guide.title}. The written checklist and steps on this page list the same connections.`}
           style={{
             width: canvas.width,
             height: canvas.height,
+            flex: "none",
             minWidth: 1200,
             minHeight: 720,
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
@@ -206,7 +223,7 @@ export function WokwiDiagram({
                       y={wire.mid.y - labelSize(wire.label).h / 2}
                       width={labelSize(wire.label).w}
                       height={labelSize(wire.label).h}
-                      rx={3}
+                      rx={4}
                       fill="#f4f7f5"
                       stroke={wire.color}
                       strokeWidth={1}
@@ -214,9 +231,9 @@ export function WokwiDiagram({
                     />
                     <text
                       x={wire.mid.x}
-                      y={wire.mid.y + 3}
+                      y={wire.mid.y + LABEL_FONT * 0.35}
                       textAnchor="middle"
-                      fontSize="9"
+                      fontSize={LABEL_FONT}
                       fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                       fill="#1a242b"
                     >
@@ -271,8 +288,8 @@ export function WokwiDiagram({
       </div>
 
       <p className="border-t border-line px-3 py-2 text-[11px] text-mute">
-        Freeform wiring whiteboard — drag like Wokwi, Full for immersion. Diagram only, not a
-        simulator.
+        This picture shows which part connects to which. It is a guide for you, not a working
+        circuit, and the written checklist has the same information.
         {guide.power_source
           ? isBatteryPowerSource(guide.power_source)
             ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`

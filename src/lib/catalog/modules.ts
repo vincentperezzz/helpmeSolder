@@ -5,7 +5,7 @@ const baseModules: CatalogPart[] = [
     id: "module.buzzer.active",
     name: "Buzzer",
     kind: "module",
-    description: "Passive/active buzzer look. Wokwi MIT visual. Pin 1 signal, pin 2 GND.",
+    description: "Active buzzer: it beeps by itself when switched on. Pin 1 goes to a GPIO pin on the board, pin 2 goes to ground. A passive buzzer needs a different, tone-playing setup and will not behave the same, so buy an active one.",
     photoHint: "buzzer-active",
     wokwi: { tag: "wokwi-buzzer" },
     pins: [
@@ -17,7 +17,7 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.i2c.1602",
     name: "LCD 1602 (I2C)",
     kind: "module",
-    description: "16x2 character LCD class with I2C backpack. Wokwi MIT visual.",
+    description: "Small 16x2 text screen with a little circuit board on the back, so it needs only 4 wires.",
     photoHint: "lcd-1602-i2c",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd1602", attrs: { pins: "i2c", text: "Hello World" } },
@@ -32,7 +32,7 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.parallel.1602",
     name: "LCD 1602 (parallel)",
     kind: "module",
-    description: "16x2 HD44780 character LCD, full pin header. Wokwi MIT visual.",
+    description: "Small 16x2 text screen with a full row of pins (needs more wires than the I2C kind).",
     photoHint: "lcd-1602",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd1602", attrs: { pins: "full", text: "Hello World" } },
@@ -55,7 +55,7 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.i2c.2004",
     name: "LCD 2004 (I2C)",
     kind: "module",
-    description: "20x4 character LCD class with I2C backpack. Wokwi MIT visual.",
+    description: "Larger 20x4 text screen with a little circuit board on the back, so it needs only 4 wires.",
     photoHint: "lcd-2004-i2c",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd2004", attrs: { pins: "i2c", text: "Hello 20x4 LCD" } },
@@ -70,7 +70,7 @@ const baseModules: CatalogPart[] = [
     id: "module.lcd.parallel.2004",
     name: "LCD 2004 (parallel)",
     kind: "module",
-    description: "20x4 HD44780 character LCD, full pin header. Wokwi MIT visual.",
+    description: "Larger 20x4 text screen with a full row of pins (needs more wires than the I2C kind).",
     photoHint: "lcd-2004",
     displayClass: "character-lcd",
     wokwi: { tag: "wokwi-lcd2004", attrs: { pins: "full", text: "Hello 20x4 LCD" } },
@@ -93,7 +93,7 @@ const baseModules: CatalogPart[] = [
     id: "module.oled.ssd1306",
     name: "OLED SSD1306",
     kind: "module",
-    description: "128x64 OLED class. DATA/CLK map to SDA/SCL on I2C modules. Wokwi MIT visual.",
+    description: "Small 128x64 pixel display. On the I2C kind, DATA connects to SDA and CLK connects to SCL.",
     photoHint: "ssd1306",
     displayClass: "oled",
     wokwi: { tag: "wokwi-ssd1306" },
@@ -112,7 +112,7 @@ const baseModules: CatalogPart[] = [
     id: "module.tft.ili9341",
     name: "TFT ILI9341",
     kind: "module",
-    description: "Color TFT class (ILI9341 family). Wokwi MIT visual.",
+    description: "Small color screen (ILI9341 chip) for text and pictures.",
     photoHint: "ili9341",
     displayClass: "tft",
     wokwi: { tag: "wokwi-ili9341" },
@@ -146,7 +146,7 @@ const baseModules: CatalogPart[] = [
     id: "module.dht22",
     name: "DHT22 Temp/Humidity",
     kind: "module",
-    description: "Digital temperature and humidity sensor. Wokwi MIT visual.",
+    description: "Measures air temperature and humidity.",
     photoHint: "dht22",
     wokwi: { tag: "wokwi-dht22" },
     pins: [
@@ -160,7 +160,7 @@ const baseModules: CatalogPart[] = [
     id: "module.hc-sr04",
     name: "HC-SR04 Ultrasonic",
     kind: "module",
-    description: "Ultrasonic distance sensor. Wokwi MIT visual.",
+    description: "Measures distance to an object using sound.",
     photoHint: "hc-sr04",
     wokwi: { tag: "wokwi-hc-sr04" },
     pins: [
@@ -174,7 +174,7 @@ const baseModules: CatalogPart[] = [
     id: "module.servo",
     name: "Servo Motor",
     kind: "module",
-    description: "Hobby servo (PWM). Wokwi MIT visual.",
+    description: "Small motor that turns to a set angle (for example 0 to 180 degrees).",
     photoHint: "servo",
     wokwi: { tag: "wokwi-servo" },
     pins: [
@@ -187,7 +187,7 @@ const baseModules: CatalogPart[] = [
     id: "module.neopixel",
     name: "NeoPixel",
     kind: "module",
-    description: "Addressable RGB LED (WS2812). Wokwi MIT visual.",
+    description: "Color LED you can set to any color from your board.",
     photoHint: "neopixel",
     wokwi: { tag: "wokwi-neopixel" },
     pins: [
@@ -201,7 +201,7 @@ const baseModules: CatalogPart[] = [
     id: "module.rgb-led",
     name: "RGB LED",
     kind: "module",
-    description: "Common-cathode RGB LED. Wokwi MIT visual.",
+    description: "LED that can show any color by mixing red, green and blue.",
     photoHint: "rgb-led",
     wokwi: { tag: "wokwi-rgb-led" },
     pins: [
@@ -215,7 +215,7 @@ const baseModules: CatalogPart[] = [
     id: "module.pir.motion",
     name: "PIR Motion Sensor",
     kind: "module",
-    description: "Passive infrared motion detector module. Wokwi MIT visual.",
+    description: "Detects when a person or animal moves in front of it.",
     photoHint: "pir-motion",
     wokwi: { tag: "wokwi-pir-motion-sensor" },
     pins: [
@@ -228,7 +228,7 @@ const baseModules: CatalogPart[] = [
     id: "module.photoresistor",
     name: "Photoresistor Module",
     kind: "module",
-    description: "Light-dependent resistor breakout with AO/DO. Wokwi MIT visual.",
+    description: "Light sensor. Its reading changes with how bright the room is.",
     photoHint: "photoresistor",
     wokwi: { tag: "wokwi-photoresistor-sensor" },
     pins: [
@@ -242,7 +242,7 @@ const baseModules: CatalogPart[] = [
     id: "module.ntc.temperature",
     name: "NTC Temperature Module",
     kind: "module",
-    description: "Thermistor temperature sensor breakout. Wokwi MIT visual.",
+    description: "Temperature sensor. Its reading changes as it gets warmer or cooler.",
     photoHint: "ntc-temperature",
     wokwi: { tag: "wokwi-ntc-temperature-sensor" },
     pins: [
@@ -255,7 +255,7 @@ const baseModules: CatalogPart[] = [
     id: "module.flame",
     name: "Flame Sensor",
     kind: "module",
-    description: "Infrared flame detection module. Wokwi MIT visual.",
+    description: "Detects the glow of a flame nearby.",
     photoHint: "flame-sensor",
     wokwi: { tag: "wokwi-flame-sensor" },
     pins: [
@@ -269,7 +269,7 @@ const baseModules: CatalogPart[] = [
     id: "module.gas",
     name: "Gas Sensor (MQ)",
     kind: "module",
-    description: "Combustible gas sensor module (MQ family). Wokwi MIT visual.",
+    description: "Detects smoke or combustible gas in the air.",
     photoHint: "gas-sensor",
     wokwi: { tag: "wokwi-gas-sensor" },
     pins: [
@@ -283,7 +283,7 @@ const baseModules: CatalogPart[] = [
     id: "module.mpu6050",
     name: "MPU6050 IMU",
     kind: "module",
-    description: "6-axis accelerometer and gyroscope (I2C). Wokwi MIT visual.",
+    description: "Senses movement and tilt. Talks to the board over 4 wires (I2C).",
     photoHint: "mpu6050",
     wokwi: { tag: "wokwi-mpu6050" },
     pins: [
@@ -301,7 +301,7 @@ const baseModules: CatalogPart[] = [
     id: "module.hx711",
     name: "HX711 Load Cell Amp",
     kind: "module",
-    description: "24-bit ADC for load cells and strain gauges. Wokwi MIT visual.",
+    description: "Small board that reads a weight sensor (load cell) and passes the number to your board.",
     photoHint: "hx711",
     wokwi: { tag: "wokwi-hx711" },
     pins: [
@@ -315,7 +315,7 @@ const baseModules: CatalogPart[] = [
     id: "module.heart.beat",
     name: "Heartbeat (Pulse) Sensor",
     kind: "module",
-    description: "Optical pulse / heart-rate sensor module. Wokwi MIT visual.",
+    description: "Reads your pulse when a fingertip rests on it.",
     photoHint: "heart-beat",
     wokwi: { tag: "wokwi-heart-beat-sensor" },
     pins: [
@@ -328,7 +328,7 @@ const baseModules: CatalogPart[] = [
     id: "module.big.sound",
     name: "Big Sound Sensor",
     kind: "module",
-    description: "Electret microphone amplifier (large board). Wokwi MIT visual.",
+    description: "Microphone that picks up sound and boosts it (larger board).",
     photoHint: "big-sound",
     wokwi: { tag: "wokwi-big-sound-sensor" },
     pins: [
@@ -342,7 +342,7 @@ const baseModules: CatalogPart[] = [
     id: "module.small.sound",
     name: "Small Sound Sensor",
     kind: "module",
-    description: "Compact microphone sound module. Wokwi MIT visual.",
+    description: "Small microphone that picks up sound.",
     photoHint: "small-sound",
     wokwi: { tag: "wokwi-small-sound-sensor" },
     pins: [
@@ -356,7 +356,7 @@ const baseModules: CatalogPart[] = [
     id: "module.ir.receiver",
     name: "IR Receiver",
     kind: "module",
-    description: "38 kHz infrared receiver (TSOP class). Wokwi MIT visual.",
+    description: "Receives signals from an infrared remote control.",
     photoHint: "ir-receiver",
     wokwi: { tag: "wokwi-ir-receiver" },
     pins: [
@@ -369,7 +369,7 @@ const baseModules: CatalogPart[] = [
     id: "module.analog.joystick",
     name: "Analog Joystick",
     kind: "module",
-    description: "Dual-axis analog joystick with push button. Wokwi MIT visual.",
+    description: "Thumb joystick that senses left, right, up and down, and clicks when pressed.",
     photoHint: "analog-joystick",
     wokwi: { tag: "wokwi-analog-joystick" },
     pins: [
@@ -384,7 +384,7 @@ const baseModules: CatalogPart[] = [
     id: "module.ky.040",
     name: "KY-040 Rotary Encoder",
     kind: "module",
-    description: "Rotary encoder with integrated push switch. Wokwi MIT visual.",
+    description: "Knob that senses how far and which way you turn it, and clicks when pressed.",
     photoHint: "ky-040",
     wokwi: { tag: "wokwi-ky-040" },
     pins: [
@@ -399,7 +399,7 @@ const baseModules: CatalogPart[] = [
     id: "module.ds1307",
     name: "DS1307 RTC",
     kind: "module",
-    description: "Real-time clock module (I2C, CR2032 holder). Wokwi MIT visual.",
+    description: "Keeps the time even when the power is off, using a small coin battery (CR2032).",
     photoHint: "ds1307",
     wokwi: { tag: "wokwi-ds1307" },
     pins: [
@@ -414,7 +414,7 @@ const baseModules: CatalogPart[] = [
     id: "module.tilt.switch",
     name: "Tilt Switch Module",
     kind: "module",
-    description: "Ball tilt switch breakout. Wokwi MIT visual.",
+    description: "Switch that turns on or off when you tilt it.",
     photoHint: "tilt-switch",
     wokwi: { tag: "wokwi-tilt-switch" },
     pins: [
@@ -427,7 +427,7 @@ const baseModules: CatalogPart[] = [
     id: "module.membrane.keypad",
     name: "Membrane Keypad 4×4",
     kind: "module",
-    description: "4×4 matrix membrane keypad (8-pin header). Wokwi MIT visual.",
+    description: "Flat keypad with 16 buttons and 8 pins.",
     photoHint: "membrane-keypad",
     wokwi: { tag: "wokwi-membrane-keypad", attrs: { columns: "4" } },
     pins: [
@@ -445,7 +445,7 @@ const baseModules: CatalogPart[] = [
     id: "module.microsd",
     name: "microSD Card Module",
     kind: "module",
-    description: "SPI microSD card breakout. Wokwi MIT visual.",
+    description: "Holds a microSD card so your project can save and read files.",
     photoHint: "microsd",
     wokwi: { tag: "wokwi-microsd-card" },
     pins: [
@@ -462,7 +462,7 @@ const baseModules: CatalogPart[] = [
     id: "module.led.bar.graph",
     name: "LED Bar Graph",
     kind: "module",
-    description: "10-segment LED bar graph (dual 5-pin headers). Wokwi MIT visual.",
+    description: "Row of 10 small lights, like a level meter.",
     photoHint: "led-bar-graph",
     wokwi: { tag: "wokwi-led-bar-graph" },
     pins: [
@@ -492,7 +492,7 @@ const baseModules: CatalogPart[] = [
     id: "module.stepper.motor",
     name: "Stepper Motor (NEMA)",
     kind: "module",
-    description: "Bipolar stepper motor (four coil wires). Wokwi MIT visual.",
+    description: "Motor that turns in precise steps. Has four wires.",
     photoHint: "stepper-motor",
     wokwi: { tag: "wokwi-stepper-motor" },
     pins: [
@@ -506,7 +506,7 @@ const baseModules: CatalogPart[] = [
     id: "module.7segment",
     name: "7-Segment Display",
     kind: "module",
-    description: "Single-digit 7-segment LED (common pinout). Wokwi MIT visual.",
+    description: "Shows one number from 0 to 9 using lit bars.",
     photoHint: "7segment",
     wokwi: { tag: "wokwi-7segment", attrs: { digits: "1" } },
     pins: [
@@ -526,7 +526,7 @@ const baseModules: CatalogPart[] = [
     id: "module.dip.switch.8",
     name: "DIP Switch (8-position)",
     kind: "module",
-    description: "Eight-position through-hole DIP switch. Wokwi MIT visual.",
+    description: "Row of 8 tiny on/off switches.",
     photoHint: "dip-switch-8",
     wokwi: { tag: "wokwi-dip-switch-8" },
     pins: [
@@ -552,7 +552,7 @@ const baseModules: CatalogPart[] = [
     id: "module.slide.switch",
     name: "Slide Switch",
     kind: "module",
-    description: "SPDT slide switch (three terminals). Wokwi MIT visual.",
+    description: "Slide switch with three pins that picks between two connections.",
     photoHint: "slide-switch",
     wokwi: { tag: "wokwi-slide-switch" },
     pins: [
@@ -565,7 +565,7 @@ const baseModules: CatalogPart[] = [
     id: "module.slide.potentiometer",
     name: "Slide Potentiometer",
     kind: "module",
-    description: "Linear slide pot for faders and analog input. Wokwi MIT visual.",
+    description: "Slider you push back and forth to give a variable value, like a volume fader.",
     photoHint: "slide-potentiometer",
     wokwi: { tag: "wokwi-slide-potentiometer" },
     pins: [
@@ -578,7 +578,7 @@ const baseModules: CatalogPart[] = [
     id: "module.neopixel.matrix",
     name: "NeoPixel Matrix",
     kind: "module",
-    description: "WS2812 addressable LED matrix panel. Wokwi MIT visual.",
+    description: "Grid of color LEDs you can light individually.",
     photoHint: "neopixel-matrix",
     wokwi: { tag: "wokwi-neopixel-matrix" },
     pins: [
@@ -592,7 +592,7 @@ const baseModules: CatalogPart[] = [
     id: "module.led.ring",
     name: "NeoPixel LED Ring",
     kind: "module",
-    description: "Circular WS2812 LED ring. Wokwi MIT visual.",
+    description: "Ring of color LEDs you can light individually.",
     photoHint: "led-ring",
     wokwi: { tag: "wokwi-led-ring" },
     pins: [
@@ -606,7 +606,7 @@ const baseModules: CatalogPart[] = [
     id: "module.biaxial.stepper",
     name: "Biaxial Stepper (Gauge)",
     kind: "module",
-    description: "Dual-coil meter movement / biaxial stepper for analog gauges. Wokwi MIT visual.",
+    description: "Small motor with two coils, used to move the needle on a gauge.",
     photoHint: "biaxial-stepper",
     wokwi: { tag: "wokwi-biaxial-stepper" },
     pins: [
@@ -624,7 +624,7 @@ const baseModules: CatalogPart[] = [
     id: "module.relay.ks2e",
     name: "KS2E Relay (DPDT)",
     kind: "module",
-    description: "Omron KS2E-class signal relay (two poles). Wokwi MIT visual.",
+    description: "Small electrically controlled switch, with two sets of contacts.",
     photoHint: "relay-ks2e",
     wokwi: { tag: "wokwi-ks2e-m-dc5" },
     pins: [

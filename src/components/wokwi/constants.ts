@@ -26,7 +26,8 @@ export const BB_WIDTH = BB_MARGIN_X * 2 + (BB_COLS - 1) * BB_PITCH;
 export const BB_HEIGHT = 196;
 export const BB_ORIGIN_X = BB_MARGIN_X;
 export const BB_STEP = BB_PITCH;
-export const LABEL_H = 16;
+export const LABEL_H = 22;
+export const LABEL_FONT = 13;
 export const LABEL_PAD = 6;
 export const BB_RAIL_Y = {
   topPlus: 14,
