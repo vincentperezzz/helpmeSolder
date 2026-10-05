@@ -61,7 +61,7 @@
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { boards } from "./boards";
-import { BATTERY_ASSETS, type BatteryKind } from "./batteries";
+import { BATTERY_ASSETS, batteryRecordForPart, type BatteryKind } from "./batteries";
 import { getDiagramAsset, prefersDiagramAsset } from "./board-assets";
 import { modules } from "./modules";
 import { partCategory, resolvePartPhoto } from "./part-media";
@@ -150,9 +150,8 @@ function hintOwnedBy(hint: string, id: string): boolean {
 }
 
 function batteryKind(id: string): BatteryKind | null {
-  if (!id.startsWith("passive.power.battery.")) return null;
-  const kind = `battery_${id.slice("passive.power.battery.".length)}` as BatteryKind;
-  return kind in BATTERY_ASSETS ? kind : null;
+  const record = batteryRecordForPart(id);
+  return record && record.id in BATTERY_ASSETS ? (record.id as BatteryKind) : null;
 }
 
 type Drawing = Pick<

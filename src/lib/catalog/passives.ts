@@ -1,4 +1,5 @@
-import { BATTERY_ELECTRICAL, USB_WALL_ELECTRICAL, type BatteryKind } from "./batteries";
+import { POWER_BANK_ELECTRICAL, USB_WALL_ELECTRICAL } from "./batteries";
+import { BATTERY_RECORD_LIST, batteryPinVoltageClass, type BatteryRecord } from "./battery-records";
 import type { CatalogPart, PartElectrical } from "./types";
 
 function rail(id: string, label: string, kinds: CatalogPart["pins"][number]["kinds"], voltage?: "3v3" | "5v") {
@@ -344,142 +345,76 @@ const basePassives: CatalogPart[] = [
     ],
   },
   {
-    id: "passive.power.battery.9v",
-    name: "9V Battery (snap)",
+    id: "passive.power.power_bank",
+    name: "USB Power Bank",
     kind: "passive",
     description:
-      "A 9 V rectangular battery with two snap terminals on top. The smaller round terminal is + and the larger hexagon-shaped one is -. A snap connector with red (+) and black (-) wires clips on. Use it into a board's VIN pin or barrel jack, not into a 5 V or 3.3 V pin.",
-    photoCaption:
-      "9 V rectangular battery with both snap terminals on the top face (small round = +, larger hexagon = -).",
+      "A rechargeable USB power bank (the kind used to charge a phone) used as a portable 5 V supply. Plug its USB cable into the board's USB port, exactly like a wall adapter, and nothing needs soldering for power. It is the easiest way to run a project away from a wall socket. Some power banks switch off when the load is very small; a board that draws only a few milliamps may need a bank with a 'low-current' or 'always on' mode.",
+    photoCaption: "USB power bank: its USB-A output port feeds the board through a USB cable.",
     identify:
-      "Rectangular block about 48 x 26 x 17 mm labelled 9V (PP3 / 6LR61 alkaline), two snaps on one end. Clip on a snap lead: red = +, black = -.",
+      "A flat or brick-shaped rechargeable pack, often with small LED dots showing charge level, a USB-A (rectangular) output port, a USB-C or micro-USB charging port, and a rating in mAh (for example 10000 mAh).",
     variants: [
       {
-        label: "9 V alkaline PP3 (this guide)",
-        detail: "Roughly 9 V new, falling as it drains. Low capacity (a few hundred mAh), best for small, low-power builds.",
+        label: "5 V USB power bank (this guide)",
+        detail: "Outputs a regulated 5 V (up to 2-3 A). Capacity from about 2000 to 20000+ mAh. Any brand works: the output is 5 V either way.",
         matchesGuide: true,
       },
       {
-        label: "Rechargeable 9 V (NiMH or Li-ion)",
-        detail: "Nominal voltage may differ (for example 8.4 V); check the label against the board's VIN range.",
+        label: "Power bank with fast-charge (9 V / 12 V) modes",
+        detail: "Normal USB devices are still given 5 V, but only plug in a cable that asks for 5 V. Avoid 'trigger' cables that force 9 V or 12 V on a 5 V board.",
       },
     ],
     watchOuts: [
-      "Connect red to VIN (or a regulator input) and black to GND. Reversed polarity can destroy the board instantly.",
-      "9 V must not go to a 5 V or 3.3 V pin.",
-      "Small 9 V cells give little current and drain fast with motors, servos, Wi-Fi boards or LED strips.",
+      "Use a good data-capable cable (cheap cables can be power-only or very thin and drop the voltage).",
+      "Some power banks turn themselves off when the load is tiny (a small board with no Wi-Fi). If the board keeps losing power, try another bank or add a small extra load.",
+      "Never use a damaged or swollen power bank, and do not leave it charging unattended.",
     ],
-    photoHint: "battery-9v",
+    photoHint: "power-bank",
     pins: [
-      { id: "+", label: "+ (top snap)", kinds: ["power"], voltage: "5v" },
-      { id: "-", label: "− (top snap)", kinds: ["ground"] },
-    ],
-  },
-  {
-    id: "passive.power.battery.2aa",
-    name: "2×AA Batteries",
-    kind: "passive",
-    description:
-      "Two AA batteries in a holder, about 3 V (2 x 1.5 V) when fresh. The holder has a red wire for + and a black wire for -. Typically used for low-power projects on boards that accept about 3 V; check the board's minimum supply first.",
-    photoCaption:
-      "2xAA holder: the red wire is +, the black wire is -.",
-    identify:
-      "A plastic holder for two AA cells with two wires. Spring end of each cell is -, bump end is +. Red wire = +, black = -.",
-    variants: [
-      {
-        label: "2xAA alkaline (this guide)",
-        detail: "About 3.0 V fresh, falling toward 2 V as it empties. Check that your board or module accepts that range.",
-        matchesGuide: true,
-      },
-      {
-        label: "2xAA NiMH rechargeable",
-        detail: "About 2.4 V nominal; may be too low for some 3.3 V parts.",
-      },
-    ],
-    watchOuts: [
-      "Check that the board accepts about 2-3 V; many 3.3 V boards need close to 3.0 V and may need a voltage booster.",
-      "Insert cells the right way round: polarity is marked in the holder.",
-      "Do not mix new and old batteries or different brands.",
-    ],
-    photoHint: "battery-2aa",
-    pins: [
-      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "3v3" },
-      { id: "-", label: "− (bottom)", kinds: ["ground"] },
-    ],
-  },
-  {
-    id: "passive.power.battery.3aa",
-    name: "3×AA Batteries",
-    kind: "passive",
-    description:
-      "Three AA batteries in a holder, about 4.5 V when fresh. Red wire is +, black wire is -. Often used with 5 V boards such as Arduinos, within the board's accepted voltage range.",
-    photoCaption:
-      "3xAA holder: red wire is +, black wire is -.",
-    identify:
-      "Plastic holder for three AA cells in a row with two wires (red +, black -).",
-    variants: [
-      {
-        label: "3xAA alkaline (this guide)",
-        detail: "About 4.5 V fresh and falling as it drains. Check the board's minimum supply voltage.",
-        matchesGuide: true,
-      },
-      {
-        label: "4xAA holder",
-        detail: "About 6 V. Suitable for a board's VIN, not for 5 V pins.",
-      },
-    ],
-    watchOuts: [
-      "Voltage drops as batteries drain, so a board may reset or misbehave near the end of life.",
-      "Insert cells the right way round and connect red to + and black to GND.",
-      "Do not mix old and new batteries.",
-    ],
-    photoHint: "battery-3aa",
-    pins: [
-      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "5v" },
-      { id: "-", label: "− (bottom)", kinds: ["ground"] },
-    ],
-  },
-  {
-    id: "passive.power.battery.18650",
-    name: "18650 Li-ion Cell",
-    kind: "passive",
-    description:
-      "A single 18650 rechargeable lithium-ion cell, 3.7 V nominal (about 4.2 V full, 3.0 V empty). The flat end is - and the end with the raised button is +. It can deliver a lot of current, so it needs a proper holder and, ideally, a protected cell or a charger-protection board (such as a TP4056 module).",
-    photoCaption:
-      "18650 cell: raised button end is +, flat end is -.",
-    identify:
-      "Cylinder about 18 mm wide and 65 mm long, like a long AA battery, with a printed rating such as 2600 mAh. Protected cells are slightly longer and have a small circuit under the label.",
-    variants: [
-      {
-        label: "18650 Li-ion, 3.7 V (this guide)",
-        detail: "Typical capacity 2000-3500 mAh. Choose a protected cell from a reputable brand.",
-        matchesGuide: true,
-      },
-      {
-        label: "Unprotected vs protected cell",
-        detail: "A protected cell has an internal safety circuit. Prefer it as a beginner.",
-      },
-    ],
-    watchOuts: [
-      "Do not reverse polarity. Prefer a holder with protection for beginners.",
-      "Never short the terminals or leave a bare cell loose in a bag with metal: it can overheat and ignite.",
-      "Charge only with a Li-ion charger, never with a plain power supply. Do not use damaged or swollen cells.",
-    ],
-    photoHint: "battery-18650",
-    pins: [
-      { id: "+", label: "+ (top)", kinds: ["power"], voltage: "3v3" },
-      { id: "-", label: "− (bottom)", kinds: ["ground"] },
+      { id: "5V", label: "5V OUT", kinds: ["power"], voltage: "5v" },
+      { id: "GND", label: "GND", kinds: ["ground"] },
     ],
   },
 ];
 
-function batteryElectrical(kind: BatteryKind): PartElectrical {
-  const spec = BATTERY_ELECTRICAL[kind];
+/** Catalog entry for one battery / supply record. */
+function batteryPart(record: BatteryRecord): CatalogPart {
   return {
-    battery: { chemistry: spec.chemistry, cells: spec.cells },
+    id: record.partId,
+    name: record.name,
+    kind: "passive",
+    description: record.description,
+    photoCaption: record.photoCaption,
+    identify: record.identify,
+    variants: record.variants,
+    watchOuts: record.watchOuts,
+    photoHint: record.photoHint,
+    pins: [
+      {
+        id: "+",
+        label: `+ (${record.pinNotes.plus})`,
+        kinds: ["power"],
+        voltage: batteryPinVoltageClass(record.nominal),
+      },
+      { id: "-", label: `− (${record.pinNotes.minus})`, kinds: ["ground"] },
+    ],
+  };
+}
+
+function batteryElectrical(record: BatteryRecord): PartElectrical {
+  return {
+    ...(record.chemistry === "dc-supply"
+      ? {}
+      : {
+          battery: {
+            chemistry: record.chemistry,
+            cells: record.cells,
+            ...(record.lowCurrent ? { lowCurrent: true } : {}),
+          },
+        }),
     pins: {
       "+": {
-        source: { nominal: spec.nominal, min: spec.min, max: spec.max, external: true },
+        source: { nominal: record.nominal, min: record.min, max: record.max, external: true },
       },
     },
   };
@@ -489,15 +424,15 @@ const PASSIVE_ELECTRICAL: Record<string, PartElectrical> = {
   "passive.power.usb_wall": {
     pins: { "5V": { source: { ...USB_WALL_ELECTRICAL, external: true } } },
   },
-  "passive.power.battery.9v": batteryElectrical("battery_9v"),
-  "passive.power.battery.2aa": batteryElectrical("battery_2aa"),
-  "passive.power.battery.3aa": batteryElectrical("battery_3aa"),
-  "passive.power.battery.18650": batteryElectrical("battery_18650"),
+  "passive.power.power_bank": {
+    pins: { "5V": { source: { ...POWER_BANK_ELECTRICAL, external: true } } },
+  },
+  ...Object.fromEntries(BATTERY_RECORD_LIST.map((record) => [record.partId, batteryElectrical(record)])),
   // Passive divider: wiper swings up to whatever VCC it is wired to.
   "passive.potentiometer": { logic: "5v", logicFollowsSupply: true },
 };
 
-export const passives: CatalogPart[] = basePassives.map((part) => ({
+export const passives: CatalogPart[] = [...basePassives, ...BATTERY_RECORD_LIST.map(batteryPart)].map((part) => ({
   ...part,
   electrical: PASSIVE_ELECTRICAL[part.id],
 }));

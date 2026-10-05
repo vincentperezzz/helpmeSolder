@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 154" width="120" height="154" role="img" aria-label="2 AAA NiMH cells in a holder">
+  <title>2x AAA NiMH cell holder (CC0)</title>
+  <rect x="18" y="30" width="84" height="108" rx="10" fill="#eceff1" stroke="#90a4ae" stroke-width="1.5"/>
+  <rect x="26" y="36" width="30" height="96" rx="8" fill="#b2dfdb" stroke="#00695c" stroke-width="1.5"/>
+  <rect x="31" y="54" width="20" height="18" rx="2" fill="#00897b"/>
+  <text x="41" y="67" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#ffffff">1.2V</text>
+  <text x="41" y="98" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#004d40">AAA</text>
+  <text x="41" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#004d40">NiMH</text>
+  <rect x="35" y="30" width="12" height="6" rx="1.5" fill="#b0bec5" stroke="#78909c" stroke-width="1"/>
+  <text x="41" y="46" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#c62828">+</text>
+  <text x="41" y="126" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#212121">&#8722;</text>
+  <rect x="64" y="36" width="30" height="96" rx="8" fill="#b2dfdb" stroke="#00695c" stroke-width="1.5"/>
+  <rect x="69" y="54" width="20" height="18" rx="2" fill="#00897b"/>
+  <text x="79" y="67" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#ffffff">1.2V</text>
+  <text x="79" y="98" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#004d40">AAA</text>
+  <text x="79" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#004d40">NiMH</text>
+  <rect x="73" y="132" width="12" height="6" rx="1.5" fill="#b0bec5" stroke="#78909c" stroke-width="1"/>
+  <text x="79" y="126" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#c62828">+</text>
+  <text x="79" y="46" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#212121">&#8722;</text>
+  <path d="M41 132 V144 H79 V138" fill="none" stroke="#546e7a" stroke-width="2"/>
+  <path d="M41 30 V16" fill="none" stroke="#c62828" stroke-width="2"/>
+  <rect id="term-plus" x="29" y="4" width="24" height="12" rx="2" fill="#c62828" stroke="#8e0000" stroke-width="1.5"/>
+  <text x="23" y="14" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#c62828">+</text>
+  <path d="M79 36 V16" fill="none" stroke="#212121" stroke-width="2"/>
+  <rect id="term-minus" x="67" y="4" width="24" height="12" rx="2" fill="#212121" stroke="#000" stroke-width="1.5"/>
+  <text x="97" y="14" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121">&#8722;</text>
+</svg>

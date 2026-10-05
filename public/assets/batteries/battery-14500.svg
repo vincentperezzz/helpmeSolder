@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" width="120" height="180" role="img" aria-label="14500 Li-ion cell, AA size but 3.7 volts, positive top negative bottom">
+  <title>14500 Li-ion cell (AA size, 3.7 V) (CC0)</title>
+  <rect x="38" y="40" width="44" height="100" rx="10" fill="#eceff1" stroke="#546e7a" stroke-width="1.5"/>
+  <rect x="44" y="52" width="32" height="76" rx="6" fill="#cfd8dc"/>
+  <text x="60" y="74.5" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="700" fill="#b71c1c">14500</text>
+  <text x="60" y="87.5" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="700" fill="#b71c1c">3.7V</text>
+  <text x="60" y="100.5" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#b71c1c">NOT</text>
+  <text x="60" y="113.5" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#b71c1c">1.5V</text>
+  <circle id="term-plus" cx="60" cy="14" r="8" fill="#c62828" stroke="#8e0000" stroke-width="1.5"/>
+  <circle cx="60" cy="14" r="4" fill="#ef5350"/>
+  <text x="60" y="8" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#c62828">+</text>
+  <path d="M60 22 V40" stroke="#c62828" stroke-width="2.5"/>
+  <rect id="term-minus" x="38" y="158" width="44" height="12" rx="2" fill="#212121" stroke="#000" stroke-width="1.5"/>
+  <text x="60" y="178" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121">&#8722;</text>
+  <path d="M60 140 V158" stroke="#212121" stroke-width="2.5"/>
+</svg>

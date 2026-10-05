@@ -43,6 +43,25 @@ function BatteryCaption({ text }: { text: string }) {
 export function BatteryAssetVisual({ kind }: { kind: BatteryKind }) {
   const asset = getBatteryAsset(kind);
 
+  // Newer sources are SVG files under public/assets/batteries (made by
+  // scripts/gen-battery-art.mjs); their wire anchors come from the catalog table.
+  if (asset.drawn === "image") {
+    return (
+      <div style={{ width: asset.width }}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- small static SVG drawn inside the diagram */}
+        <img
+          src={asset.src}
+          width={asset.width}
+          height={asset.height}
+          alt={asset.label}
+          draggable={false}
+          className="block"
+        />
+        <BatteryCaption text={asset.caption} />
+      </div>
+    );
+  }
+
   if (kind === "battery_9v") {
     return (
       <div style={{ width: asset.width }}>
@@ -195,7 +214,8 @@ export function BatteryAssetVisual({ kind }: { kind: BatteryKind }) {
 export const USB_WALL_SIZE = { width: 130, height: 104 } as const;
 export const USB_WALL_SOCKET = { x: 104, y: 50 } as const;
 
-export function UsbWallVisual() {
+export function UsbWallVisual({ bank = false }: { bank?: boolean }) {
+  if (bank) return <PowerBankVisual />;
   return (
     <svg
       viewBox={`0 0 ${USB_WALL_SIZE.width} ${USB_WALL_SIZE.height}`}
@@ -214,6 +234,34 @@ export function UsbWallVisual() {
       <rect x="99" y="44" width="7" height="12" rx="1" fill="#0d1417" />
       <text x="6" y="98" fontFamily="ui-monospace, monospace" fontSize="13" fill="#546e7a">
         USB adapter
+      </text>
+    </svg>
+  );
+}
+
+/** A power bank: same footprint and USB socket position as the wall adapter. */
+function PowerBankVisual() {
+  return (
+    <svg
+      viewBox={`0 0 ${USB_WALL_SIZE.width} ${USB_WALL_SIZE.height}`}
+      width={USB_WALL_SIZE.width}
+      height={USB_WALL_SIZE.height}
+      role="img"
+      aria-label="USB power bank"
+    >
+      <rect x="6" y="14" width="90" height="64" rx="12" fill="#546e7a" stroke="#263238" strokeWidth="1.5" />
+      <rect x="12" y="20" width="78" height="26" rx="6" fill="#37474f" />
+      <text x="51" y="37" textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="11" fontWeight="700" fill="#eceff1">
+        5V BANK
+      </text>
+      <circle cx="26" cy="62" r="3" fill="#66bb6a" />
+      <circle cx="40" cy="62" r="3" fill="#66bb6a" />
+      <circle cx="54" cy="62" r="3" fill="#66bb6a" />
+      <circle cx="68" cy="62" r="3" fill="#cfd8dc" />
+      <rect x="96" y="38" width="10" height="24" rx="2" fill="#37474f" stroke="#1c262b" strokeWidth="1" />
+      <rect x="99" y="44" width="7" height="12" rx="1" fill="#0d1417" />
+      <text x="6" y="98" fontFamily="ui-monospace, monospace" fontSize="13" fill="#546e7a">
+        Power bank
       </text>
     </svg>
   );

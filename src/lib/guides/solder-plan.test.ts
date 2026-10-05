@@ -117,4 +117,21 @@ describe("describePower", () => {
     expect(describePower(make("battery_18650", [], "board.pico.rp2040"))).toContain("VBUS");
     expect(describePower(make(null, []))).toBeNull();
   });
+
+  it("names the holder and keeps the polarity warning for new AA packs", () => {
+    const text = describePower(make("battery_4aa_nimh", []))!;
+    expect(text).toContain("4xAA NiMH rechargeable battery holder");
+    expect(text).toContain("Never reverse");
+  });
+
+  it("adds a polarity check for LiPo plugs and a low-power note for coin cells", () => {
+    expect(describePower(make("battery_lipo_1s", []))).toContain("multimeter");
+    expect(describePower(make("battery_cr2032", []))).toContain("few milliamps");
+  });
+
+  it("explains barrel supplies and power banks", () => {
+    expect(describePower(make("supply_barrel_9v", []))).toContain("barrel jack");
+    expect(describePower(make("power_bank", []))).toContain("power bank");
+    expect(describePower(make("power_bank", []))).toContain("No soldering needed");
+  });
 });

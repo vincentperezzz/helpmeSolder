@@ -1,6 +1,7 @@
 import { getCatalogPart } from "@/lib/catalog";
 import type { CatalogPart, Guide, GuideConnection, PinKind } from "@/lib/catalog/types";
 import { assignWireColors } from "@/components/wokwi/labels";
+import { getBatteryRecord } from "@/lib/catalog/batteries";
 import { isBatteryPowerSource } from "./power-source";
 
 export type WireKind = "ground" | "power" | "signal";
@@ -141,13 +142,6 @@ export function buildSolderItems(guide: Guide): WireItem[] {
     .map((entry) => entry.item);
 }
 
-const BATTERY_NAMES: Record<string, string> = {
-  battery_9v: "9V battery",
-  battery_2aa: "2xAA battery holder",
-  battery_3aa: "3xAA battery holder",
-  battery_18650: "18650 battery",
-};
-
 function powerInPin(board: CatalogPart | undefined): string | null {
   if (!board) return null;
   for (const wanted of ["VIN", "VSYS", "VBUS", "5V"]) {
@@ -166,19 +160,28 @@ export function describePower(guide: Guide): string | null {
   const board = guide.board_id ? getCatalogPart(guide.board_id) : undefined;
   const boardName = board?.name ?? "the board";
 
-  if (source === "usb_wall") {
+  if (!isBatteryPowerSource(source)) {
     const isPi = board?.id.startsWith("board.pi.") ?? false;
     const port = isPi ? "power port" : "USB port";
-    return `Plug a USB cable from a phone charger into the board's ${port}. No soldering needed for power.`;
+    const from = source === "power_bank" ? "a USB power bank" : "a phone charger";
+    return `Plug a USB cable from ${from} into the board's ${port}. No soldering needed for power.`;
   }
 
-  if (isBatteryPowerSource(source)) {
-    const battery = BATTERY_NAMES[source] ?? "battery";
-    const pin = powerInPin(board);
-    const plusTarget = pin ? `the ${boardName} ${pin} pin` : "the board's power-in pin";
-    return `Power the board from a ${battery}. The + (red) wire goes to ${plusTarget} and the - (black) wire goes to GND. Never reverse them, and connect the battery last.`;
+  const record = getBatteryRecord(source);
+  const battery = record?.planName ?? "battery";
+  const pin = powerInPin(board);
+  const plusTarget = pin ? `the ${boardName} ${pin} pin` : "the board's power-in pin";
+  const base = `Power the board from a ${battery}. The + (red) wire goes to ${plusTarget} and the - (black) wire goes to GND. Never reverse them, and connect the battery last.`;
+  if (record?.holder === "barrel-adapter") {
+    return `Power the board from a ${battery}. Either plug its barrel plug into the board's barrel jack, or use the barrel-to-screw-terminal adapter: + (centre pin) goes to ${plusTarget} and - (outer sleeve) goes to GND. Check the plug is centre-positive, and plug the supply in last.`;
   }
-  return null;
+  if (record?.holder === "pouch-jst" || record?.holder === "pack-lead") {
+    return `${base} Check the connector polarity with a multimeter first: plugs from different makers can swap + and -. Never short the wires.`;
+  }
+  if (record?.lowCurrent) {
+    return `${base} A coin cell only supplies a few milliamps, so keep the build low-power (no motors or Wi-Fi bursts without a capacitor).`;
+  }
+  return base;
 }
 
 export type SolderPlan = {

@@ -42,7 +42,7 @@ MCP is thin. Business rules live in the Next.js API + shared libs.
 
 - `id` — unguessable secret id
 - `title`
-- `power_source` — `battery` | `usb_wall` | null
+- `power_source` — `usb_wall`, `power_bank`, a battery id (`battery_4aa`, `battery_3aa_nimh`, `battery_cr2032`, `battery_lipo_1s`, `battery_18650`, ...), a barrel supply (`supply_barrel_9v`, `supply_barrel_12v`) or null. The full list lives in `src/lib/catalog/battery-records.ts` (legacy `battery` still means `battery_3aa`)
 - `board_id` — catalog board id
 - `parts` — jsonb array of part instances
 - `connections` — jsonb array of pin-to-pin links
