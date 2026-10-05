@@ -152,23 +152,43 @@ export function BatteryAssetVisual({ kind }: { kind: BatteryKind }) {
   );
 }
 
-export function UsbWallVisual() {
+export function UsbWallVisual({
+  connector = "micro-usb",
+}: {
+  connector?: "usb-c" | "micro-usb";
+}) {
+  const isUsbC = connector === "usb-c";
   return (
-    <svg viewBox="0 0 150 110" width={150} height={110} role="img" aria-label="USB wall adapter">
-      <rect x="18" y="12" width="70" height="52" rx="6" fill="#eceff1" stroke="#546e7a" strokeWidth="1.5" />
-      <rect x="28" y="22" width="18" height="10" rx="1" fill="#90a4ae" />
-      <rect x="52" y="22" width="18" height="10" rx="1" fill="#90a4ae" />
-      <text x="28" y="52" fontFamily="ui-monospace, monospace" fontSize="9" fill="#37474f">
+    <svg viewBox="0 0 160 118" width={160} height={118} role="img" aria-label="USB wall adapter">
+      <rect x="14" y="10" width="70" height="52" rx="6" fill="#eceff1" stroke="#546e7a" strokeWidth="1.5" />
+      <rect x="24" y="20" width="18" height="10" rx="1" fill="#90a4ae" />
+      <rect x="48" y="20" width="18" height="10" rx="1" fill="#90a4ae" />
+      <text x="24" y="50" fontFamily="ui-monospace, monospace" fontSize="9" fill="#37474f">
         USB WALL
       </text>
-      <path d="M88 38 H118" stroke="#212121" strokeWidth="3" />
-      <rect x="118" y="30" width="22" height="16" rx="2" fill="#37474f" />
-      <circle cx="128" cy="38" r="2.5" fill="#c62828" />
-      <text x="18" y="82" fontFamily="ui-monospace, monospace" fontSize="10" fill="#546e7a">
-        5V USB adapter
+      <path d="M84 36 H112" stroke="#212121" strokeWidth="3" />
+      {isUsbC ? (
+        <g>
+          <rect x="112" y="26" width="34" height="20" rx="10" fill="#263238" stroke="#111" />
+          <rect x="120" y="32" width="18" height="8" rx="3" fill="#cfd8dc" />
+          <text x="129" y="58" textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="8" fill="#37474f">
+            USB-C
+          </text>
+        </g>
+      ) : (
+        <g>
+          <rect x="112" y="28" width="28" height="16" rx="2" fill="#37474f" />
+          <rect x="118" y="32" width="16" height="8" rx="1" fill="#90a4ae" />
+          <text x="126" y="58" textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="8" fill="#37474f">
+            micro
+          </text>
+        </g>
+      )}
+      <text x="14" y="82" fontFamily="ui-monospace, monospace" fontSize="10" fill="#546e7a">
+        {isUsbC ? "USB-C cable = power" : "USB cable = power"}
       </text>
-      <text x="18" y="98" fontFamily="ui-monospace, monospace" fontSize="9" fill="#78909c">
-        one feed → USB / VIN
+      <text x="14" y="98" fontFamily="ui-monospace, monospace" fontSize="9" fill="#78909c">
+        flash plug powers the board
       </text>
     </svg>
   );

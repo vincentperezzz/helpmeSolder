@@ -252,7 +252,7 @@ export const boards: CatalogPart[] = [
       },
       {
         label: "Pico 2 / Pico 2 W",
-        detail: "RP2350 family — not drop-in identical to RP2040 for all software.",
+        detail: "RP2350 family with USB-C. Flash cable in USB-C also powers the board. Not drop-in identical to RP2040 for all software.",
       },
     ],
     watchOuts: [
@@ -319,22 +319,25 @@ export const boards: CatalogPart[] = [
     id: "board.pico.2",
     name: "Raspberry Pi Pico 2",
     kind: "board",
-    description: "Pico 2 (RP2350) — next-gen Pico family.",
+    description: "Pico 2 (RP2350) — USB-C port. The flash cable plugged into USB-C is also the board power.",
     photoHint: "pico",
-    photoCaption: "Pico 2 / RP2350 board — same dual-header stick shape as Pico.",
-    identify: "Looks like a Pico but labeled Pico 2 / RP2350. Not drop-in identical software to RP2040.",
+    photoCaption: "Pico 2 / RP2350 board with USB-C — same dual-header stick shape as Pico.",
+    identify: "Looks like a Pico but labeled Pico 2 / RP2350, with a USB-C port (not micro-USB).",
     variants: [
       {
         label: "Pico 2 (this guide)",
-        detail: "RP2350 dual-core. Check pin mux docs before porting RP2040 projects.",
+        detail: "RP2350 dual-core. USB-C for flash + power. Check pin mux docs before porting RP2040 projects.",
         matchesGuide: true,
       },
       {
         label: "Pico 2 W",
-        detail: "Adds wireless. Prefer wireless-specific guides when you need Wi-Fi/BT.",
+        detail: "Adds wireless. Same USB-C power story when you plug in to flash.",
       },
     ],
-    watchOuts: ["Software and some peripherals differ from RP2040 Pico."],
+    watchOuts: [
+      "USB-C plugged in for flashing also powers the board — no separate VIN wire needed for that mode.",
+      "Software and some peripherals differ from RP2040 Pico.",
+    ],
     pins: [
       power("3v3", "3V3", "3v3"),
       gnd("gnd", "GND"),

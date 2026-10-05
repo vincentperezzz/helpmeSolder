@@ -1,5 +1,11 @@
 export type BoardTerminalPoint = { x: number; y: number };
 
+export type UsbPortKind = "usb-c" | "micro-usb";
+
+export type BoardUsbPort = BoardTerminalPoint & {
+  kind: UsbPortKind;
+};
+
 export type BoardAsset = {
   src: string;
   width: number;
@@ -7,6 +13,7 @@ export type BoardAsset = {
   caption: string;
   license: string;
   terminals?: Record<string, BoardTerminalPoint>;
+  usbPort?: BoardUsbPort;
 };
 
 export const boardAssets: Record<string, BoardAsset> = {
@@ -16,6 +23,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 520,
     caption: "Raspberry Pi Pico (RP2040)",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 105, y: 20 },
     terminals: {
       vbus: { x: 168, y: 72 },
       "3v3": { x: 168, y: 136 },
@@ -36,6 +44,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 420,
     caption: "Raspberry Pi Pico W (Wi-Fi + Bluetooth)",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 100, y: 22 },
     terminals: {
       vbus: { x: 160, y: 70 },
       "3v3": { x: 160, y: 130 },
@@ -56,6 +65,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 420,
     caption: "Raspberry Pi Pico 2 (RP2350)",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "usb-c", x: 100, y: 18 },
     terminals: {
       vbus: { x: 160, y: 70 },
       "3v3": { x: 160, y: 130 },
@@ -76,6 +86,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 180,
     caption: "Raspberry Pi Zero W",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 36, y: 96 },
     terminals: {
       "3V3": { x: 56, y: 22 },
       "5V": { x: 56, y: 36 },
@@ -88,6 +99,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 280,
     caption: "Raspberry Pi 3 Model B+",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 56, y: 220 },
     terminals: {
       "3V3": { x: 70, y: 50 },
       "5V": { x: 70, y: 62 },
@@ -100,6 +112,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 280,
     caption: "Raspberry Pi 4 Model B",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "usb-c", x: 56, y: 220 },
     terminals: {
       "3V3": { x: 70, y: 50 },
       "5V": { x: 70, y: 62 },
@@ -112,6 +125,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 280,
     caption: "Raspberry Pi 5",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "usb-c", x: 56, y: 220 },
     terminals: {
       "3V3": { x: 70, y: 50 },
       "5V": { x: 70, y: 62 },
@@ -124,6 +138,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 520,
     caption: "ESP8266 NodeMCU",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 110, y: 36 },
     terminals: {
       "3v3": { x: 190, y: 100 },
       gnd: { x: 190, y: 130 },
@@ -146,6 +161,7 @@ export const boardAssets: Record<string, BoardAsset> = {
     height: 520,
     caption: "ESP32 DevKit V1",
     license: "CC0 - HelpmeSolder original SVG",
+    usbPort: { kind: "micro-usb", x: 110, y: 480 },
     terminals: {
       VIN: { x: 30, y: 80 },
       "3V3": { x: 30, y: 110 },

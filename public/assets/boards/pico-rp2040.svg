@@ -34,7 +34,7 @@
   <g id="usb-end">
     <rect class="usb" x="70" y="8" width="70" height="36" rx="3"/>
     <rect x="82" y="14" width="46" height="18" rx="2" fill="#90a4ae"/>
-    <text class="label" x="105" y="58" text-anchor="middle">USB</text>
+    <text class="label" x="105" y="58" text-anchor="middle">micro-USB</text>
   </g>
 
   <rect class="btn" id="bootsel" x="48" y="92" width="28" height="18" rx="3"/>

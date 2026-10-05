@@ -954,19 +954,21 @@ function PowerSourceVisual({
   source,
   x,
   y,
+  usbConnector = "micro-usb",
 }: {
   source: PowerSource;
   x: number;
   y: number;
+  usbConnector?: "usb-c" | "micro-usb";
 }) {
   if (source === "usb_wall") {
     return (
       <div
         data-instance="power-source"
         className="absolute"
-        style={{ left: x, top: y, width: 150 }}
+        style={{ left: x, top: y, width: 160 }}
       >
-        <UsbWallVisual />
+        <UsbWallVisual connector={usbConnector} />
       </div>
     );
   }
@@ -1216,8 +1218,8 @@ export function WokwiDiagram({
           obstacles.push({
             x: POWER_ORIGIN.x,
             y: POWER_ORIGIN.y,
-            w: 150,
-            h: 110,
+            w: 160,
+            h: 118,
           });
         }
       }
@@ -1260,30 +1262,40 @@ export function WokwiDiagram({
             );
           }
         } else {
+          const boardAsset = getDiagramAsset(board.catalogId);
+          const usbPort = boardAsset?.usbPort;
           const outPt = {
-            x: POWER_ORIGIN.x + 128,
-            y: POWER_ORIGIN.y + 38,
+            x: POWER_ORIGIN.x + (usbPort?.kind === "usb-c" ? 146 : 140),
+            y: POWER_ORIGIN.y + 36,
           };
           anchors.set("power-source:OUT", outPt);
           exitDirs.set("power-source:OUT", { dx: 1, dy: 0 });
-          const targetPin = powerPins.usb || powerPins.vin;
-          const target = targetPin
-            ? anchors.get(`${board.instanceId}:${targetPin}`)
-            : undefined;
-          const boardKey = targetPin
-            ? `${board.instanceId}:${targetPin}`
-            : "";
-          anchors.set(
-            "power-source:BOARD",
-            target || { x: board.x + 40, y: board.y + 20 },
-          );
-          if (boardKey) {
-            exitDirs.set(
-              "power-source:BOARD",
-              exitDirs.get(boardKey) ?? defaultExit,
-            );
+          if (usbPort) {
+            anchors.set("power-source:BOARD", {
+              x: board.x + usbPort.x,
+              y: board.y + usbPort.y,
+            });
+            exitDirs.set("power-source:BOARD", { dx: 0, dy: -1 });
           } else {
-            exitDirs.set("power-source:BOARD", defaultExit);
+            const targetPin = powerPins.usb || powerPins.vin;
+            const target = targetPin
+              ? anchors.get(`${board.instanceId}:${targetPin}`)
+              : undefined;
+            const boardKey = targetPin
+              ? `${board.instanceId}:${targetPin}`
+              : "";
+            anchors.set(
+              "power-source:BOARD",
+              target || { x: board.x + 40, y: board.y + 20 },
+            );
+            if (boardKey) {
+              exitDirs.set(
+                "power-source:BOARD",
+                exitDirs.get(boardKey) ?? defaultExit,
+              );
+            } else {
+              exitDirs.set("power-source:BOARD", defaultExit);
+            }
           }
         }
       }
@@ -1439,13 +1451,23 @@ export function WokwiDiagram({
         const from = anchors.get("power-source:OUT");
         const to = anchors.get("power-source:BOARD");
         if (from && to) {
+          const boardPart = placed.find((part) => part.kind === "board");
+          const usbKind = boardPart
+            ? getDiagramAsset(boardPart.catalogId)?.usbPort?.kind
+            : undefined;
+          const label =
+            usbKind === "usb-c"
+              ? "USB-C plug → board (flash = power)"
+              : usbKind === "micro-usb"
+                ? "USB plug → board (flash = power)"
+                : "USB → board power";
           const route = routeWire(from, to, "power-source:OUT", "power-source:BOARD", 0);
           routedPaths.unshift(route.points);
           nextWires.unshift({
             id: "power-feed",
             color: "#37474f",
             d: route.d,
-            label: "USB → VIN",
+            label,
             showLabel: true,
             mid: route.mid,
             from,
@@ -1692,6 +1714,11 @@ export function WokwiDiagram({
               source={guide.power_source}
               x={POWER_ORIGIN.x}
               y={POWER_ORIGIN.y}
+              usbConnector={
+                getDiagramAsset(
+                  placed.find((part) => part.kind === "board")?.catalogId ?? "",
+                )?.usbPort?.kind ?? "micro-usb"
+              }
             />
           ) : null}
 
@@ -1793,7 +1820,14 @@ export function WokwiDiagram({
         {guide.power_source
           ? isBatteryPowerSource(guide.power_source)
             ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`
-            : " Power: USB wall to USB/VIN."
+            : (() => {
+                const kind = getDiagramAsset(
+                  placed.find((part) => part.kind === "board")?.catalogId ?? "",
+                )?.usbPort?.kind;
+                return kind === "usb-c"
+                  ? " Power: USB-C cable into the board port (same plug used for flashing)."
+                  : " Power: USB cable into the board port (same plug used for flashing).";
+              })()
           : ""}
       </p>
     </div>
