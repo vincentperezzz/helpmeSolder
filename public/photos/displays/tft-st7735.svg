@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="TFT 1.8 inch ST7735 display module: red board with a small colour screen showing a gradient and an eight pin header along the top edge">
+  <title>TFT 1.8 inch ST7735 display module: red board with a small colour screen showing a gradient and an eight pin header along the top edge</title>
+  <ellipse cx="160" cy="216" rx="90" ry="9" fill="#121a20" opacity="0.16"/>
+  <g transform="translate(0 6)">
+    <rect x="84" y="40" width="152" height="164" rx="5" fill="#c23a2c" stroke="#8a251a" stroke-width="2"/>
+    <rect x="87" y="43" width="146" height="158" rx="3" fill="none" stroke="#fff" stroke-opacity="0.15"/>
+    <rect x="76" y="40" width="168" height="12" rx="1.5" fill="#121a20"/>
+    <rect x="86.4" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="106.9" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="127.4" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="147.9" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="168.4" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="188.9" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="209.4" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="229.9" y="14" width="3.2" height="30" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <circle cx="88" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="108.5" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="129" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="149.5" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="170" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="190.5" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="211" cy="60" r="2.4" fill="#d7c27a"/>
+    <circle cx="231.5" cy="60" r="2.4" fill="#d7c27a"/>
+    <rect x="96" y="70" width="128" height="124" rx="3" fill="#10151a" stroke="#05070a" stroke-width="1.5"/>
+    <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#27d3ff"/><stop offset="0.5" stop-color="#7a5cff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs>
+    <rect x="102" y="76" width="116" height="112" rx="1.5" fill="url(#g1)"/>
+    <circle cx="160" cy="128" r="26" fill="#ffd84a"/>
+    <rect x="112" y="160" width="96" height="10" rx="2" fill="#ffffff" opacity="0.85"/>
+    <rect x="104" y="78" width="50" height="3" fill="#fff" opacity="0.18"/>
+  </g>
+</svg>
