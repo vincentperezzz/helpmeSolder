@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { PrepParts } from "@/components/PrepParts";
+import { SolderChecklist } from "@/components/SolderChecklist";
+import { ToolsList } from "@/components/ToolsList";
 import { WokwiDiagram } from "@/components/WokwiDiagram";
 import type { Guide, GuideStep } from "@/lib/catalog/types";
 
@@ -17,22 +19,22 @@ export function GuideWorkspace({ guide, orderedSteps }: GuideWorkspaceProps) {
     <div
       className={
         enlarged
-          ? "grid gap-4"
-          : "grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.85fr)] lg:items-start"
+          ? "grid min-w-0 grid-cols-1 gap-4"
+          : "grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.85fr)] lg:items-start"
       }
     >
-      <section className="motion-rise motion-rise-delay-1 space-y-3">
+      <section className="motion-rise motion-rise-delay-1 order-2 min-w-0 max-w-full space-y-3 lg:order-1">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div className="space-y-2">
             <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-              Wiring Whiteboard
+              Wiring picture
             </h2>
             <div className="section-rule w-24" />
           </div>
           <p className="max-w-xl text-xs text-mute sm:text-sm">
             {enlarged
-              ? "Enlarged — Prep/Steps hidden. Exit Full or toggle Side to bring them back."
-              : "Prep + Steps stay beside the board. Expand/Full hides them for a Wokwi-style canvas."}
+              ? "The parts list and steps are hidden while the picture is big. Turn off Bigger or Full screen to see them again."
+              : "The parts list and steps stay next to the picture. Use Bigger or Full screen to hide them."}
           </p>
         </div>
         <WokwiDiagram
@@ -43,16 +45,20 @@ export function GuideWorkspace({ guide, orderedSteps }: GuideWorkspaceProps) {
       </section>
 
       {!enlarged ? (
-        <aside className="motion-rise motion-rise-delay-2 space-y-10 lg:sticky lg:top-4">
+        <aside className="motion-rise motion-rise-delay-2 order-1 min-w-0 max-w-full space-y-10 lg:order-2 lg:sticky lg:top-4">
           <section className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-xs font-semibold tracking-[0.18em] text-flux uppercase">
-                Prep / Parts
+                Parts
               </h2>
               <div className="section-rule w-24" />
             </div>
             <PrepParts parts={guide.parts} />
           </section>
+
+          <ToolsList guide={guide} />
+
+          <SolderChecklist guide={guide} />
 
           <section className="space-y-4">
             <div className="space-y-2">

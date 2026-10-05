@@ -28,8 +28,8 @@ import { breadboardPinExit, pinExitDirection } from "./geometry";
 import { labelRect, pinLabel, resolveLabelPositions, wireColor } from "./labels";
 import { boardPowerPins } from "./layout";
 import { BATTERY_WIRE_ANCHORS } from "./PowerSourceVisual";
-import { routedPath } from "./routing";
-import type { ExitDir, PinInfo, PlacedPart, Point, Rect, Wire } from "./types";
+import { routedPath, type Obstacle } from "./routing";
+import type { CanvasSize, ExitDir, PinInfo, PlacedPart, Point, Wire } from "./types";
 
 export function useWireMeasure({
   guide,
@@ -48,7 +48,7 @@ export function useWireMeasure({
   hostRef: RefObject<HTMLDivElement | null>;
   viewportRef: RefObject<HTMLDivElement | null>;
   fittedRef: MutableRefObject<boolean>;
-  setCanvas: Dispatch<SetStateAction<{ width: number; height: number }>>;
+  setCanvas: Dispatch<SetStateAction<CanvasSize>>;
   setZoom: Dispatch<SetStateAction<number>>;
   setPan: Dispatch<SetStateAction<{ x: number; y: number }>>;
 }): Wire[] {
@@ -65,9 +65,11 @@ export function useWireMeasure({
 
       const anchors = new Map<string, Point>();
       const exitDirs = new Map<string, ExitDir>();
-      const obstacles: Rect[] = [];
+      const obstacles: Obstacle[] = [];
       let maxRight = 1200;
       let maxBottom = 720;
+      let contentRight = 0;
+      let contentBottom = 0;
       let boardsReady = true;
 
       for (const part of placed) {
@@ -112,14 +114,25 @@ export function useWireMeasure({
         }
         maxRight = Math.max(maxRight, offsetX + width + 140);
         maxBottom = Math.max(maxBottom, offsetY + height + 120);
+        contentRight = Math.max(contentRight, offsetX + width);
+        contentBottom = Math.max(contentBottom, offsetY + height);
 
         const bodyPad = isBreadboardId(part.catalogId) ? 2 : 10;
+        // Pins sit just inside the real body, so a pinned part's obstacle is
+        // its measured size, not the padded minimum used for layout. This keeps
+        // wires from running a long way beside the board before turning.
+        const pinnedW = hasPins
+          ? Math.max(rawW, Math.max(...raw.map((pin) => pin.x)) + 6)
+          : width;
+        const pinnedH = hasPins
+          ? Math.max(rawH, Math.max(...raw.map((pin) => pin.y)) + 6)
+          : height;
         const bodyW = isBreadboardId(part.catalogId)
           ? (BB_COLS - 1) * BB_STEP + 12
-          : width;
+          : pinnedW;
         const bodyH = isBreadboardId(part.catalogId)
           ? BB_ROW_Y.j - BB_ROW_Y.a + 18
-          : height;
+          : pinnedH;
         const bodyX = isBreadboardId(part.catalogId)
           ? offsetX + BB_ORIGIN_X - 6
           : offsetX - bodyPad;
@@ -131,6 +144,11 @@ export function useWireMeasure({
           y: bodyY,
           w: bodyW + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
           h: bodyH + (isBreadboardId(part.catalogId) ? 0 : bodyPad * 2),
+          ...(part.seated
+            ? { soft: true }
+            : isBreadboardId(part.catalogId)
+              ? {}
+              : { hug: true }),
         });
 
         if (hasPins) {
@@ -358,6 +376,8 @@ export function useWireMeasure({
           (span > 110 && !bothOnOrNearBoard);
         maxRight = Math.max(maxRight, from.x + 40, to.x + 40, route.mid.x + 80);
         maxBottom = Math.max(maxBottom, from.y + 40, to.y + 40, route.mid.y + 40);
+        contentRight = Math.max(contentRight, from.x, to.x, route.mid.x);
+        contentBottom = Math.max(contentBottom, from.y, to.y, route.mid.y);
         nextWires.push({
           id: connection.id,
           color: wireColor(index, label),
@@ -445,6 +465,8 @@ export function useWireMeasure({
         const box = labelRect(wire.mid, wire.label);
         maxRight = Math.max(maxRight, box.x + box.w + 24);
         maxBottom = Math.max(maxBottom, box.y + box.h + 24);
+        contentRight = Math.max(contentRight, box.x + box.w);
+        contentBottom = Math.max(contentBottom, box.y + box.h);
       }
 
       if (!boardsReady && attempts < 25) {
@@ -453,19 +475,21 @@ export function useWireMeasure({
         return;
       }
 
+      const fitWidth = Math.ceil(contentRight + 60);
+      const fitHeight = Math.ceil(contentBottom + 60);
       setCanvas({
         width: Math.ceil(maxRight + 160),
         height: Math.ceil(maxBottom + 160),
+        fitWidth,
+        fitHeight,
       });
       setWires(nextWires);
 
       const viewport = viewportRef.current;
       if (viewport && !fittedRef.current) {
-        const nextWidth = Math.ceil(maxRight + 160);
-        const nextHeight = Math.ceil(maxBottom + 160);
         const fit = Math.min(
-          (viewport.clientWidth - 48) / nextWidth,
-          (viewport.clientHeight - 48) / nextHeight,
+          (viewport.clientWidth - 48) / Math.max(fitWidth, 1),
+          (viewport.clientHeight - 48) / Math.max(fitHeight, 1),
           1.15,
         );
         fittedRef.current = true;

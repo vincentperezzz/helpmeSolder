@@ -26,3 +26,11 @@ export type Wire = {
   to: Point;
   points: Point[];
 };
+
+/** Diagram canvas size, plus the tight content bounds used for "fit". */
+export type CanvasSize = {
+  width: number;
+  height: number;
+  fitWidth?: number;
+  fitHeight?: number;
+};

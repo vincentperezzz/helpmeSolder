@@ -153,6 +153,25 @@ export default async function GuidePage({ params }: GuidePageProps) {
         </section>
       ) : null}
 
+      {validation.ok &&
+      validation.issues.some((issue) => issue.severity === "warning") ? (
+        <section className="space-y-2 border border-line-strong bg-paper-deep px-4 py-3 text-sm text-ink-soft">
+          <p className="font-semibold text-ink">Heads up before you build</p>
+          <ul className="list-disc space-y-1 pl-5">
+            {validation.issues
+              .filter((issue) => issue.severity === "warning")
+              .map((issue) => (
+                <li key={`${issue.code}-${issue.message}`}>
+                  {issue.message}
+                  {issue.alternatives.length > 0
+                    ? ` Other options: ${issue.alternatives.join(", ")}`
+                    : null}
+                </li>
+              ))}
+          </ul>
+        </section>
+      ) : null}
+
       <GuideWorkspace guide={guide} orderedSteps={orderedSteps} />
 
       <footer className="space-y-3 border-t border-line pt-4 text-sm leading-relaxed text-mute">
@@ -162,6 +181,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           automatically, and opening this link resets the timer. Bookmark it or
           print it if you want to keep it.
         </p>
+        <p>Part drawings use the MIT-licensed Wokwi Elements.</p>
         <PrintButton />
       </footer>
     </main>

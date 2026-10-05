@@ -36,7 +36,13 @@ Flow:
 3. If the build needs a sensor/input and the exact module is unknown call ask_sensor and ASK THE USER.
 4. create_guide, then tell the user the returned url and mention that the guide is deleted if unopened (see retention.message).
 5. set_power_source, add_part (catalog ids only), add_connection, set_steps.
-6. validate_guide and fix problems using alternatives[].`;
+6. validate_guide and fix problems using alternatives[].
+
+Writing steps (readers are beginners who dislike circuit diagrams):
+- The page already generates a "What to solder where" checklist from the connections, so do NOT restate every wire in the steps.
+- When a step names a pin, use the exact pin label used in the connections (for example "1 (SIG)" or "GND", never "+" or "-" if the pin is labelled otherwise).
+- Order: prepare parts and tools, solder power and ground first, then signal wires, then power up and test.
+- One action per step, plain words, short sentences. Say what to look for at the end (for example "the LED lights").`;
 
 const connectionEndpoint = z.object({ instanceId: z.string(), pinId: z.string() });
 
@@ -82,7 +88,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "create_guide",
     {
       description:
-        "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Before wiring, ask the user which power source (battery type or USB wall) — never guess — then call set_power_source.",
+        "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Use a short plain title a beginner would recognise (for example \"ESP32 buzzer\"). Before wiring, ask the user which power source (battery type or USB wall) — never guess — then call set_power_source.",
       inputSchema: {
         title: z.string().optional(),
         board_id: z.string().optional(),
@@ -271,7 +277,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "set_steps",
     {
-      description: "Replace the ordered steps (and optional notes) on a guide.",
+      description: "Replace the ordered steps (and optional notes) on a guide. Write for beginners: one action per step, short plain sentences. Refer to pins with the exact labels used in the connections (for example \"1 (SIG)\" or \"GND\"); never invent other names like + or - for them. Order the steps: prepare parts, solder power and ground first, then signal wires, then power up and test. Do not list every wire again: the guide page already shows a generated \"What to solder where\" checklist from the connections. Use notes for warnings.",
       inputSchema: {
         guide_id: z.string(),
         steps: z.array(

@@ -4,7 +4,7 @@ import type { Point, Rect, Wire } from "./types";
 
 export function labelSize(text: string): { w: number; h: number } {
   return {
-    w: Math.min(148, Math.max(40, text.length * 6.1 + 14)),
+    w: Math.min(190, Math.max(52, text.length * 8 + 18)),
     h: LABEL_H,
   };
 }
