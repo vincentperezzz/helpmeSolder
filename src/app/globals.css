@@ -286,37 +286,47 @@ body {
   display: none;
 }
 
-/* Phone, full screen: the toolbar floats over the picture as icon-only buttons. */
+/* Phones: the toolbar is one row of icon-only buttons; in full screen it floats over the picture. */
 @media (max-width: 767px) {
+  .diagram-toolbar {
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .diagram-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .diagram-cue,
+  .diagram-btn-label {
+    display: none;
+  }
+
+  .diagram-btn-icon {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .diagram-zoom-btn {
+    display: grid;
+    flex: none;
+    place-items: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.4rem;
+  }
+
   .whiteboard-shell.is-fullscreen .diagram-toolbar,
   .whiteboard-shell:fullscreen .diagram-toolbar {
     position: absolute;
     top: 8px;
     right: 8px;
     z-index: 5;
-    flex-wrap: nowrap;
-    gap: 4px;
     padding: 4px;
     border: 1px solid var(--line-strong);
     background: color-mix(in oklab, var(--paper) 92%, transparent);
-  }
-
-  .whiteboard-shell.is-fullscreen .diagram-cue,
-  .whiteboard-shell:fullscreen .diagram-cue,
-  .whiteboard-shell.is-fullscreen .diagram-btn-label,
-  .whiteboard-shell:fullscreen .diagram-btn-label {
-    display: none;
-  }
-
-  .whiteboard-shell.is-fullscreen .diagram-btn-icon,
-  .whiteboard-shell:fullscreen .diagram-btn-icon {
-    display: inline;
-  }
-
-  .whiteboard-shell.is-fullscreen .diagram-zoom-btn,
-  .whiteboard-shell:fullscreen .diagram-zoom-btn {
-    min-width: 2.25rem;
-    padding: 0.4rem;
   }
 }
 

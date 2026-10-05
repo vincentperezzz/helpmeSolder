@@ -68,6 +68,35 @@ type TipContent = TooltipContent & { color?: string };
 /** Pointer travel below this many px counts as a tap or click, not a drag. */
 const TAP_SLOP = 6;
 
+const TOOLBAR_ICONS = {
+  fit: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5M9 9h6v6H9z",
+  reset: "M4 12a8 8 0 1 0 3-6.2M4 4v4h4",
+  names: "M4 6h9a3 3 0 0 1 3 3v0M4 12h12M4 18h7M17 15l3 3-3 3",
+  "panel-hide": "M4 5h16v14H4zM14 5v14M17 10l-2 2 2 2",
+  "panel-show": "M4 5h16v14H4zM14 5v14M16 10l2 2-2 2",
+  expand: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5",
+  close: "M6 6l12 12M18 6L6 18",
+} as const;
+
+function ToolbarIcon({ name }: { name: keyof typeof TOOLBAR_ICONS }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="block"
+    >
+      <path d={TOOLBAR_ICONS[name]} />
+    </svg>
+  );
+}
+
 function partContent(guide: Guide, id: string): TipContent | null {
   if (id === POWER_SOURCE_ID) {
     const source = guide.power_source;
@@ -446,7 +475,7 @@ export function WokwiDiagram({
             aria-label="Fit the whole picture on screen"
             title="Fit the whole picture on screen"
           >
-            <span className="diagram-btn-icon" aria-hidden="true">⤢</span>
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="fit" /></span>
             <span className="diagram-btn-label">Fit all</span>
           </button>
           <button
@@ -456,7 +485,7 @@ export function WokwiDiagram({
             aria-label="Reset view to actual size"
             title="Reset view to actual size"
           >
-            <span className="diagram-btn-icon" aria-hidden="true">1:1</span>
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="reset" /></span>
             <span className="diagram-btn-label">Reset view</span>
           </button>
           <button
@@ -471,7 +500,7 @@ export function WokwiDiagram({
                 : "Show the text name of every wire (point at a wire to see just one)"
             }
           >
-            <span className="diagram-btn-icon" aria-hidden="true">Aa</span>
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="names" /></span>
             <span className="diagram-btn-label">Wire names</span>
           </button>
           <button
@@ -486,7 +515,7 @@ export function WokwiDiagram({
                 : "Hide the parts list and steps panel"
             }
           >
-            <span className="diagram-btn-icon" aria-hidden="true">▥</span>
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
             <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
           </button>
           <button
@@ -499,7 +528,7 @@ export function WokwiDiagram({
             aria-label={fullscreen ? "Exit full screen" : "Show the picture full screen"}
             title={fullscreen ? "Exit full screen" : "Show the picture full screen"}
           >
-            <span className="diagram-btn-icon" aria-hidden="true">{fullscreen ? "✕" : "⛶"}</span>
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={fullscreen ? "close" : "expand"} /></span>
             <span className="diagram-btn-label">{fullscreen ? "Exit full screen" : "Full screen"}</span>
           </button>
         </div>
