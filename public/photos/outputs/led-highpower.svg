@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Square white high power LED on a round aluminium star base with a yellow phosphor disc and two solder pads">
+<title>Square white high power LED on a round aluminium star base with a yellow phosphor disc and two solder pads</title>
+<defs><linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#8d949a"/><stop offset=".45" stop-color="#e6eaed"/><stop offset="1" stop-color="#868d93"/></linearGradient><linearGradient id="mv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f3"/><stop offset="1" stop-color="#8d949a"/></linearGradient><linearGradient id="side" x1="0" x2="1"><stop offset="0" stop-color="#0b0f13"/><stop offset=".35" stop-color="#2a343d"/><stop offset="1" stop-color="#0b0f13"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="104" ry="9" fill="#121a20" opacity="0.16"/>
+<circle cx="160" cy="120" r="84" fill="#c9cfd3" stroke="#6d777d" stroke-width="2"/><circle cx="160" cy="120" r="72" fill="url(#mv)" opacity=".8"/>
+<rect x="112" y="72" width="96" height="96" rx="8" fill="#f2f3f4" stroke="#aeb6bb" stroke-width="2"/>
+<circle cx="160" cy="120" r="36" fill="#f4d35e" stroke="#c9a63a" stroke-width="2"/><circle cx="160" cy="120" r="26" fill="#fbe9a0" />
+<rect x="80" y="114" width="20" height="12" fill="#b8742c" rx="2"/><rect x="220" y="114" width="20" height="12" fill="#b8742c" rx="2"/>
+<text x="90" y="108" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#c0261c" text-anchor="middle">+</text><text x="230" y="108" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#1a1a1a" text-anchor="middle">-</text>
+</svg>
