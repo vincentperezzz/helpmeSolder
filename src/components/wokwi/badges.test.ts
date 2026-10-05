@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { BADGE_R, badgeRect, badgeTextColor, placeBadges } from "./badges";
 import { rectInside } from "./bounds";
-import { cardText, placeCards, segmentsCross } from "./cards";
+import { cardText, placeCards, segmentsCross, tagGeometry } from "./cards";
 import { labelRect, segmentIntersectsRect } from "./labels";
 import type { Point, Rect, Wire } from "./types";
 
@@ -157,12 +157,37 @@ describe("placeCards", () => {
     expect(placeCards([{ id: "a", relax: false }], s)).toEqual(placeCards([{ id: "a", relax: false }], s));
   });
 
+  it("points the tip at the anchor and strings from the hole", () => {
+    const [card] = placeCards([{ id: "a", relax: false }], scene());
+    expect(card.leader.from).toEqual(card.hole);
+    expect(card.side).toBe(card.anchor.x < card.rect.x + card.rect.w / 2 ? "left" : "right");
+  });
   it("draws a leader from the card edge to the badge", () => {
     const [card] = placeCards([{ id: "a", relax: false }], scene());
     expect(card.leader.to).toEqual(card.anchor);
     const box = card.rect;
     const { from } = card.leader;
     expect(from.x >= box.x && from.x <= box.x + box.w && from.y >= box.y && from.y <= box.y + box.h).toBe(true);
+  });
+});
+
+describe("tagGeometry", () => {
+  const rect = { x: 100, y: 50, w: 140, h: 22 };
+  const nums = (d: string) => (d.match(/-?\d+\.?\d*/g) ?? []).map(Number);
+  it("keeps the outline and hole inside the placer's box, on either side", () => {
+    for (const side of ["left", "right"] as const) {
+      const g = tagGeometry(rect, side);
+      const n = nums(g.body);
+      for (let i = 0; i < n.length; i += 2) {
+        expect(n[i]).toBeGreaterThanOrEqual(rect.x - 0.05);
+        expect(n[i]).toBeLessThanOrEqual(rect.x + rect.w + 0.05);
+        expect(n[i + 1]).toBeGreaterThanOrEqual(rect.y - 0.05);
+        expect(n[i + 1]).toBeLessThanOrEqual(rect.y + rect.h + 0.05);
+      }
+      expect(g.hole.y).toBe(rect.y + rect.h / 2);
+    }
+    expect(tagGeometry(rect, "left").hole.x).toBeLessThan(rect.x + 10);
+    expect(tagGeometry(rect, "right").hole.x).toBeGreaterThan(rect.x + rect.w - 10);
   });
 });
 

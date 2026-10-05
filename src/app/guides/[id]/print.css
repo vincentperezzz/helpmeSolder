@@ -142,7 +142,7 @@
     padding: 6pt 8pt !important;
   }
 
-  .ga-badge,
+  .ptab-count,
   .ga-pill-count {
     display: none !important;
   }
@@ -185,7 +185,7 @@
   [data-print-button],
   [data-print-hide],
   .ga-controls,
-  .ga-tabs,
+  .ptabs-wrap,
   .ga-pill,
   .guide-app [role="radiogroup"],
   .guide-app div:has(> .diagram-zoom-btn),

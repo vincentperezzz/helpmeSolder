@@ -21,18 +21,18 @@ import {
 } from "@/lib/catalog/board-assets";
 import { getBatteryAsset } from "@/lib/catalog/batteries";
 import type { Guide } from "@/lib/catalog/types";
-import type { CanvasSize } from "@/components/wokwi/types";
+import type { CanvasSize, Point, Rect } from "@/components/wokwi/types";
 import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import { buildSolderItems, type WireItem } from "@/lib/guides/solder-plan";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import { isBreadboardId } from "./wokwi/breadboard";
 import { BreadboardVisual } from "./wokwi/BreadboardVisual";
 import { BADGE_R, badgeRects, badgeTextColor } from "./wokwi/badges";
-import { cardText, placeCards, type CardRequest } from "./wokwi/cards";
+import { cardText, placeCards, pointToward, stringPath, tagGeometry, TAG_HOLE_R, type CardRequest, type TagSide } from "./wokwi/cards";
 import { LABEL_FONT, POWER_ORIGIN } from "./wokwi/constants";
 import { buildCue } from "./wokwi/cue";
 import { POWER_SOURCE_ID, attachedPartIds, partOpacity, wireVisual } from "./wokwi/focus";
-import { labelLeader, labelRect, labelSize } from "./wokwi/labels";
+import { labelLeader, labelRect } from "./wokwi/labels";
 import { layoutParts } from "./wokwi/layout";
 import { PowerSourceVisual } from "./wokwi/PowerSourceVisual";
 import { SkeletonPart } from "./wokwi/SkeletonPart";
@@ -662,7 +662,7 @@ export function WokwiDiagram({
             {wires.map((wire) => {
               if (!wire.showLabel) return null;
               const visual = wireVisual(wire.id, focusedWireIds, hideUnfocused, highlightId);
-              const size = labelSize(wire.label);
+              const rect = labelRect(wire.mid, wire.label);
               const leader = labelLeader(wire.points, wire.mid, wire.label);
               const stroke = wire.plugs ? "#37474f" : wire.color;
               return (
@@ -677,35 +677,25 @@ export function WokwiDiagram({
                   }}
                 >
                   {leader ? (
-                    <line
-                      x1={leader.from.x}
-                      y1={leader.from.y}
-                      x2={leader.to.x}
-                      y2={leader.to.y}
-                      stroke={stroke}
-                      strokeWidth={1.5}
+                    <WireTag
+                      rect={rect}
+                      side={leader.to.x < wire.mid.x ? "left" : "right"}
+                      color={stroke}
+                      band={stroke}
+                      anchor={leader.to}
+                      text={cardText(wire.label)}
+                      emphasized={visual.emphasized}
                     />
-                  ) : null}
-                  <rect
-                    x={wire.mid.x - size.w / 2}
-                    y={wire.mid.y - size.h / 2}
-                    width={size.w}
-                    height={size.h}
-                    rx={4}
-                    fill="#f4f7f5"
-                    stroke={stroke}
-                    strokeWidth={visual.emphasized ? 2 : 1.2}
-                  />
-                  <text
-                    x={wire.mid.x}
-                    y={wire.mid.y + LABEL_FONT * 0.35}
-                    textAnchor="middle"
-                    fontSize={LABEL_FONT}
-                    fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                    fill="#1a242b"
-                  >
-                    {cardText(wire.label)}
-                  </text>
+                  ) : (
+                    <WireTag
+                      rect={rect}
+                      side="left"
+                      color={stroke}
+                      band={stroke}
+                      text={cardText(wire.label)}
+                      emphasized={visual.emphasized}
+                    />
+                  )}
                 </g>
               );
             })}
@@ -769,34 +759,15 @@ export function WokwiDiagram({
                     pointerEvents: "none",
                   }}
                 >
-                  <line
-                    x1={card.leader.from.x}
-                    y1={card.leader.from.y}
-                    x2={card.leader.to.x}
-                    y2={card.leader.to.y}
-                    stroke={wire.color}
-                    strokeWidth={1.4}
+                  <WireTag
+                    rect={card.rect}
+                    side={card.side}
+                    color={wire.color}
+                    band={wire.color}
+                    anchor={pointToward(card.anchor, card.hole, wire.badge ? BADGE_R + 1 : 0)}
+                    text={card.text}
+                    emphasized={visual.emphasized}
                   />
-                  <rect
-                    x={card.rect.x}
-                    y={card.rect.y}
-                    width={card.rect.w}
-                    height={card.rect.h}
-                    rx={4}
-                    fill="#f4f7f5"
-                    stroke={wire.color}
-                    strokeWidth={visual.emphasized ? 2 : 1.2}
-                  />
-                  <text
-                    x={card.rect.x + card.rect.w / 2}
-                    y={card.rect.y + card.rect.h / 2 + LABEL_FONT * 0.35}
-                    textAnchor="middle"
-                    fontSize={LABEL_FONT}
-                    fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                    fill="#1a242b"
-                  >
-                    {card.text}
-                  </text>
                 </g>
               );
             })}
@@ -819,6 +790,7 @@ export function WokwiDiagram({
                 style={{
                   left: part.x,
                   top: part.y,
+                  ...(part.transform ? { transform: part.transform, transformOrigin: "0 0" } : {}),
                   opacity: partOpacity(part.instanceId, focusParts, highlightParts),
                 }}
               >
@@ -862,5 +834,62 @@ export function WokwiDiagram({
       </p>
       {tooltip}
     </div>
+  );
+}
+
+/**
+ * A luggage-style tag for a wire name: pointed end with a punched hole, a
+ * band in the wire's colour, and a dotted string to `anchor` (a round dot
+ * where it meets the wire). Decorative; the parent group owns pointer events.
+ */
+function WireTag({
+  rect,
+  side,
+  color,
+  band,
+  anchor,
+  text,
+  emphasized,
+}: {
+  rect: Rect;
+  side: TagSide;
+  color: string;
+  band: string;
+  anchor?: Point;
+  text: string;
+  emphasized: boolean;
+}) {
+  const geo = tagGeometry(rect, side);
+  return (
+    <g>
+      {anchor ? (
+        <>
+          <path
+            d={stringPath(geo.hole, anchor)}
+            fill="none"
+            stroke={color}
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeDasharray="0.1 4"
+          />
+          <circle cx={anchor.x} cy={anchor.y} r={3} fill={color} stroke="#fffdf7" strokeWidth={1.2} />
+        </>
+      ) : null}
+      <g className="diagram-tag">
+        <path d={geo.body} fill="#fbf6e9" stroke={color} strokeWidth={emphasized ? 1.8 : 1.1} strokeLinejoin="round" />
+        <path d={geo.cap} fill={band} />
+        <circle cx={geo.hole.x} cy={geo.hole.y} r={TAG_HOLE_R} fill="#fffdf7" stroke="rgba(26,36,43,0.55)" strokeWidth={0.8} />
+        <text
+          x={geo.textX}
+          y={rect.y + rect.h / 2 + LABEL_FONT * 0.35}
+          textAnchor="middle"
+          fontSize={LABEL_FONT}
+          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+          fill="#1a242b"
+        >
+          {text}
+        </text>
+      </g>
+    </g>
   );
 }
