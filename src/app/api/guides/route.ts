@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { assertApiAuth } from "@/lib/api/auth";
+import { guarded, parseBody } from "@/lib/api/http";
+import { CREATE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { createGuide } from "@/lib/guides/repository";
 import { validateGuide } from "@/lib/guides/validator";
 
@@ -14,18 +16,28 @@ export async function POST(request: NextRequest) {
   if (unauthorized) {
     return unauthorized;
   }
+  const limited = checkRateLimit(request, CREATE_LIMIT);
+  if (limited) {
+    return limited;
+  }
 
-  const body = createSchema.parse(await request.json().catch(() => ({})));
-  const guide = await createGuide(body);
-  const validation = validateGuide(guide);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  return guarded(async () => {
+    const parsed = await parseBody(request, createSchema, { allowEmpty: true });
+    if (!parsed.ok) {
+      return parsed.response;
+    }
 
-  return Response.json(
-    {
-      guide,
-      validation,
-      url: `${appUrl}/guides/${guide.id}`,
-    },
-    { status: 201 },
-  );
+    const guide = await createGuide(parsed.data);
+    const validation = validateGuide(guide);
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+    return Response.json(
+      {
+        guide,
+        validation,
+        url: `${appUrl}/guides/${guide.id}`,
+      },
+      { status: 201 },
+    );
+  });
 }

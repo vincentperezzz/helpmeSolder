@@ -1,4 +1,5 @@
-import type { CatalogPart } from "./types";
+import { BATTERY_ELECTRICAL, USB_WALL_ELECTRICAL, type BatteryKind } from "./batteries";
+import type { CatalogPart, PartElectrical } from "./types";
 
 function rail(id: string, label: string, kinds: CatalogPart["pins"][number]["kinds"], voltage?: "3v3" | "5v") {
   return { id, label, kinds, voltage };
@@ -28,7 +29,7 @@ function breadboardHolePins(): CatalogPart["pins"] {
   ];
 }
 
-export const passives: CatalogPart[] = [
+const basePassives: CatalogPart[] = [
   {
     id: "passive.breadboard.half",
     name: "Breadboard (half)",
@@ -257,3 +258,32 @@ export const passives: CatalogPart[] = [
     ],
   },
 ];
+
+function batteryElectrical(kind: BatteryKind): PartElectrical {
+  const spec = BATTERY_ELECTRICAL[kind];
+  return {
+    battery: { chemistry: spec.chemistry, cells: spec.cells },
+    pins: {
+      "+": {
+        source: { nominal: spec.nominal, min: spec.min, max: spec.max, external: true },
+      },
+    },
+  };
+}
+
+const PASSIVE_ELECTRICAL: Record<string, PartElectrical> = {
+  "passive.power.usb_wall": {
+    pins: { "5V": { source: { ...USB_WALL_ELECTRICAL, external: true } } },
+  },
+  "passive.power.battery.9v": batteryElectrical("battery_9v"),
+  "passive.power.battery.2aa": batteryElectrical("battery_2aa"),
+  "passive.power.battery.3aa": batteryElectrical("battery_3aa"),
+  "passive.power.battery.18650": batteryElectrical("battery_18650"),
+  // Passive divider: wiper swings up to whatever VCC it is wired to.
+  "passive.potentiometer": { logic: "5v", logicFollowsSupply: true },
+};
+
+export const passives: CatalogPart[] = basePassives.map((part) => ({
+  ...part,
+  electrical: PASSIVE_ELECTRICAL[part.id],
+}));

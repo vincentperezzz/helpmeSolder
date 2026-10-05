@@ -1,12 +1,29 @@
+import type { Metadata } from "next";
 import { GuideWorkspace } from "@/components/GuideWorkspace";
 import { getCatalogPart } from "@/lib/catalog";
 import type { PowerSource } from "@/lib/catalog/types";
 import { getGuide } from "@/lib/guides/repository";
 import { validateGuide } from "@/lib/guides/validator";
 
+export const dynamic = "force-dynamic";
+
 type GuidePageProps = {
   params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Guide | HelpmeSolder",
+    description: "Private build guide",
+    referrer: "no-referrer",
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: { index: false, follow: false, noimageindex: true },
+    },
+  };
+}
 
 function powerLabel(source: PowerSource | null): string {
   if (source === "usb_wall") return "USB wall";
@@ -55,7 +72,13 @@ export default async function GuidePage({ params }: GuidePageProps) {
   }
 
   if (!guide) {
-    return <StatusPage title="Guide not found" detail={id} />;
+    // Never echo the requested id back; keep the response generic.
+    return (
+      <StatusPage
+        title="Guide unavailable"
+        detail="This guide does not exist or the link is incorrect."
+      />
+    );
   }
 
   const validation = validateGuide(guide);

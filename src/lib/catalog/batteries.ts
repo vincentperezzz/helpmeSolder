@@ -1,8 +1,28 @@
+import type { BatteryChemistry } from "./types";
+
 export type BatteryKind =
   | "battery_9v"
   | "battery_2aa"
   | "battery_3aa"
   | "battery_18650";
+
+export type BatteryElectrical = {
+  chemistry: BatteryChemistry;
+  cells: number;
+  nominal: number;
+  min: number;
+  max: number;
+};
+
+/** Pack voltage in volts: nominal, discharged cut-off (min) and fully charged / fresh (max). */
+export const BATTERY_ELECTRICAL: Record<BatteryKind, BatteryElectrical> = {
+  battery_9v: { chemistry: "alkaline", cells: 6, nominal: 9, min: 6, max: 9.6 },
+  battery_2aa: { chemistry: "alkaline", cells: 2, nominal: 3, min: 2, max: 3.2 },
+  battery_3aa: { chemistry: "alkaline", cells: 3, nominal: 4.5, min: 3, max: 4.8 },
+  battery_18650: { chemistry: "li-ion", cells: 1, nominal: 3.7, min: 3, max: 4.2 },
+};
+
+export const USB_WALL_ELECTRICAL = { nominal: 5, min: 4.75, max: 5.25 } as const;
 
 export type BatteryTerminals = {
   plus: { x: number; y: number };

@@ -1,4 +1,4 @@
-import type { CatalogPart } from "./types";
+import type { CatalogPart, PartElectrical, PinElectrical } from "./types";
 
 function power(id: string, label: string, voltage?: "3v3" | "5v") {
   return { id, label, kinds: ["power" as const], voltage };
@@ -13,7 +13,7 @@ function ana(id: string, label?: string) {
   return { id, label: label ?? id, kinds: ["analog" as const, "digital" as const] };
 }
 
-export const boards: CatalogPart[] = [
+const baseBoards: CatalogPart[] = [
   {
     id: "board.esp32.devkit",
     name: "ESP32 DevKit V1",
@@ -485,3 +485,80 @@ export const boards: CatalogPart[] = [
     ],
   },
 ];
+
+const out3v3: PinElectrical = {
+  source: { nominal: 3.3, min: 3.15, max: 3.45 },
+  accepts: { min: 3.0, max: 3.6 },
+};
+const out5v: PinElectrical = {
+  source: { nominal: 5, min: 4.5, max: 5.25 },
+  accepts: { min: 4.5, max: 5.5 },
+};
+
+const ESP32_ELECTRICAL: PartElectrical = {
+  logic: "3v3",
+  fiveVTolerantIo: false,
+  pins: {
+    VIN: { source: { nominal: 5, min: 4.5, max: 5.25 }, accepts: { min: 4.5, max: 12 } },
+    "3V3": out3v3,
+  },
+};
+
+const ARDUINO_5V_ELECTRICAL: PartElectrical = {
+  logic: "5v",
+  fiveVTolerantIo: true,
+  pins: {
+    "5V": out5v,
+    "3.3V": { source: { nominal: 3.3, min: 3.2, max: 3.4 } },
+    VIN: { source: { nominal: 7, min: 6, max: 12 }, accepts: { min: 7, max: 12 } },
+  },
+};
+
+const PICO_ELECTRICAL: PartElectrical = {
+  logic: "3v3",
+  fiveVTolerantIo: false,
+  pins: {
+    "3v3": out3v3,
+    vbus: out5v,
+  },
+};
+
+const PI_ELECTRICAL: PartElectrical = {
+  logic: "3v3",
+  fiveVTolerantIo: false,
+  pins: {
+    "3V3": out3v3,
+    "5V": {
+      source: { nominal: 5, min: 4.75, max: 5.25 },
+      accepts: { min: 4.75, max: 5.25 },
+    },
+  },
+};
+
+const BOARD_ELECTRICAL: Record<string, PartElectrical> = {
+  "board.esp32.devkit": ESP32_ELECTRICAL,
+  "board.arduino.uno": ARDUINO_5V_ELECTRICAL,
+  "board.arduino.nano": ARDUINO_5V_ELECTRICAL,
+  "board.arduino.mega": ARDUINO_5V_ELECTRICAL,
+  "board.pico.rp2040": PICO_ELECTRICAL,
+  "board.pico.w": PICO_ELECTRICAL,
+  // RP2350 GPIO is 5V tolerant only under specific conditions; treat as 3.3V-only.
+  "board.pico.2": PICO_ELECTRICAL,
+  "board.pi.zero.w": PI_ELECTRICAL,
+  "board.pi.3b.plus": PI_ELECTRICAL,
+  "board.pi.4b": PI_ELECTRICAL,
+  "board.pi.5": PI_ELECTRICAL,
+  "board.esp8266.nodemcu": {
+    logic: "3v3",
+    fiveVTolerantIo: false,
+    pins: {
+      "3v3": out3v3,
+      vin: { source: { nominal: 5, min: 4.5, max: 5.25 }, accepts: { min: 4.5, max: 10 } },
+    },
+  },
+};
+
+export const boards: CatalogPart[] = baseBoards.map((board) => ({
+  ...board,
+  electrical: BOARD_ELECTRICAL[board.id],
+}));
