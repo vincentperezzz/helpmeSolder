@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Big sound sensor module: blue board with a large round electret microphone, a trimmer, LEDs and four pins">
+  <title>Big sound sensor module: blue board with a large round electret microphone, a trimmer, LEDs and four pins</title>
+  <ellipse cx="168" cy="198" rx="124" ry="10" fill="#121a20" opacity="0.16"/>
+  <rect x="186" y="164" width="48" height="12" rx="1.5" fill="#121a20"/>
+  <rect x="190.4" y="174" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="192" cy="169.5" r="2.2" fill="#d7c27a"/>
+  <rect x="202.4" y="174" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="204" cy="169.5" r="2.2" fill="#d7c27a"/>
+  <rect x="214.4" y="174" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="216" cy="169.5" r="2.2" fill="#d7c27a"/>
+  <rect x="226.4" y="174" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="228" cy="169.5" r="2.2" fill="#d7c27a"/>
+  <rect x="34" y="56" width="252" height="114" rx="5" fill="#1f5fae" stroke="#154a8c" stroke-width="2"/>
+  <rect x="37" y="59" width="246" height="108" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="1"/>
+  <circle cx="46" cy="68" r="5" fill="#b65c2e"/><circle cx="46" cy="68" r="2.8" fill="#0d1a24"/>
+  <circle cx="274" cy="68" r="5" fill="#b65c2e"/><circle cx="274" cy="68" r="2.8" fill="#0d1a24"/>
+  <circle cx="46" cy="158" r="5" fill="#b65c2e"/><circle cx="46" cy="158" r="2.8" fill="#0d1a24"/>
+  <circle cx="274" cy="158" r="5" fill="#b65c2e"/><circle cx="274" cy="158" r="2.8" fill="#0d1a24"/>
+  <circle cx="106" cy="113" r="48" fill="#2b3237" stroke="#10161a" stroke-width="2.5"/>
+  <circle cx="106" cy="113" r="42" fill="#8c969c" stroke="#566067" stroke-width="2"/>
+  <circle cx="106" cy="113" r="32" fill="#14191c"/>
+  <circle cx="106" cy="113" r="26" fill="none" stroke="#3a444a" stroke-width="2"/>
+  <circle cx="106" cy="113" r="16" fill="none" stroke="#3a444a" stroke-width="2"/>
+  <path d="M72 92 A42 42 0 0 1 98 73" stroke="#fff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect x="190" y="72" width="30" height="30" rx="2" fill="#2d6fd6" stroke="#0f2f66" stroke-width="1.5"/>
+  <circle cx="205" cy="87" r="9.6" fill="#e2c35a" stroke="#8a6d1c" stroke-width="1"/>
+  <path d="M197.8 90 L212.2 84" stroke="#6b5212" stroke-width="2.2" stroke-linecap="round"/>
+  <rect x="240" y="76" width="30" height="14" rx="1.5" fill="#121a20"/>
+  <circle cx="244" cy="80" r="1.3" fill="#50606a"/>
+  <rect x="243" y="73.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="243" y="90" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="250.33333333333334" y="73.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="250.33333333333334" y="90" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="257.6666666666667" y="73.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="257.6666666666667" y="90" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="265" y="73.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="265" y="90" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="240" y="106" width="9" height="6" rx="1.2" fill="#d9342b" stroke="#121a20" stroke-opacity="0.5" stroke-width="0.8"/>
+  <rect x="242" y="107.2" width="3" height="1.6" rx="0.6" fill="#fff" opacity="0.5"/>
+  <rect x="240" y="120" width="9" height="6" rx="1.2" fill="#3fae5a" stroke="#121a20" stroke-opacity="0.5" stroke-width="0.8"/>
+  <rect x="242" y="121.2" width="3" height="1.6" rx="0.6" fill="#fff" opacity="0.5"/>
+  <rect x="190" y="122" width="7" height="4" fill="#2a2f33"/><rect x="188.5" y="122" width="1.5" height="4" fill="#c9cfd3"/><rect x="197" y="122" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="204" y="122" width="7" height="4" fill="#2a2f33"/><rect x="202.5" y="122" width="1.5" height="4" fill="#c9cfd3"/><rect x="211" y="122" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="190" y="136" width="7" height="4" fill="#2a2f33"/><rect x="188.5" y="136" width="1.5" height="4" fill="#c9cfd3"/><rect x="197" y="136" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="204" y="136" width="7" height="4" fill="#2a2f33"/><rect x="202.5" y="136" width="1.5" height="4" fill="#c9cfd3"/><rect x="211" y="136" width="1.5" height="4" fill="#c9cfd3"/>
+</svg>

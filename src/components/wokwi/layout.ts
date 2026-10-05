@@ -1,8 +1,10 @@
 import { getCatalogPart } from "@/lib/catalog";
+import { getBatteryAsset } from "@/lib/catalog/batteries";
+import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import type { Guide } from "@/lib/catalog/types";
 import { wokwiAttrs } from "@/lib/catalog/wokwi";
 import { breadboardCol, isBreadboardId, parseBreadboardRail } from "./breadboard";
-import { BB_HEIGHT, BB_ORIGIN_X, BB_ROW_Y, BB_STEP } from "./constants";
+import { BB_HEIGHT, BB_ORIGIN_X, BB_ROW_Y, BB_STEP, POWER_ORIGIN } from "./constants";
 import type { PlacedPart } from "./types";
 
 export function seatPassiveOnBreadboard(
@@ -89,9 +91,16 @@ export function layoutParts(guide: Guide): PlacedPart[] {
     else modules.push(placed);
   }
 
+  // A battery drawing is wider than the gap left of the board: move boards
+  // right so the battery and its caption never sit on top of the board.
+  const boardX =
+    guide.power_source && isBatteryPowerSource(guide.power_source)
+      ? Math.max(120, POWER_ORIGIN.x + getBatteryAsset(guide.power_source).width + 72)
+      : 120;
+
   let boardY = 120;
   boards.forEach((part, index) => {
-    part.x = 120;
+    part.x = boardX;
     part.y = boardY;
     boardY += index === 0 ? 380 : 280;
   });

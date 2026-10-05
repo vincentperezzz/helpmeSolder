@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="HX711 load cell amplifier board with screw terminals and a pin header"><title>HX711 load cell amplifier</title>
+<ellipse cx="160" cy="212" rx="124" ry="11" fill="#121a20" opacity="0.16"/>
+<rect x="40" y="40" width="240" height="160" rx="8" fill="#b3302b" stroke="#7d1f1c" stroke-width="2"/>
+<circle cx="56" cy="56" r="5" fill="#eef3f0" stroke="#7d1f1c"/><circle cx="264" cy="56" r="5" fill="#eef3f0" stroke="#7d1f1c"/><circle cx="56" cy="184" r="5" fill="#eef3f0" stroke="#7d1f1c"/><circle cx="264" cy="184" r="5" fill="#eef3f0" stroke="#7d1f1c"/>
+<rect x="70" y="52" width="76" height="70" rx="4" fill="#2e8f4e" stroke="#1d6434" stroke-width="2"/>
+<circle cx="92" cy="94" r="10" fill="#cfd6d8" stroke="#6b767a" stroke-width="2"/><circle cx="124" cy="94" r="10" fill="#cfd6d8" stroke="#6b767a" stroke-width="2"/>
+<path d="M85 94h14M117 94h14" stroke="#6b767a" stroke-width="2.5"/>
+<rect x="76" y="58" width="64" height="4" fill="#1d6434"/>
+<rect x="168" y="62" width="76" height="36" rx="3" fill="#121a20"/>
+<g fill="#cfd6d8"><rect x="172" y="56" width="4" height="8"/><rect x="172" y="96" width="4" height="8"/><rect x="182" y="56" width="4" height="8"/><rect x="182" y="96" width="4" height="8"/><rect x="192" y="56" width="4" height="8"/><rect x="192" y="96" width="4" height="8"/><rect x="202" y="56" width="4" height="8"/><rect x="202" y="96" width="4" height="8"/><rect x="212" y="56" width="4" height="8"/><rect x="212" y="96" width="4" height="8"/><rect x="222" y="56" width="4" height="8"/><rect x="222" y="96" width="4" height="8"/><rect x="232" y="56" width="4" height="8"/><rect x="232" y="96" width="4" height="8"/></g>
+<circle cx="178" cy="70" r="2.5" fill="#eef3f0"/>
+<text x="206" y="84" text-anchor="middle" font-family="monospace" font-size="10" fill="#eef3f0">HX711</text>
+<rect x="76" y="136" width="14" height="8" fill="#d9d2c0"/><rect x="100" y="136" width="14" height="8" fill="#d9d2c0"/><rect x="170" y="116" width="14" height="8" fill="#d9d2c0"/><rect x="196" y="116" width="14" height="8" fill="#d9d2c0"/><rect x="222" y="116" width="14" height="8" fill="#d9d2c0"/>
+<rect x="132" y="162" width="124" height="26" rx="2" fill="#121a20"/>
+<g><rect x="149" y="168" width="6" height="12" fill="#d9b84a"/><circle cx="152" cy="174" r="4.5" fill="#121a20"/><circle cx="152" cy="174" r="2" fill="#d9b84a"/><rect x="179" y="168" width="6" height="12" fill="#d9b84a"/><circle cx="182" cy="174" r="4.5" fill="#121a20"/><circle cx="182" cy="174" r="2" fill="#d9b84a"/><rect x="209" y="168" width="6" height="12" fill="#d9b84a"/><circle cx="212" cy="174" r="4.5" fill="#121a20"/><circle cx="212" cy="174" r="2" fill="#d9b84a"/><rect x="239" y="168" width="6" height="12" fill="#d9b84a"/><circle cx="242" cy="174" r="4.5" fill="#121a20"/><circle cx="242" cy="174" r="2" fill="#d9b84a"/></g>
+<g font-family="monospace" font-size="8" fill="#eef3f0"><text x="66" y="156">E+ E- A- A+</text><text x="140" y="158">GND DT SCK VCC</text></g>
+</svg>

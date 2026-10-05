@@ -8,6 +8,6 @@
   <text x="60" y="8" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#c62828">+</text>
   <path d="M60 22 V28" stroke="#c62828" stroke-width="2.5"/>
   <rect id="term-minus" x="38" y="158" width="44" height="12" rx="2" fill="#212121" stroke="#000" stroke-width="1.5"/>
-  <text x="60" y="178" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121"></text>
+  <text x="60" y="178" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#212121">&#8722;</text>
   <path d="M60 152 V158" stroke="#212121" stroke-width="2.5"/>
 </svg>

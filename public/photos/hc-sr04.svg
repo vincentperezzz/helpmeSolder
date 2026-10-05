@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="HC-SR04 ultrasonic distance sensor: blue board with two silver round transducers and four pins">
+  <title>HC-SR04 ultrasonic distance sensor: blue board with two silver round transducers and four pins</title>
+  <ellipse cx="160" cy="192" rx="128" ry="12" fill="#121a20" opacity="0.16"/>
+  <rect x="138" y="170" width="48" height="12" rx="1.5" fill="#121a20"/>
+  <rect x="142.4" y="180" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="144" cy="175.5" r="2.2" fill="#d7c27a"/>
+  <rect x="154.4" y="180" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="156" cy="175.5" r="2.2" fill="#d7c27a"/>
+  <rect x="166.4" y="180" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="168" cy="175.5" r="2.2" fill="#d7c27a"/>
+  <rect x="178.4" y="180" width="3.2" height="22" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+  <circle cx="180" cy="175.5" r="2.2" fill="#d7c27a"/>
+  <rect x="36" y="58" width="248" height="118" rx="5" fill="#1f5fae" stroke="#154a8c" stroke-width="2"/>
+  <rect x="39" y="61" width="242" height="112" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="1"/>
+  <circle cx="48" cy="70" r="5" fill="#b65c2e"/><circle cx="48" cy="70" r="2.8" fill="#0d1a24"/>
+  <circle cx="272" cy="70" r="5" fill="#b65c2e"/><circle cx="272" cy="70" r="2.8" fill="#0d1a24"/>
+  <circle cx="48" cy="164" r="5" fill="#b65c2e"/><circle cx="48" cy="164" r="2.8" fill="#0d1a24"/>
+  <circle cx="272" cy="164" r="5" fill="#b65c2e"/><circle cx="272" cy="164" r="2.8" fill="#0d1a24"/>
+  <circle cx="100" cy="116" r="42" fill="#aeb6bb" stroke="#6d777d" stroke-width="2"/>
+  <circle cx="100" cy="116" r="35" fill="#2c3338"/>
+  <circle cx="100" cy="116" r="27" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="100" cy="116" r="19" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="100" cy="116" r="11" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="100" cy="116" r="4" fill="#59646b"/>
+  <path d="M70 102 A33 33 0 0 1 92 83" stroke="#fff" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="220" cy="116" r="42" fill="#aeb6bb" stroke="#6d777d" stroke-width="2"/>
+  <circle cx="220" cy="116" r="35" fill="#2c3338"/>
+  <circle cx="220" cy="116" r="27" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="220" cy="116" r="19" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="220" cy="116" r="11" fill="none" stroke="#59646b" stroke-width="2"/>
+  <circle cx="220" cy="116" r="4" fill="#59646b"/>
+  <path d="M190 102 A33 33 0 0 1 212 83" stroke="#fff" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="143" y="68" width="34" height="14" rx="2" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.2"/>
+  <rect x="146" y="96" width="28" height="12" rx="1.5" fill="#121a20"/>
+  <circle cx="150" cy="100" r="1.3" fill="#50606a"/>
+  <rect x="149" y="93.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="149" y="108" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="155.66666666666666" y="93.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="155.66666666666666" y="108" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="162.33333333333334" y="93.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="162.33333333333334" y="108" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="169" y="93.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="169" y="108" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="146" y="120" width="28" height="12" rx="1.5" fill="#121a20"/>
+  <circle cx="150" cy="124" r="1.3" fill="#50606a"/>
+  <rect x="149" y="117.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="149" y="132" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="155.66666666666666" y="117.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="155.66666666666666" y="132" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="162.33333333333334" y="117.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="162.33333333333334" y="132" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="169" y="117.5" width="2" height="2.5" fill="#c9cfd3"/><rect x="169" y="132" width="2" height="2.5" fill="#c9cfd3"/>
+  <rect x="150" y="144" width="7" height="4" fill="#2a2f33"/><rect x="148.5" y="144" width="1.5" height="4" fill="#c9cfd3"/><rect x="157" y="144" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="162" y="144" width="7" height="4" fill="#2a2f33"/><rect x="160.5" y="144" width="1.5" height="4" fill="#c9cfd3"/><rect x="169" y="144" width="1.5" height="4" fill="#c9cfd3"/>
+  <rect x="190" y="150" width="9" height="6" rx="1.2" fill="#d9342b" stroke="#121a20" stroke-opacity="0.5" stroke-width="0.8"/>
+  <rect x="192" y="151.2" width="3" height="1.6" rx="0.6" fill="#fff" opacity="0.5"/>
+</svg>

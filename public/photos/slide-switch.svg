@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Small metal slide switch with a black slider and three pins"><title>Slide switch</title>
+<ellipse cx="160" cy="204" rx="92" ry="11" fill="#121a20" opacity="0.16"/>
+<g fill="#d9b84a"><rect x="109" y="156" width="6" height="42"/><rect x="157" y="156" width="6" height="42"/><rect x="205" y="156" width="6" height="42"/></g>
+<rect x="64" y="60" width="192" height="100" rx="6" fill="#aab3b6" stroke="#6b767a" stroke-width="2"/>
+<rect x="72" y="68" width="176" height="84" rx="4" fill="#d7dcde"/>
+<rect x="84" y="92" width="152" height="32" rx="16" fill="#121a20"/>
+<rect x="90" y="98" width="140" height="20" rx="10" fill="#2a3036"/>
+<rect x="96" y="80" width="56" height="56" rx="5" fill="#14181c" stroke="#000" stroke-width="1.5"/>
+<g stroke="#4a5459" stroke-width="2"><path d="M108 88v40M118 88v40M128 88v40M138 88v40"/></g>
+<rect x="70" y="74" width="8" height="8" rx="4" fill="#8a9599"/><rect x="242" y="74" width="8" height="8" rx="4" fill="#8a9599"/>
+</svg>

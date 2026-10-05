@@ -26,9 +26,10 @@ export function BreadboardVisual({
     <div
       data-instance={instanceId}
       className="relative select-none"
+      draggable={false}
       style={{ width: BB_WIDTH, height: BB_HEIGHT }}
     >
-      <p className="pointer-events-none absolute -top-4 left-0 text-[10px] font-semibold tracking-wide text-ink-soft">
+      <p className="pointer-events-none absolute -top-5 left-0 text-[13px] leading-none font-semibold tracking-wide text-ink-soft">
         {name}
       </p>
       <svg
@@ -84,16 +85,16 @@ export function BreadboardVisual({
           strokeWidth="1.4"
           opacity="0.55"
         />
-        <text x="8" y={BB_RAIL_Y.topPlus + 3} fontSize="8" fill="#c62828" fontFamily="monospace">
+        <text x="8" y={BB_RAIL_Y.topPlus + 4.5} fontSize="13" fill="#c62828" fontFamily="monospace">
           +
         </text>
-        <text x="8" y={BB_RAIL_Y.topMinus + 3} fontSize="8" fill="#1565c0" fontFamily="monospace">
+        <text x="8" y={BB_RAIL_Y.topMinus + 4.5} fontSize="13" fill="#1565c0" fontFamily="monospace">
           −
         </text>
-        <text x="8" y={BB_RAIL_Y.botPlus + 3} fontSize="8" fill="#c62828" fontFamily="monospace">
+        <text x="8" y={BB_RAIL_Y.botPlus + 4.5} fontSize="13" fill="#c62828" fontFamily="monospace">
           +
         </text>
-        <text x="8" y={BB_RAIL_Y.botMinus + 3} fontSize="8" fill="#1565c0" fontFamily="monospace">
+        <text x="8" y={BB_RAIL_Y.botMinus + 4.5} fontSize="13" fill="#1565c0" fontFamily="monospace">
           −
         </text>
         {Array.from({ length: BB_COLS }, (_, i) => {
@@ -122,9 +123,9 @@ export function BreadboardVisual({
         )}
         <rect
           x="16"
-          y="94"
+          y="90"
           width={BB_WIDTH - 32}
-          height="10"
+          height="18"
           rx="2"
           fill="#e7dcc8"
           opacity="0.95"
@@ -133,9 +134,9 @@ export function BreadboardVisual({
           <text
             key={`n-${col}`}
             x={colX(col)}
-            y="102"
+            y="103.5"
             textAnchor="middle"
-            fontSize="7"
+            fontSize="12"
             fill="#8a7f6c"
             fontFamily="monospace"
           >
