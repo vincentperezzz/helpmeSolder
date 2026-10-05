@@ -504,7 +504,7 @@ export function WokwiDiagram({
           </button>
           <button
             type="button"
-            className="diagram-zoom-btn"
+            className="diagram-zoom-btn diagram-panel-btn"
             onClick={() => onEnlargedChange?.(!enlarged)}
             aria-pressed={enlarged}
             aria-label={enlarged ? "Show panel" : "Hide panel"}

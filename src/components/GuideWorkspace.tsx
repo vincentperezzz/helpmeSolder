@@ -21,8 +21,8 @@ import {
   writeTab,
   type TabId,
 } from "@/components/guide/model";
-import { CloseIcon } from "@/components/guide/icons";
-import { MobileDock } from "@/components/guide/MobileDock";
+import { DrawerHead } from "@/components/guide/DrawerHead";
+import { PHONE_QUERY, snapForKey, type Snap } from "@/components/guide/drawer";
 import { PanelTabs, panelDomId, tabDomId } from "@/components/guide/PanelTabs";
 import { SCROLL_ATTR } from "@/components/guide/scroll";
 import { NotesPanel, StepsPanel } from "@/components/guide/TextPanels";
@@ -140,13 +140,33 @@ export function GuideWorkspace({
 
   const [enlarged, setEnlargedState] = useState(false);
   const enlargedRef = useRef(false);
-  // Small screens, picture full screen: the panel becomes a bottom sheet.
-  const [sheetOpen, setSheetOpen] = useState(false);
   const setEnlarged = useCallback((value: boolean) => {
     enlargedRef.current = value;
     setEnlargedState(value);
-    if (!value) setSheetOpen(false);
   }, []);
+
+  // Phones: the panel is a drawer under the picture with three snap points.
+  // A view preference only. CSS and the checks below apply it on phones alone.
+  const [drawer, setDrawer] = useState<Snap>("split");
+  const drawerRef = useRef(drawer);
+  const panelRef = useRef<HTMLElement>(null);
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia(PHONE_QUERY);
+    const sync = () => {
+      setPhone(query.matches);
+      // Leaving the phone layout must not leave a dragged height behind.
+      if (!query.matches) panelRef.current?.style.removeProperty("height");
+    };
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  const phoneRef = useRef(false);
+  useEffect(() => {
+    drawerRef.current = drawer;
+    phoneRef.current = phone;
+  }, [drawer, phone]);
 
   // A guide that names its power source keeps it. Only a guide without one
   // lets the viewer pick, and that pick is a preview, not the guide's truth.
@@ -244,25 +264,22 @@ export function GuideWorkspace({
       setFocusId((current) => (id === current ? null : id));
       if (id) {
         switchTab("solder", false);
-        if (enlargedRef.current) setSheetOpen(true);
+        if (phoneRef.current) setDrawer("split");
       }
     },
     [switchTab],
   );
 
   useEffect(() => {
-    if (!sheetOpen) return;
+    if (!phone) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSheetOpen(false);
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const next = snapForKey(drawerRef.current, "Escape");
+      if (next) setDrawer(next);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [sheetOpen]);
-
-  function openSheet(next: TabId) {
-    switchTab(next, true);
-    setSheetOpen(true);
-  }
+  }, [phone]);
 
   // ---------- what the viewer sees ----------
 
@@ -310,6 +327,7 @@ export function GuideWorkspace({
   function showChecks() {
     setEnlarged(false);
     setChecksOpen(true);
+    if (phoneRef.current) setDrawer((current) => (current === "peek" ? "split" : current));
   }
 
   function toggleChecks() {
@@ -342,7 +360,6 @@ export function GuideWorkspace({
     <main
       className="guide-app"
       data-enlarged={enlarged}
-      data-sheet={sheetOpen ? "open" : "closed"}
     >
       <TopBar
         title={guide.title || "Untitled guide"}
@@ -355,7 +372,11 @@ export function GuideWorkspace({
       />
 
       <div className="ga-body">
-        <section aria-label="Wiring picture" className="ga-stage">
+        <section
+          aria-label="Wiring picture"
+          className="ga-stage"
+          inert={phone && drawer === "full"}
+        >
           <h2 className="ga-ph">Wiring picture</h2>
           <ControlsBar
             powerFact={fact}
@@ -368,12 +389,7 @@ export function GuideWorkspace({
             ownBreadboard={ownBreadboard}
             onBackToOriginal={() => chooseLayout(ownBreadboard)}
           />
-          <div
-            className="ga-canvas-frame"
-            onPointerDownCapture={() => {
-              if (sheetOpen) setSheetOpen(false);
-            }}
-          >
+          <div className="ga-canvas-frame">
             <div className="ga-canvas-fill">
               <WokwiDiagram
                 guide={layoutGuide}
@@ -389,14 +405,14 @@ export function GuideWorkspace({
           </div>
         </section>
 
-        <section aria-label="Build guide" className="ga-panel">
-          <div className="ga-sheet-head" data-print-hide="true">
-            <span aria-hidden className="ga-sheet-handle" />
-            <button type="button" className="ga-sheet-close" onClick={() => setSheetOpen(false)}>
-              <CloseIcon size={18} />
-              <span className="ml-1.5">Close</span>
-            </button>
-          </div>
+        <section
+          ref={panelRef}
+          aria-label="Build guide"
+          className="ga-panel"
+          data-snap={drawer}
+        >
+          <DrawerHead panelRef={panelRef} snap={drawer} onSnap={setDrawer} />
+          <div className="ga-drawer-body" inert={phone && drawer === "peek"}>
           <ChecksRegion
             id={checksId}
             checks={checks}
@@ -447,9 +463,9 @@ export function GuideWorkspace({
               </div>
             ))}
           </div>
+          </div>
         </section>
       </div>
-      <MobileDock onOpen={openSheet} onExit={() => setEnlarged(false)} />
     </main>
   );
 }
