@@ -598,8 +598,8 @@
 
   .guide-app[data-enlarged="true"] .ga-dock {
     position: fixed;
-    top: 50%;
-    right: calc(8px + env(safe-area-inset-right));
+    right: calc(12px + env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
     z-index: 20;
     display: flex;
     flex-direction: column;
@@ -611,7 +611,6 @@
     border-radius: 999px;
     background: color-mix(in oklab, white 88%, var(--paper));
     box-shadow: 0 6px 20px rgb(18 26 32 / 0.18);
-    transform: translateY(-50%);
   }
 
   .guide-app[data-enlarged="true"][data-sheet="open"] .ga-dock {
