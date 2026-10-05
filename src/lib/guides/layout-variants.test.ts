@@ -222,3 +222,23 @@ describe("breadboard layout", () => {
     expect(layoutFeedback(buzzer, buzzer)).toEqual([]);
   });
 });
+
+describe("breadboard listed but not used", () => {
+  it("lays the parts out on the breadboard when everything is wired straight across", () => {
+    const g = make(
+      [
+        ["mcu", "board.esp32.devkit"],
+        ["bb", "passive.breadboard.half"],
+        ["buz", "module.buzzer.active"],
+      ],
+      [
+        ["mcu", "D5", "buz", "1"],
+        ["mcu", "GND.1", "buz", "2"],
+      ],
+    );
+    const out = toBreadboardLayout(g);
+    expect(out.parts.filter((p) => p.catalogId === "passive.breadboard.half")).toHaveLength(1);
+    expect(out.connections.some((c) => c.id.startsWith("plug-"))).toBe(true);
+    expect(out.connections.some((c) => c.id.startsWith("bb-"))).toBe(true);
+  });
+});

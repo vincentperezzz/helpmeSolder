@@ -25,6 +25,14 @@ function isBreadboardPart(part: GuidePart): boolean {
   return getCatalogPart(part.catalogId)?.id.includes("breadboard") ?? false;
 }
 
+/** True when at least one connection ends on a breadboard part. */
+function usesBreadboard(guide: Guide): boolean {
+  const boards = new Set(guide.parts.filter(isBreadboardPart).map((part) => part.instanceId));
+  return guide.connections.some(
+    (c) => boards.has(c.from.instanceId) || boards.has(c.to.instanceId),
+  );
+}
+
 type NetKind = "ground" | "power" | "signal";
 
 /** Passives like LEDs and resistors list loose pin kinds, so only boards, modules and supplies decide a net's role. */
@@ -68,10 +76,17 @@ type End = { instanceId: string; pinId: string };
  * jump to a rail hole, and a part's ground or power leg jumps from its strip up
  * to the rail. A net that touches two strips gets a short bridge jumper. Other
  * parts keep a wire from each pin to a hole.
- * Returns the guide unchanged when it already has a breadboard.
+ * Returns the guide unchanged when its connections already run through a breadboard.
  */
 export function toBreadboardLayoutWithWarnings(guide: Guide): BreadboardLayoutResult {
-  if (hasBreadboard(guide)) return { guide, warnings: [] };
+  if (hasBreadboard(guide)) {
+    if (usesBreadboard(guide)) return { guide, warnings: [] };
+    // The breadboard is listed but everything is wired straight across: lay it out properly.
+    return toBreadboardLayoutWithWarnings({
+      ...guide,
+      parts: guide.parts.filter((part) => !isBreadboardPart(part)),
+    });
+  }
 
   const bbId = uniqueInstanceId(guide, "breadboard");
   const nets = buildNets(guide).filter((net) => net.pins.length >= 2);
