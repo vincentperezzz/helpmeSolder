@@ -50,7 +50,7 @@ function partImage(r: AssetRecord, size: "tile" | "row") {
 function PartRow({ r }: { r: AssetRecord }) {
   const path = thumbnailFilePath(r.thumbnailUrl);
   return (
-    <li className="rounded-md border border-line bg-white/60 p-3 md:grid md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:gap-4">
+    <li className="rounded-md border border-line bg-white/60 p-3 md:grid md:grid-cols-[auto_minmax(0,1fr)] md:gap-4">
       <div className="flex">{partImage(r, "row")}</div>
       <div className="mt-3 md:hidden" />
       <div className="min-w-0 md:mt-0"><div className="flex flex-wrap items-start justify-between gap-2">

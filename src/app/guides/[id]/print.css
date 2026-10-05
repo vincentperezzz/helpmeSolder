@@ -2,7 +2,8 @@
  * Print layout for the guide page. Everything is inside @media print so the
  * screen look is untouched. PrintButton.tsx sets a few helper values just
  * before printing: --print-scale and --print-ratio on .diagram-viewport, and
- * data-printed on the brand name in the top bar (.ga-brand).
+ * data-printed on the brand name in the top bar (.ga-brand). The optional
+ * .print-only-schematic block is placed off screen in guide.css and shown here.
  */
 @media print {
   @page {
@@ -197,6 +198,27 @@
   .guide-app button[aria-label*=" details for "],
   .guide-app nav,
   .guide-app .whiteboard-shell p.truncate + p {
+    display: none !important;
+  }
+
+  /* Optional schematic after the wiring picture, scaled to the page width. */
+  .print-only-schematic {
+    position: static !important;
+    visibility: visible !important;
+    width: 100% !important;
+    margin-top: 14pt;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-only-schematic svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .guide-app[data-view="schematic"] .print-only-schematic {
     display: none !important;
   }
 

@@ -362,3 +362,24 @@ body {
   outline: 2px solid var(--flux);
   outline-offset: 2px;
 }
+
+/* schematic */
+.schematic-part {
+  cursor: pointer;
+  outline: none;
+}
+
+.schematic-part .schematic-focus-ring {
+  display: none;
+  stroke: var(--flux);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+
+.schematic-part:focus-visible .schematic-focus-ring {
+  display: block;
+}
+
+.schematic-hit {
+  cursor: pointer;
+}
