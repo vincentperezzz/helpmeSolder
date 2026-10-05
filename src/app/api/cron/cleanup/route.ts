@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { safeEqual } from "@/lib/api/auth";
 import { purgeOldClients } from "@/lib/analytics/clients";
 import { purgeOldRequestHits } from "@/lib/requests/record";
+import { purgeOldCatalogSearchHits } from "@/lib/requests/search";
 import { guarded, jsonError } from "@/lib/api/http";
 import { deleteExpiredGuides } from "@/lib/guides/repository";
 import { getRetentionDays } from "@/lib/guides/retention";
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
     const deleted = await deleteExpiredGuides(retentionDays);
     await purgeOldClients(ANALYTICS_RETENTION_DAYS);
     await purgeOldRequestHits(REQUEST_HITS_RETENTION_DAYS);
+    await purgeOldCatalogSearchHits(REQUEST_HITS_RETENTION_DAYS);
     return Response.json({ deleted, retentionDays });
   });
 }

@@ -67,3 +67,20 @@ reason.
 
 Retention: the daily cleanup cron deletes `part_request_hits` older than 180
 days. `part_requests` rows are kept until the admin removes them.
+
+## Catalog searches by AI assistants
+
+| File | What it does | When |
+| --- | --- | --- |
+| `migrations/0006_catalog_searches.sql` | Creates `public.catalog_searches` (one row per normalized search text, with `demand`, `searches`, `no_match_searches`, the latest result count and best match, and admin `status` / `admin_note`), `public.catalog_search_hits` (dedupe) and the function `public.record_catalog_search`. Row level security is on, `anon` and `authenticated` have no access, and only `service_role` can run the function. Idempotent. | Apply before the admin can list what assistants search for. Without it the app works normally and recording is skipped quietly (one warning, then a 10 minute pause). |
+
+What is recorded: the text an assistant passed to the MCP `search_catalog`
+tool, or the `intent` text of `ask_sensor` (max 80 characters, control
+characters removed), how many catalog parts matched, the best match and its
+score, and a count. `demand` is the number of distinct anonymous clients per
+day who searched; it uses the same one-way daily hash as the usage counts. No
+IP address, no user agent, no cookie. Requests with `DNT: 1` or `Sec-GPC: 1`,
+and obvious bots, are not recorded. Empty text is not recorded.
+
+Retention: the daily cleanup cron deletes `catalog_search_hits` older than 180
+days. `catalog_searches` rows are kept until the admin removes them.

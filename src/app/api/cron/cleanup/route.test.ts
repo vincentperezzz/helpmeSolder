@@ -9,7 +9,10 @@ vi.mock("@/lib/analytics/clients", () => ({ purgeOldClients: vi.fn() }));
 
 vi.mock("@/lib/requests/record", () => ({ purgeOldRequestHits: vi.fn() }));
 
+vi.mock("@/lib/requests/search", () => ({ purgeOldCatalogSearchHits: vi.fn() }));
+
 import { purgeOldClients } from "@/lib/analytics/clients";
+import { purgeOldCatalogSearchHits } from "@/lib/requests/search";
 import { purgeOldRequestHits } from "@/lib/requests/record";
 import { deleteExpiredGuides } from "@/lib/guides/repository";
 import { GET } from "./route";
@@ -54,6 +57,7 @@ describe("GET /api/cron/cleanup", () => {
     expect(deleteExpiredGuides).toHaveBeenCalledWith(14);
     expect(purgeOldClients).toHaveBeenCalledWith(90);
     expect(purgeOldRequestHits).toHaveBeenCalledWith(180);
+    expect(purgeOldCatalogSearchHits).toHaveBeenCalledWith(180);
   });
 
   it("500 generic when deletion fails", async () => {
