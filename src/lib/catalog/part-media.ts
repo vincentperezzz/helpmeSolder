@@ -1,3 +1,6 @@
+import { BASIC_PART_MEDIA } from "./media-basic";
+import { MODULE_PART_MEDIA } from "./media-modules";
+
 const PHOTO_FILES: Record<string, string> = {
   "arduino-mega": "/photos/arduino-mega.jpg",
   "arduino-nano": "/photos/arduino-nano.jpg",
@@ -58,6 +61,9 @@ const PHOTO_FILES: Record<string, string> = {
   "slide-potentiometer": "/photos/slide-potentiometer.svg",
   "neopixel-matrix": "/photos/neopixel-matrix.svg",
   "led-ring": "/photos/led-ring.svg",
+  // Newer illustrations; later entries win over the ones above.
+  ...BASIC_PART_MEDIA,
+  ...MODULE_PART_MEDIA,
 };
 
 export function resolvePartPhoto(photoHint?: string): string | null {
