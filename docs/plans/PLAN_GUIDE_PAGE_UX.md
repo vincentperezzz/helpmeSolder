@@ -1,5 +1,7 @@
 # Plan: guide page UX fixes
 
+**Status:** done. Implemented in commit `72afe5b` ("Guide page UX: fix overflow and scroll trap, add solder checklist, plain wording").
+
 Found while reviewing a real guide page (ESP32 + buzzer) at 753px width. Five agents, disjoint files.
 
 | Agent | Fixes | Owns |

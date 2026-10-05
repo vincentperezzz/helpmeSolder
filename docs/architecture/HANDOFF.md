@@ -11,7 +11,7 @@ Vision frozen. Execute build. Do not reopen product discovery.
 - Delivery: chat says “open this link”; web is canonical
 - Visuals: photo boards + skeleton modules (catalog SVG)
 - Boards v1: ESP32, Pico, Uno/Nano, ESP8266 + modules for buzzer, LCD, soil
-- Power: LLM sets one id from the power table (see `docs/ARCHITECTURE.md`); else API tells LLM to ask
+- Power: LLM sets one id from the power table (see [ARCHITECTURE.md](ARCHITECTURE.md)); else API tells LLM to ask
 - Validation: hard block + `alternatives[]`
 - Auth v1: secret `/guides/[id]` only
 - Infra: Vercel Hobby + Supabase Postgres (org `perez`)
@@ -31,7 +31,7 @@ Vision frozen. Execute build. Do not reopen product discovery.
 
 ## Docs map
 
-- `docs/PRODUCT.md` — what we ship
-- `docs/ARCHITECTURE.md` — how it fits
-- `docs/CONTEXT.md` — one-screen freeze
-- `BUILD_PLAN.md` — phased execution checklist
+- [`PRODUCT.md`](PRODUCT.md) — what we ship
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — how it fits
+- [`CONTEXT.md`](CONTEXT.md) — one-screen freeze
+- [`BUILD_PLAN.md`](../plans/BUILD_PLAN.md) — phased execution checklist
