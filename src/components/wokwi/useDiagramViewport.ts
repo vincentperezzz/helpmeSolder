@@ -17,7 +17,6 @@ export function useDiagramViewport({
   canvas,
   ready,
   enlarged = false,
-  onEnlargedChange,
 }: {
   guideId: string;
   /** Changes when the drawn parts or power source change, so the picture is fitted again. */
@@ -25,7 +24,6 @@ export function useDiagramViewport({
   canvas: CanvasSize;
   ready: boolean;
   enlarged?: boolean;
-  onEnlargedChange?: (enlarged: boolean) => void;
 }) {
   const shellRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -62,12 +60,11 @@ export function useDiagramViewport({
     const onFs = () => {
       const active = document.fullscreenElement === shellRef.current;
       setFullscreen(active);
-      if (active) onEnlargedChange?.(true);
       manualRef.current = false;
     };
     document.addEventListener("fullscreenchange", onFs);
     return () => document.removeEventListener("fullscreenchange", onFs);
-  }, [onEnlargedChange]);
+  }, []);
 
   /** Fit the content box into the viewport now. Returns false while the viewport has no size yet. */
   const applyFit = useCallback((): boolean => {
