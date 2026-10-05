@@ -3,7 +3,9 @@ import { GuideWorkspace } from "@/components/GuideWorkspace";
 import { getCatalogPart } from "@/lib/catalog";
 import type { PowerSource } from "@/lib/catalog/types";
 import { getGuide } from "@/lib/guides/repository";
+import { getExpiryDate, getRetentionDays } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
+import { PrintButton } from "./PrintButton";
 
 export const dynamic = "force-dynamic";
 
@@ -76,11 +78,16 @@ export default async function GuidePage({ params }: GuidePageProps) {
     return (
       <StatusPage
         title="Guide unavailable"
-        detail="This guide does not exist or the link is incorrect."
+        detail={`This guide does not exist or the link is incorrect. Guides that nobody opens for ${getRetentionDays()} days are deleted, so an old link may have expired.`}
       />
     );
   }
 
+  const retentionDays = getRetentionDays();
+  const expiryLabel = getExpiryDate(new Date(), retentionDays).toLocaleDateString(
+    "en-US",
+    { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" },
+  );
   const validation = validateGuide(guide);
   const board = guide.board_id ? getCatalogPart(guide.board_id) : null;
   const orderedSteps = [...guide.steps].sort((a, b) => a.order - b.order);
@@ -147,6 +154,16 @@ export default async function GuidePage({ params }: GuidePageProps) {
       ) : null}
 
       <GuideWorkspace guide={guide} orderedSteps={orderedSteps} />
+
+      <footer className="space-y-3 border-t border-line pt-4 text-sm leading-relaxed text-mute">
+        <p>
+          Saved until at least <strong className="font-medium text-ink-soft">{expiryLabel}</strong>.
+          Guides that nobody opens for {retentionDays} days are deleted
+          automatically, and opening this link resets the timer. Bookmark it or
+          print it if you want to keep it.
+        </p>
+        <PrintButton />
+      </footer>
     </main>
   );
 }

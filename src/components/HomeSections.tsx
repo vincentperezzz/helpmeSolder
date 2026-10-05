@@ -1,5 +1,6 @@
 import { InView } from "@/components/InView";
 import { SetupGuide } from "@/components/SetupGuide";
+import { retentionNotice } from "@/lib/guides/retention";
 
 const HOW_IT_WORKS = [
   {
@@ -87,10 +88,12 @@ export function HomeSections() {
       >
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-14">
           <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-end">
-            <h2 className={HEADING}>Wire the MCP into Claude</h2>
+            <h2 className={HEADING}>Connect it to your AI in two minutes</h2>
             <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
-              HelpmeSolder is a hosted MCP server. Paste one URL into your
-              client and you are done. No install, no keys.
+              This is a small plug that lets your AI assistant, like Claude or
+              Cursor, use HelpmeSolder. You add one web address, once. Then you
+              can ask your assistant for a soldering guide. There is nothing to
+              install and no key to find.
             </p>
           </div>
 
@@ -107,11 +110,12 @@ export function HomeSections() {
                     1
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">
-                    Add the server URL
+                    Add the address to your AI app
                   </h3>
                   <p className="text-ink-soft">
-                    Flip the switch for your client and paste the URL. Nothing
-                    to download or build. If the client asks, restart it.
+                    Choose your app with the switch and follow the numbered steps.
+                    In some menus you will see the letters MCP. That is the
+                    name of the plug. If the app asks, restart it.
                   </p>
                 </li>
 
@@ -162,10 +166,15 @@ export function HomeSections() {
               </div>
             ))}
           </dl>
-          <p className="max-w-xl text-sm text-mute">
-            Guides live at a secret, unguessable link. There are no accounts, so
-            anyone with the link can view the guide.
-          </p>
+          <div className="flex max-w-xl flex-col gap-2 text-sm text-mute">
+            <p>
+              Guides live at a secret, unguessable link. There are no accounts,
+              so anyone with the link can view the guide.
+            </p>
+            <p>
+              Your guide link is private and unlisted. {retentionNotice()}
+            </p>
+          </div>
         </div>
       </section>
     </>

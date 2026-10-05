@@ -119,16 +119,17 @@ export default function Home() {
             HelpmeSolder
           </h1>
           <p className="motion-rise motion-rise-delay-1 max-w-2xl text-[clamp(1.35rem,3vw,2.1rem)] font-medium tracking-tight text-ink">
-            How-to solder guides for non-EE builders
+            Soldering guides you can just follow.
           </p>
           <p className="motion-rise motion-rise-delay-2 max-w-xl text-lg leading-relaxed text-ink-soft">
-            Plan in Cursor or Claude. MCP tools write the guide. Open the secret
-            link for prep, wiring, and steps.
+            Tell your AI assistant what you want to build. You get a
+            step-by-step guide showing exactly what to solder and where, with no
+            circuit diagrams to decode.
           </p>
           <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-6 pt-2">
             <Magnetic>
               <ScrollLink targetId="setup" className="btn-pad">
-                <span className="btn-pad__face">Set up the MCP</span>
+                <span className="btn-pad__face">Set up in 2 minutes</span>
                 <span aria-hidden="true" className="btn-pad__trace" />
               </ScrollLink>
             </Magnetic>

@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "HelpmeSolder",
-  description: "MCP-powered how-to solder guides for non-EE builders",
+  description: "Step-by-step soldering guides that show exactly what to solder and where, with no circuit diagrams to decode.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
