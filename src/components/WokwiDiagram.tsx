@@ -27,10 +27,12 @@ import { buildSolderItems, type WireItem } from "@/lib/guides/solder-plan";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import { isBreadboardId } from "./wokwi/breadboard";
 import { BreadboardVisual } from "./wokwi/BreadboardVisual";
-import { LABEL_FONT, POWER_ORIGIN, clampZoom } from "./wokwi/constants";
+import { BADGE_R, badgeRects, badgeTextColor } from "./wokwi/badges";
+import { cardText, placeCards, type CardRequest } from "./wokwi/cards";
+import { LABEL_FONT, POWER_ORIGIN } from "./wokwi/constants";
 import { buildCue } from "./wokwi/cue";
 import { POWER_SOURCE_ID, attachedPartIds, partOpacity, wireVisual } from "./wokwi/focus";
-import { labelLeader, labelSize } from "./wokwi/labels";
+import { labelLeader, labelRect, labelSize } from "./wokwi/labels";
 import { layoutParts } from "./wokwi/layout";
 import { PowerSourceVisual } from "./wokwi/PowerSourceVisual";
 import { SkeletonPart } from "./wokwi/SkeletonPart";
@@ -102,6 +104,8 @@ export function WokwiDiagram({
   const hostRef = useRef<HTMLDivElement>(null);
   const ready = useWokwiReady();
   const [canvas, setCanvas] = useState<CanvasSize>({ width: 1400, height: 820 });
+  const [showNames, setShowNames] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
   const refitKey = useMemo(
     () =>
       `${guide.power_source ?? ""}|${guide.parts
@@ -112,12 +116,11 @@ export function WokwiDiagram({
   const {
     shellRef,
     viewportRef,
-    fittedRef,
     zoom,
     pan,
     fullscreen,
-    setZoom,
-    setPan,
+    zoomBy,
+    resetView,
     fitToViewport,
     toggleFullscreen,
     onPointerDown,
@@ -134,23 +137,19 @@ export function WokwiDiagram({
   });
   const placed = useMemo(() => layoutParts(guide), [guide]);
   const cue = useMemo(() => buildCue(guide), [guide]);
-  const wires = useWireMeasure({
-    guide,
-    placed,
-    ready,
-    hostRef,
-    viewportRef,
-    fittedRef,
-    setCanvas,
-    setZoom,
-    setPan,
-  });
 
+  // The same order as the written "What to solder where" list; item id is the connection id.
   const solderItems = useMemo(() => {
     const map = new Map<string, WireItem>();
     for (const item of buildSolderItems(guide)) map.set(item.id, item);
     return map;
   }, [guide]);
+  const numbers = useMemo(
+    () => new Map([...solderItems.keys()].map((id, index) => [id, index + 1] as const)),
+    [solderItems],
+  );
+  const scene = useWireMeasure({ guide, placed, ready, hostRef, numbers, setCanvas });
+  const wires = scene.wires;
   const boardInstanceId = useMemo(
     () => placed.find((part) => part.kind === "board")?.instanceId,
     [placed],
@@ -183,6 +182,37 @@ export function WokwiDiagram({
       highlightId ? attachedPartIds(guide.connections, [highlightId], boardInstanceId) : null,
     [highlightId, guide.connections, boardInstanceId],
   );
+
+  // Text cards: the hovered, selected or focused wires, or every wire when
+  // "Wire names" is on. Placed in clear space inside the content bounds.
+  const cards = useMemo(() => {
+    if (!scene.bounds) return [];
+    const requests: CardRequest[] = [];
+    const add = (id: string | null | undefined, relax: boolean) => {
+      if (!id || requests.some((request) => request.id === id)) return;
+      const wire = wireById.get(id);
+      if (!wire || wire.number === undefined || !wire.badge) return;
+      if (!wireVisual(id, focusedWireIds, hideUnfocused, highlightId).visible) return;
+      requests.push({ id, relax });
+    };
+    add(highlightId, true);
+    add(selected, true);
+    if (showNames) {
+      [...wires]
+        .sort((a, b) => (a.number ?? 0) - (b.number ?? 0))
+        .forEach((wire) => add(wire.id, false));
+    } else if (focusedWireIds && focusedWireIds.length <= 4) {
+      focusedWireIds.forEach((id) => add(id, true));
+    }
+    if (requests.length === 0) return [];
+    const pills = wires.flatMap((wire) => (wire.showLabel ? [labelRect(wire.mid, wire.label)] : []));
+    return placeCards(requests, {
+      wires,
+      partRects: scene.partRects,
+      bounds: scene.bounds,
+      fixedRects: [...pills, ...badgeRects(wires)],
+    });
+  }, [scene, wires, wireById, highlightId, selected, showNames, focusedWireIds, hideUnfocused]);
 
   const content = useMemo((): TipContent | null => {
     if (!active) return null;
@@ -231,6 +261,7 @@ export function WokwiDiagram({
     (id: string | null) => {
       if (selectedRef.current === id) return;
       selectedRef.current = id;
+      setSelected(id);
       onSelectWire?.(id);
     },
     [onSelectWire],
@@ -363,37 +394,50 @@ export function WokwiDiagram({
         )
       : null;
 
+  const offsetX = canvas.offsetX ?? 0;
+  const offsetY = canvas.offsetY ?? 0;
+
   return (
     <div
       ref={shellRef}
-      className={`diagram-shell whiteboard-shell bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""} ${enlarged ? "is-enlarged" : ""}`}
+      className={`diagram-shell whiteboard-shell flex h-full min-h-0 w-full min-w-0 flex-col bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""} ${enlarged ? "is-enlarged" : ""}`}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line bg-paper/90 px-3 py-2">
-        <div className="min-w-0 space-y-0.5">
-          <p className="truncate text-xs font-semibold tracking-tight text-ink">{cue}</p>
-          <p className="text-[11px] text-mute">
-            Zoom {Math.round(zoom * 100)}%. Drag to move. Hold Ctrl/Cmd and scroll, or use the
-            buttons, to zoom. Point at or tap a part or wire to see what it is.
-          </p>
-        </div>
+      <div className="diagram-toolbar flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-paper/90 px-3 py-1.5">
+        <p
+          className="diagram-cue min-w-0 flex-1 basis-40 truncate text-xs font-semibold tracking-tight text-ink"
+          title={cue}
+        >
+          {cue}
+        </p>
+        <p id="diagram-help" className="sr-only">
+          Drag to move. Hold Ctrl or Cmd and scroll, or use the zoom buttons, to zoom. Point at
+          or tap a part or wire to see what it is. Numbers on the wires match the numbered
+          checklist.
+        </p>
         <div className="flex flex-wrap items-center gap-1">
+          <span
+            className="min-w-10 px-1 text-center text-[11px] text-mute tabular-nums"
+            title="Zoom level"
+          >
+            {Math.round(zoom * 100)}%
+          </span>
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={() => setZoom((value) => clampZoom(value - 0.15))}
+            onClick={() => zoomBy(-0.15)}
             aria-label="Zoom out"
             title="Zoom out"
           >
-            <span aria-hidden="true">− </span>Zoom out
+            <span aria-hidden="true">−</span>
           </button>
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={() => setZoom((value) => clampZoom(value + 0.15))}
+            onClick={() => zoomBy(0.15)}
             aria-label="Zoom in"
             title="Zoom in"
           >
-            <span aria-hidden="true">+ </span>Zoom in
+            <span aria-hidden="true">+</span>
           </button>
           <button
             type="button"
@@ -402,30 +446,48 @@ export function WokwiDiagram({
             aria-label="Fit the whole picture on screen"
             title="Fit the whole picture on screen"
           >
-            Fit all
+            <span className="diagram-btn-icon" aria-hidden="true">⤢</span>
+            <span className="diagram-btn-label">Fit all</span>
           </button>
           <button
             type="button"
             className="diagram-zoom-btn"
-            onClick={() => {
-              setZoom(1);
-              setPan({ x: 40, y: 40 });
-              fittedRef.current = true;
-            }}
+            onClick={resetView}
             aria-label="Reset view to actual size"
             title="Reset view to actual size"
           >
-            Reset view
+            <span className="diagram-btn-icon" aria-hidden="true">1:1</span>
+            <span className="diagram-btn-label">Reset view</span>
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={() => setShowNames((value) => !value)}
+            aria-pressed={showNames}
+            aria-label="Wire names"
+            title={
+              showNames
+                ? "Hide the text names of the wires"
+                : "Show the text name of every wire (point at a wire to see just one)"
+            }
+          >
+            <span className="diagram-btn-icon" aria-hidden="true">Aa</span>
+            <span className="diagram-btn-label">Wire names</span>
           </button>
           <button
             type="button"
             className="diagram-zoom-btn"
             onClick={() => onEnlargedChange?.(!enlarged)}
             aria-pressed={enlarged}
-            aria-label={enlarged ? "Make the picture smaller and show the steps again" : "Make the picture bigger"}
-            title={enlarged ? "Make the picture smaller and show the steps again" : "Make the picture bigger"}
+            aria-label={enlarged ? "Show panel" : "Hide panel"}
+            title={
+              enlarged
+                ? "Show the parts list and steps panel again"
+                : "Hide the parts list and steps panel"
+            }
           >
-            {enlarged ? "Smaller" : "Bigger"}
+            <span className="diagram-btn-icon" aria-hidden="true">▥</span>
+            <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
           </button>
           <button
             type="button"
@@ -437,7 +499,8 @@ export function WokwiDiagram({
             aria-label={fullscreen ? "Exit full screen" : "Show the picture full screen"}
             title={fullscreen ? "Exit full screen" : "Show the picture full screen"}
           >
-            {fullscreen ? "Exit full screen" : "Full screen"}
+            <span className="diagram-btn-icon" aria-hidden="true">{fullscreen ? "✕" : "⛶"}</span>
+            <span className="diagram-btn-label">{fullscreen ? "Exit full screen" : "Full screen"}</span>
           </button>
         </div>
       </div>
@@ -450,11 +513,12 @@ export function WokwiDiagram({
 
       <div
         ref={viewportRef}
-        className="diagram-viewport cursor-grab select-none active:cursor-grabbing [&_*]:select-none [&_*]:[-webkit-user-drag:none] [&_*]:[-webkit-touch-callout:none]"
+        className="diagram-viewport min-h-0 flex-1 cursor-grab select-none active:cursor-grabbing [&_*]:select-none [&_*]:[-webkit-user-drag:none] [&_*]:[-webkit-touch-callout:none]"
         onDragStart={(event) => event.preventDefault()}
         tabIndex={0}
         role="group"
         aria-label="Wiring picture viewer. Arrow keys move the picture, plus and minus zoom."
+        aria-describedby="diagram-help"
         onKeyDown={onKeyDown}
         onPointerDown={handlePointerDown}
         onPointerMove={onPointerMove}
@@ -478,11 +542,14 @@ export function WokwiDiagram({
             width: canvas.width,
             height: canvas.height,
             flex: "none",
-            minWidth: 1200,
-            minHeight: 720,
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
           }}
         >
+          {/* Zero-size layer shifted so nothing starts left of or above the safe margin. */}
+          <div
+            className="diagram-layer absolute left-0 top-0"
+            style={{ transform: `translate(${offsetX}px, ${offsetY}px)` }}
+          >
           {guide.power_source ? (
             <PowerSourceVisual
               source={guide.power_source}
@@ -500,9 +567,10 @@ export function WokwiDiagram({
           ) : null}
 
           <svg
-            className="pointer-events-none absolute inset-0 z-20"
-            width={canvas.width}
-            height={canvas.height}
+            className="pointer-events-none absolute left-0 top-0 z-20"
+            width={Math.max(1, scene.bounds?.maxX ?? canvas.width)}
+            height={Math.max(1, scene.bounds?.maxY ?? canvas.height)}
+            style={{ overflow: "visible" }}
           >
             {wires.map((wire) => {
               const visual = wireVisual(wire.id, focusedWireIds, hideUnfocused, highlightId);
@@ -567,8 +635,8 @@ export function WokwiDiagram({
                         fill="none"
                         stroke={wire.color}
                         strokeWidth={visual.emphasized ? 3.8 : 2.8}
-                        strokeLinecap="square"
-                        strokeLinejoin="miter"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         pathLength={1}
                         className="motion-trace"
                         style={{ strokeDasharray: 1, strokeDashoffset: 1 }}
@@ -590,7 +658,7 @@ export function WokwiDiagram({
                 </g>
               );
             })}
-            {/* Labels last, so no wire is ever drawn over a label. */}
+            {/* Short pills for the power wires only, drawn above the wires. */}
             {wires.map((wire) => {
               if (!wire.showLabel) return null;
               const visual = wireVisual(wire.id, focusedWireIds, hideUnfocused, highlightId);
@@ -636,7 +704,98 @@ export function WokwiDiagram({
                     fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                     fill="#1a242b"
                   >
-                    {wire.label}
+                    {cardText(wire.label)}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Numbered badges: the number is the wire's line in the written checklist. */}
+            {wires.map((wire) => {
+              if (!wire.badge || wire.number === undefined) return null;
+              const visual = wireVisual(wire.id, focusedWireIds, hideUnfocused, highlightId);
+              const radius = visual.emphasized ? BADGE_R + 1.5 : BADGE_R;
+              // Keep the number readable when the picture is zoomed out.
+              const grow = Math.min(2.6, Math.max(1, 0.75 / zoom));
+              return (
+                <g
+                  key={`${wire.id}-badge`}
+                  {...tipAttrs({ kind: "wire", id: wire.id }, null)}
+                  className="diagram-fade"
+                  transform={`translate(${wire.badge.x} ${wire.badge.y}) scale(${grow}) translate(${-wire.badge.x} ${-wire.badge.y})`}
+                  style={{
+                    opacity: visual.opacity,
+                    visibility: visual.visible ? "visible" : "hidden",
+                    pointerEvents: visual.visible ? "all" : "none",
+                  }}
+                >
+                  <circle
+                    cx={wire.badge.x}
+                    cy={wire.badge.y}
+                    r={radius}
+                    fill="#ffffff"
+                    stroke="rgba(26,36,43,0.35)"
+                    strokeWidth={0.75}
+                  />
+                  <circle cx={wire.badge.x} cy={wire.badge.y} r={radius - 1.75} fill={wire.color} />
+                  <text
+                    x={wire.badge.x}
+                    y={wire.badge.y + 3.6}
+                    textAnchor="middle"
+                    fontSize={wire.number > 9 ? 10 : 11.5}
+                    fontWeight={700}
+                    fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                    fill={badgeTextColor(wire.color)}
+                  >
+                    {wire.number}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Text cards for hovered, selected or focused wires (or all, with Wire names). */}
+            {cards.map((card) => {
+              const wire = wireById.get(card.id);
+              if (!wire) return null;
+              const visual = wireVisual(wire.id, focusedWireIds, hideUnfocused, highlightId);
+              return (
+                <g
+                  key={`${wire.id}-card`}
+                  aria-hidden="true"
+                  className="diagram-fade"
+                  style={{
+                    opacity: visual.opacity,
+                    visibility: visual.visible ? "visible" : "hidden",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <line
+                    x1={card.leader.from.x}
+                    y1={card.leader.from.y}
+                    x2={card.leader.to.x}
+                    y2={card.leader.to.y}
+                    stroke={wire.color}
+                    strokeWidth={1.4}
+                  />
+                  <rect
+                    x={card.rect.x}
+                    y={card.rect.y}
+                    width={card.rect.w}
+                    height={card.rect.h}
+                    rx={4}
+                    fill="#f4f7f5"
+                    stroke={wire.color}
+                    strokeWidth={visual.emphasized ? 2 : 1.2}
+                  />
+                  <text
+                    x={card.rect.x + card.rect.w / 2}
+                    y={card.rect.y + card.rect.h / 2 + LABEL_FONT * 0.35}
+                    textAnchor="middle"
+                    fontSize={LABEL_FONT}
+                    fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                    fill="#1a242b"
+                  >
+                    {card.text}
                   </text>
                 </g>
               );
@@ -688,10 +847,11 @@ export function WokwiDiagram({
               </div>
             );
           })}
+          </div>
         </div>
       </div>
 
-      <p className="border-t border-line px-3 py-2 text-[11px] text-mute">
+      <p className="shrink-0 border-t border-line px-3 py-1.5 text-[11px] text-mute">
         This picture shows which part connects to which. It is a guide for you, not a working
         circuit, and the written checklist has the same information.
         {guide.power_source

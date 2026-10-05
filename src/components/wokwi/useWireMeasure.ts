@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type Dispatch,
-  type MutableRefObject,
-  type RefObject,
-  type SetStateAction,
-} from "react";
+import { useEffect, useState, type Dispatch, type RefObject, type SetStateAction } from "react";
 import { getCatalogPart } from "@/lib/catalog";
 import {
   getDiagramAsset,
@@ -17,12 +10,17 @@ import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import {
   BB_COLS,
+  BB_HEIGHT,
   BB_ORIGIN_X,
   BB_ROW_Y,
   BB_STEP,
+  BB_WIDTH,
   POWER_ORIGIN,
-  clampZoom,
 } from "./constants";
+import { placeBadges, BADGE_R } from "./badges";
+import { canvasFromBounds, sceneBounds } from "./bounds";
+import { POWER_WIRE_IDS } from "./focus";
+import { assignLanes, hopPoints, roundedPath } from "./lanes";
 import { breadboardHoleLocal, isBreadboardId, parseBreadboardRail } from "./breadboard";
 import { breadboardPinExit, pinExitDirection } from "./geometry";
 import {
@@ -32,6 +30,7 @@ import {
   pointAlongPath,
   resolveLabelPositions,
 } from "./labels";
+import { USB_WALL_SIZE } from "@/components/BatteryAssets";
 import { boardPowerPins } from "./layout";
 import {
   BATTERY_WIRE_ANCHORS,
@@ -41,31 +40,50 @@ import {
   powerSourceName,
 } from "./PowerSourceVisual";
 import { PLUG_LENGTH, getBoardUsbPort, plugBack, usbOutward } from "./usb-port";
-import { routedPath, type Obstacle } from "./routing";
-import type { CanvasSize, ExitDir, PinInfo, PlacedPart, Point, Wire } from "./types";
+import { routedPath, solidObstaclesFor, type Obstacle } from "./routing";
+import type {
+  CanvasSize,
+  DiagramScene,
+  ExitDir,
+  PinInfo,
+  PlacedPart,
+  Point,
+  Rect,
+  Wire,
+} from "./types";
+
+const EMPTY_SCENE: DiagramScene = { wires: [], partRects: [], bounds: null };
+
+/** A point halfway along the path's length. */
+function pathMiddle(points: Point[]): Point {
+  let total = 0;
+  for (let i = 0; i < points.length - 1; i += 1) {
+    total += Math.hypot(points[i + 1].x - points[i].x, points[i + 1].y - points[i].y);
+  }
+  return pointAlongPath(points, total / 2);
+}
+
+function growRect(rect: Rect, by: number): Rect {
+  return { x: rect.x - by, y: rect.y - by, w: rect.w + by * 2, h: rect.h + by * 2 };
+}
 
 export function useWireMeasure({
   guide,
   placed,
   ready,
   hostRef,
-  viewportRef,
-  fittedRef,
+  numbers,
   setCanvas,
-  setZoom,
-  setPan,
 }: {
   guide: Guide;
   placed: PlacedPart[];
   ready: boolean;
   hostRef: RefObject<HTMLDivElement | null>;
-  viewportRef: RefObject<HTMLDivElement | null>;
-  fittedRef: MutableRefObject<boolean>;
+  /** Connection id to its 1-based position in the written checklist. */
+  numbers: ReadonlyMap<string, number>;
   setCanvas: Dispatch<SetStateAction<CanvasSize>>;
-  setZoom: Dispatch<SetStateAction<number>>;
-  setPan: Dispatch<SetStateAction<{ x: number; y: number }>>;
-}): Wire[] {
-  const [wires, setWires] = useState<Wire[]>([]);
+}): DiagramScene {
+  const [scene, setScene] = useState<DiagramScene>(EMPTY_SCENE);
 
   useEffect(() => {
     if (!ready || !hostRef.current) return;
@@ -79,10 +97,7 @@ export function useWireMeasure({
       const anchors = new Map<string, Point>();
       const exitDirs = new Map<string, ExitDir>();
       const obstacles: Obstacle[] = [];
-      let maxRight = 1200;
-      let maxBottom = 720;
-      let contentRight = 0;
-      let contentBottom = 0;
+      const partRects: Rect[] = [];
       let boardsReady = true;
 
       for (const part of placed) {
@@ -125,10 +140,29 @@ export function useWireMeasure({
           width = Math.max(width, 160);
           height = Math.max(height, 220);
         }
-        maxRight = Math.max(maxRight, offsetX + width + 140);
-        maxBottom = Math.max(maxBottom, offsetY + height + 120);
-        contentRight = Math.max(contentRight, offsetX + width);
-        contentBottom = Math.max(contentBottom, offsetY + height);
+        // Tight box of what is actually drawn (not the padded layout minimum),
+        // plus the part's name above a breadboard.
+        const drawnW = isBreadboardId(part.catalogId)
+          ? BB_WIDTH
+          : Math.max(
+              rawW,
+              hasPins ? Math.max(...raw.map((pin) => pin.x)) + 6 : 0,
+              useDiagramAsset && diagramAsset ? diagramAsset.width : 0,
+            ) || width;
+        const drawnH = isBreadboardId(part.catalogId)
+          ? BB_HEIGHT
+          : Math.max(
+              rawH,
+              hasPins ? Math.max(...raw.map((pin) => pin.y)) + 6 : 0,
+              useDiagramAsset && diagramAsset ? diagramAsset.height : 0,
+            ) || height;
+        const nameRoom = isBreadboardId(part.catalogId) ? 24 : 0;
+        partRects.push({
+          x: offsetX - 4,
+          y: offsetY - 4 - nameRoom,
+          w: drawnW + 8,
+          h: drawnH + 8 + nameRoom,
+        });
 
         const bodyPad = isBreadboardId(part.catalogId) ? 2 : 10;
         // Pins sit just inside the real body, so a pinned part's obstacle is
@@ -235,7 +269,19 @@ export function useWireMeasure({
             h: batteryBlockHeight(asset) - asset.height + 2,
             hug: true,
           });
+          partRects.push({
+            x: POWER_ORIGIN.x - 4,
+            y: POWER_ORIGIN.y - 4,
+            w: asset.width + 8,
+            h: batteryBlockHeight(asset) + 8,
+          });
         } else {
+          partRects.push({
+            x: POWER_ORIGIN.x - 4,
+            y: POWER_ORIGIN.y - 4,
+            w: USB_WALL_SIZE.width + 8,
+            h: USB_WALL_SIZE.height + 8,
+          });
           obstacles.push({
             x: POWER_ORIGIN.x,
             y: POWER_ORIGIN.y,
@@ -313,6 +359,7 @@ export function useWireMeasure({
       }
 
       const nextWires: Wire[] = [];
+      const badgeEnds = new Map<string, "from" | "to">();
       const routedPaths: Point[][] = [];
       const routeWire = (
         from: Point,
@@ -393,34 +440,23 @@ export function useWireMeasure({
           route = routeWire(from, to, fromKey, toKey, index);
         }
         routedPaths.push(route.points);
-        const span = Math.hypot(to.x - from.x, to.y - from.y);
-        const touchesBreadboard =
-          (fromPart && isBreadboardId(fromPart.catalogId)) ||
-          (toPart && isBreadboardId(toPart.catalogId));
-        const bothOnOrNearBoard =
-          touchesBreadboard &&
-          fromPart &&
-          toPart &&
-          (isBreadboardId(fromPart.catalogId) || fromPart.catalogId.includes("resistor") || fromPart.catalogId.includes(".led.")) &&
-          (isBreadboardId(toPart.catalogId) || toPart.catalogId.includes("resistor") || toPart.catalogId.includes(".led."));
-        const showLabel =
-          (Boolean(connection.note) && !/^Bridge/i.test(connection.note || "")) ||
-          (span > 110 && !bothOnOrNearBoard);
-        maxRight = Math.max(maxRight, from.x + 40, to.x + 40, route.mid.x + 80);
-        maxBottom = Math.max(maxBottom, from.y + 40, to.y + 40, route.mid.y + 40);
-        contentRight = Math.max(contentRight, from.x, to.x, route.mid.x);
-        contentBottom = Math.max(contentBottom, from.y, to.y, route.mid.y);
+        // Connection wires are named by a numbered badge (and a card on demand),
+        // never by a pill that sits on the picture all the time.
         nextWires.push({
           id: connection.id,
           color: connectionColors[index],
           d: route.d,
           label,
-          showLabel,
+          showLabel: false,
           mid: route.mid,
           from,
           to,
           points: route.points,
         });
+        // Badge goes at the end that is not the microcontroller's crowded header.
+        const fromIsBoard = connection.from.instanceId === board?.instanceId;
+        const toIsBoard = connection.to.instanceId === board?.instanceId;
+        badgeEnds.set(connection.id, fromIsBoard && !toIsBoard ? "to" : "from");
       });
 
       // Label sits on its wire near the board pin it names, a short way along from it.
@@ -511,22 +547,36 @@ export function useWireMeasure({
         }
       }
 
-      resolveLabelPositions(nextWires, obstacles);
+      // Give overlapping legs their own lanes, then redraw every wire with
+      // rounded corners and a hop wherever it crosses another wire.
+      const lanes = assignLanes(
+        nextWires.map((wire) => wire.points),
+        {
+          solid: nextWires.map((wire) =>
+            solidObstaclesFor(wire.from, wire.to, obstacles).map((rect) => growRect(rect, 3)),
+          ),
+        },
+      );
+      const hops = hopPoints(
+        lanes,
+        nextWires.map((wire) => Boolean(wire.plugs)),
+      );
+      nextWires.forEach((wire, i) => {
+        wire.points = lanes[i];
+        wire.d = roundedPath(lanes[i], hops[i]);
+        wire.mid = (POWER_WIRE_IDS as readonly string[]).includes(wire.id)
+          ? labelNearEnd(lanes[i])
+          : pathMiddle(lanes[i]);
+      });
 
-      for (const wire of nextWires) {
-        for (const point of wire.points) {
-          maxRight = Math.max(maxRight, point.x + 40);
-          maxBottom = Math.max(maxBottom, point.y + 40);
-          contentRight = Math.max(contentRight, point.x);
-          contentBottom = Math.max(contentBottom, point.y);
-        }
-        if (!wire.showLabel) continue;
-        const box = labelRect(wire.mid, wire.label);
-        maxRight = Math.max(maxRight, box.x + box.w + 24);
-        maxBottom = Math.max(maxBottom, box.y + box.h + 24);
-        contentRight = Math.max(contentRight, box.x + box.w);
-        contentBottom = Math.max(contentBottom, box.y + box.h);
-      }
+      // Power wires keep a short pill; place it clear of wires, parts and other pills.
+      resolveLabelPositions(nextWires, obstacles);
+      const pills = nextWires.flatMap((wire) =>
+        wire.showLabel ? [labelRect(wire.mid, wire.label)] : [],
+      );
+      placeBadges(nextWires, { numbers, ends: badgeEnds, fixedRects: pills, partRects });
+
+      const bounds = sceneBounds({ wires: nextWires, partRects, badgeRadius: BADGE_R });
 
       if (!boardsReady && attempts < 25) {
         attempts += 1;
@@ -534,27 +584,8 @@ export function useWireMeasure({
         return;
       }
 
-      const fitWidth = Math.ceil(contentRight + 60);
-      const fitHeight = Math.ceil(contentBottom + 60);
-      setCanvas({
-        width: Math.ceil(maxRight + 160),
-        height: Math.ceil(maxBottom + 160),
-        fitWidth,
-        fitHeight,
-      });
-      setWires(nextWires);
-
-      const viewport = viewportRef.current;
-      if (viewport && !fittedRef.current) {
-        const fit = Math.min(
-          (viewport.clientWidth - 48) / Math.max(fitWidth, 1),
-          (viewport.clientHeight - 48) / Math.max(fitHeight, 1),
-          1.15,
-        );
-        fittedRef.current = true;
-        setZoom(clampZoom(Number.isFinite(fit) && fit > 0 ? fit : 1));
-        setPan({ x: 40, y: 40 });
-      }
+      if (bounds) setCanvas(canvasFromBounds(bounds));
+      setScene({ wires: nextWires, partRects, bounds });
     };
 
     const frame = requestAnimationFrame(() => {
@@ -574,12 +605,9 @@ export function useWireMeasure({
     guide.power_source,
     guide.parts,
     hostRef,
-    viewportRef,
-    fittedRef,
+    numbers,
     setCanvas,
-    setZoom,
-    setPan,
   ]);
 
-  return wires;
+  return scene;
 }

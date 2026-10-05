@@ -51,6 +51,16 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "private, no-store, max-age=0" },
         ],
       },
+      {
+        // Later block wins: photo lookups are public and safe to cache at the CDN.
+        source: "/api/part-photos",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
     ];
   },
 };

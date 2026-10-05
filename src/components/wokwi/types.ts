@@ -34,12 +34,37 @@ export type Wire = {
   title?: string;
   /** Drawn as a thick grey USB cable with a plug at each end instead of a hookup wire. */
   plugs?: UsbPlug[];
+  /** Position in the written "What to solder where" checklist (1-based). Power wires have none. */
+  number?: number;
+  /** Centre of this wire's numbered badge, on the wire near the part end. */
+  badge?: Point;
 };
 
-/** Diagram canvas size, plus the tight content bounds used for "fit". */
+/**
+ * Diagram canvas size, plus the tight content box used for "fit". Everything is
+ * drawn inside a layer shifted by (offsetX, offsetY), so content never starts
+ * left of or above the safe margin. fitLeft/fitTop/fitWidth/fitHeight are in
+ * canvas pixels (after the shift).
+ */
 export type CanvasSize = {
   width: number;
   height: number;
   fitWidth?: number;
   fitHeight?: number;
+  fitLeft?: number;
+  fitTop?: number;
+  /** Shift applied to the drawing layer (layout space to canvas space). */
+  offsetX?: number;
+  offsetY?: number;
+};
+
+/** Tight box around everything drawn, in layout coordinates (may be negative). */
+export type Bounds = { minX: number; minY: number; maxX: number; maxY: number };
+
+/** What the measure pass produced: final wires and the boxes the label placer must avoid. */
+export type DiagramScene = {
+  wires: Wire[];
+  /** Body boxes of every drawn part (breadboard names, battery caption and so on included). */
+  partRects: Rect[];
+  bounds: Bounds | null;
 };

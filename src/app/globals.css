@@ -189,27 +189,19 @@ body {
   max-width: 100%;
   min-width: 0;
   contain: inline-size;
-  min-height: 20rem;
+  /* A floor so a parent without a height never collapses the picture. */
+  min-height: 16rem;
   border: 1px solid var(--line-strong);
   background:
     linear-gradient(180deg, color-mix(in oklab, var(--mat) 55%, white), color-mix(in oklab, var(--paper-deep) 70%, white));
 }
 
+/* The parent decides the height: the shell fills it and the viewport takes
+   whatever the toolbar leaves. */
 .whiteboard-shell {
   display: flex;
   flex-direction: column;
   min-height: 0;
-}
-
-@media (min-width: 1024px) {
-  .whiteboard-shell {
-    min-height: min(82vh, 860px);
-  }
-
-  .diagram-viewport {
-    height: min(78vh, 820px);
-    min-height: 28rem;
-  }
 }
 
 .diagram-viewport:focus-visible {
@@ -240,7 +232,6 @@ body {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: min(70vh, 480px);
   min-height: 0;
   /* One-finger swipes scroll the page; pinch is handled in JS. */
   touch-action: pan-y;
@@ -263,19 +254,12 @@ body {
   background: #e8eef0;
 }
 
-.whiteboard-shell.is-enlarged {
-  min-height: min(92vh, 960px);
-}
-
 .whiteboard-shell.is-enlarged .diagram-viewport {
-  height: min(88vh, 920px);
-  min-height: 0;
   touch-action: none;
 }
 
 .whiteboard-shell.is-fullscreen .diagram-viewport,
 .whiteboard-shell:fullscreen .diagram-viewport {
-  height: auto;
   min-height: 0;
   flex: 1 1 auto;
   touch-action: none;
@@ -289,12 +273,56 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   line-height: 1;
-  padding: 0.55rem 0.7rem;
+  padding: 0.4rem 0.6rem;
   min-height: 2.25rem;
 }
 
 .diagram-zoom-btn:hover {
   border-color: var(--flux);
+  color: var(--flux);
+}
+
+.diagram-btn-icon {
+  display: none;
+}
+
+/* Phone, full screen: the toolbar floats over the picture as icon-only buttons. */
+@media (max-width: 767px) {
+  .whiteboard-shell.is-fullscreen .diagram-toolbar,
+  .whiteboard-shell:fullscreen .diagram-toolbar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 5;
+    flex-wrap: nowrap;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--line-strong);
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
+  }
+
+  .whiteboard-shell.is-fullscreen .diagram-cue,
+  .whiteboard-shell:fullscreen .diagram-cue,
+  .whiteboard-shell.is-fullscreen .diagram-btn-label,
+  .whiteboard-shell:fullscreen .diagram-btn-label {
+    display: none;
+  }
+
+  .whiteboard-shell.is-fullscreen .diagram-btn-icon,
+  .whiteboard-shell:fullscreen .diagram-btn-icon {
+    display: inline;
+  }
+
+  .whiteboard-shell.is-fullscreen .diagram-zoom-btn,
+  .whiteboard-shell:fullscreen .diagram-zoom-btn {
+    min-width: 2.25rem;
+    padding: 0.4rem;
+  }
+}
+
+.diagram-zoom-btn[aria-pressed="true"] {
+  border-color: var(--flux);
+  background: color-mix(in oklab, var(--flux) 12%, white);
   color: var(--flux);
 }
 

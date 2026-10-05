@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getCatalogPart, listCatalog } from "@/lib/catalog";
-import type { Guide } from "@/lib/catalog/types";
+import type { Guide, ValidationResult } from "@/lib/catalog/types";
 import {
   createGuide,
   getGuide,
@@ -13,7 +13,7 @@ import {
   matchPowerSource,
 } from "@/lib/guides/power-source";
 import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
-import { validateGuide } from "@/lib/guides/validator";
+import { issueSeverity, validateGuide } from "@/lib/guides/validator";
 import { STRONG_MATCH, suggestClosest } from "@/lib/requests/normalize";
 import { resolveAlias, type PartRequestInput } from "@/lib/requests/record";
 import type { CatalogSearchInput } from "@/lib/requests/search";
@@ -40,15 +40,16 @@ type ToolResult = {
 };
 
 const INSTRUCTIONS = `HelpmeSolder writes a how-to solder guide (parts prep, wiring diagram, steps) at a secret link.
-Flow:
-1. list_catalog to pick a board and parts. If unsure of an id, call search_catalog with a short name. Never guess or invent ids.
-   If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
-2. If the power source is unknown call ask_power_source and ASK THE USER (never guess), later set_power_source.
-   If the user wants a power type we do not list (coin cell, LiPo, AAA, solar, mains), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option.
-3. If the build needs a sensor/input and the exact module is unknown call ask_sensor and ASK THE USER.
-4. create_guide, then tell the user the returned url and mention that the guide is deleted if unopened (see retention.message).
-5. set_power_source, add_part (catalog ids only), add_connection, set_steps.
-6. validate_guide and fix problems using alternatives[].
+Required order. Do not skip or reorder:
+1. ASK FIRST, in chat, before any create_guide call: which power source (ask_power_source gives the options), which exact board and sensor or module (ask_sensor, list_catalog, search_catalog), and any limits. Wait for the user's answers. Never guess.
+2. create_guide. It returns NO link on purpose. Do not tell the user any link yet.
+3. Build the whole guide: set_power_source, add_part (catalog ids only), add_connection, set_steps. Parts can be added in any order. There is no gate on power or on anything else: the only rules are the ones in the tool descriptions and validate_guide results. Never describe other server rules or promise features that are not listed.
+4. validate_guide. Fix every problem it lists (use alternatives[]) and call it again.
+5. When validate_guide returns shareUrl, share that link ONCE, as your last message, and mention the retention message it returns (guides are deleted if nobody opens them for a while). get_guide_link returns the same link again later. If there is no shareUrl, read missing[] and finish the guide first.
+
+Catalog: if unsure of an id call search_catalog with a short name. Never invent ids.
+If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
+If the user wants a power type we do not list (coin cell, LiPo, AAA, solar, mains), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option.
 
 Writing steps (readers are beginners who dislike circuit diagrams):
 - The page already generates a "What to solder where" checklist from the connections, so do NOT restate every wire in the steps.
@@ -95,12 +96,60 @@ async function changeGuide(
   return textResult({ guide, validation, blocked: !validation.ok });
 }
 
+/** Plain-language list of what still blocks sharing. Empty means ready. */
+function missingForShare(guide: Guide, validation: ValidationResult): string[] {
+  const missing: string[] = [];
+  if (!guide.power_source) {
+    missing.push("power source not set (ask the user, then call set_power_source)");
+  }
+  if (guide.parts.length === 0) {
+    missing.push("no parts yet (call add_part)");
+  }
+  if (guide.connections.length === 0) {
+    missing.push("no connections yet (call add_connection)");
+  }
+  if (guide.steps.length === 0) {
+    missing.push("no steps yet (call set_steps)");
+  }
+  const errors = validation.issues.filter(
+    (issue) => issue.code !== "power_source_required" && issueSeverity(issue) === "error",
+  );
+  if (errors.length > 0) {
+    missing.push(`validation errors: ${errors.map((issue) => issue.message).join(" | ")}`);
+  }
+  return missing;
+}
+
+/** The share link exists only once the guide is complete and valid. */
+function shareStatus(ctx: ToolContext, guide: Guide) {
+  const validation = validateGuide(guide);
+  const missing = missingForShare(guide, validation);
+  if (missing.length > 0 || !validation.ok) {
+    return {
+      guideId: guide.id,
+      validation,
+      blocked: !validation.ok,
+      readyToShare: false,
+      missing,
+      next: "Do NOT share a link yet. Finish the items in missing[], then call validate_guide again.",
+    };
+  }
+  return {
+    guideId: guide.id,
+    validation,
+    blocked: false,
+    readyToShare: true,
+    shareUrl: `${ctx.appUrl}/guides/${guide.id}`,
+    message: `Share this link with the user once. Mention that guides are deleted if nobody opens them for ${getRetentionDays()} days.`,
+  };
+}
+
 export function registerTools(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "create_guide",
     {
       description:
-        "Create a secret HelpmeSolder guide and return its URL. Prefer setting board_id from list_catalog. Use a short plain title a beginner would recognise (for example \"ESP32 buzzer\"). Before wiring, ask the user which power source (battery type or USB wall) — never guess — then call set_power_source.",
+        "Create an empty HelpmeSolder guide. Call this only AFTER you have asked the user in chat which power source, which exact board and sensor, and any limits, and have their answers. It returns NO link on purpose: do not share any link yet. Build the whole guide first (set_power_source, add_part, add_connection, set_steps; any order, nothing is blocked), then call validate_guide and share only the shareUrl it returns. Prefer setting board_id from list_catalog. Use a short plain title a beginner would recognise (for example \"ESP32 buzzer\").",
       inputSchema: {
         title: z.string().optional(),
         board_id: z.string().optional(),
@@ -120,8 +169,8 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         return textResult({
           guide,
           validation: validateGuide(guide),
-          url: `${ctx.appUrl}/guides/${guide.id}`,
           retention: { days: getRetentionDays(), message: retentionNotice() },
+          next: "Do NOT share any link yet. First settle the open questions with the user in chat (power source, exact sensor), then build the whole guide (set_power_source, add_part, add_connection, set_steps), then call validate_guide, and only share the link that validate_guide returns as shareUrl.",
         });
       }),
   );
@@ -130,7 +179,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "ask_power_source",
     {
       description:
-        "Decision helper for power. Call this when power_source is unknown. Returns the exact question and options to ask the user. Do NOT invent a battery type or USB wall — wait for the user's answer, then call set_power_source.",
+        "Decision helper for power. Call this when power_source is unknown, BEFORE create_guide. Returns the exact question and options to ask the user in chat. Do NOT invent a battery type or USB wall: wait for the user's answer, then call set_power_source. This is a question for the user, not a server gate: parts can be added in any order.",
       inputSchema: {
         guide_id: z.string().optional(),
         context: z
@@ -371,7 +420,8 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "get_guide",
     {
-      description: "Fetch a guide and its validation result.",
+      description:
+        "Fetch a guide and its validation result. Does not return the share link: use validate_guide or get_guide_link for that.",
       inputSchema: { guide_id: z.string() },
     },
     ({ guide_id }) =>
@@ -479,7 +529,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "validate_guide",
     {
       description:
-        "Validate a guide. Hard-blocks bad pins/parts and returns alternatives[]. If needsPowerSource is true, call ask_power_source and ask the user before continuing.",
+        "Validate a guide and check it is ready to share. Hard-blocks bad pins/parts and returns alternatives[]. Returns shareUrl ONLY when the guide is ready (power source set, at least one part, connection and step, and no validation errors), together with readyToShare true. Otherwise it returns readyToShare false and missing[] in plain words: finish those, then call again. Share the shareUrl once with the user as your last message. Never share a link that did not come from this tool or get_guide_link.",
       inputSchema: { guide_id: z.string() },
     },
     ({ guide_id }) =>
@@ -488,12 +538,24 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         if (!guide) {
           return errorResult("Guide not found");
         }
-        const validation = validateGuide(guide);
-        return textResult({
-          guideId: guide.id,
-          validation,
-          blocked: !validation.ok,
-        });
+        return textResult(shareStatus(ctx, guide));
+      }),
+  );
+
+  server.registerTool(
+    "get_guide_link",
+    {
+      description:
+        "Read-only. Returns the same readiness result as validate_guide: shareUrl only when the guide is ready to share, otherwise readyToShare false and missing[]. Use it to fetch the link again after validate_guide passed. Share the link once with the user.",
+      inputSchema: { guide_id: z.string() },
+    },
+    ({ guide_id }) =>
+      safely(async () => {
+        const guide = await getGuide(guide_id);
+        if (!guide) {
+          return errorResult("Guide not found");
+        }
+        return textResult(shareStatus(ctx, guide));
       }),
   );
 }

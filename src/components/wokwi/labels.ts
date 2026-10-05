@@ -2,9 +2,12 @@ import { getCatalogPart } from "@/lib/catalog";
 import { COLORS, LABEL_H, LABEL_PAD } from "./constants";
 import type { Point, Rect, Wire } from "./types";
 
+/** Widest label pill. Text longer than fits is cut by the caller (see cardText). */
+export const MAX_LABEL_W = 360;
+
 export function labelSize(text: string): { w: number; h: number } {
   return {
-    w: Math.min(320, Math.max(52, text.length * 8 + 18)),
+    w: Math.min(MAX_LABEL_W, Math.max(52, text.length * 8 + 18)),
     h: LABEL_H,
   };
 }
@@ -153,13 +156,14 @@ export function labelCollisions(
 
 /**
  * Place each pill label on a clear spot: no overlap with another wire, its own
- * wire's other legs, other labels or parts. The label starts at its wire's
+ * wire's other legs, other labels or parts. Positions may be negative: the
+ * canvas is sized from the final label boxes, so nothing is clipped. The label starts at its wire's
  * `mid` (or where the caller put it) and slides along the wire to the nearest
  * clear spot. If nothing is clear it takes the least-bad spot; the pill is
  * drawn with a solid background so the text stays readable.
  */
-export function resolveLabelPositions(wires: Wire[], obstacles: Rect[]): void {
-  const placedLabels: Rect[] = [];
+export function resolveLabelPositions(wires: Wire[], obstacles: Rect[], fixed: Rect[] = []): void {
+  const placedLabels: Rect[] = [...fixed];
   const order = wires
     .map((wire, index) => ({ wire, index }))
     .filter(({ wire }) => wire.showLabel)
@@ -168,7 +172,7 @@ export function resolveLabelPositions(wires: Wire[], obstacles: Rect[]): void {
   for (const { wire, index } of order) {
     const anchor = { ...wire.mid };
     const candidates: LabelCandidate[] = labelCandidates(wire.points, wire.label);
-    for (let ring = 1; ring <= 8; ring += 1) {
+    for (let ring = 1; ring <= 14; ring += 1) {
       const step = 24 * ring;
       for (const [dx, dy] of [
         [0, -1],
@@ -192,7 +196,6 @@ export function resolveLabelPositions(wires: Wire[], obstacles: Rect[]): void {
     let bestScore = Number.POSITIVE_INFINITY;
     for (const candidate of candidates) {
       const { center } = candidate;
-      if (center.x < 10 || center.y < 10) continue;
       const box = labelRect(center, wire.label);
       const hits = labelCollisions(box, index, candidate.seg, wires, obstacles, placedLabels);
       const dist = Math.abs(center.x - anchor.x) + Math.abs(center.y - anchor.y);
