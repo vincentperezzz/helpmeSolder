@@ -58,22 +58,9 @@ export const NotesIcon = (p: IconProps) => (
   </Icon>
 );
 
-export const ShowPanelIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <rect x="3" y="4" width="18" height="16" rx="2" />
-    <path d="M14 4v16" />
-  </Icon>
-);
-
 export const CloseIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M6 6l12 12M18 6L6 18" />
-  </Icon>
-);
-
-export const DockIcon = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M5 7h14M5 12h14M5 17h14" />
   </Icon>
 );
 

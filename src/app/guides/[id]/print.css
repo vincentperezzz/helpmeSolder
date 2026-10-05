@@ -76,6 +76,7 @@
     display: block !important;
     height: auto !important;
     min-height: 0 !important;
+    overflow: visible !important;
     margin-bottom: 14pt;
   }
 
@@ -88,14 +89,17 @@
     border-radius: 0 !important;
   }
 
-  .ga-dock,
   .ga-sheet-head {
     display: none !important;
   }
 
+  .ga-drawer-body {
+    display: block !important;
+  }
+
   .ga-panel,
   .guide-app[data-enlarged="true"] .ga-panel,
-  .guide-app[data-enlarged="true"][data-sheet="open"] .ga-panel {
+  .ga-panel[data-snap] {
     position: static !important;
     height: auto !important;
     padding: 0 !important;

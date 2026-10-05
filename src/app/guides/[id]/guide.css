@@ -162,16 +162,6 @@
   min-width: 0;
 }
 
-.guide-app[data-enlarged="true"] .ga-stage {
-  flex: 1 1 0;
-  height: auto;
-  min-height: 0;
-}
-
-.guide-app[data-enlarged="true"] .ga-panel {
-  display: none;
-}
-
 .ga-controls {
   display: flex;
   flex: none;
@@ -247,6 +237,10 @@
 
   .guide-app[data-enlarged="true"] .ga-body {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .guide-app[data-enlarged="true"] .ga-panel {
+    display: none;
   }
 
   .ga-stage,
@@ -376,53 +370,6 @@
 .ga-switch[aria-checked="true"]:hover .ga-switch-track {
   box-shadow: none;
   filter: brightness(1.05);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @media not all and ((min-width: 1024px) or ((min-width: 640px) and (max-height: 560px) and (orientation: landscape))) {
-    /* Open: the pill unrolls from the toggle, then icons pop in right to left.
-       Close: icons drop out left to right, then the pill folds back into the toggle. */
-    .ga-dock-pill {
-      transition: clip-path 340ms cubic-bezier(0.34, 1.3, 0.5, 1) 0ms;
-    }
-
-    .ga-dock[data-open="false"] .ga-dock-pill {
-      transition: clip-path 260ms cubic-bezier(0.5, 0, 0.2, 1) 160ms;
-    }
-
-    .ga-dock-items {
-      transition: visibility 0s linear 0s;
-    }
-
-    .ga-dock[data-open="false"] .ga-dock-items {
-      transition: visibility 0s linear 420ms;
-    }
-
-    .ga-dock-item {
-      transform-origin: 100% 50%;
-      transition:
-        opacity 200ms ease-out calc((6 - var(--i)) * 70ms),
-        transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1) calc((6 - var(--i)) * 70ms);
-    }
-
-    .ga-dock[data-open="false"] .ga-dock-item {
-      opacity: 0;
-      transform: translateX(16px) scale(0.6);
-      transition:
-        opacity 120ms ease-in calc(var(--i) * 25ms),
-        transform 160ms ease-in calc(var(--i) * 25ms);
-    }
-
-    .ga-dock-glyph {
-      transition:
-        opacity 160ms ease-out,
-        transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .ga-dock-btn:active {
-      transform: scale(0.94);
-    }
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -621,148 +568,103 @@
   outline: none;
 }
 
-/* ---------- small screens, picture full screen: icon dock and bottom sheet ---------- */
+/* ---------- phones: the panel is a drawer under the picture ---------- */
 
-.ga-dock,
+/* The drawer wrapper is invisible to layout except on phones. */
+.ga-drawer-body {
+  display: contents;
+}
+
 .ga-sheet-head {
   display: none;
 }
 
 @media not all and ((min-width: 1024px) or ((min-width: 640px) and (max-height: 560px) and (orientation: landscape))) {
-  .guide-app[data-enlarged="true"] .ga-bar,
-  .guide-app[data-enlarged="true"] .ga-controls {
+  /* Split view: the picture takes what the drawer leaves. Nothing overlaps. */
+  .ga-stage {
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* The drawer replaces the Hide panel / Show panel button on phones. */
+  .guide-app .diagram-panel-btn {
     display: none;
   }
 
-  .guide-app[data-enlarged="true"] .ga-body {
-    padding: 0;
+  .ga-panel {
+    flex: none;
+    height: 45dvh;
+    border-radius: 18px 18px var(--ga-r) var(--ga-r);
+    box-shadow: 0 -6px 18px rgb(18 26 32 / 0.12);
   }
 
-  .guide-app[data-enlarged="true"] .ga-canvas-frame {
-    border-width: 0;
-    border-radius: 0;
+  .ga-panel[data-snap="peek"] {
+    height: 56px;
   }
 
-  /* Anchored bottom-right; the pill grows leftwards out of the round toggle. The
-     shadow lives on the wrapper (a clip-path on the pill would cut its own). */
-  .guide-app[data-enlarged="true"] .ga-dock {
-    position: fixed;
-    right: calc(12px + env(safe-area-inset-right));
-    bottom: calc(12px + env(safe-area-inset-bottom));
-    z-index: 20;
+  .ga-panel[data-snap="split"] {
+    height: 45dvh;
+  }
+
+  .ga-panel[data-snap="full"] {
+    height: calc(100% - var(--ga-gap));
+  }
+
+  .ga-drawer-body {
     display: flex;
-    max-width: calc(100vw - 24px - env(safe-area-inset-right) - env(safe-area-inset-left));
-    filter: drop-shadow(0 6px 12px rgb(18 26 32 / 0.2));
+    flex: 1 1 0;
+    flex-direction: column;
+    min-height: 0;
   }
 
-  .guide-app[data-enlarged="true"][data-sheet="open"] .ga-dock {
-    display: none;
-  }
-
-  .ga-dock-pill {
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    background: color-mix(in oklab, white 88%, var(--paper));
-    clip-path: inset(0 round 999px);
-  }
-
-  .ga-dock[data-open="false"] .ga-dock-pill {
-    clip-path: inset(0 0 0 calc(100% - 54px) round 999px);
-  }
-
-  .ga-dock-items {
-    display: flex;
-    min-width: 0;
-    gap: 2px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .ga-dock-items::-webkit-scrollbar {
-    display: none;
-  }
-
-  .ga-dock[data-open="false"] .ga-dock-items {
-    visibility: hidden;
-  }
-
-  .ga-dock-btn {
+  .ga-sheet-head {
     position: relative;
-    display: grid;
-    width: 44px;
-    height: 44px;
+    display: block;
     flex: none;
-    place-items: center;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--ink);
-    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
-  .ga-dock-btn:hover,
-  .ga-dock-toggle[aria-expanded="false"] {
-    background: color-mix(in oklab, var(--copper) 14%, transparent);
-    color: var(--copper-deep);
-  }
-
-  .ga-dock-btn:focus-visible {
-    outline: 2px solid var(--flux);
-    outline-offset: -2px;
-  }
-
-  .ga-dock-glyph {
-    position: absolute;
+  .ga-sheet-handle-zone {
     display: grid;
+    height: 32px;
     place-items: center;
+    cursor: grab;
   }
 
-  .ga-dock[data-open="true"] .ga-dock-glyph-menu,
-  .ga-dock[data-open="false"] .ga-dock-glyph-close {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.5);
-  }
-
-  .ga-dock[data-open="false"] .ga-dock-glyph-menu,
-  .ga-dock[data-open="true"] .ga-dock-glyph-close {
-    opacity: 1;
-    transform: none;
-  }
-
-  .guide-app[data-enlarged="true"][data-sheet="open"] .ga-panel {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 30;
-    display: flex;
-    height: 60dvh;
-    padding-bottom: env(safe-area-inset-bottom);
-    border-radius: 18px 18px 0 0;
-    box-shadow: 0 -10px 30px rgb(18 26 32 / 0.22);
-  }
-
-  .guide-app[data-enlarged="true"][data-sheet="open"] .ga-sheet-head {
-    display: flex;
-    flex: none;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 6px 0 16px;
+  .ga-panel[data-dragging="true"] .ga-sheet-handle-zone {
+    cursor: grabbing;
   }
 
   .ga-sheet-handle {
-    width: 36px;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--line-strong);
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+    background: color-mix(in oklab, var(--ink) 28%, white);
+  }
+
+  .ga-sheet-hint {
+    margin: 0;
+    height: 22px;
+    color: var(--mute);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .ga-sheet-close {
+    position: absolute;
+    top: 0;
+    right: 4px;
+    z-index: 1;
     display: inline-flex;
-    min-height: 44px;
+    min-height: 36px;
     align-items: center;
     padding: 0 12px;
     border: 0;
@@ -776,17 +678,12 @@
 
 @media (prefers-reduced-motion: no-preference) {
   @media not all and ((min-width: 1024px) or ((min-width: 640px) and (max-height: 560px) and (orientation: landscape))) {
-    .guide-app[data-enlarged="true"][data-sheet="open"] .ga-panel {
-      animation: ga-sheet-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    .ga-panel {
+      transition: height 220ms cubic-bezier(0.22, 1, 0.36, 1);
     }
-  }
-}
 
-@keyframes ga-sheet-in {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
+    .ga-panel[data-dragging="true"] {
+      transition: none;
+    }
   }
 }
