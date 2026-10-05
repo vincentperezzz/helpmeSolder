@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Small green board with a clear 5 mm RGB LED and four header pins, the KY-016 style RGB LED module">
+<title>Small green board with a clear 5 mm RGB LED and four header pins, the KY-016 style RGB LED module</title>
+<defs><linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#8d949a"/><stop offset=".45" stop-color="#e6eaed"/><stop offset="1" stop-color="#868d93"/></linearGradient><linearGradient id="mv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f3"/><stop offset="1" stop-color="#8d949a"/></linearGradient><linearGradient id="side" x1="0" x2="1"><stop offset="0" stop-color="#0b0f13"/><stop offset=".35" stop-color="#2a343d"/><stop offset="1" stop-color="#0b0f13"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="104" ry="9" fill="#121a20" opacity="0.16"/>
+<rect x="100" y="30" width="120" height="180" fill="#2e7d4f" rx="5" stroke="#1d5233" stroke-width="2"/><circle cx="110" cy="40" r="4" fill="#b65c2e" /><circle cx="110" cy="40" r="2.2" fill="#0d1a24" /><circle cx="210" cy="40" r="4" fill="#b65c2e" /><circle cx="210" cy="40" r="2.2" fill="#0d1a24" /><circle cx="110" cy="200" r="4" fill="#b65c2e" /><circle cx="110" cy="200" r="2.2" fill="#0d1a24" /><circle cx="210" cy="200" r="4" fill="#b65c2e" /><circle cx="210" cy="200" r="2.2" fill="#0d1a24" />
+<circle cx="160" cy="90" r="32" fill="#eaf4f0" stroke="#a8c4b8" stroke-width="2" opacity=".95"/><circle cx="160" cy="90" r="20" fill="#f6faf8" />
+<circle cx="150" cy="88" r="4" fill="#e04a3a" /><circle cx="162" cy="80" r="4" fill="#3ac26a" /><circle cx="168" cy="94" r="4" fill="#3a76c4" />
+<rect x="128" y="134" width="10" height="6" fill="#d9c9a0" rx="1"/><rect x="150" y="134" width="10" height="6" fill="#d9c9a0" rx="1"/><rect x="172" y="134" width="10" height="6" fill="#d9c9a0" rx="1"/>
+<rect x="122" y="176" width="78" height="8" fill="#121a20" /><circle cx="128" cy="180" r="2" fill="#d7c27a" /><circle cx="150" cy="180" r="2" fill="#d7c27a" /><circle cx="172" cy="180" r="2" fill="#d7c27a" /><circle cx="194" cy="180" r="2" fill="#d7c27a" />
+</svg>

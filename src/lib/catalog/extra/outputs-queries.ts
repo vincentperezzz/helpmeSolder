@@ -1,4 +1,35 @@
 import type { PhotoQueriesOverride } from "../types";
 
 /** Curated outside-photo search phrases for the expansion outputs parts, keyed by part id. */
-export const EXTRA_OUTPUTS_QUERIES: Record<string, PhotoQueriesOverride> = {};
+export const EXTRA_OUTPUTS_QUERIES: Record<string, PhotoQueriesOverride> = {
+  "module.motor.dc": {
+    commons: ["DC motor -brushless", "small DC motor", "hobby motor"],
+    wikipedia: ["Brushed DC electric motor"],
+  },
+  "module.motor.vibration": ["vibration motor", "coin vibration motor", "eccentric rotating mass motor"],
+  "module.fan.5v": ["5V fan", "computer fan 40mm", "small DC fan"],
+  "module.servo.mg996r": ["MG996R", "servo motor MG996R", "standard servo"],
+  "module.servo.continuous": ["continuous rotation servo", "FS90R servo", "servo motor"],
+  "module.stepper.28byj48": ["28BYJ-48", "28BYJ-48 ULN2003", "ULN2003 driver board"],
+  "module.driver.a4988": ["A4988", "A4988 stepper driver"],
+  "module.driver.drv8825": ["DRV8825", "DRV8825 stepper driver"],
+  "module.driver.l298n": ["L298N", "L298N motor driver", "L298N module"],
+  "module.driver.l293d": ["L293D", "L293D motor driver"],
+  "module.driver.tb6612fng": ["TB6612FNG", "TB6612 motor driver"],
+  "module.relay.1ch": ["relay module", "1 channel relay module", "SRD-05VDC-SL-C"],
+  "module.relay.2ch": ["2 channel relay module", "relay module", "relay module Arduino"],
+  "module.relay.4ch": ["4 channel relay module", "relay module", "relay module Arduino"],
+  "module.relay.ssr": ["solid state relay", "SSR relay module", "solid-state relay"],
+  "module.solenoid.12v": ["solenoid push pull", "solenoid actuator", "12V solenoid"],
+  "module.buzzer.passive": ["passive buzzer", "piezo buzzer", "buzzer module"],
+  "module.speaker.8ohm": ["8 ohm speaker", "small speaker 8 ohm", "mini speaker"],
+  "module.amp.pam8403": ["PAM8403", "PAM8403 amplifier module"],
+  "module.amp.lm386": ["LM386", "LM386 amplifier module"],
+  "module.mp3.dfplayer": ["DFPlayer Mini", "DFPlayer", "MP3 player module"],
+  "module.siren.alarm": ["alarm siren", "siren speaker", "electronic siren"],
+  "module.led.strip.ws2812b": ["WS2812B strip", "NeoPixel strip", "addressable LED strip"],
+  "module.led.strip.rgb12v": ["RGB LED strip", "LED strip 5050", "12V LED strip"],
+  "module.led.highpower": ["high power LED", "COB LED", "1W LED star"],
+  "module.laser.650nm": ["laser diode module", "KY-008 laser", "650nm laser module"],
+  "module.rgb.ky016": ["KY-016", "RGB LED module", "RGB LED Arduino"],
+};
