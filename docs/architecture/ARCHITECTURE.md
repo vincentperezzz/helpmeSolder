@@ -3,12 +3,14 @@
 ## Shape
 
 ```
-Cursor/Claude
-    → thin MCP server
-    → Vercel Next.js API
+AI client (Claude, ChatGPT, Cursor, Codex, Antigravity)
+    → hosted MCP endpoint /mcp (Streamable HTTP, inside the Next.js app)
+    → shared libs (catalog, validator, repository)
     → Supabase Postgres (guides)
     → /guides/[id]
 ```
+
+The original stdio server in `mcp/` calls the HTTP API instead and is kept only for local development; see [`mcp/README.md`](../../mcp/README.md).
 
 ## Responsibilities
 
@@ -22,12 +24,17 @@ Cursor/Claude
 
 ## MCP tools
 
+Registered in `src/lib/mcp/tools.ts`:
+
 - `create_guide`
+- `ask_power_source` (the assistant must ask the user, never guess)
+- `ask_sensor` (same, for sensor and input modules)
 - `set_power_source`
 - `add_part`
 - `add_connection`
 - `set_steps`
 - `get_guide`
+- `get_guide_link`
 - `list_catalog` (compact: id, name, kind, category, summary)
 - `search_catalog`
 - `get_part_details` (full detail of one part: identify, variants, watchOuts, pins, electrical limits, look-alikes)
@@ -50,7 +57,7 @@ MCP is thin. Business rules live in the Next.js API + shared libs.
 - `notes` — jsonb string array
 - `created_at` / `updated_at`
 
-Catalog (boards, modules, recipes) lives in repo code for v1 so it versions with the app.
+Catalog (boards, modules, passives, batteries, recipes) lives in repo code under `src/lib/catalog/` so it versions with the app. Photos and drawings are indexed by `part-media.ts` and the asset registry. (The catalog is being moved into the database; this page will be updated when that lands.)
 
 ## API surface (v1)
 

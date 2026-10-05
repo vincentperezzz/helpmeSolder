@@ -1,5 +1,7 @@
 # Plan: guide retention + beginner onboarding
 
+**Status:** done. Implemented in commit `5499a24` ("Auto-delete unused guides, beginner-friendly setup, plainer homepage copy").
+
 Shared contract (already in the tree): `src/lib/guides/retention.ts` exports
 `getRetentionDays()` (default 30, env `GUIDE_RETENTION_DAYS`), `getExpiryDate(lastAccessedAt)`,
 `retentionNotice()`. `Guide.last_accessed_at?: string | null` was added to `src/lib/catalog/types.ts`.

@@ -1,5 +1,7 @@
 # Review Fix Plan
 
+**Status:** done. Implemented in commit `a356ed9` ("Harden API, secret URLs, and validator; split diagram; add tests").
+
 Source: project review. Each task has one owner agent and a disjoint file set.
 Rule for all agents: read the relevant guide in `node_modules/next/dist/docs/` before touching Next.js code (see AGENTS.md). Do not commit. Run `npm run lint` and `npx tsc --noEmit` before reporting. Report: files changed, decisions, follow-ups.
 

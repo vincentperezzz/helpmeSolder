@@ -1,6 +1,6 @@
 # PLAN: Flex/ribbon cables and keyed ports (FFC/FPC)
 
-Status: proposal, not built yet. Written against `C:\dev\helpmesolder\.claude\worktrees\project-review-419444` at commit `edb8d2a`.
+**Status:** proposed. Not built; implement only when there is demand (Raspberry Pi camera/display, ESP32-CAM or e-ink panel requests showing up in the admin Requests tab). Written against commit `edb8d2a`.
 Scope: Raspberry Pi camera and display ports, the Pi 5 PCIe flex, ESP32-CAM, SPI e-ink panels with an FPC tail, and the flat cables between them.
 
 ---
@@ -201,7 +201,7 @@ Cost: one additive migration and a deploy order. Reads work before the migration
 
 **Migration `supabase/migrations/0007_guide_cables.sql`:**
 ```sql
--- Ribbon / flex cable links (see docs/PLAN_FLEX_CONNECTORS.md). Safe to run more than once.
+-- Ribbon / flex cable links (see docs/plans/PLAN_FLEX_CONNECTORS.md). Safe to run more than once.
 alter table public.guides
   add column if not exists cables jsonb not null default '[]'::jsonb;
 ```
@@ -537,7 +537,7 @@ Files:
 - `src/app/api/guides/[id]/route.ts` (patchSchema)
 - `src/lib/requests/normalize.ts` (include cables)
 - compile fixes only: `src/lib/admin/coverage.ts` (kind union, cables → "other" for now), `src/components/wokwi/layout.ts` (skip cable kind), `src/lib/catalog/asset-registry.ts` (include cables) and its test, `media-coverage.test.ts` (include cables; seed thumbnails `public/photos/modules/ffc-cable-*.svg`, `pi-camera.svg`)
-- `docs/ARCHITECTURE.md` (cables column)
+- `docs/architecture/ARCHITECTURE.md` (cables column)
 
 Tests: `cables.test.ts` (pairing, fitting), `repository.test.ts` (cables round-trip, missing-column error), `route.test.ts` for PATCH (cables accepted, invalid rejected), `layout-variants.test.ts` (cables preserved).
 Risk: low. Without data, nothing renders differently.

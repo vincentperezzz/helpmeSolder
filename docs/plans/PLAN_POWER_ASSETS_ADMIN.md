@@ -1,5 +1,7 @@
 # Plan: power rendering, part images, parts list, admin page, print
 
+**Status:** done. Implemented in commits `081e164` (power sources, breadboard view, part images, admin dashboard), `0a0af50` and `40f51df` (admin tabs, requests).
+
 Branch `feat/power-assets-admin` (stacked on `fix/guide-page-ux`).
 
 | Agent | Task | Owns |

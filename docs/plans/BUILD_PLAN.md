@@ -1,5 +1,7 @@
 # Build Plan
 
+**Status:** done. Phases 0 to 4 shipped. The Phase 3 stdio server in `mcp/` is superseded by the hosted MCP endpoint at `/mcp` (commit `3c04a27`); the one unchecked Vercel env item was resolved by the later production setup. Kept as a historical record.
+
 Vision is frozen. Build in order. Do not reopen discovery.
 
 ## Phase 0 — Scaffold + infra
