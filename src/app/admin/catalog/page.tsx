@@ -52,7 +52,7 @@ export default async function AdminCatalogPage() {
         <div className="contents lg:block">
           <SectionNav items={navItems} label="Catalog categories" />
         </div>
-        <div className="mt-6 min-w-0 lg:mt-0">
+        <div className="min-w-0 pb-20 lg:pb-0">
           <div id="overview" className="scroll-mt-20">
             <Tiles>
               <Tile label="Boards" value={coverage.boards.length} />

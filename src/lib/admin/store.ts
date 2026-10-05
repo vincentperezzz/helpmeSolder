@@ -1,3 +1,4 @@
+import { classifyDbError, type DbError } from "./db-errors";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import {
   isDefaultDisabled,
@@ -14,15 +15,8 @@ export type StoredPassword =
   /** The database could not be read. Never fall back to a weaker password. */
   | { state: "error" };
 
-type DbError = { message?: string; code?: string } | null;
-
 function isMissingTable(error: DbError): boolean {
-  return Boolean(
-    error &&
-      (error.code === "42P01" ||
-        error.code === "PGRST205" ||
-        error.message?.includes("admin_settings")),
-  );
+  return classifyDbError(error, "admin_settings") === "missing";
 }
 
 /** Server-side only. Reads the saved password hash, if there is one. */

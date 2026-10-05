@@ -9,6 +9,7 @@ import { loginAction } from "./actions";
 import { guardAdmin } from "./_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "./_components/meta";
 import { AdminShell } from "./_components/shell";
+import { NoAccess, NotTracking, TrackingOn } from "./_components/status";
 import Link from "next/link";
 import { Section, Tile, Tiles } from "./_components/ui";
 
@@ -65,7 +66,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         >
           <p className="text-xs text-mute">Parts requested, not started</p>
           <p className="mt-1 text-2xl font-semibold text-ink">
-            {newRequests === null ? "Not tracking" : newRequests}
+            {newRequests.kind === "ok"
+              ? newRequests.count
+              : newRequests.kind === "missing"
+                ? "Not tracking"
+                : "No access"}
           </p>
           <p className="mt-1 text-xs text-mute">Open the Requests tab</p>
         </Link>
@@ -166,17 +171,18 @@ function LoginView({ error }: { error?: string }) {
 
 function HeadlineTiles({ users }: { users: UserLoad }) {
   const ok = users.kind === "ok";
+  const none = users.kind === "denied" ? "No access" : "Not tracking";
   return (
     <div className="mt-6 grid grid-cols-2 gap-3">
       <Tile
         big
         label="Visitors today (UTC)"
-        value={ok ? users.stats.visitors.today : "Not tracking"}
+        value={ok ? users.stats.visitors.today : none}
       />
       <Tile
         big
         label="Guide creators today (UTC)"
-        value={ok ? users.stats.creators.today : "Not tracking"}
+        value={ok ? users.stats.creators.today : none}
       />
     </div>
   );
@@ -195,12 +201,10 @@ function KindTiles({ label, totals }: { label: string; totals: KindTotals }) {
 
 function UsersBlock({ users }: { users: UserLoad }) {
   if (users.kind === "missing") {
-    return (
-      <p className="text-sm text-ink-soft">
-        Not tracking yet. Run supabase/migrations/0004_daily_clients.sql in the Supabase SQL
-        editor.
-      </p>
-    );
+    return <NotTracking migration="0004_daily_clients.sql" />;
+  }
+  if (users.kind === "denied") {
+    return <NoAccess />;
   }
   if (users.kind === "error") {
     return (
@@ -212,6 +216,11 @@ function UsersBlock({ users }: { users: UserLoad }) {
   const { stats } = users;
   return (
     <div className="space-y-6">
+      <TrackingOn>
+        {hasAnyActivity(stats.series)
+          ? "Counting visitors and guide creators."
+          : "The table is ready and no visits have been recorded yet."}
+      </TrackingOn>
       {users.capped ? (
         <p className="text-sm text-warn-ink">Too many rows to read. Numbers below are partial.</p>
       ) : null}

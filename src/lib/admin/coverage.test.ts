@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { listCatalog } from "@/lib/catalog";
 import type { CatalogPart } from "@/lib/catalog/types";
 import {
+  hasBuiltInDrawing,
   basicCategory,
   boardFamily,
   CATEGORIES,
@@ -125,5 +126,19 @@ describe("categories", () => {
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) expect(id).toMatch(/^[a-z][a-z0-9-]*$/);
     expect(byId("microcontrollers").count).toBe(listCatalog().boards.length);
+  });
+});
+
+describe("built-in drawings", () => {
+  it("counts power sources and the breadboard as drawn", () => {
+    expect(hasBuiltInDrawing("passive.power.battery.9v")).toBe(true);
+    expect(hasBuiltInDrawing("passive.power.usb_wall")).toBe(true);
+    expect(hasBuiltInDrawing("passive.breadboard.half")).toBe(true);
+    expect(hasBuiltInDrawing("module.dht22")).toBe(false);
+  });
+
+  it("reports no catalog part as missing a drawing or thumbnail", () => {
+    const report = buildCoverage();
+    expect(report.missing.map((row) => row.id)).toEqual([]);
   });
 });

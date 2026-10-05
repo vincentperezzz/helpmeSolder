@@ -1,3 +1,4 @@
+import { classifyDbError, type DbError } from "./db-errors";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 export const REQUEST_STATUSES = ["new", "planned", "building", "shipped", "rejected"] as const;
@@ -261,20 +262,14 @@ export function validateRequestKey(input: unknown): string | null {
   return key && key.length <= 200 ? key : null;
 }
 
-type DbError = { message?: string; code?: string } | null;
-
 export function isMissingRequestsTable(error: DbError): boolean {
-  if (!error) return false;
-  return (
-    error.code === "42P01" ||
-    error.code === "PGRST205" ||
-    Boolean(error.message?.includes("part_requests"))
-  );
+  return classifyDbError(error, "part_requests") === "missing";
 }
 
 export type RequestsLoad =
   | { kind: "ok"; rows: PartRequest[]; capped: boolean }
   | { kind: "missing" }
+  | { kind: "denied" }
   | { kind: "error" };
 
 const COLUMNS =
@@ -291,7 +286,10 @@ export async function loadRequests(): Promise<RequestsLoad> {
         .select(COLUMNS)
         .order("key", { ascending: true })
         .range(from, from + PAGE_SIZE - 1);
-      if (error) return isMissingRequestsTable(error) ? { kind: "missing" } : { kind: "error" };
+      if (error) {
+        const problem = classifyDbError(error, "part_requests");
+        return problem === "missing" ? { kind: "missing" } : problem === "denied" ? { kind: "denied" } : { kind: "error" };
+      }
       const page = (data ?? []) as unknown as PartRequest[];
       rows.push(...page);
       if (page.length < PAGE_SIZE) return { kind: "ok", rows: sortRequests(rows), capped: false };
@@ -302,15 +300,25 @@ export async function loadRequests(): Promise<RequestsLoad> {
   }
 }
 
-/** Server-side only. Number of requests with status new, or null when it cannot be read. */
-export async function countNewRequests(): Promise<number | null> {
+export type NewRequestsCount =
+  | { kind: "ok"; count: number }
+  | { kind: "missing" }
+  | { kind: "denied" }
+  | { kind: "error" };
+
+/** Server-side only. Number of requests with status new, or why it cannot be read. */
+export async function countNewRequests(): Promise<NewRequestsCount> {
   try {
     const { count, error } = await getSupabaseAdmin()
       .from("part_requests")
       .select("key", { count: "exact", head: true })
       .eq("status", "new");
-    return error || count === null ? null : count;
+    if (error) {
+      const problem = classifyDbError(error, "part_requests");
+      return problem === "other" ? { kind: "error" } : { kind: problem };
+    }
+    return count === null ? { kind: "error" } : { kind: "ok", count };
   } catch {
-    return null;
+    return { kind: "error" };
   }
 }

@@ -1,3 +1,4 @@
+import { classifyDbError, type DbError } from "./db-errors";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import type { DailyPoint } from "./chart";
 
@@ -24,6 +25,7 @@ export type UserStats = {
 export type UserLoad =
   | { kind: "ok"; stats: UserStats; capped: boolean }
   | { kind: "missing" }
+  | { kind: "denied" }
   | { kind: "error" };
 
 export function utcDay(ms: number): string {
@@ -68,15 +70,8 @@ export function buildSeries(daily: DailyCounts, now: number, days: number = CHAR
   return series;
 }
 
-type DbError = { message?: string; code?: string } | null;
-
 export function isMissingTable(error: DbError): boolean {
-  if (!error) return false;
-  return (
-    error.code === "42P01" ||
-    error.code === "PGRST205" ||
-    Boolean(error.message?.includes("daily_clients"))
-  );
+  return classifyDbError(error, "daily_clients") === "missing";
 }
 
 /** Server-side only. Counts distinct clients per day and kind for the last 30 days. */
@@ -101,7 +96,10 @@ export async function loadUserStats(now: number = Date.now()): Promise<UserLoad>
         .order("kind", { ascending: true })
         .order("client_hash", { ascending: true })
         .range(from, from + PAGE_SIZE - 1);
-      if (error) return isMissingTable(error) ? { kind: "missing" } : { kind: "error" };
+      if (error) {
+        const problem = classifyDbError(error, "daily_clients");
+        return problem === "missing" ? { kind: "missing" } : problem === "denied" ? { kind: "denied" } : { kind: "error" };
+      }
       const page = (data ?? []) as unknown as { day: string; kind: string }[];
       for (const row of page) {
         if (row.kind === "visitor" || row.kind === "creator") {

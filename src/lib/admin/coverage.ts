@@ -133,6 +133,11 @@ export function logicLabel(part: CatalogPart): string {
   return "unknown";
 }
 
+/** Parts the diagram draws itself (power sources and the breadboard), without a Wokwi element. */
+export function hasBuiltInDrawing(id: string): boolean {
+  return id.startsWith("passive.power.") || id.startsWith("passive.breadboard");
+}
+
 function toRow(
   part: CatalogPart,
   group: string,
@@ -143,7 +148,8 @@ function toRow(
     name: part.name,
     group,
     logic: logicLabel(part),
-    hasDrawing: hasWokwiVisual(part) || Boolean(getDiagramAsset(part.id)),
+    hasDrawing:
+      hasWokwiVisual(part) || Boolean(getDiagramAsset(part.id)) || hasBuiltInDrawing(part.id),
     hasThumbnail: resolvePartPhoto(part.photoHint) !== null,
     categoryId: categoryOf(kind, part.id),
   };

@@ -8,6 +8,7 @@ import {
 import { guardAdmin } from "../_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "../_components/meta";
 import { AdminShell } from "../_components/shell";
+import { NoAccess, NotTracking, TrackingOn } from "../_components/status";
 import { RequestsView } from "./_components/RequestsView";
 import {
   removeRequestAliasAction,
@@ -80,16 +81,26 @@ export default async function AdminRequestsPage({ searchParams }: PageProps) {
       {load.kind === "missing" ? (
         <>
           {message ? <Notice message={message} /> : null}
-          <p className="text-sm text-ink-soft">
-            Not tracking yet. Run supabase/migrations/0005_part_requests.sql in the Supabase SQL
-            editor.
-          </p>
+          <NotTracking migration="0005_part_requests.sql" />
+        </>
+      ) : load.kind === "denied" ? (
+        <>
+          {message ? <Notice message={message} /> : null}
+          <NoAccess />
         </>
       ) : load.kind === "error" ? (
         <p role="alert" className="text-sm text-warn-ink">
           Could not read requests from the database. Try again in a moment.
         </p>
       ) : (
+        <>
+        <div className="mb-4">
+          <TrackingOn>
+            {load.rows.length === 0
+              ? "The table is ready and nothing has been requested yet."
+              : `${load.rows.length} ${load.rows.length === 1 ? "part has" : "parts have"} been requested so far.`}
+          </TrackingOn>
+        </div>
         <RequestsView
           requests={load.rows}
           active={{ status, kind }}
@@ -105,6 +116,7 @@ export default async function AdminRequestsPage({ searchParams }: PageProps) {
             setNote: setRequestNoteAction,
           }}
         />
+        </>
       )}
     </AdminShell>
   );
