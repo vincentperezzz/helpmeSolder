@@ -4,7 +4,8 @@ import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, notFound, parseBody } from "@/lib/api/http";
 import { WRITE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
 import { getGuide, updateGuide } from "@/lib/guides/repository";
-import { powerSourceInputSchema } from "@/lib/guides/power-source";
+import { matchPowerSource, powerSourceInputSchema } from "@/lib/guides/power-source";
+import { recordPartRequestLater } from "@/lib/requests/record";
 import { validateGuide } from "@/lib/guides/validator";
 
 type RouteContext = {
@@ -14,6 +15,24 @@ type RouteContext = {
 const schema = z.object({
   power_source: powerSourceInputSchema,
 });
+
+/** Best-effort: notes an unsupported power source name. Never throws. */
+async function noteUnsupported(copy: Request, request: Request) {
+  try {
+    const body: unknown = await copy.json();
+    const value = (body as { power_source?: unknown } | null)?.power_source;
+    if (typeof value === "string" && value.trim() !== "" && !matchPowerSource(value)) {
+      recordPartRequestLater({
+        name: value.slice(0, 80),
+        kind: "power",
+        source: "set_power_source",
+        request,
+      });
+    }
+  } catch {
+    // Ignore: the caller still gets the 400.
+  }
+}
 
 export async function PUT(request: NextRequest, context: RouteContext) {
   const unauthorized = assertApiAuth(request);
@@ -33,8 +52,10 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       return notFound();
     }
 
+    const copy = request.clone();
     const parsed = await parseBody(request, schema);
     if (!parsed.ok) {
+      await noteUnsupported(copy, request);
       return parsed.response;
     }
 

@@ -83,6 +83,7 @@ describe("remote MCP endpoint", () => {
     const { result } = await res.json();
     expect(result.serverInfo.name).toBe("helpmesolder");
     expect(result.instructions).toContain("ask_power_source");
+    expect(result.instructions).toContain("coin cell");
   });
 
   it("lists all twelve tools", async () => {
@@ -213,6 +214,71 @@ describe("remote MCP endpoint", () => {
     vi.mocked(updateGuide).mockResolvedValue(guide);
     await callTool("set_power_source", { guide_id: "g1", power_source: "battery" });
     expect(updateGuide).toHaveBeenCalledWith("g1", { power_source: "battery_3aa" });
+  });
+
+  it("set_power_source keeps supported values working", async () => {
+    vi.mocked(getGuide).mockResolvedValue(guide);
+    vi.mocked(updateGuide).mockResolvedValue(guide);
+    await callTool("set_power_source", { guide_id: "g1", power_source: "battery_18650" });
+    expect(updateGuide).toHaveBeenCalledWith("g1", { power_source: "battery_18650" });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("set_power_source maps common synonyms", async () => {
+    vi.mocked(getGuide).mockResolvedValue(guide);
+    vi.mocked(updateGuide).mockResolvedValue(guide);
+    await callTool("set_power_source", { guide_id: "g1", power_source: "9 volt" });
+    expect(updateGuide).toHaveBeenCalledWith("g1", { power_source: "battery_9v" });
+    await callTool("set_power_source", { guide_id: "g1", power_source: "2 x AA" });
+    expect(updateGuide).toHaveBeenLastCalledWith("g1", { power_source: "battery_2aa" });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("set_power_source records an unsupported source and leaves the guide alone", async () => {
+    const result = await callTool("set_power_source", {
+      guide_id: "g1",
+      power_source: "CR2032 coin cell",
+      description: "tiny badge",
+    });
+    expect(result.isError).toBeFalsy();
+    const data = JSON.parse(result.content[0].text);
+    expect(data).toMatchObject({ supported: false, recorded: true });
+    expect(data.supportedOptions.map((o: { id: string }) => o.id)).toContain("battery_9v");
+    expect(data.nextStep).toMatch(/Do not guess/);
+    expect(getGuide).not.toHaveBeenCalled();
+    expect(updateGuide).not.toHaveBeenCalled();
+    expect(recordPartRequestLater).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "CR2032 coin cell",
+        kind: "power",
+        source: "set_power_source",
+        note: "tiny badge",
+      }),
+    );
+  });
+
+  it("set_power_source resolves an admin alias to a supported value", async () => {
+    vi.mocked(resolveAlias).mockResolvedValue("battery_9v");
+    vi.mocked(getGuide).mockResolvedValue(guide);
+    vi.mocked(updateGuide).mockResolvedValue(guide);
+    await callTool("set_power_source", { guide_id: "g1", power_source: "PP3 block" });
+    expect(updateGuide).toHaveBeenCalledWith("g1", { power_source: "battery_9v" });
+    expect(recordPartRequestLater).not.toHaveBeenCalled();
+  });
+
+  it("set_power_source ignores an alias that is not a supported power value", async () => {
+    vi.mocked(resolveAlias).mockResolvedValue("module.buzzer.active");
+    const result = await callTool("set_power_source", { guide_id: "g1", power_source: "solar panel" });
+    expect(JSON.parse(result.content[0].text).supported).toBe(false);
+    expect(updateGuide).not.toHaveBeenCalled();
+    expect(recordPartRequestLater).toHaveBeenCalled();
+  });
+
+  it("ask_power_source tells the assistant to note unlisted types", async () => {
+    const result = await callTool("ask_power_source", {});
+    const data = JSON.parse(result.content[0].text);
+    expect(data.nextStep).toContain("coin cell");
+    expect(data.nextStep).toContain("set_power_source");
   });
 
   it("returns a tool error for a missing guide", async () => {

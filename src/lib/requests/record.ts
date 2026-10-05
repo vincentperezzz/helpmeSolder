@@ -3,7 +3,7 @@ import { clientHash } from "@/lib/analytics/clients";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { normalizePartKey, suggestClosest } from "./normalize";
 
-export type MissSource = "add_part" | "request_part" | "api_patch";
+export type MissSource = "add_part" | "request_part" | "api_patch" | "set_power_source";
 
 export type PartRequestInput = {
   name: string;

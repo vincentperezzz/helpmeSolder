@@ -8,8 +8,9 @@ import {
   updateGuide,
 } from "@/lib/guides/repository";
 import {
+  POWER_SOURCE_OPTIONS,
   POWER_SOURCE_VALUES,
-  normalizePowerSource,
+  matchPowerSource,
 } from "@/lib/guides/power-source";
 import { getRetentionDays, retentionNotice } from "@/lib/guides/retention";
 import { validateGuide } from "@/lib/guides/validator";
@@ -40,6 +41,7 @@ Flow:
 1. list_catalog to pick a board and parts. If unsure of an id, call search_catalog with a short name. Never guess or invent ids.
    If nothing in the catalog fits, call request_part (it tells the site owner) and tell the user it is not supported yet.
 2. If the power source is unknown call ask_power_source and ASK THE USER (never guess), later set_power_source.
+   If the user wants a power type we do not list (coin cell, LiPo, AAA, solar, mains), still call set_power_source with its plain name so the site owner is told, then offer the closest supported option.
 3. If the build needs a sensor/input and the exact module is unknown call ask_sensor and ASK THE USER.
 4. create_guide, then tell the user the returned url and mention that the guide is deleted if unopened (see retention.message).
 5. set_power_source, add_part (catalog ids only), add_connection, set_steps.
@@ -180,7 +182,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
             },
           ],
           nextStep:
-            "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (battery_9v, battery_2aa, battery_3aa, battery_18650, or usb_wall).",
+            "Ask the user the question above. After they pick, call set_power_source with power_source equal to that option's id (battery_9v, battery_2aa, battery_3aa, battery_18650, or usb_wall). If the user wants a type not listed (for example a coin cell, LiPo pouch, AAA cells, a solar panel or a mains supply), call set_power_source with its plain name (for example \"CR2032 coin cell\") so it is noted for the site owner, then offer the closest supported option.",
           guide_id: guide_id ?? null,
           context: context ?? null,
         }),
@@ -221,18 +223,50 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
     "set_power_source",
     {
       description:
-        "Set guide power_source to a specific battery type or usb_wall AFTER asking the user (use ask_power_source first if unknown). This chooses which power diagram is drawn on the guide page. Never invent the answer.",
+        "Set guide power_source AFTER asking the user (use ask_power_source first if unknown). Supported values: usb_wall, battery_9v, battery_2aa, battery_3aa, battery_18650. If the user wants something else (coin cell, LiPo, AAA, solar, mains), pass its plain name as power_source and an optional description: it is noted for the site owner, the guide is NOT changed, and you must then ask the user which supported option to use. Never invent the answer.",
       inputSchema: {
         guide_id: z.string(),
-        power_source: z.enum([...POWER_SOURCE_VALUES, "battery"]),
+        power_source: z
+          .union([
+            z.enum([...POWER_SOURCE_VALUES, "battery"]),
+            z.string().min(1).max(80),
+          ])
+          .describe(
+            "One of usb_wall, battery_9v, battery_2aa, battery_3aa, battery_18650 (or battery for 3xAA). Any other text is treated as an unsupported power source and only noted.",
+          ),
+        description: z
+          .string()
+          .max(200)
+          .optional()
+          .describe("What the user wants, in a few words. No personal information."),
       },
     },
-    ({ guide_id, power_source }) =>
-      safely(() =>
-        changeGuide(ctx, guide_id, () => ({
-          power_source: normalizePowerSource(power_source),
-        })),
-      ),
+    ({ guide_id, power_source, description }) =>
+      safely(async () => {
+        let resolved = matchPowerSource(power_source);
+        if (!resolved) {
+          const alias = await resolveAlias(power_source);
+          resolved = alias ? matchPowerSource(alias) : null;
+        }
+        if (resolved) {
+          const power = resolved;
+          return changeGuide(ctx, guide_id, () => ({ power_source: power }));
+        }
+        ctx.recordMiss({
+          name: power_source,
+          kind: "power",
+          source: "set_power_source",
+          note: description,
+        });
+        return textResult({
+          supported: false,
+          recorded: true,
+          message: "That power source is not supported yet. It has been noted for the site owner.",
+          supportedOptions: POWER_SOURCE_OPTIONS,
+          nextStep:
+            "Tell the user it is not supported yet and ask which supported option to use instead (USB, 9V, 2xAA, 3xAA or 18650). Do not guess.",
+        });
+      }),
   );
 
   server.registerTool(

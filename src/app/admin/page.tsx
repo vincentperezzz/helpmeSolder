@@ -1,12 +1,15 @@
 import { loadGuideStats, MAX_ROWS } from "@/lib/admin/data";
 import type { GuideStats } from "@/lib/admin/stats";
 import { countNewRequests } from "@/lib/admin/requests";
-import { loadUserStats, type DayCount, type KindTotals, type UserLoad } from "@/lib/admin/users";
+import { hasAnyActivity } from "@/lib/admin/chart";
+import { loadUserStats, type KindTotals, type UserLoad } from "@/lib/admin/users";
+import { VisitorsChart } from "./_components/VisitorsChart";
 import { getRetentionDays } from "@/lib/guides/retention";
 import { loginAction } from "./actions";
 import { guardAdmin } from "./_components/guard";
 import { UNAVAILABLE_TEXT, adminMetadata } from "./_components/meta";
 import { AdminShell } from "./_components/shell";
+import { NoAccess, NotTracking, TrackingOn } from "./_components/status";
 import Link from "next/link";
 import { Section, Tile, Tiles } from "./_components/ui";
 
@@ -63,7 +66,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         >
           <p className="text-xs text-mute">Parts requested, not started</p>
           <p className="mt-1 text-2xl font-semibold text-ink">
-            {newRequests === null ? "Not tracking" : newRequests}
+            {newRequests.kind === "ok"
+              ? newRequests.count
+              : newRequests.kind === "missing"
+                ? "Not tracking"
+                : "No access"}
           </p>
           <p className="mt-1 text-xs text-mute">Open the Requests tab</p>
         </Link>
@@ -164,17 +171,18 @@ function LoginView({ error }: { error?: string }) {
 
 function HeadlineTiles({ users }: { users: UserLoad }) {
   const ok = users.kind === "ok";
+  const none = users.kind === "denied" ? "No access" : "Not tracking";
   return (
     <div className="mt-6 grid grid-cols-2 gap-3">
       <Tile
         big
         label="Visitors today (UTC)"
-        value={ok ? users.stats.visitors.today : "Not tracking"}
+        value={ok ? users.stats.visitors.today : none}
       />
       <Tile
         big
         label="Guide creators today (UTC)"
-        value={ok ? users.stats.creators.today : "Not tracking"}
+        value={ok ? users.stats.creators.today : none}
       />
     </div>
   );
@@ -191,42 +199,12 @@ function KindTiles({ label, totals }: { label: string; totals: KindTotals }) {
   );
 }
 
-function shortDay(day: string): string {
-  return new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    timeZone: "UTC",
-  });
-}
-
-function DayBars({ days }: { days: DayCount[] }) {
-  const max = Math.max(1, ...days.map((d) => d.count));
-  return (
-    <ul aria-label="Visitors per day, last 14 days" className="space-y-1.5">
-      {[...days].reverse().map((d) => (
-        <li key={d.day} className="flex items-center gap-3 text-sm">
-          <span className="w-14 shrink-0 text-xs text-mute">{shortDay(d.day)}</span>
-          <div className="h-2 min-w-0 flex-1 rounded bg-paper-deep">
-            <div
-              className="h-2 rounded bg-flux"
-              style={{ width: `${d.count === 0 ? 0 : Math.max(2, (d.count / max) * 100)}%` }}
-            />
-          </div>
-          <span className="w-10 shrink-0 text-right tabular-nums text-mute">{d.count}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function UsersBlock({ users }: { users: UserLoad }) {
   if (users.kind === "missing") {
-    return (
-      <p className="text-sm text-ink-soft">
-        Not tracking yet. Run supabase/migrations/0004_daily_clients.sql in the Supabase SQL
-        editor.
-      </p>
-    );
+    return <NotTracking migration="0004_daily_clients.sql" />;
+  }
+  if (users.kind === "denied") {
+    return <NoAccess />;
   }
   if (users.kind === "error") {
     return (
@@ -238,25 +216,28 @@ function UsersBlock({ users }: { users: UserLoad }) {
   const { stats } = users;
   return (
     <div className="space-y-6">
+      <TrackingOn>
+        {hasAnyActivity(stats.series)
+          ? "Counting visitors and guide creators."
+          : "The table is ready and no visits have been recorded yet."}
+      </TrackingOn>
       {users.capped ? (
         <p className="text-sm text-warn-ink">Too many rows to read. Numbers below are partial.</p>
       ) : null}
       <KindTiles label="Visitors" totals={stats.visitors} />
       <KindTiles label="Creators" totals={stats.creators} />
       <div>
-        <h3 className="mb-2 text-sm font-semibold text-ink">Visitors per day, last 14 days</h3>
-        <DayBars days={stats.visitorsByDay} />
-        <p className="mt-3 text-sm text-ink-soft">
-          {stats.busiestDay
-            ? `Busiest day in the last 30 days: ${shortDay(stats.busiestDay.day)} with ${stats.busiestDay.count} visitors.`
-            : "No visitors recorded in the last 30 days."}
+        <h3 className="mb-2 text-sm font-semibold text-ink">Visitors per day</h3>
+        <VisitorsChart series={stats.series} />
+        {hasAnyActivity(stats.series) ? null : (
+          <p className="mt-2 text-sm text-ink-soft">No visits recorded yet.</p>
+        )}
+        <p className="mt-3 text-sm text-mute">
+          Counts are anonymous. A person who visits on three different days counts three times
+          because the site cannot recognise people from one day to the next. Nothing is stored
+          that identifies anyone.
         </p>
       </div>
-      <p className="text-sm text-mute">
-        Counts are anonymous. A person who visits on three different days counts three times
-        because the site cannot recognise people from one day to the next. Nothing is stored
-        that identifies anyone.
-      </p>
     </div>
   );
 }

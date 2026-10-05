@@ -1,3 +1,4 @@
+import { classifyDbError, type DbError } from "./db-errors";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 
 export const REQUEST_STATUSES = ["new", "planned", "building", "shipped", "rejected"] as const;
@@ -5,10 +6,10 @@ export type RequestStatus = (typeof REQUEST_STATUSES)[number];
 export type StatusFilter = "all" | RequestStatus;
 
 export const STATUS_LABELS: Record<RequestStatus, string> = {
-  new: "New",
+  new: "Waiting",
   planned: "Planned",
   building: "Building",
-  shipped: "Shipped",
+  shipped: "Added",
   rejected: "Rejected",
 };
 
@@ -52,16 +53,128 @@ export function filterByStatus(rows: PartRequest[], filter: StatusFilter): PartR
   return filter === "all" ? rows : rows.filter((r) => r.status === filter);
 }
 
-/** Demand high to low, then most recently seen first. Does not change the input. */
+/** Waiting (new) first, then demand high to low, then most recently seen. Does not change the input. */
 export function sortRequests(rows: PartRequest[]): PartRequest[] {
   const time = (value: string) => {
     const t = Date.parse(value);
     return Number.isFinite(t) ? t : 0;
   };
+  const waiting = (r: PartRequest) => (r.status === "new" ? 0 : 1);
   return [...rows].sort(
     (a, b) =>
-      b.demand - a.demand || time(b.last_seen) - time(a.last_seen) || a.key.localeCompare(b.key),
+      waiting(a) - waiting(b) ||
+      b.demand - a.demand ||
+      time(b.last_seen) - time(a.last_seen) ||
+      a.key.localeCompare(b.key),
   );
+}
+
+export const KIND_GROUPS = ["board", "sensor", "display", "output", "input", "power", "other"] as const;
+export type KindGroup = (typeof KIND_GROUPS)[number];
+export type KindFilter = "all" | KindGroup;
+
+export const KIND_LABELS: Record<KindFilter, string> = {
+  all: "All kinds",
+  board: "Board",
+  sensor: "Sensor",
+  display: "Display",
+  output: "Output",
+  input: "Input",
+  power: "Power",
+  other: "Other",
+};
+
+const KIND_ALIASES: Record<string, KindGroup> = {
+  board: "board",
+  mcu: "board",
+  microcontroller: "board",
+  sensor: "sensor",
+  display: "display",
+  screen: "display",
+  lcd: "display",
+  oled: "display",
+  output: "output",
+  actuator: "output",
+  led: "output",
+  motor: "output",
+  buzzer: "output",
+  input: "input",
+  button: "input",
+  switch: "input",
+  power: "power",
+  battery: "power",
+  supply: "power",
+};
+
+/** Groups the free-text kind an assistant gave into one of the filter kinds. */
+export function kindGroup(kind: string | null | undefined): KindGroup {
+  const key = typeof kind === "string" ? kind.trim().toLowerCase() : "";
+  return KIND_ALIASES[key] ?? "other";
+}
+
+/** Reads the ?kind= query value. Anything unknown means "all". */
+export function parseKindFilter(value: unknown): KindFilter {
+  return typeof value === "string" && (KIND_GROUPS as readonly string[]).includes(value)
+    ? (value as KindGroup)
+    : "all";
+}
+
+export function filterByKind(rows: PartRequest[], filter: KindFilter): PartRequest[] {
+  return filter === "all" ? rows : rows.filter((r) => kindGroup(r.kind) === filter);
+}
+
+export function countByKind(rows: PartRequest[]): Record<KindFilter, number> {
+  const counts: Record<KindFilter, number> = {
+    all: rows.length,
+    board: 0,
+    sensor: 0,
+    display: 0,
+    output: 0,
+    input: 0,
+    power: 0,
+    other: 0,
+  };
+  for (const row of rows) counts[kindGroup(row.kind)]++;
+  return counts;
+}
+
+/** Bar width as a whole percent of the highest demand. At least 4 so a small bar stays visible. */
+export function demandBarPercent(demand: number, maxDemand: number): number {
+  if (!(maxDemand > 0) || !(demand > 0)) return 0;
+  return Math.min(100, Math.max(4, Math.round((demand / maxDemand) * 100)));
+}
+
+/** "1 person asked" or "3 people asked". */
+export function askedText(demand: number): string {
+  return `${demand} ${demand === 1 ? "person" : "people"} asked`;
+}
+
+/** Raw call count, only when it differs from the number of people. */
+export function callsText(demand: number, calls: number): string {
+  return calls !== demand ? `${calls} ${calls === 1 ? "request" : "requests"} in total` : "";
+}
+
+const SOURCE_SENTENCES: Record<string, string> = {
+  request_part: "The assistant asked for it directly",
+  add_part: "Asked while adding a part to a guide",
+  api_patch: "Found in a guide update",
+  set_power_source: "Asked for as a power source",
+};
+
+export function sourceSentence(source: string | null | undefined): string {
+  return (source && SOURCE_SENTENCES[source]) || "Noted automatically";
+}
+
+export type RequestTotals = { waiting: number; inProgress: number; added: number; totalAsks: number };
+
+export function requestTotals(rows: PartRequest[]): RequestTotals {
+  const counts = countByStatus(rows);
+  return {
+    waiting: counts.new,
+    inProgress: counts.planned + counts.building,
+    added: counts.shipped,
+    totalAsks: rows.reduce((sum, r) => sum + (Number.isFinite(r.demand) ? r.demand : 0), 0),
+  };
 }
 
 export function countByStatus(rows: PartRequest[]): Record<StatusFilter, number> {
@@ -149,20 +262,14 @@ export function validateRequestKey(input: unknown): string | null {
   return key && key.length <= 200 ? key : null;
 }
 
-type DbError = { message?: string; code?: string } | null;
-
 export function isMissingRequestsTable(error: DbError): boolean {
-  if (!error) return false;
-  return (
-    error.code === "42P01" ||
-    error.code === "PGRST205" ||
-    Boolean(error.message?.includes("part_requests"))
-  );
+  return classifyDbError(error, "part_requests") === "missing";
 }
 
 export type RequestsLoad =
   | { kind: "ok"; rows: PartRequest[]; capped: boolean }
   | { kind: "missing" }
+  | { kind: "denied" }
   | { kind: "error" };
 
 const COLUMNS =
@@ -179,7 +286,10 @@ export async function loadRequests(): Promise<RequestsLoad> {
         .select(COLUMNS)
         .order("key", { ascending: true })
         .range(from, from + PAGE_SIZE - 1);
-      if (error) return isMissingRequestsTable(error) ? { kind: "missing" } : { kind: "error" };
+      if (error) {
+        const problem = classifyDbError(error, "part_requests");
+        return problem === "missing" ? { kind: "missing" } : problem === "denied" ? { kind: "denied" } : { kind: "error" };
+      }
       const page = (data ?? []) as unknown as PartRequest[];
       rows.push(...page);
       if (page.length < PAGE_SIZE) return { kind: "ok", rows: sortRequests(rows), capped: false };
@@ -190,15 +300,25 @@ export async function loadRequests(): Promise<RequestsLoad> {
   }
 }
 
-/** Server-side only. Number of requests with status new, or null when it cannot be read. */
-export async function countNewRequests(): Promise<number | null> {
+export type NewRequestsCount =
+  | { kind: "ok"; count: number }
+  | { kind: "missing" }
+  | { kind: "denied" }
+  | { kind: "error" };
+
+/** Server-side only. Number of requests with status new, or why it cannot be read. */
+export async function countNewRequests(): Promise<NewRequestsCount> {
   try {
     const { count, error } = await getSupabaseAdmin()
       .from("part_requests")
       .select("key", { count: "exact", head: true })
       .eq("status", "new");
-    return error || count === null ? null : count;
+    if (error) {
+      const problem = classifyDbError(error, "part_requests");
+      return problem === "other" ? { kind: "error" } : { kind: problem };
+    }
+    return count === null ? { kind: "error" } : { kind: "ok", count };
   } catch {
-    return null;
+    return { kind: "error" };
   }
 }

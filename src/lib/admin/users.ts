@@ -1,10 +1,12 @@
+import { classifyDbError, type DbError } from "./db-errors";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
+import type { DailyPoint } from "./chart";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 export const PAGE_SIZE = 1000;
 /** Safety cap on rows read (30 days of daily unique rows). */
 export const MAX_ROWS = 100_000;
-export const BAR_DAYS = 14;
+export const CHART_DAYS = 30;
 
 export type ClientKind = "visitor" | "creator";
 
@@ -12,20 +14,18 @@ export type ClientKind = "visitor" | "creator";
 export type DailyCounts = Record<ClientKind, Record<string, number>>;
 
 export type KindTotals = { today: number; yesterday: number; last7: number; last30: number };
-export type DayCount = { day: string; count: number };
 
 export type UserStats = {
   visitors: KindTotals;
   creators: KindTotals;
-  /** Oldest first, exactly BAR_DAYS entries ending today (UTC). */
-  visitorsByDay: DayCount[];
-  /** Busiest visitor day in the last 30 days, null when there were no visitors. */
-  busiestDay: DayCount | null;
+  /** Oldest first, exactly CHART_DAYS zero-filled entries ending today (UTC). */
+  series: DailyPoint[];
 };
 
 export type UserLoad =
   | { kind: "ok"; stats: UserStats; capped: boolean }
   | { kind: "missing" }
+  | { kind: "denied" }
   | { kind: "error" };
 
 export function utcDay(ms: number): string {
@@ -53,34 +53,25 @@ function totals(counts: Record<string, number>, now: number): KindTotals {
 
 /** Pure. Windows are whole UTC days: "last 7 days" is today plus the 6 days before it. */
 export function summarizeUsers(daily: DailyCounts, now: number): UserStats {
-  const visitorsByDay: DayCount[] = [];
-  for (let i = BAR_DAYS - 1; i >= 0; i--) {
-    const day = dayOffset(now, i);
-    visitorsByDay.push({ day, count: daily.visitor[day] ?? 0 });
-  }
-  let busiestDay: DayCount | null = null;
-  for (let i = 0; i < 30; i++) {
-    const day = dayOffset(now, i);
-    const count = daily.visitor[day] ?? 0;
-    if (count > 0 && (!busiestDay || count > busiestDay.count)) busiestDay = { day, count };
-  }
   return {
     visitors: totals(daily.visitor, now),
     creators: totals(daily.creator, now),
-    visitorsByDay,
-    busiestDay,
+    series: buildSeries(daily, now),
   };
 }
 
-type DbError = { message?: string; code?: string } | null;
+/** Pure. Oldest first, CHART_DAYS entries ending today (UTC), missing days are zero. */
+export function buildSeries(daily: DailyCounts, now: number, days: number = CHART_DAYS): DailyPoint[] {
+  const series: DailyPoint[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const day = dayOffset(now, i);
+    series.push({ day, visitors: daily.visitor[day] ?? 0, creators: daily.creator[day] ?? 0 });
+  }
+  return series;
+}
 
 export function isMissingTable(error: DbError): boolean {
-  if (!error) return false;
-  return (
-    error.code === "42P01" ||
-    error.code === "PGRST205" ||
-    Boolean(error.message?.includes("daily_clients"))
-  );
+  return classifyDbError(error, "daily_clients") === "missing";
 }
 
 /** Server-side only. Counts distinct clients per day and kind for the last 30 days. */
@@ -105,7 +96,10 @@ export async function loadUserStats(now: number = Date.now()): Promise<UserLoad>
         .order("kind", { ascending: true })
         .order("client_hash", { ascending: true })
         .range(from, from + PAGE_SIZE - 1);
-      if (error) return isMissingTable(error) ? { kind: "missing" } : { kind: "error" };
+      if (error) {
+        const problem = classifyDbError(error, "daily_clients");
+        return problem === "missing" ? { kind: "missing" } : problem === "denied" ? { kind: "denied" } : { kind: "error" };
+      }
       const page = (data ?? []) as unknown as { day: string; kind: string }[];
       for (const row of page) {
         if (row.kind === "visitor" || row.kind === "creator") {

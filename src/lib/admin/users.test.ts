@@ -9,10 +9,9 @@ describe("summarizeUsers", () => {
     const s = summarizeUsers(empty(), NOW);
     expect(s.visitors).toEqual({ today: 0, yesterday: 0, last7: 0, last30: 0 });
     expect(s.creators).toEqual({ today: 0, yesterday: 0, last7: 0, last30: 0 });
-    expect(s.busiestDay).toBeNull();
-    expect(s.visitorsByDay).toHaveLength(14);
-    expect(s.visitorsByDay[13].day).toBe("2026-06-15");
-    expect(s.visitorsByDay[0].day).toBe("2026-06-02");
+    expect(s.series).toHaveLength(30);
+    expect(s.series[29]).toEqual({ day: "2026-06-15", visitors: 0, creators: 0 });
+    expect(s.series[0].day).toBe("2026-05-17");
   });
 
   it("uses UTC day boundaries for today and yesterday", () => {
@@ -42,15 +41,27 @@ describe("summarizeUsers", () => {
     expect(s.creators).toEqual({ today: 2, yesterday: 0, last7: 2, last30: 2 });
   });
 
-  it("finds the busiest day and fills the bar list", () => {
+  it("zero-fills a 30 day series for visitors and creators", () => {
     const d = empty();
     d.visitor["2026-06-10"] = 7;
-    d.visitor["2026-06-12"] = 9;
-    d.visitor["2026-06-01"] = 5; // older than 14 days, still counts for busiest
+    d.creator["2026-06-10"] = 2;
+    d.creator["2026-06-12"] = 1;
+    d.visitor["2026-05-17"] = 5; // day 29, first entry
+    d.visitor["2026-05-16"] = 50; // day 30, outside
     const s = summarizeUsers(d, NOW);
-    expect(s.busiestDay).toEqual({ day: "2026-06-12", count: 9 });
-    expect(s.visitorsByDay.find((x) => x.day === "2026-06-10")?.count).toBe(7);
-    expect(s.visitorsByDay.find((x) => x.day === "2026-06-11")?.count).toBe(0);
+    expect(s.series.find((x) => x.day === "2026-06-10")).toEqual({
+      day: "2026-06-10",
+      visitors: 7,
+      creators: 2,
+    });
+    expect(s.series.find((x) => x.day === "2026-06-11")).toEqual({
+      day: "2026-06-11",
+      visitors: 0,
+      creators: 0,
+    });
+    expect(s.series.find((x) => x.day === "2026-06-12")?.creators).toBe(1);
+    expect(s.series[0]).toEqual({ day: "2026-05-17", visitors: 5, creators: 0 });
+    expect(s.series.some((x) => x.day === "2026-05-16")).toBe(false);
   });
 });
 
