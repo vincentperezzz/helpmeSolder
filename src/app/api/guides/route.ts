@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
+import { getAppUrl } from "@/lib/api/app-url";
 import { assertApiAuth } from "@/lib/api/auth";
 import { guarded, parseBody } from "@/lib/api/http";
 import { CREATE_LIMIT, checkRateLimit } from "@/lib/api/rate-limit";
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     const guide = await createGuide(parsed.data);
     const validation = validateGuide(guide);
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const appUrl = getAppUrl(request);
 
     return Response.json(
       {

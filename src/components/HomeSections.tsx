@@ -1,4 +1,3 @@
-import { CopyBlock } from "@/components/CopyBlock";
 import { InView } from "@/components/InView";
 import { SetupGuide } from "@/components/SetupGuide";
 
@@ -16,11 +15,6 @@ const HOW_IT_WORKS = [
     body: "You get a secret URL with a parts prep list, a full wiring diagram and step-by-step soldering notes. It updates as the chat iterates.",
   },
 ];
-
-const BUILD_COMMANDS = `git clone https://github.com/vincentperezzz/helpmeSolder.git
-cd helpmeSolder/mcp
-npm install
-npm run build`;
 
 const TOOLS = [
   { name: "list_catalog", body: "Browse boards, modules, passives and ready-made recipes." },
@@ -95,8 +89,8 @@ export function HomeSections() {
           <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-end">
             <h2 className={HEADING}>Wire the MCP into Claude</h2>
             <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
-              The MCP server runs on your machine and talks to this site&apos;s
-              API. About five minutes, start to finish.
+              HelpmeSolder is a hosted MCP server. Paste one URL into your
+              client and you are done. No install, no keys.
             </p>
           </div>
 
@@ -113,18 +107,11 @@ export function HomeSections() {
                     1
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">
-                    Build the MCP server
+                    Add the server URL
                   </h3>
                   <p className="text-ink-soft">
-                    You need Node.js 20 or newer. Clone the repo and build the{" "}
-                    <code className="font-mono text-sm">mcp</code> folder.
-                  </p>
-                  <CopyBlock label="terminal" code={BUILD_COMMANDS} />
-                  <p className="text-sm text-mute">
-                    Note the absolute path to{" "}
-                    <code className="font-mono">mcp/dist/index.js</code>. On
-                    Windows, use forward slashes or double the backslashes in
-                    JSON.
+                    Flip the switch for your client and paste the URL. Nothing
+                    to download or build. If the client asks, restart it.
                   </p>
                 </li>
 
@@ -134,22 +121,6 @@ export function HomeSections() {
                 >
                   <span aria-hidden="true" className="pad absolute left-0 top-0">
                     2
-                  </span>
-                  <h3 className="font-display text-xl font-bold text-ink">
-                    Add it to your client
-                  </h3>
-                  <p className="text-ink-soft">
-                    Flip the switch for your client. Swap in your absolute path,
-                    then restart the app.
-                  </p>
-                </li>
-
-                <li
-                  style={{ "--i": 2 } as React.CSSProperties}
-                  className="trace-step relative flex flex-col gap-3 pl-14"
-                >
-                  <span aria-hidden="true" className="pad absolute left-0 top-0">
-                    3
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">
                     Say what you want to build
