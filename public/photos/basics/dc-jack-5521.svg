@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="DC barrel jack socket seen from the front with a centre pin, and three pins underneath"><title>DC barrel jack</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="metalh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa3a8"/><stop offset="0.45" stop-color="#eef1f2"/><stop offset="1" stop-color="#8c969b"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="80" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="118" y="164" width="12" height="36" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="154" y="164" width="12" height="40" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="190" y="164" width="12" height="36" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="84" y="46" width="152" height="124" rx="10" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<circle cx="160" cy="104" r="46" fill="#0b0e10" stroke="#5a636a" stroke-width="2"/>
+<circle cx="160" cy="104" r="36" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<circle cx="160" cy="104" r="28" fill="#14181c" stroke="#6b767a" stroke-width="2"/>
+<rect x="154" y="84" width="12" height="40" rx="6" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<path d="M104 62 A66 66 0 0 1 130 54" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.2"/>
+</svg>

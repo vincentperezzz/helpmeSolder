@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="MT3608 boost converter module: small blue circuit board with a black inductor, a blue trimmer and four corner pads"><title>MT3608 boost module</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient><linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d78c8"/><stop offset="1" stop-color="#1b4f8e"/></linearGradient><linearGradient id="trim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f8de0"/><stop offset="1" stop-color="#2a5cae"/></linearGradient></defs>
+<ellipse cx="160" cy="196" rx="86" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="72" y="62" width="176" height="122" rx="8" fill="url(#pcb)" stroke="#123a6a" stroke-width="2"/>
+<g fill="#d7dde0" stroke="#6b767a" stroke-width="2"><circle cx="90" cy="80" r="7"/><circle cx="90" cy="166" r="7"/><circle cx="230" cy="80" r="7"/><circle cx="230" cy="166" r="7"/></g>
+<rect x="116" y="82" width="62" height="62" rx="4" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<text x="147" y="119" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" fill="#c9d3d9" text-anchor="middle" >4R7</text>
+<rect x="192" y="96" width="24" height="18" rx="2" fill="#2a2f35"/><rect x="190" y="124" width="14" height="10" fill="#c9a96e"/>
+<rect x="196" y="140" width="36" height="32" rx="4" fill="url(#trim)" stroke="#1d437f" stroke-width="2"/><circle cx="214" cy="156" r="8" fill="#e9c46a" stroke="#8a6d22" stroke-width="2"/><path d="M208 156 H220" stroke="#8a6d22" stroke-width="2"/>
+<rect x="116" y="154" width="30" height="14" rx="2" fill="#2a2f35"/>
+</svg>

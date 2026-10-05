@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="1N4007 rectifier diode with a band marking the cathode end"><title>1N4007 rectifier diode</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="dbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient><clipPath id="dc"><rect x="90" y="93" width="140" height="54" rx="8"/></clipPath></defs>
+<ellipse cx="160" cy="181" rx="100" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="18" y="116" width="284" height="8" rx="4" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="90" y="93" width="140" height="54" rx="8" fill="url(#dbody)"/>
+<g clip-path="url(#dc)"><rect x="202" y="46" width="22" height="148" fill="#dfe5e8"/><rect x="94" y="99" width="132" height="8" rx="4" fill="#fff" opacity="0.2"/></g>
+<rect x="90" y="93" width="140" height="54" rx="8" fill="none" stroke="#12181d" stroke-width="2"/>
+<text x="146" y="126" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" fill="#e8edf0" text-anchor="middle" >1N4007</text>
+</svg>

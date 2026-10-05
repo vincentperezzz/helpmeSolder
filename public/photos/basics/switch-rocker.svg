@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Rocker switch: black rocker with a raised edge in a square bezel and two terminals underneath"><title>Rocker switch</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient><linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d84a3f"/><stop offset="1" stop-color="#a02820"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="82" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="124" y="150" width="14" height="48" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="182" y="150" width="14" height="48" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="84" y="40" width="152" height="116" rx="10" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<rect x="98" y="52" width="124" height="92" rx="8" fill="#0b0e10" opacity="0.5"/>
+<path d="M104 58 H216 Q220 58 220 62 V104 L104 122 V62 Q104 58 104 58 Z" fill="url(#rock)" stroke="#6e1812" stroke-width="2"/>
+<path d="M104 122 L220 104 V136 Q220 140 216 140 H108 Q104 140 104 136 Z" fill="#7a1c14" stroke="#4a100b" stroke-width="2"/>
+<rect x="156" y="68" width="8" height="30" rx="3" fill="#fff" opacity="0.9"/>
+<circle cx="160" cy="125" r="8" fill="none" stroke="#e8c9c5" stroke-width="3" opacity="0.9"/>
+</svg>

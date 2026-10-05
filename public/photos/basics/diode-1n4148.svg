@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="1N4148 small signal diode with a band marking the cathode end"><title>1N4148 small signal diode</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="dbody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3b564"/><stop offset="1" stop-color="#c97a22"/></linearGradient><clipPath id="dc"><rect x="112" y="103" width="96" height="34" rx="14"/></clipPath></defs>
+<ellipse cx="160" cy="171" rx="100" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="18" y="116" width="284" height="8" rx="4" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="112" y="103" width="96" height="34" rx="14" fill="url(#dbody)"/>
+<g clip-path="url(#dc)"><rect x="188" y="66" width="14" height="108" fill="#1b1b1b"/><rect x="116" y="109" width="88" height="8" rx="4" fill="#fff" opacity="0.2"/></g>
+<rect x="112" y="103" width="96" height="34" rx="14" fill="none" stroke="#12181d" stroke-width="2"/>
+
+</svg>

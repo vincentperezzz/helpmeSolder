@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Toggle switch with a metal lever, threaded bushing and two solder lugs"><title>Toggle switch SPST</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="metalh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa3a8"/><stop offset="0.45" stop-color="#eef1f2"/><stop offset="1" stop-color="#8c969b"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient></defs>
+<ellipse cx="160" cy="212" rx="70" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="128" y="150" width="14" height="46" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="178" y="150" width="14" height="46" rx="2" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><circle cx="135" cy="188" r="3" fill="#2a2f35"/><circle cx="185" cy="188" r="3" fill="#2a2f35"/>
+<rect x="116" y="104" width="88" height="56" rx="6" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<rect x="100" y="86" width="120" height="24" rx="4" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<rect x="120" y="68" width="80" height="20" rx="4" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<path d="M150 70 L166 28 Q170 20 178 24 Q186 28 182 36 L170 70 Z" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<ellipse cx="177" cy="26" rx="9" ry="6" fill="#eef1f2" stroke="#6b767a" stroke-width="2" transform="rotate(-20 177 26)"/>
+</svg>
