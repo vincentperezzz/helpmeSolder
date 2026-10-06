@@ -9,6 +9,8 @@ export function adminMetadata(title: string): Metadata {
       nocache: true,
       googleBot: { index: false, follow: false, noimageindex: true },
     },
+    openGraph: null,
+    twitter: null,
     referrer: "no-referrer",
   };
 }

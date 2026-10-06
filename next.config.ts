@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Static, public brand cards: let chat apps and CDNs cache them.
+        source: "/:image(opengraph-image|twitter-image)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" },
+        ],
+      },
+      {
         // Guides are reachable only via a secret URL: keep them out of
         // indexes, caches, referrers and frames.
         source: "/guides/:path*",

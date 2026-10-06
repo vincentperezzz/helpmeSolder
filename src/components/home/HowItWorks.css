@@ -234,8 +234,9 @@
 }
 
 @media (min-width: 768px) {
+  /* No side padding: the art spans the same width as the four legend columns below. */
   .hiw-canvas {
-    padding: 36px 28px;
+    padding: 36px 0;
   }
 }
 
@@ -373,6 +374,14 @@
   font-size: 0.8125rem;
   line-height: 1.35;
   color: var(--ink-soft);
+}
+
+/* Two deliberate lines on wide screens; on narrower cells the text just wraps. */
+@media (min-width: 1024px) {
+  .hiw-deck-line {
+    display: block;
+    white-space: nowrap;
+  }
 }
 
 .hiw-deck-tab[data-active="true"] .hiw-deck-name {
@@ -592,13 +601,27 @@
   fill: #fff;
 }
 
-.hiw-phone {
+.hiw-window {
   fill: #fff;
   stroke: var(--ink);
   stroke-width: 2.5;
 }
 
-.hiw-phone-speaker {
+.hiw-window-bar {
+  fill: color-mix(in oklab, var(--mat) 55%, white);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.hiw-address {
+  fill: #fff;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-address-text {
+  font: 500 10.5px var(--font-mono), ui-monospace, monospace;
   fill: var(--ink);
 }
 

@@ -57,8 +57,8 @@ function AskZone({ clipId }: { clipId: string }) {
         </g>
       </g>
       <g className="hiw-a" style={A.reply}>
-        <rect className="hiw-reply" x="40" y="160" width="190" height="38" rx="13" />
-        <text className="hiw-reply-text" x="56" y="184">
+        <rect className="hiw-reply" x="20" y="160" width="190" height="38" rx="13" />
+        <text className="hiw-reply-text" x="36" y="184">
           Planning your wiring
         </text>
       </g>
@@ -66,7 +66,14 @@ function AskZone({ clipId }: { clipId: string }) {
   );
 }
 
-function PlanZone() {
+/**
+ * Local origin is the HelpmeSolder node centre. Wide: pills sit centred under the node.
+ * Tall (phone): the node sits in the right part of the column and the pills span
+ * wide to its left, with the trace entering as a stub from the left edge.
+ */
+function PlanZone({ wide }: { wide: boolean }) {
+  const pillX = wide ? -120 : -185;
+  const chipX = wide ? -175 : -245;
   const chips: { cls: string; style: CSSProperties; label: string; w: number }[] = [
     { cls: "hiw-chip--1", style: A.chip1, label: "create_guide", w: 116 },
     { cls: "hiw-chip--2", style: A.chip2, label: "add_part", w: 84 },
@@ -75,8 +82,8 @@ function PlanZone() {
   ];
   return (
     <g className="hiw-zone hiw-zone--plan">
-      <path className="hiw-trace hiw-a" style={A.trace} d="M0 104H196" pathLength={1} />
-      <g transform="translate(0 92)">
+      <path className="hiw-trace hiw-a" style={A.trace} d={`M${chipX} 104H${wide ? -10 : -49}`} pathLength={1} />
+      <g transform={`translate(${chipX} 92)`}>
         {chips.map((c) => (
           <g key={c.label} className={`hiw-a hiw-chip ${c.cls}`} style={c.style}>
             <rect className="hiw-chip-box" width={c.w} height="24" rx="12" />
@@ -90,25 +97,25 @@ function PlanZone() {
         ))}
       </g>
       <g className="hiw-a hiw-node" style={A.node}>
-        <rect className="hiw-node-box" x="190" y="62" width="110" height="84" rx="10" />
-        <text className="hiw-node-text" x="245" y="100">
+        <rect className="hiw-node-box" x="-55" y="62" width="110" height="84" rx="10" />
+        <text className="hiw-node-text" x="0" y="100">
           Helpme
         </text>
-        <text className="hiw-node-text" x="245" y="122">
+        <text className="hiw-node-text" x="0" y="122">
           Solder
         </text>
-        <rect className="hiw-a hiw-ring hiw-ring--bad" style={A.ringBad} x="186" y="58" width="118" height="92" rx="13" />
-        <rect className="hiw-a hiw-ring hiw-ring--ok" style={A.ringOk} x="186" y="58" width="118" height="92" rx="13" />
+        <rect className="hiw-a hiw-ring hiw-ring--bad" style={A.ringBad} x="-59" y="58" width="118" height="92" rx="13" />
+        <rect className="hiw-a hiw-ring hiw-ring--ok" style={A.ringOk} x="-59" y="58" width="118" height="92" rx="13" />
       </g>
       <g className="hiw-a" style={A.pillBad}>
-        <rect className="hiw-pill hiw-pill--bad" x="60" y="156" width="240" height="26" rx="13" />
-        <text className="hiw-pill-text hiw-pill-text--bad" x="76" y="173.5">
+        <rect className="hiw-pill hiw-pill--bad" x={pillX} y="156" width="240" height="26" rx="13" />
+        <text className="hiw-pill-text hiw-pill-text--bad" x={pillX + 16} y="173.5">
           Blocked: 5 V on a 3.3 V pin
         </text>
       </g>
       <g className="hiw-a" style={A.pillOk}>
-        <rect className="hiw-pill hiw-pill--ok" x="60" y="184" width="240" height="26" rx="13" />
-        <text className="hiw-pill-text hiw-pill-text--ok" x="76" y="201.5">
+        <rect className="hiw-pill hiw-pill--ok" x={pillX} y="184" width="240" height="26" rx="13" />
+        <text className="hiw-pill-text hiw-pill-text--ok" x={pillX + 16} y="201.5">
           Fixed: wired to the 3.3 V pin
         </text>
       </g>
@@ -195,37 +202,43 @@ function WireZone({ gridId }: { gridId: string }) {
 
 function OpenZone() {
   const rows = [
-    { n: 1, y: 70, label: "3V3 to VCC", tick: A.tick1, box: A.box1 },
-    { n: 2, y: 104, label: "G34 to AO", tick: A.tick2, box: A.box2 },
-    { n: 3, y: 138, label: "G25 to +", tick: A.tick3, box: A.box3 },
-    { n: 4, y: 172, label: "GND to -", tick: A.tick4, box: A.box4 },
+    { n: 1, y: 90, label: "3V3 to VCC", tick: A.tick1, box: A.box1 },
+    { n: 2, y: 118, label: "G34 to AO", tick: A.tick2, box: A.box2 },
+    { n: 3, y: 146, label: "G25 to +", tick: A.tick3, box: A.box3 },
+    { n: 4, y: 174, label: "GND to -", tick: A.tick4, box: A.box4 },
   ];
   return (
     <g className="hiw-zone hiw-zone--open">
-      <g className="hiw-a" style={A.phone}>
-        <rect className="hiw-phone" x="10" y="4" width="150" height="200" rx="20" />
-        <rect className="hiw-phone-speaker" x="70" y="13" width="30" height="4" rx="2" />
+      <g className="hiw-a" style={A.window}>
+        <rect className="hiw-window" x="0" y="4" width="200" height="200" rx="12" />
+        <path className="hiw-window-bar" d="M0 38V16A12 12 0 0 1 12 4H188A12 12 0 0 1 200 16V38Z" />
+        <rect className="hiw-address" x="14" y="12" width="172" height="20" rx="10" />
+      </g>
+      <g className="hiw-a" style={A.address}>
+        <text className="hiw-address-text" x="100" y="25.8" textAnchor="middle">
+          /guides/h025arr1
+        </text>
       </g>
       <g className="hiw-a hiw-screen" style={A.screen}>
-        <text className="hiw-screen-title" x="28" y="48">
+        <text className="hiw-screen-title" x="18" y="64">
           Soil alarm
         </text>
         {rows.map((r) => (
           <g key={r.n} transform={`translate(0 ${r.y})`}>
-            <circle className="hiw-badge" cx="37" cy="0" r="9" />
-            <text className="hiw-badge-text" x="37" y="4.3">
+            <circle className="hiw-badge" cx="27" cy="0" r="9" />
+            <text className="hiw-badge-text" x="27" y="4.3">
               {r.n}
             </text>
-            <text className="hiw-row-text" x="52" y="4.5">
+            <text className="hiw-row-text" x="44" y="4.5">
               {r.label}
             </text>
-            <rect className="hiw-box" x="130" y="-9" width="18" height="18" rx="4" />
-            <rect className="hiw-a hiw-box-fill" style={r.box} x="130" y="-9" width="18" height="18" rx="4" />
-            <path className="hiw-a hiw-tick" style={r.tick} d="M133.5 0.5L138 5L145 -4.5" pathLength={1} />
+            <rect className="hiw-box" x="158" y="-9" width="18" height="18" rx="4" />
+            <rect className="hiw-a hiw-box-fill" style={r.box} x="158" y="-9" width="18" height="18" rx="4" />
+            <path className="hiw-a hiw-tick" style={r.tick} d="M161.5 0.5L166 5L173 -4.5" pathLength={1} />
           </g>
         ))}
       </g>
-      <g transform="translate(85 104)">
+      <g transform="translate(100 22)">
         <g className="hiw-a hiw-secret" style={A.secret}>
           <rect className="hiw-secret-box" x="-44" y="-14" width="88" height="28" rx="14" />
           <text className="hiw-secret-text" y="4.8" textAnchor="middle">
@@ -247,11 +260,17 @@ function Place({ x, y, children }: { x: number; y: number; children: ReactNode }
 
 export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; label: string }) {
   const wide = layout === "wide";
-  const vars = (wide ? { "--fx": "-120px", "--fy": "0px" } : { "--fx": "0px", "--fy": "-72px" }) as CSSProperties;
+  // --fx/--fy: where the secret link flies in from. --px: how far the Plan zone
+  // sits right of its resting place while it needs room (it slides back for Wire).
+  // --ct/--cr/--cn: how far the tool-call chips travel, bounce back and return.
+  const vars = (
+    wide ? { "--fx": "-110px", "--fy": "0px", "--px": "7px", "--ct": "110px", "--cr": "100px", "--cn": "18px" }
+      : { "--fx": "0px", "--fy": "-72px", "--px": "0px", "--ct": "150px", "--cr": "136px", "--cn": "24px" }
+  ) as CSSProperties;
   return (
     <svg
       className={`hiw-svg hiw-svg--${layout}`}
-      viewBox={wide ? "0 0 1100 230" : "0 0 340 972"}
+      viewBox={wide ? "0 0 1200 230" : "0 0 340 972"}
       role="img"
       aria-label={label}
       style={vars}
@@ -260,19 +279,20 @@ export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; la
       <g className="hiw-a hiw-scene" style={A.scene}>
         {wide ? (
           <>
-            <Link d="M232 114H280" style={A.link1} />
-            <Link d="M580 114H630" style={A.link2} />
-            <Link d="M880 114H940" style={A.link3} />
-            <Place x={0} y={10}>
+            {/* Trunk: runs through the four zone centres (150, 450, 750, 1050), under the art. */}
+            <Link d="M150 114H275" style={A.link1} />
+            <Link d="M450 114H625" style={A.link2} />
+            <Link d="M750 114H955" style={A.link3} />
+            <Place x={35} y={10}>
               <AskZone clipId={`hiw-clip-${layout}`} />
             </Place>
-            <Place x={280} y={10}>
-              <PlanZone />
+            <Place x={450} y={10}>
+              <PlanZone wide />
             </Place>
-            <Place x={630} y={10}>
+            <Place x={625} y={10}>
               <WireZone gridId={`hiw-grid-${layout}`} />
             </Place>
-            <Place x={930} y={10}>
+            <Place x={950} y={10}>
               <OpenZone />
             </Place>
           </>
@@ -284,13 +304,13 @@ export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; la
             <Place x={55} y={0}>
               <AskZone clipId={`hiw-clip-${layout}`} />
             </Place>
-            <Place x={20} y={254}>
-              <PlanZone />
+            <Place x={265} y={254}>
+              <PlanZone wide={false} />
             </Place>
             <Place x={45} y={508}>
               <WireZone gridId={`hiw-grid-${layout}`} />
             </Place>
-            <Place x={85} y={762}>
+            <Place x={70} y={762}>
               <OpenZone />
             </Place>
           </>
