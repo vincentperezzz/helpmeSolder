@@ -18,6 +18,7 @@ import {
   buildChecks,
   defaultTab,
   readTab,
+  tabDirection,
   writeTab,
   type TabId,
 } from "@/components/guide/model";
@@ -64,8 +65,8 @@ export type GuideWorkspaceProps = {
 const PANEL_HEADINGS: Record<TabId, string> = {
   parts: "Parts you need",
   tools: "Tools you need",
-  solder: "What to solder where",
-  steps: TAB_LABELS.steps,
+  solder: "Solder joints",
+  steps: "Build steps",
   notes: TAB_LABELS.notes,
 };
 
@@ -258,11 +259,14 @@ export function GuideWorkspace({
       if (next === current) return;
       const scroller = scrollerRef.current;
       if (scroller) scrollMemory.current[current] = scroller.scrollTop;
+      // Tells the CSS which way the new panel travels in. Set before the panel shows.
+      if (scroller) scroller.dataset.dir = tabDirection(current, next);
       tabRef.current = next;
       setTab(next);
     },
     [guide.id],
   );
+  const openTab = useCallback((next: TabId) => switchTab(next, true), [switchTab]);
 
   // Each tab opens where it was left. Runs before the checklist scrolls a picked wire into view.
   useLayoutEffect(() => {
@@ -459,7 +463,7 @@ export function GuideWorkspace({
           <PanelTabs
             prefix={uid}
             tab={tab}
-            onChange={(next) => switchTab(next, true)}
+            onChange={openTab}
             counts={counts}
           />
           <div ref={scrollerRef} {...{ [SCROLL_ATTR]: "" }} className="ga-scroll">
@@ -488,10 +492,16 @@ export function GuideWorkspace({
                     onFocusChange={setFocusId}
                     hoverId={hoverId}
                     onHoverChange={setHoverId}
+                    onOpenTab={openTab}
                   />
                 ) : null}
                 {id === "steps" ? (
-                  <StepsPanel guideId={guide.id} guide={layoutGuide} steps={orderedSteps} />
+                  <StepsPanel
+                    guideId={guide.id}
+                    guide={layoutGuide}
+                    steps={orderedSteps}
+                    onOpenTab={openTab}
+                  />
                 ) : null}
                 {id === "notes" ? (
                   <NotesPanel

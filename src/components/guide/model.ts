@@ -34,6 +34,11 @@ export function nextTab(current: TabId, key: string): TabId | null {
   return null;
 }
 
+/** Which way a tab switch travels: later tabs enter from the right, earlier from the left. */
+export function tabDirection(from: TabId, to: TabId): "forward" | "back" {
+  return TAB_IDS.indexOf(to) >= TAB_IDS.indexOf(from) ? "forward" : "back";
+}
+
 const tabKey = (guideId: string) => `helpmesolder:guide-tab:${guideId}`;
 
 export function readTab(guideId: string): TabId | null {
@@ -199,4 +204,45 @@ export function writeStepTicks(guideId: string, ids: string[]) {
   } catch {
     // Storage blocked: ticks still work for this visit.
   }
+}
+
+/* ---------- solder joints and build steps ---------- */
+
+export type JointGroup<T> = {
+  id: "power" | "signals";
+  /** Sub-heading, or null when only one kind of joint exists and no heading is needed. */
+  label: string | null;
+  /** Each joint with its number in the whole list, the same number the wiring picture shows. */
+  joints: { item: T; number: number }[];
+};
+
+/** Power feeds first, then everything else. Numbers follow the original order. */
+export function groupJoints<T extends { powerFeed: boolean }>(items: T[]): JointGroup<T>[] {
+  const numbered = items.map((item, index) => ({ item, number: index + 1 }));
+  const power = numbered.filter((entry) => entry.item.powerFeed);
+  const signals = numbered.filter((entry) => !entry.item.powerFeed);
+  const both = power.length > 0 && signals.length > 0;
+  const groups: JointGroup<T>[] = [];
+  if (power.length > 0) groups.push({ id: "power", label: both ? "Power" : null, joints: power });
+  if (signals.length > 0) groups.push({ id: "signals", label: both ? "Signals" : null, joints: signals });
+  return groups;
+}
+
+export function progressLabel(done: number, total: number, verb: string): string {
+  return `${done} of ${total} ${verb}`;
+}
+
+/** Pin text for a two-end layout: drops the leading word "pin" because the part name sits above it. */
+export function pinName(pin: string): string {
+  return pin.replace(/^pin\s+/i, "");
+}
+
+/** True when a step talks about soldering, so it can link to the joints list. */
+export function mentionsSoldering(text: string): boolean {
+  return /\b(solder(?:s|ed|ing)?|joints?)\b/i.test(text);
+}
+
+/** The first step that is not ticked, or null when all are done. */
+export function nextStepId(ids: string[], ticked: string[]): string | null {
+  return ids.find((id) => !ticked.includes(id)) ?? null;
 }
