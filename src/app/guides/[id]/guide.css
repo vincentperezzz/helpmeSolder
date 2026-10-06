@@ -766,6 +766,7 @@
   }
 }
 
+.print-only-diagram,
 .print-only-schematic {
   position: absolute;
   left: -10000px;
@@ -945,6 +946,276 @@
 
 .ga-strip-chip input:focus-visible {
   outline: none;
+}
+
+/* ---------- solder checklist rows ---------- */
+
+.ga-solder-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ga-solder-row {
+  display: flex;
+  min-height: 56px;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: var(--ga-r-sm);
+  background: color-mix(in oklab, white 82%, var(--paper));
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.ga-solder-row:hover {
+  border-color: color-mix(in oklab, var(--copper) 45%, var(--line-strong));
+  background: color-mix(in oklab, var(--copper) 6%, white);
+}
+
+.ga-solder-row.is-done {
+  border-color: color-mix(in oklab, var(--flux) 28%, var(--line));
+  background: color-mix(in oklab, var(--flux) 7%, white);
+}
+
+.ga-solder-row.is-done:hover {
+  border-color: color-mix(in oklab, var(--flux) 40%, var(--line-strong));
+  background: color-mix(in oklab, var(--flux) 10%, white);
+}
+
+.ga-solder-row.is-hot {
+  border-color: color-mix(in oklab, var(--copper) 55%, var(--line-strong));
+  background: color-mix(in oklab, var(--copper) 8%, white);
+  box-shadow: inset 3px 0 0 var(--copper);
+}
+
+.ga-solder-row.is-selected {
+  border-color: var(--copper);
+  background: color-mix(in oklab, var(--copper) 12%, white);
+  box-shadow: inset 3px 0 0 var(--copper-deep);
+}
+
+.ga-solder-row.is-selected.is-done {
+  border-color: var(--copper);
+  background: color-mix(in oklab, var(--copper) 10%, color-mix(in oklab, var(--flux) 8%, white));
+}
+
+.ga-solder-check {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: start center;
+  min-width: 48px;
+  padding: 12px 4px 12px 12px;
+  cursor: pointer;
+}
+
+.ga-solder-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ga-solder-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid color-mix(in oklab, var(--ink) 38%, white);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--ink) 8%, transparent);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+
+.ga-solder-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.ga-solder-tick {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+.ga-solder-check:hover .ga-solder-mark {
+  border-color: var(--copper);
+}
+
+.ga-solder-row.is-hot .ga-solder-mark,
+.ga-solder-row.is-selected .ga-solder-mark {
+  border-color: var(--copper-deep);
+  box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--copper) 18%, transparent);
+}
+
+.ga-solder-input:checked + .ga-solder-mark {
+  border-color: var(--flux);
+  background: var(--flux);
+  color: #fff;
+  box-shadow: none;
+}
+
+.ga-solder-input:checked + .ga-solder-mark .ga-solder-num {
+  opacity: 0;
+}
+
+.ga-solder-input:checked + .ga-solder-mark .ga-solder-tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ga-solder-input:focus-visible + .ga-solder-mark {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+.guide-app .ga-solder-input:focus-visible {
+  outline: none;
+}
+
+.ga-solder-body {
+  min-width: 0;
+  flex: 1;
+  padding: 11px 14px 12px 6px;
+  border: 0;
+  border-radius: 0 var(--ga-r-sm) var(--ga-r-sm) 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.guide-app .ga-solder-body:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: -3px;
+}
+
+.ga-solder-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  color: var(--mute);
+  font-size: 0.8125rem;
+  line-height: 1.25;
+}
+
+.ga-solder-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, white 35%, transparent);
+}
+
+.ga-solder-route {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.ga-solder-row.is-done .ga-solder-route {
+  color: var(--ink-soft);
+}
+
+.ga-solder-route strong {
+  font-weight: 700;
+}
+
+.ga-solder-arrow {
+  margin: 0 0.2em;
+  color: var(--mute);
+  font-weight: 500;
+}
+
+.ga-solder-note {
+  display: block;
+  margin-top: 3px;
+  color: var(--mute);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-solder-tick {
+    transition: opacity 120ms ease, transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ga-solder-num {
+    transition: opacity 100ms ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .ga-solder-row.is-selected,
+  .ga-solder-row.is-hot {
+    box-shadow: none;
+    outline: 2px solid Highlight;
+  }
+
+  .ga-solder-mark {
+    border-color: ButtonText;
+    background: Canvas;
+    color: ButtonText;
+  }
+
+  .ga-solder-input:checked + .ga-solder-mark {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+@media print {
+  .ga-solder-row {
+    box-shadow: none;
+    background: #fff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .ga-solder-check {
+    place-items: center;
+    padding: 8pt 4pt 8pt 8pt;
+  }
+
+  .ga-solder-input {
+    position: static;
+    width: 14pt;
+    height: 14pt;
+    overflow: visible;
+    opacity: 1;
+    clip: auto;
+    pointer-events: auto;
+  }
+
+  .ga-solder-mark {
+    display: none;
+  }
+
+  .ga-solder-route {
+    color: #000;
+  }
 }
 
 /* ---------- phones: the panel is a drawer under the picture ---------- */

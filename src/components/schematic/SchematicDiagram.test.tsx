@@ -165,6 +165,9 @@ describe("SchematicDiagram", () => {
     expect(listClose).toBeGreaterThan(0);
     expect(legend.indexOf("Resistor.")).toBeLessThan(listClose);
     expect(legend.indexOf("Boxes with pin names are boards and modules.")).toBeGreaterThan(listClose);
+    expect(legend).toMatch(/<ol[^>]*>[\s\S]*Boxes with pin names are boards and modules\./);
+    expect(legend).toContain("rounded-full");
+    expect(legend).toContain("border-copper");
     const withBreadboard = render(
       guide(
         [
@@ -209,6 +212,8 @@ describe("SchematicDiagram", () => {
     expect(legend).toContain("Boxes with pin names are boards and modules.");
     expect(html).toContain("schematic-caption");
     expect(html).toContain("Hover, tap or tab to a part or wire to see what it does.");
+    expect(html).toMatch(/schematic-caption[^"]*py-1\.5/);
+    expect(html).not.toMatch(/schematic-caption[^"]*min-h-\[3\.25rem\]/);
     expect(html).toContain("diagram-toolbar");
     expect(html).toContain("Fit the whole picture on screen");
   });
@@ -217,6 +222,7 @@ describe("SchematicDiagram", () => {
     const html = render(ledGuide(), { hoveredWireId: "c1" });
     expect(html).toContain("aria-live=\"polite\"");
     expect(html).toContain("Signal wire");
+    expect(html).toMatch(/schematic-caption[^"]*min-h-\[3\.25rem\]/);
   });
 
   it("warns when the circuit is too big", () => {

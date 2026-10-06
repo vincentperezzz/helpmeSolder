@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const css = readFileSync(join(process.cwd(), "src/app/guides/[id]/print.css"), "utf8");
+const printButton = readFileSync(join(process.cwd(), "src/app/guides/[id]/PrintButton.tsx"), "utf8");
 
 function block(selector: string): string {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -36,6 +37,23 @@ describe("schematic print layout", () => {
 
     expect(css).toMatch(/\.diagram-toolbar,\s*\.schematic-caption\s*\{[^}]*display:\s*none\s*!important/);
     expect(css).not.toMatch(/schematic-legend[^{]*\{[^}]*display:\s*none/);
+  });
+
+  it("draws a closed border box on the print header and schematic frame", () => {
+    const bar = block(".ga-bar");
+    expect(bar).toMatch(/border:\s*1px solid #000\s*!important/);
+    expect(bar).toMatch(/box-shadow:\s*inset 0 0 0 1px #000\s*!important/);
+    expect(bar).toMatch(/box-sizing:\s*border-box\s*!important/);
+
+    expect(css).toMatch(
+      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/s,
+    );
+    expect(css).toMatch(
+      /\.diagram-shell,\s*\.whiteboard-shell,\s*\.whiteboard-shell\.is-enlarged,\s*\.whiteboard-shell\.is-fullscreen\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/s,
+    );
+    expect(css).toMatch(
+      /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*box-shadow:\s*none\s*!important/s,
+    );
   });
 });
 
@@ -74,7 +92,7 @@ describe("printed guide sections", () => {
       );
     }
     expect(css).toMatch(
-      /\.guide-app\[data-print-schematic="off"\] \.print-only-schematic\s*\{[^}]*display:\s*none\s*!important/,
+      /\.guide-app\[data-print-schematic="off"\] \.print-only-schematic,\s*\.guide-app\[data-print-diagram="off"\] \.print-only-diagram\s*\{[^}]*display:\s*none\s*!important/,
     );
   });
 
@@ -89,6 +107,29 @@ describe("printed guide sections", () => {
 
     expect(css).toMatch(
       /\.ga-panel,\s*\.guide-app\[data-enlarged="true"\] \.ga-panel,\s*\.ga-panel\[data-snap\]\s*\{[^}]*height:\s*auto\s*!important[^}]*max-height:\s*none\s*!important[^}]*overflow:\s*visible\s*!important/,
+    );
+  });
+});
+
+describe("wiring diagram print clone", () => {
+  it("mounts a print-only Wokwi clone when the live canvas is schematic", () => {
+    expect(printButton).toMatch(/print-only-diagram/);
+    expect(printButton).toMatch(/WokwiDiagram/);
+    expect(printButton).toMatch(/options\.diagram && view === "schematic"/);
+    expect(printButton).toMatch(/<h2>Wiring picture<\/h2>/);
+    expect(guideCss).toMatch(/\.print-only-diagram,\s*\.print-only-schematic\s*\{/);
+    expect(css).toMatch(/\.print-only-diagram,\s*\.print-only-schematic\s*\{/);
+  });
+
+  it("treats the live canvas as schematic when that view is active", () => {
+    expect(css).toMatch(
+      /\.guide-app\[data-view="schematic"\]\[data-print-schematic="off"\] \[data-print-section="diagram"\]\s*\{[^}]*display:\s*none\s*!important/,
+    );
+    expect(css).toMatch(
+      /\.guide-app\[data-view="schematic"\]\[data-print-schematic="on"\] \[data-print-section="diagram"\]\s*\{[^}]*display:\s*block\s*!important/,
+    );
+    expect(css).toMatch(
+      /\.guide-app\[data-view="schematic"\] \.print-only-schematic\s*\{[^}]*display:\s*none\s*!important/,
     );
   });
 });

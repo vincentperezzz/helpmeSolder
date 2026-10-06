@@ -13,10 +13,8 @@ type SolderChecklistProps = {
   onFollowModeChange: (value: boolean) => void;
   hideOthers: boolean;
   onHideOthersChange: (value: boolean) => void;
-  /** The wire shown on its own in the diagram: the selected or current one. */
   focusId: string | null;
   onFocusChange: (id: string | null) => void;
-  /** The wire the pointer or keyboard is on, here or in the diagram. */
   hoverId: string | null;
   onHoverChange: (id: string | null) => void;
 };
@@ -55,7 +53,6 @@ export function SolderChecklist({
   const rows = useRef(new Map<string, HTMLLIElement>());
 
   useEffect(() => {
-    // Read after mount so server and first client render match.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTicked(readSolderTicks(guide.id));
     setLoaded(true);
@@ -68,14 +65,12 @@ export function SolderChecklist({
   const firstOpen = ids.find((id) => !ticked.includes(id)) ?? null;
   const focusIndex = focusId ? ids.indexOf(focusId) : -1;
 
-  // Follow mode that was saved or just turned on starts at the first open wire.
   useEffect(() => {
     if (followMode && loaded && focusId === null && firstOpen) {
       onFocusChange(firstOpen);
     }
   }, [followMode, loaded, focusId, firstOpen, onFocusChange]);
 
-  // A wire picked in the diagram brings its row into view, inside the panel only.
   useEffect(() => {
     if (!focusId) return;
     scrollRowIntoPanel(rows.current.get(focusId));
@@ -197,7 +192,7 @@ export function SolderChecklist({
             matches the wiring picture.
           </p>
 
-          <ol className="grid gap-1.5">
+          <ol className="ga-solder-list">
             {plan.items.map((item, index) => {
               const checked = ticked.includes(item.id);
               const selected = focusId === item.id;
@@ -207,6 +202,14 @@ export function SolderChecklist({
                 item.note && !item.sentence.toLowerCase().includes(item.note.toLowerCase())
                   ? item.note
                   : null;
+              const state = [
+                "ga-solder-row",
+                selected ? "is-selected" : "",
+                !selected && highlighted ? "is-hot" : "",
+                checked ? "is-done" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
               return (
                 <li
                   key={item.id}
@@ -222,60 +225,49 @@ export function SolderChecklist({
                       onHoverChange(null);
                     }
                   }}
-                  className={`flex min-h-14 items-stretch rounded-[10px] border transition-colors ${
-                    selected
-                      ? "border-copper bg-copper/10 ring-2 ring-copper/40"
-                      : highlighted
-                        ? "border-copper bg-copper/5 ring-2 ring-copper/30"
-                        : checked
-                          ? "border-flux/40 bg-flux/5"
-                          : "border-line bg-white/80 hover:border-line-strong"
-                  }`}
+                  className={state}
                 >
-                  <label
-                    htmlFor={inputId}
-                    className="flex min-w-11 cursor-pointer items-start justify-center py-3 pl-3 pr-1"
-                  >
+                  <label htmlFor={inputId} className="ga-solder-check">
                     <input
                       id={inputId}
                       type="checkbox"
                       checked={checked}
                       onChange={() => toggle(item.id)}
                       aria-label={`Done: wire ${index + 1}`}
-                      className="mt-0.5 h-6 w-6 shrink-0 cursor-pointer accent-[var(--flux)]"
+                      className="ga-solder-input"
                     />
+                    <span className="ga-solder-mark" aria-hidden>
+                      <span className="ga-solder-num">{index + 1}</span>
+                      <svg className="ga-solder-tick" viewBox="0 0 16 16">
+                        <path d="M3.5 8.5l3 3 6-7" />
+                      </svg>
+                    </span>
                   </label>
                   <button
                     type="button"
                     aria-pressed={selected}
                     onClick={() => onFocusChange(selected ? null : item.id)}
-                    className="min-w-0 flex-1 rounded-r-[10px] px-3 py-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flux"
+                    className="ga-solder-body"
                   >
-                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mute">
-                      <span className="font-semibold text-ink">{index + 1}.</span>
+                    <span className="ga-solder-meta">
                       <span
                         role="img"
                         aria-label={`${item.colorName} wire`}
                         title={`${item.colorName} wire`}
-                        className="inline-block h-3.5 w-3.5 rounded-full border border-black/20"
+                        className="ga-solder-swatch"
                         style={{ backgroundColor: item.color }}
                       />
                       <span>{item.colorName} wire</span>
                     </span>
-                    <span
-                      className={`mt-1 block text-[15px] leading-snug text-ink ${
-                        checked ? "opacity-60" : ""
-                      }`}
-                    >
-                      <strong>{item.from.part}</strong>, {item.from.pin} to{" "}
+                    <span className="ga-solder-route">
+                      <strong>{item.from.part}</strong>, {item.from.pin}
+                      <span className="ga-solder-arrow" aria-hidden>
+                        →
+                      </span>
                       <strong>{item.to.part}</strong>, {item.to.pin}
                     </span>
-                    {where ? (
-                      <span className="mt-1 block text-sm text-mute">Where: {where}</span>
-                    ) : null}
-                    {item.why ? (
-                      <span className="mt-1 block text-sm text-mute">{item.why}</span>
-                    ) : null}
+                    {where ? <span className="ga-solder-note">Where: {where}</span> : null}
+                    {item.why ? <span className="ga-solder-note">{item.why}</span> : null}
                   </button>
                 </li>
               );

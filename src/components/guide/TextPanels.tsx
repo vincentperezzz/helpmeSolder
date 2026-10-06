@@ -12,11 +12,19 @@ export function StepsPanel({ steps }: StepsPanelProps) {
   return (
     <ol className="m-0 list-none space-y-4 p-0">
       {steps.map((step) => (
-        <li key={step.id}>
-          <p className="text-base leading-snug font-bold tracking-tight text-ink">{step.title}</p>
-          <p className="mt-1 text-[15px] leading-relaxed whitespace-pre-line text-ink-soft">
-            {step.body}
-          </p>
+        <li key={step.id} className="flex gap-3">
+          <span
+            aria-hidden
+            className="brand-mark mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-copper bg-white text-sm font-bold text-copper-deep"
+          >
+            {step.order}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-base leading-snug font-bold tracking-tight text-ink">{step.title}</p>
+            <p className="mt-1 text-[15px] leading-relaxed whitespace-pre-line text-ink-soft">
+              {step.body}
+            </p>
+          </div>
         </li>
       ))}
     </ol>
