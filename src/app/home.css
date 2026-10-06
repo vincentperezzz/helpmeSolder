@@ -14,6 +14,51 @@
   border: 0;
 }
 
+.proof-picture {
+  overflow: hidden;
+  height: 26rem;
+  min-height: 26rem;
+}
+
+.proof-picture > * {
+  height: 100%;
+}
+
+.proof-picture .diagram-shell {
+  min-height: 26rem;
+}
+
+@media (min-width: 1024px) {
+  .proof-picture {
+    height: 34rem;
+    min-height: 32rem;
+  }
+
+  .proof-picture .diagram-shell {
+    min-height: 32rem;
+  }
+}
+
+.proof-picture[data-state="armed"] {
+  clip-path: inset(18% 10% 42% 10%);
+  filter: blur(8px);
+}
+
+.proof-picture[data-state="in"] {
+  animation: proof-uncover 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes proof-uncover {
+  from {
+    clip-path: inset(18% 10% 42% 10%);
+    filter: blur(8px);
+  }
+  to {
+    clip-path: inset(0);
+    filter: none;
+  }
+}
+
 .trace-rail,
 .trace-rail-h {
   position: absolute;
@@ -287,6 +332,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .proof-picture,
+  .proof-picture[data-state="armed"],
+  .proof-picture[data-state="in"],
   .trace-scope *,
   .btn-pad__face,
   .btn-pad__trace,
@@ -294,6 +342,8 @@
   .pinout-row__name {
     transition: none !important;
     animation: none !important;
+    clip-path: none !important;
+    filter: none !important;
   }
 }
 
@@ -398,35 +448,6 @@
 
 /* Ambient motion: runs without any pointer input. */
 @media (prefers-reduced-motion: no-preference) {
-  .signal {
-    stroke-dasharray: 40 960;
-    stroke-dashoffset: 40;
-    opacity: 0;
-    animation: signal-run 5200ms cubic-bezier(0.45, 0, 0.25, 1) 2.4s infinite;
-  }
-
-  .signal-2 {
-    animation-duration: 6600ms;
-    animation-delay: 3.6s;
-  }
-
-  @keyframes signal-run {
-    0% {
-      stroke-dashoffset: 40;
-      opacity: 0;
-    }
-    8% {
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      stroke-dashoffset: -1000;
-      opacity: 0;
-    }
-  }
-
   .idle-float {
     transform-box: fill-box;
     transform-origin: center;
