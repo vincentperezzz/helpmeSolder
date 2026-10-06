@@ -42,9 +42,8 @@
  *    without art.
  *  - PrepParts.tsx also renders PartGlyph (the same glyphs) as the Parts-tab
  *    placeholder when a part has no thumbnail (thumbnailSource "none").
- *  - Shared thumbnails: /photos/pico.jpg is the thumbnail for 7 boards
- *    (Pico, Pico W, Pico 2, Pi Zero W, Pi 3B+, Pi 4B, Pi 5). For the Pi
- *    family it is a stand-in, so those records are "generic".
+ *  - Pico, Pico W, Pico 2, Pi 3B+, Pi 4B and Pi 5 each have their own
+ *    original SVG under public/photos/modules (as does the Pi Zero W).
  *  - There is no category-generic thumbnail image file; public/*.svg
  *    (next, vercel, globe, file, window) are Next.js template leftovers and
  *    are not used for parts.

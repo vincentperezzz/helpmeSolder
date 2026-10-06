@@ -337,7 +337,7 @@ const baseBoards: CatalogPart[] = [
       "Pins supply only a few mA to about 12-16 mA, so use resistors with LEDs and switch motors or relays through a transistor or driver.",
       "Wireless needs different firmware and libraries than plain Pico.",
     ],
-    photoHint: "pico",
+    photoHint: "pico-w",
     pins: [
       power("3v3", "3V3", "3v3"),
       gnd("gnd", "GND"),
@@ -382,7 +382,7 @@ const baseBoards: CatalogPart[] = [
       "Treat GPIO as 3.3 V only; do not connect 5 V signals.",
       "Pins supply only a few mA to about 12-16 mA, so use resistors with LEDs and switch motors through a transistor or driver.",
     ],
-    photoHint: "pico",
+    photoHint: "pico-2",
     pins: [
       power("3v3", "3V3", "3v3"),
       gnd("gnd", "GND"),
@@ -461,7 +461,7 @@ const baseBoards: CatalogPart[] = [
       "It is a Linux computer needing a micro-SD card with the OS and a proper 5 V 2.5 A supply; shut down before removing power.",
       "No analog input pins; use an external ADC module for analog sensors.",
     ],
-    photoHint: "pi-sbc",
+    photoHint: "pi-3b-plus",
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
@@ -494,7 +494,7 @@ const baseBoards: CatalogPart[] = [
       "Needs a good 5 V 3 A USB-C supply; poor chargers cause brown-outs under load.",
       "It is a Linux computer needing a micro-SD card with the OS; shut it down before removing power. No analog input pins.",
     ],
-    photoHint: "pi-sbc",
+    photoHint: "pi-4b",
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
@@ -523,7 +523,7 @@ const baseBoards: CatalogPart[] = [
       "GPIO pins are 3.3 V only and NOT 5 V tolerant. Pins supply only a few mA to about 16 mA, so use resistors with LEDs and never drive motors or relays from a pin.",
       "It is a Linux computer needing a micro-SD card with the OS; shut it down before removing power. No analog input pins.",
     ],
-    photoHint: "pi-sbc",
+    photoHint: "pi-5",
     pins: [
       power("3V3", "3V3", "3v3"),
       power("5V", "5V", "5v"),
