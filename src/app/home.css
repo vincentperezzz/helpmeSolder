@@ -179,16 +179,17 @@
 @media (min-width: 1024px) {
   .proof-card {
     grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.85fr);
-    align-items: start;
+    align-items: stretch;
   }
 
   .proof-picture {
-    height: 34rem;
+    height: 100%;
     min-height: 34rem;
   }
 
   .proof-picture .diagram-shell {
     min-height: 34rem;
+    height: 100%;
   }
 
   .proof-card__wires {
