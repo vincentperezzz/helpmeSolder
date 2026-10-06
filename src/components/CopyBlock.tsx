@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const HOLES = [
   "left-2 top-2",
@@ -8,6 +8,14 @@ const HOLES = [
   "bottom-2 left-2",
   "bottom-2 right-2",
 ];
+
+function CheckIcon() {
+  return (
+    <svg aria-hidden width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="copy-btn__check">
+      <path d="M3 8.5l3.2 3.2L13 4.5" />
+    </svg>
+  );
+}
 
 type CopyBlockProps = {
   label: string;
@@ -18,12 +26,21 @@ type CopyBlockProps = {
 
 export function CopyBlock({ label, code, prominent = false }: CopyBlockProps) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1800);
     } catch {
       setCopied(false);
     }
@@ -52,8 +69,11 @@ export function CopyBlock({ label, code, prominent = false }: CopyBlockProps) {
           <button
             type="button"
             onClick={copy}
-            className="rounded-sm border border-paper/25 px-2.5 py-1 font-mono text-xs text-paper/85 transition-colors hover:border-copper hover:text-paper focus-visible:outline-2 focus-visible:outline-paper"
+            data-copied={copied}
+            aria-live="polite"
+            className="copy-btn press"
           >
+            {copied ? <CheckIcon /> : null}
             {copied ? "Copied" : "Copy"}
           </button>
         )}
@@ -66,9 +86,11 @@ export function CopyBlock({ label, code, prominent = false }: CopyBlockProps) {
           <button
             type="button"
             onClick={copy}
+            data-copied={copied}
             aria-live="polite"
-            className="w-full rounded-md bg-copper px-5 py-3.5 text-base font-bold text-ink transition-colors hover:bg-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            className="copy-btn copy-btn--wide press"
           >
+            {copied ? <CheckIcon /> : null}
             {copied ? "Copied. Now paste it." : "Copy this address"}
           </button>
         </div>

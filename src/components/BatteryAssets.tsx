@@ -32,6 +32,7 @@ export function captionLineCount(text: string, width: number): number {
 function BatteryCaption({ text }: { text: string }) {
   return (
     <p
+      data-battery-caption
       className="mt-1 font-mono text-[13px] text-mute"
       style={{ lineHeight: `${BATTERY_CAPTION_LINE}px`, overflowWrap: "anywhere" }}
     >

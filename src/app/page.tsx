@@ -2,6 +2,7 @@ import { HeroMotion } from "@/components/HeroMotion";
 import { HomeSections } from "@/components/HomeSections";
 import { Magnetic } from "@/components/Magnetic";
 import { ScrollLink } from "@/components/ScrollLink";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { VisitBeacon } from "@/components/VisitBeacon";
 import "./home.css";
@@ -88,6 +89,7 @@ export default function Home() {
     >
       <SiteNav />
       <VisitBeacon />
+      <div data-nav-sentinel aria-hidden="true" className="pointer-events-none absolute left-0 top-[70svh] h-px w-px" />
       <div className="atmosphere" aria-hidden="true">
         <div className="atmosphere-grid" />
       </div>
@@ -110,26 +112,22 @@ export default function Home() {
             step-by-step guide showing exactly what to solder and where, with no
             circuit diagrams to decode.
           </p>
-          <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-6 pt-2">
+          <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
             <Magnetic>
               <ScrollLink targetId="setup" className="btn-pad">
                 <span className="btn-pad__face">Set up the MCP</span>
                 <span aria-hidden="true" className="btn-pad__trace" />
               </ScrollLink>
             </Magnetic>
-            <a
-              href="/api/health"
-              className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-copper-deep underline decoration-copper/50 underline-offset-6 transition-colors hover:text-copper"
-            >
-              Check service health
-            </a>
-            <span className="font-mono text-xs tracking-wide text-mute">
-              secret /guides/[id]
-            </span>
+            <ScrollLink targetId="example" className="link-quiet">
+              See a finished guide
+            </ScrollLink>
           </div>
         </div>
       </HeroMotion>
       <HomeSections />
+      <SiteFooter />
     </main>
   );
 }
+

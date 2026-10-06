@@ -88,4 +88,7 @@ export const EXAMPLE_GUIDE: Guide = {
   ),
 };
 
+/** Id of the production guide this sample is copied from; shown as the shape of a secret link. */
+export const EXAMPLE_LINK_ID = "h025arr103368ja5g303f0";
+
 export const EXAMPLE_PART_ORDER = ["buzzer1", "btn1", "board1", "breadboard"] as const;

@@ -14,13 +14,17 @@ export function SiteNav() {
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState<string | null>(null);
 
+  // Show the bar once the sentinel near the end of the hero has scrolled above the viewport.
   useEffect(() => {
-    function update(): void {
-      setVisible(window.scrollY > window.innerHeight * 0.6);
+    const sentinel = document.querySelector("[data-nav-sentinel]");
+    if (!sentinel) {
+      return;
     }
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -50,11 +54,11 @@ export function SiteNav() {
       aria-hidden={!visible}
       inert={!visible}
     >
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 sm:px-10 lg:px-16">
-        <ScrollLink targetId="top" className="brand-mark text-lg">
+      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
+        <ScrollLink targetId="top" className="brand-mark shrink-0 text-base sm:text-lg">
           HelpmeSolder
         </ScrollLink>
-        <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-5 lg:gap-6">
+        <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-6">
           {LINKS.map((link) => (
             <ScrollLink
               key={link.id}
