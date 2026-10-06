@@ -15,6 +15,8 @@ import {
   type AssetView,
 } from "@/lib/admin/asset-view";
 import { getCatalogPart } from "@/lib/catalog";
+import { PartGlyph } from "@/components/wokwi/SkeletonPart";
+import type { PartCategory } from "@/lib/catalog/part-media";
 import { Section, Tile, Tiles } from "../../_components/ui";
 import { PartImage } from "./PartImage";
 
@@ -45,6 +47,12 @@ function partImage(r: AssetRecord, size: "tile" | "row") {
       size={size}
     />
   );
+}
+
+/** "skeleton:basic part" -> "Basic part". */
+function skeletonCategory(ref: string): PartCategory {
+  const name = ref.slice("skeleton:".length);
+  return (name.charAt(0).toUpperCase() + name.slice(1)) as PartCategory;
 }
 
 function PartRow({ r }: { r: AssetRecord }) {
@@ -188,12 +196,17 @@ export function AssetsView({ records, filter }: { records: AssetRecord[]; filter
                   {g.previewUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={g.previewUrl} alt="" loading="lazy" className="h-full w-full object-contain" />
+                  ) : g.ref.startsWith("skeleton:") ? (
+                    <PartGlyph category={skeletonCategory(g.ref)} className="h-full w-full text-mute" />
                   ) : (
                     <span className="text-center text-xs text-mute">No image</span>
                   )}
                 </div>
                 <div className="min-w-0">
                   <p className="font-mono text-sm text-ink [overflow-wrap:anywhere]">{g.ref}</p>
+                  {g.ref.startsWith("skeleton:") ? (
+                    <p className="text-xs text-mute">Drawn in code: the part&apos;s own illustration on a pin card</p>
+                  ) : null}
                   <p className="mt-1 text-xs text-ink-soft">
                     Used by {g.count} {g.count === 1 ? "part" : "parts"}
                   </p>
