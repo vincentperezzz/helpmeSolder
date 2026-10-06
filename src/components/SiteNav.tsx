@@ -115,28 +115,30 @@ export function SiteNav() {
             </span>
           </button>
           <nav id={menuId} aria-label="Sections" className="site-nav__links">
-            {LINKS.map((link) => (
-              <ScrollLink
-                key={link.id}
-                targetId={link.id}
-                className="site-nav__link"
-                current={active === link.id}
-                onClick={closeMenu}
-              >
-                {link.label}
-              </ScrollLink>
-            ))}
+            <div className="site-nav__panel">
+              {LINKS.map((link) => (
+                <ScrollLink
+                  key={link.id}
+                  targetId={link.id}
+                  className="site-nav__link"
+                  current={active === link.id}
+                  onClick={closeMenu}
+                >
+                  {link.label}
+                </ScrollLink>
+              ))}
+            </div>
           </nav>
         </div>
       </header>
-      {menuOpen ? (
-        <button
-          type="button"
-          className="site-nav__dismiss"
-          aria-label="Close menu"
-          onClick={closeMenu}
-        />
-      ) : null}
+      <button
+        type="button"
+        className="site-nav__dismiss"
+        aria-label="Close menu"
+        aria-hidden={!menuOpen}
+        tabIndex={menuOpen ? 0 : -1}
+        onClick={closeMenu}
+      />
     </>
   );
 }
