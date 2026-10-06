@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="IRLZ44N logic-level MOSFET in a TO-220 package: metal tab with a hole on top, three legs"><title>IRLZ44N logic-level MOSFET</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="metalh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa3a8"/><stop offset="0.45" stop-color="#eef1f2"/><stop offset="1" stop-color="#8c969b"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="74" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="129" y="160" width="6" height="50" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="157" y="160" width="6" height="50" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="185" y="160" width="6" height="50" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="108" y="22" width="104" height="82" rx="6" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<circle cx="160" cy="46" r="11" fill="#eef2f4" stroke="#6b767a" stroke-width="2"/><circle cx="160" cy="46" r="11" fill="#0b0e10" opacity="0.12"/>
+<rect x="108" y="100" width="104" height="62" rx="6" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<text x="160" y="128" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#e8edf0" text-anchor="middle" >IRLZ44N</text>
+</svg>

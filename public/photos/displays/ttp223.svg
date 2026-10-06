@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="TTP223 capacitive touch sensor module: small blue board with a round silver touch pad, a small chip and status LED and a three pin header">
+  <title>TTP223 capacitive touch sensor module: small blue board with a round silver touch pad, a small chip and status LED and a three pin header</title>
+  <ellipse cx="160" cy="216" rx="80" ry="9" fill="#121a20" opacity="0.16"/>
+  <g transform="translate(0 6)">
+    <rect x="104" y="26" width="112" height="148" rx="5" fill="#1d4fa0" stroke="#123a7c" stroke-width="2"/>
+    <rect x="107" y="29" width="106" height="142" rx="3" fill="none" stroke="#fff" stroke-opacity="0.12"/>
+    <circle cx="116" cy="38" r="4" fill="#b65c2e"/>
+    <circle cx="116" cy="38" r="2.2" fill="#0d1a24"/>
+    <circle cx="204" cy="38" r="4" fill="#b65c2e"/>
+    <circle cx="204" cy="38" r="2.2" fill="#0d1a24"/>
+    <circle cx="160" cy="84" r="36" fill="#cfd5dc" stroke="#7d848d" stroke-width="2.5"/>
+    <circle cx="160" cy="84" r="27" fill="none" stroke="#7d848d" stroke-width="1.5"/>
+    <path d="M147 98 L147 76 Q147 70 152 70 Q157 70 157 76 L157 64 Q157 59 162 59 Q167 59 167 64 L167 70 Q172 68 174 73 L174 98 Q174 106 166 108 L156 108 Q147 106 147 98 Z" fill="#7d848d" opacity="0.55"/>
+    <rect x="124" y="130" width="14" height="9" fill="#232a30"/>
+    <circle cx="190" cy="134" r="4" fill="#d83a2e"/>
+    <circle cx="150" cy="150" r="2.2" fill="#d7c27a"/>
+    <circle cx="170" cy="150" r="2.2" fill="#d7c27a"/>
+    <rect x="126" y="168" width="68" height="12" rx="1.5" fill="#121a20"/>
+    <rect x="132.4" y="174" width="3.2" height="26" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="158.4" y="174" width="3.2" height="26" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <rect x="184.4" y="174" width="3.2" height="26" fill="#d7c27a" stroke="#8a7a3a" stroke-width="0.6"/>
+    <circle cx="134" cy="160" r="2.4" fill="#d7c27a"/>
+    <text x="134" y="169" font-family="Arial, Helvetica, sans-serif" font-size="5.5" fill="#e8f0f8" text-anchor="middle" opacity="0.85">I/O</text>
+    <circle cx="160" cy="160" r="2.4" fill="#d7c27a"/>
+    <text x="160" y="169" font-family="Arial, Helvetica, sans-serif" font-size="5.5" fill="#e8f0f8" text-anchor="middle" opacity="0.85">VCC</text>
+    <circle cx="186" cy="160" r="2.4" fill="#d7c27a"/>
+    <text x="186" y="169" font-family="Arial, Helvetica, sans-serif" font-size="5.5" fill="#e8f0f8" text-anchor="middle" opacity="0.85">GND</text>
+  </g>
+</svg>

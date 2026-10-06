@@ -27,7 +27,7 @@ describe("suggestClosest", () => {
     expect(suggestClosest("HC-SR04")[0].id).toBe("module.hc-sr04");
   });
   it("has no strong match for a part we do not have", () => {
-    for (const hit of suggestClosest("BME280")) {
+    for (const hit of suggestClosest("AS7341")) {
       expect(hit.score).toBeLessThan(STRONG_MATCH);
     }
   });

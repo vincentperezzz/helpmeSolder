@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="ESP32-S3-DevKitC-1: black board with a silver ESP32-S3 module and printed antenna, two USB-C ports and a pin row along each long side">
+  <title>ESP32-S3-DevKitC-1: black board with a silver ESP32-S3 module and printed antenna, two USB-C ports and a pin row along each long side</title>
+  <ellipse cx="160" cy="196" rx="128" ry="8" fill="#121a20" opacity="0.16"/>
+  <rect x="34" y="62" width="252" height="116" rx="5" fill="#16191e" stroke="#05070a" stroke-width="2"/>
+  <rect x="37" y="65" width="246" height="110" rx="3" fill="none" stroke="#fff" stroke-opacity="0.14"/>
+  <rect x="64" y="67" width="209.4" height="10" rx="1.5" fill="#0a0d10"/><circle cx="70" cy="72" r="2.2" fill="#d7c27a"/><circle cx="79.4" cy="72" r="2.2" fill="#d7c27a"/><circle cx="88.8" cy="72" r="2.2" fill="#d7c27a"/><circle cx="98.2" cy="72" r="2.2" fill="#d7c27a"/><circle cx="107.6" cy="72" r="2.2" fill="#d7c27a"/><circle cx="117" cy="72" r="2.2" fill="#d7c27a"/><circle cx="126.4" cy="72" r="2.2" fill="#d7c27a"/><circle cx="135.8" cy="72" r="2.2" fill="#d7c27a"/><circle cx="145.2" cy="72" r="2.2" fill="#d7c27a"/><circle cx="154.6" cy="72" r="2.2" fill="#d7c27a"/><circle cx="164" cy="72" r="2.2" fill="#d7c27a"/><circle cx="173.4" cy="72" r="2.2" fill="#d7c27a"/><circle cx="182.8" cy="72" r="2.2" fill="#d7c27a"/><circle cx="192.2" cy="72" r="2.2" fill="#d7c27a"/><circle cx="201.6" cy="72" r="2.2" fill="#d7c27a"/><circle cx="211" cy="72" r="2.2" fill="#d7c27a"/><circle cx="220.4" cy="72" r="2.2" fill="#d7c27a"/><circle cx="229.8" cy="72" r="2.2" fill="#d7c27a"/><circle cx="239.2" cy="72" r="2.2" fill="#d7c27a"/><circle cx="248.6" cy="72" r="2.2" fill="#d7c27a"/><circle cx="258" cy="72" r="2.2" fill="#d7c27a"/><circle cx="267.4" cy="72" r="2.2" fill="#d7c27a"/>
+  <rect x="64" y="163" width="209.4" height="10" rx="1.5" fill="#0a0d10"/><circle cx="70" cy="168" r="2.2" fill="#d7c27a"/><circle cx="79.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="88.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="98.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="107.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="117" cy="168" r="2.2" fill="#d7c27a"/><circle cx="126.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="135.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="145.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="154.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="164" cy="168" r="2.2" fill="#d7c27a"/><circle cx="173.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="182.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="192.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="201.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="211" cy="168" r="2.2" fill="#d7c27a"/><circle cx="220.4" cy="168" r="2.2" fill="#d7c27a"/><circle cx="229.8" cy="168" r="2.2" fill="#d7c27a"/><circle cx="239.2" cy="168" r="2.2" fill="#d7c27a"/><circle cx="248.6" cy="168" r="2.2" fill="#d7c27a"/><circle cx="258" cy="168" r="2.2" fill="#d7c27a"/><circle cx="267.4" cy="168" r="2.2" fill="#d7c27a"/>
+  <rect x="64" y="86" width="96" height="68" rx="2" fill="#c9cfd3" stroke="#6d777d" stroke-width="1.4"/>
+  <rect x="72" y="94" width="80" height="26" rx="1" fill="#aeb6bb"/>
+  <text x="112" y="111" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" fill="#33404a" text-anchor="middle" opacity="0.92">ESP32-S3</text>
+  <path d="M162 104 H170 V122 H178 V104 H186 V122 H194 V104 H202 V122 H210 V104" stroke="#d7c27a" stroke-width="2.6" fill="none" stroke-linejoin="round"/>
+  <rect x="226" y="96" width="36" height="16" rx="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="230" y="101" width="28" height="6" rx="3" fill="#14181b"/>
+  <rect x="226" y="132" width="36" height="16" rx="7" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="230" y="137" width="28" height="6" rx="3" fill="#14181b"/>
+  <rect x="186" y="130" width="14" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="190" y="133" width="6" height="6" rx="3" fill="#6d777d"/>
+  <rect x="206" y="130" width="14" height="12" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="210" y="133" width="6" height="6" rx="3" fill="#6d777d"/>
+  <rect x="246" y="116" width="8" height="5" rx="1.2" fill="#3fbf5a" stroke="#121a20" stroke-width="0.8"/>
+  <text x="112" y="142" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.92">DevKitC-1</text>
+</svg>

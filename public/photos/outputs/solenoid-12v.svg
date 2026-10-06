@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Open-frame push-pull solenoid: a silver metal frame around a copper coil with a steel plunger sticking out">
+<title>Open-frame push-pull solenoid: a silver metal frame around a copper coil with a steel plunger sticking out</title>
+<defs><linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#8d949a"/><stop offset=".45" stop-color="#e6eaed"/><stop offset="1" stop-color="#868d93"/></linearGradient><linearGradient id="mv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f3"/><stop offset="1" stop-color="#8d949a"/></linearGradient><linearGradient id="side" x1="0" x2="1"><stop offset="0" stop-color="#0b0f13"/><stop offset=".35" stop-color="#2a343d"/><stop offset="1" stop-color="#0b0f13"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="104" ry="9" fill="#121a20" opacity="0.16"/>
+<rect x="66" y="82" width="150" height="76" rx="6" fill="#c9cfd3" stroke="#6d777d" stroke-width="2"/>
+<rect x="76" y="92" width="130" height="56" rx="4" fill="#b8742c" stroke="#7a4a18" stroke-width="1.5"/>
+<path d="M84 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M96 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M108 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M120 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M132 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M144 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M156 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M168 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M180 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/><path d="M192 94 V146" stroke="#e0a258" stroke-width="2" opacity=".6"/>
+<rect x="214" y="110" width="68" height="20" rx="3" fill="url(#m)" stroke="#6d777d"/>
+<rect x="272" y="104" width="10" height="32" rx="2" fill="#8d949a"/>
+<path d="M70 160 C50 176 44 190 30 192" stroke="#c0261c" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M84 160 C70 180 62 196 30 202" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

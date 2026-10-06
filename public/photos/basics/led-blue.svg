@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Blue 5 mm LED with two legs"><title>Blue LED</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><radialGradient id="dome" cx="0.35" cy="0.3" r="0.9"><stop offset="0" stop-color="#a4ccff"/><stop offset="1" stop-color="#2f6fe0"/></radialGradient><linearGradient id="lip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f6fe0"/><stop offset="1" stop-color="#1f4fb0"/></linearGradient></defs>
+<ellipse cx="160" cy="210" rx="78" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="127" y="150" width="6" height="52" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="187" y="150" width="6" height="40" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<path d="M104 112 V70 A56 56 0 0 1 216 70 V112 Z" fill="url(#dome)" stroke="#173f8f" stroke-width="2"/>
+<rect x="96" y="112" width="128" height="22" rx="6" fill="url(#lip)" stroke="#173f8f" stroke-width="2"/>
+<path d="M142 118 L142 78 L160 62 L178 78 L178 118" fill="none" stroke="#8c969b" stroke-width="2" opacity="0.8"/>
+<path d="M146 118 V100 H174 V118" fill="#c9d0d4" opacity="0.85" stroke="#6b767a" stroke-width="2"/>
+<path d="M118 100 V70 A42 42 0 0 1 144 30" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+</svg>

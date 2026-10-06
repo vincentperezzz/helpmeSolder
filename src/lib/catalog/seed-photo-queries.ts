@@ -1,3 +1,8 @@
+import { EXTRA_BASICS_QUERIES } from "./extra/basics-queries";
+import { EXTRA_OUTPUTS_QUERIES } from "./extra/outputs-queries";
+import { EXTRA_DISPLAYS_QUERIES } from "./extra/displays-queries";
+import { EXTRA_SENSORS_QUERIES } from "./extra/sensors-queries";
+import { EXTRA_BOARDS_QUERIES } from "./extra/boards-queries";
 import type { PhotoQueriesOverride } from "./types";
 
 /** Bundled photo search phrases per part id (the seed). Leaf module: no registry import. */
@@ -125,4 +130,9 @@ export const SEED_PHOTO_QUERY_OVERRIDES: Record<string, PhotoQueriesOverride> = 
   "passive.power.battery.lipo_2s": ["LiPo battery pack 2S", "Lithium polymer battery pack"],
   "passive.power.supply.barrel_9v": ["9V DC power adapter", "AC adapter barrel plug"],
   "passive.power.supply.barrel_12v": ["12V DC power adapter", "AC adapter barrel plug"],
+  ...EXTRA_BASICS_QUERIES,
+  ...EXTRA_OUTPUTS_QUERIES,
+  ...EXTRA_DISPLAYS_QUERIES,
+  ...EXTRA_SENSORS_QUERIES,
+  ...EXTRA_BOARDS_QUERIES,
 };

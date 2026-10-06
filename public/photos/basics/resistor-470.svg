@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="470 ohm resistor with colour bands"><title>470 ohm resistor</title>
+<defs><linearGradient id="lead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#8c969b"/></linearGradient><linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd6b8"/><stop offset="1" stop-color="#c29a6e"/></linearGradient><clipPath id="clip"><path d="M92 90 Q92 76 108 76 L116 76 Q126 76 128 82 L192 82 Q194 76 204 76 L212 76 Q228 76 228 90 L228 148 Q228 162 212 162 L204 162 Q194 162 192 156 L128 156 Q126 162 116 162 L108 162 Q92 162 92 148 Z"/></clipPath></defs>
+<ellipse cx="160" cy="196" rx="100" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="22" y="114" width="276" height="9" rx="4" fill="url(#lead)" stroke="#6b767a" stroke-width="2"/>
+<path d="M92 90 Q92 76 108 76 L116 76 Q126 76 128 82 L192 82 Q194 76 204 76 L212 76 Q228 76 228 90 L228 148 Q228 162 212 162 L204 162 Q194 162 192 156 L128 156 Q126 162 116 162 L108 162 Q92 162 92 148 Z" fill="url(#body)"/>
+<g clip-path="url(#clip)"><rect x="108" y="70" width="14" height="98" fill="#e8c52a"/><rect x="134" y="70" width="14" height="98" fill="#7a4aa8"/><rect x="160" y="70" width="14" height="98" fill="#7a4a22"/><rect x="206" y="70" width="10" height="98" fill="#d9a92b"/><rect x="94" y="84" width="132" height="10" rx="5" fill="#fff" opacity="0.28"/></g>
+<path d="M92 90 Q92 76 108 76 L116 76 Q126 76 128 82 L192 82 Q194 76 204 76 L212 76 Q228 76 228 90 L228 148 Q228 162 212 162 L204 162 Q194 162 192 156 L128 156 Q126 162 116 162 L108 162 Q92 162 92 148 Z" fill="none" stroke="#1b2227" stroke-width="2"/>
+</svg>

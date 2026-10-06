@@ -1,0 +1,32 @@
+const dir = "/photos/outputs";
+
+/** Thumbnails for the expansion outputs parts, keyed by photoHint. */
+export const EXTRA_OUTPUTS_MEDIA: Record<string, string> = {
+  "dc-motor": `${dir}/dc-motor.svg`,
+  "vibration-motor": `${dir}/vibration-motor.svg`,
+  "fan-5v": `${dir}/fan-5v.svg`,
+  "servo-mg996r": `${dir}/servo-mg996r.svg`,
+  "servo-continuous": `${dir}/servo-continuous.svg`,
+  "stepper-28byj48": `${dir}/stepper-28byj48.svg`,
+  "driver-a4988": `${dir}/driver-a4988.svg`,
+  "driver-drv8825": `${dir}/driver-drv8825.svg`,
+  "driver-l298n": `${dir}/driver-l298n.svg`,
+  "chip-l293d": `${dir}/chip-l293d.svg`,
+  "driver-tb6612": `${dir}/driver-tb6612.svg`,
+  "relay-1ch": `${dir}/relay-1ch.svg`,
+  "relay-2ch": `${dir}/relay-2ch.svg`,
+  "relay-4ch": `${dir}/relay-4ch.svg`,
+  "relay-ssr": `${dir}/relay-ssr.svg`,
+  "solenoid-12v": `${dir}/solenoid-12v.svg`,
+  "buzzer-passive": `${dir}/buzzer-passive.svg`,
+  "speaker-8ohm": `${dir}/speaker-8ohm.svg`,
+  "amp-pam8403": `${dir}/amp-pam8403.svg`,
+  "amp-lm386": `${dir}/amp-lm386.svg`,
+  "dfplayer-mini": `${dir}/dfplayer-mini.svg`,
+  "siren-alarm": `${dir}/siren-alarm.svg`,
+  "led-strip-ws2812b": `${dir}/led-strip-ws2812b.svg`,
+  "led-strip-12v": `${dir}/led-strip-12v.svg`,
+  "led-highpower": `${dir}/led-highpower.svg`,
+  "laser-650nm": `${dir}/laser-650nm.svg`,
+  "rgb-ky016": `${dir}/rgb-ky016.svg`,
+};

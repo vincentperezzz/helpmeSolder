@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="100 microfarad electrolytic capacitor with a stripe marking the negative leg"><title>100 microfarad electrolytic capacitor</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="can" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b2227"/><stop offset="0.35" stop-color="#4a545b"/><stop offset="1" stop-color="#1b2227"/></linearGradient><linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b7c0c6"/><stop offset="0.5" stop-color="#eef1f2"/><stop offset="1" stop-color="#b7c0c6"/></linearGradient><clipPath id="cc"><rect x="122" y="52" width="76" height="98" rx="6"/></clipPath></defs>
+<ellipse cx="160" cy="218" rx="47.12" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="143" y="146" width="6" height="58" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/><rect x="171" y="146" width="6" height="44" fill="url(#metal)" stroke="#6b767a" stroke-width="2"/>
+<rect x="122" y="52" width="76" height="98" rx="6" fill="url(#can)" stroke="#12181d" stroke-width="2"/>
+<g clip-path="url(#cc)"><rect x="122" y="52" width="20" height="98" fill="url(#stripe)"/><rect x="127" y="82" width="10" height="3" fill="#2a3138"/><rect x="127" y="94" width="10" height="3" fill="#2a3138"/><rect x="127" y="106" width="10" height="3" fill="#2a3138"/><rect x="127" y="118" width="10" height="3" fill="#2a3138"/></g>
+<rect x="122" y="52" width="76" height="12" rx="6" fill="#8c969b" stroke="#12181d" stroke-width="2"/>
+<rect x="122" y="144" width="76" height="8" rx="4" fill="#59636a" stroke="#12181d" stroke-width="2"/>
+<text x="170" y="99" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" fill="#eaf0f4" text-anchor="middle" >100&#181;F</text>
+<text x="170" y="118" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" fill="#c9d3d9" text-anchor="middle" >25V</text>
+</svg>

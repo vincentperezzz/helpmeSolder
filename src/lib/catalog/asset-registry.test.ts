@@ -2,11 +2,9 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { listAssetRecords, summarizeAssets } from "./asset-registry";
-import { boards } from "./boards";
-import { modules } from "./modules";
-import { passives } from "./passives";
+import { SEED_SNAPSHOT } from "./seed";
 
-const parts = [...boards, ...modules, ...passives];
+const parts = [...SEED_SNAPSHOT.boards, ...SEED_SNAPSHOT.modules, ...SEED_SNAPSHOT.passives];
 
 describe("asset registry", () => {
   const records = listAssetRecords();

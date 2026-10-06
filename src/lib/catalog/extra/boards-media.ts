@@ -1,0 +1,20 @@
+/** Thumbnails for the expansion boards parts, keyed by photoHint. */
+export const EXTRA_BOARDS_MEDIA: Record<string, string> = {
+  "arduino-leonardo": "/photos/boards/arduino-leonardo.svg",
+  "arduino-pro-mini": "/photos/boards/arduino-pro-mini.svg",
+  "arduino-micro": "/photos/boards/arduino-micro.svg",
+  "arduino-nano-every": "/photos/boards/arduino-nano-every.svg",
+  "esp32-s3-devkitc": "/photos/boards/esp32-s3-devkitc.svg",
+  "esp32-c3-devkitm": "/photos/boards/esp32-c3-devkitm.svg",
+  "esp32-c3-supermini": "/photos/boards/esp32-c3-supermini.svg",
+  "esp32-cam": "/photos/boards/esp32-cam.svg",
+  "wemos-d1-mini": "/photos/boards/wemos-d1-mini.svg",
+  "pi-zero-2w": "/photos/boards/pi-zero-2w.svg",
+  "pico-2w": "/photos/boards/pico-2w.svg",
+  "teensy-40": "/photos/boards/teensy-40.svg",
+  "blue-pill": "/photos/boards/blue-pill.svg",
+  "digispark": "/photos/boards/digispark.svg",
+  "microbit-v2": "/photos/boards/microbit-v2.svg",
+  "xiao-esp32c3": "/photos/boards/xiao-esp32c3.svg",
+  "xiao-rp2040": "/photos/boards/xiao-rp2040.svg",
+};

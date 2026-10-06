@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Black plastic alarm siren with a flared horn on a small base and a red and a black wire">
+<title>Black plastic alarm siren with a flared horn on a small base and a red and a black wire</title>
+<defs><linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#8d949a"/><stop offset=".45" stop-color="#e6eaed"/><stop offset="1" stop-color="#868d93"/></linearGradient><linearGradient id="mv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f3"/><stop offset="1" stop-color="#8d949a"/></linearGradient><linearGradient id="side" x1="0" x2="1"><stop offset="0" stop-color="#0b0f13"/><stop offset=".35" stop-color="#2a343d"/><stop offset="1" stop-color="#0b0f13"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="104" ry="9" fill="#121a20" opacity="0.16"/>
+<path d="M98 150 L98 92 C98 70 222 70 222 92 L222 150 Z" fill="#232a30" stroke="#0b0e10" stroke-width="2"/>
+<ellipse cx="160" cy="92" rx="62" ry="20" fill="#10151a"/><ellipse cx="160" cy="92" rx="44" ry="12" fill="#05080a"/>
+<path d="M110 104 C112 128 112 140 112 148" stroke="#fff" stroke-opacity=".12" stroke-width="5" fill="none"/>
+<rect x="84" y="150" width="152" height="26" rx="5" fill="#2b3036" stroke="#0b0e10" stroke-width="2"/>
+<circle cx="98" cy="163" r="4" fill="#0b0e10" /><circle cx="222" cy="163" r="4" fill="#0b0e10" />
+<path d="M160 176 C160 198 190 200 218 200" stroke="#c0261c" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M168 176 C170 204 200 208 226 208" stroke="#1a1a1a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+<path d="M240 74 C252 82 252 104 240 112 M256 66 C274 78 274 108 256 120" stroke="#8d949a" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+</svg>

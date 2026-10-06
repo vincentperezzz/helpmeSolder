@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Arduino Micro: narrow dark teal board with a micro USB port, a small square chip, a reset button and two rows of pins">
+  <title>Arduino Micro: narrow dark teal board with a micro USB port, a small square chip, a reset button and two rows of pins</title>
+  <ellipse cx="160" cy="178" rx="130" ry="7" fill="#121a20" opacity="0.16"/>
+  <rect x="36" y="80" width="252" height="80" rx="5" fill="#0b6b78" stroke="#05070a" stroke-width="2"/>
+  <rect x="39" y="83" width="246" height="74" rx="3" fill="none" stroke="#fff" stroke-opacity="0.14"/>
+  <rect x="86" y="83" width="189" height="10" rx="1.5" fill="#0a0d10"/><circle cx="92" cy="88" r="2.2" fill="#d7c27a"/><circle cx="103.8" cy="88" r="2.2" fill="#d7c27a"/><circle cx="115.6" cy="88" r="2.2" fill="#d7c27a"/><circle cx="127.4" cy="88" r="2.2" fill="#d7c27a"/><circle cx="139.2" cy="88" r="2.2" fill="#d7c27a"/><circle cx="151" cy="88" r="2.2" fill="#d7c27a"/><circle cx="162.8" cy="88" r="2.2" fill="#d7c27a"/><circle cx="174.6" cy="88" r="2.2" fill="#d7c27a"/><circle cx="186.4" cy="88" r="2.2" fill="#d7c27a"/><circle cx="198.2" cy="88" r="2.2" fill="#d7c27a"/><circle cx="210" cy="88" r="2.2" fill="#d7c27a"/><circle cx="221.8" cy="88" r="2.2" fill="#d7c27a"/><circle cx="233.6" cy="88" r="2.2" fill="#d7c27a"/><circle cx="245.4" cy="88" r="2.2" fill="#d7c27a"/><circle cx="257.2" cy="88" r="2.2" fill="#d7c27a"/><circle cx="269" cy="88" r="2.2" fill="#d7c27a"/>
+  <rect x="86" y="147" width="189" height="10" rx="1.5" fill="#0a0d10"/><circle cx="92" cy="152" r="2.2" fill="#d7c27a"/><circle cx="103.8" cy="152" r="2.2" fill="#d7c27a"/><circle cx="115.6" cy="152" r="2.2" fill="#d7c27a"/><circle cx="127.4" cy="152" r="2.2" fill="#d7c27a"/><circle cx="139.2" cy="152" r="2.2" fill="#d7c27a"/><circle cx="151" cy="152" r="2.2" fill="#d7c27a"/><circle cx="162.8" cy="152" r="2.2" fill="#d7c27a"/><circle cx="174.6" cy="152" r="2.2" fill="#d7c27a"/><circle cx="186.4" cy="152" r="2.2" fill="#d7c27a"/><circle cx="198.2" cy="152" r="2.2" fill="#d7c27a"/><circle cx="210" cy="152" r="2.2" fill="#d7c27a"/><circle cx="221.8" cy="152" r="2.2" fill="#d7c27a"/><circle cx="233.6" cy="152" r="2.2" fill="#d7c27a"/><circle cx="245.4" cy="152" r="2.2" fill="#d7c27a"/><circle cx="257.2" cy="152" r="2.2" fill="#d7c27a"/><circle cx="269" cy="152" r="2.2" fill="#d7c27a"/>
+  <rect x="30" y="110" width="26" height="20" rx="3" fill="#aeb6bb" stroke="#6d777d" stroke-width="1.5"/>
+  <rect x="36" y="115" width="16" height="10" rx="2" fill="#14181b"/>
+  <rect x="150" y="106" width="28" height="28" rx="2" fill="#14181b" stroke="#05070a" stroke-width="1"/>
+  <circle cx="155" cy="111" r="1.4" fill="#50606a"/>
+  <text x="164" y="122.33333333333333" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" fill="#cfd6db" text-anchor="middle">32U4</text>
+  <rect x="104" y="114" width="12" height="10" rx="2" fill="#d5dade" stroke="#8c96a0" stroke-width="1"/>
+  <rect x="107" y="116" width="6" height="6" rx="3" fill="#6d777d"/>
+  <rect x="206" y="116" width="8" height="5" rx="1.2" fill="#e8a93b" stroke="#121a20" stroke-width="0.8"/>
+  <text x="236" y="124" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" fill="#e8f0f8" text-anchor="middle" opacity="0.92">MICRO</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="TP4056 USB-C LiPo charger module: small blue circuit board with a USB-C socket, two LEDs, three chips and solder pads"><title>TP4056 USB-C charger</title>
+<defs><linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6eaec"/><stop offset="1" stop-color="#9aa3a8"/></linearGradient><linearGradient id="metalh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa3a8"/><stop offset="0.45" stop-color="#eef1f2"/><stop offset="1" stop-color="#8c969b"/></linearGradient><linearGradient id="black" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4046"/><stop offset="1" stop-color="#14181c"/></linearGradient><linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d78c8"/><stop offset="1" stop-color="#1b4f8e"/></linearGradient></defs>
+<ellipse cx="160" cy="218" rx="76" ry="10" fill="#121a20" opacity="0.16"/>
+<rect x="98" y="30" width="124" height="180" rx="8" fill="url(#pcb)" stroke="#123a6a" stroke-width="2"/>
+<rect x="112" y="18" width="96" height="48" rx="10" fill="url(#metalh)" stroke="#6b767a" stroke-width="2"/>
+<rect x="124" y="30" width="72" height="14" rx="7" fill="#14181c"/><rect x="132" y="35" width="56" height="4" rx="2" fill="#aab4ba"/>
+<g fill="#d7dde0" stroke="#6b767a" stroke-width="2"><circle cx="112" cy="196" r="7"/><circle cx="208" cy="196" r="7"/><circle cx="112" cy="168" r="7"/><circle cx="208" cy="168" r="7"/><circle cx="112" cy="140" r="7"/><circle cx="208" cy="140" r="7"/></g>
+<rect x="128" y="86" width="64" height="26" rx="3" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<rect x="128" y="118" width="26" height="20" rx="3" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/><rect x="164" y="118" width="28" height="20" rx="3" fill="url(#black)" stroke="#0b0e10" stroke-width="2"/>
+<circle cx="130" cy="76" r="5" fill="#e0443a"/><circle cx="190" cy="76" r="5" fill="#46d36a"/>
+<rect x="144" y="150" width="32" height="12" rx="2" fill="#2a2f35"/>
+
+</svg>

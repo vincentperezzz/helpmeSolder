@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Large arcade push button with a red dome cap on a black housing and metal solder terminals underneath, with LED lighting inside the cap">
+  <title>Large arcade push button with a red dome cap on a black housing and metal solder terminals underneath, with LED lighting inside the cap</title>
+  <ellipse cx="160" cy="216" rx="80" ry="9" fill="#121a20" opacity="0.16"/>
+  <g transform="translate(0 4)">
+    <rect x="98" y="134" width="124" height="34" rx="8" fill="#23272c" stroke="#0f1215" stroke-width="2"/>
+    <rect x="130" y="168" width="60" height="22" fill="#2b3036" stroke="#0f1215" stroke-width="1.5"/>
+    <rect x="138" y="190" width="4" height="16" fill="#c0c4ca" stroke="#7d848d" stroke-width="0.8"/>
+    <rect x="154" y="190" width="4" height="16" fill="#c0c4ca" stroke="#7d848d" stroke-width="0.8"/>
+    <rect x="170" y="190" width="4" height="16" fill="#c0c4ca" stroke="#7d848d" stroke-width="0.8"/>
+    <rect x="184" y="190" width="4" height="16" fill="#c0c4ca" stroke="#7d848d" stroke-width="0.8"/>
+    <path d="M104 136 Q104 66 160 58 Q216 66 216 136 Z" fill="#d8352a" stroke="#8f1f17" stroke-width="2.5"/>
+    <ellipse cx="160" cy="136" rx="56" ry="9" fill="#a82a21"/>
+    <path d="M122 114 Q124 82 156 72" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

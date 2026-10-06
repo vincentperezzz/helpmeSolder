@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="Flat round coin vibration motor with a red and a black wire">
+<title>Flat round coin vibration motor with a red and a black wire</title>
+<defs><linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#8d949a"/><stop offset=".45" stop-color="#e6eaed"/><stop offset="1" stop-color="#868d93"/></linearGradient><linearGradient id="mv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f3"/><stop offset="1" stop-color="#8d949a"/></linearGradient><linearGradient id="side" x1="0" x2="1"><stop offset="0" stop-color="#0b0f13"/><stop offset=".35" stop-color="#2a343d"/><stop offset="1" stop-color="#0b0f13"/></linearGradient></defs>
+<ellipse cx="160" cy="214" rx="104" ry="9" fill="#121a20" opacity="0.16"/>
+<ellipse cx="160" cy="138" rx="62" ry="22" fill="#6d777d"/><rect x="98" y="108" width="124" height="30" fill="#aeb6bb"/><ellipse cx="160" cy="108" rx="62" ry="22" fill="#d5dadd" stroke="#8d949a" stroke-width="2"/>
+<ellipse cx="160" cy="106" rx="46" ry="15" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3"/>
+<rect x="136" y="99" width="48" height="16" rx="2" fill="#f4f1d8" opacity=".9"/>
+<path d="M214 120 C250 120 260 150 290 150" stroke="#c0261c" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M214 128 C240 134 250 168 290 172" stroke="#1a1a1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>
