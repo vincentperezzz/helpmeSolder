@@ -105,7 +105,14 @@ export async function createGuide(input: {
   return toGuide(data as GuideRow);
 }
 
-export async function getGuide(id: string): Promise<Guide | null> {
+/**
+ * Loads a guide. Pass `touch: false` for link-preview crawlers so a bot
+ * fetching the page does not reset the retention timer.
+ */
+export async function getGuide(
+  id: string,
+  options: { touch?: boolean } = {},
+): Promise<Guide | null> {
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("guides")
@@ -121,7 +128,9 @@ export async function getGuide(id: string): Promise<Guide | null> {
     return null;
   }
 
-  await touchIfStale(data as GuideRow);
+  if (options.touch !== false) {
+    await touchIfStale(data as GuideRow);
+  }
   return toGuide(data as GuideRow);
 }
 
