@@ -33,9 +33,7 @@ export function ExampleGuide() {
           </p>
         </div>
 
-        <InView className="proof-picture w-full">
-          <GuidePicture />
-        </InView>
+        <GuidePicture />
 
         <ul className="snippet-frame grid grid-cols-2 gap-px bg-line-strong md:grid-cols-4">
           {parts.map((part) => (

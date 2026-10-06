@@ -1,36 +1,42 @@
 import type { Guide } from "@/lib/catalog/types";
 import { toBreadboardLayout } from "@/lib/guides/layout-variants";
 
+/** Frozen copy of production guide h025arr103368ja5g303f0 (ESP32 Button Buzzer). */
 const direct: Guide = {
   id: "example-esp32-button-buzzer",
   title: "ESP32 Button Buzzer",
   power_source: "battery_3aa",
   board_id: "board.esp32.devkit",
   parts: [
-    { instanceId: "mcu", catalogId: "board.esp32.devkit" },
-    { instanceId: "buz", catalogId: "module.buzzer.active", label: "Active Buzzer" },
-    { instanceId: "btn", catalogId: "passive.pushbutton", label: "Pushbutton" },
+    { instanceId: "breadboard1", catalogId: "passive.breadboard.half", label: "Half Breadboard" },
+    { instanceId: "buzzer1", catalogId: "module.buzzer.active", label: "Active Buzzer" },
+    { instanceId: "btn1", catalogId: "passive.pushbutton", label: "Pushbutton" },
+    { instanceId: "board1", catalogId: "board.esp32.devkit", label: "ESP32 DevKit V1" },
   ],
   connections: [
     {
       id: "c1",
-      from: { instanceId: "mcu", pinId: "D5" },
-      to: { instanceId: "buz", pinId: "1" },
+      from: { instanceId: "board1", pinId: "D5" },
+      to: { instanceId: "buzzer1", pinId: "1" },
+      note: "Buzzer signal to GPIO D5",
     },
     {
       id: "c2",
-      from: { instanceId: "buz", pinId: "2" },
-      to: { instanceId: "mcu", pinId: "GND.1" },
+      from: { instanceId: "board1", pinId: "GND.1" },
+      to: { instanceId: "buzzer1", pinId: "2" },
+      note: "Buzzer ground to ESP32 GND",
     },
     {
       id: "c3",
-      from: { instanceId: "mcu", pinId: "D4" },
-      to: { instanceId: "btn", pinId: "1.l" },
+      from: { instanceId: "board1", pinId: "D4" },
+      to: { instanceId: "btn1", pinId: "1.l" },
+      note: "Button signal to GPIO D4",
     },
     {
       id: "c4",
-      from: { instanceId: "btn", pinId: "2.l" },
-      to: { instanceId: "mcu", pinId: "GND.2" },
+      from: { instanceId: "board1", pinId: "GND.2" },
+      to: { instanceId: "btn1", pinId: "2.l" },
+      note: "Button ground to ESP32 GND",
     },
   ],
   steps: [
@@ -44,7 +50,7 @@ const direct: Guide = {
       id: "s2",
       order: 2,
       title: "Connect battery power",
-      body: "Connect the 3xAA battery holder positive (red wire) to ESP32 VIN and negative (black wire) to ESP32 GND.",
+      body: "Connect the 3×AA battery holder positive (red wire) to ESP32 VIN and negative (black wire) to ESP32 GND.",
     },
     {
       id: "s3",
@@ -66,11 +72,11 @@ const direct: Guide = {
     },
   ],
   notes: [
-    "3xAA batteries provide about 4.5 V into the ESP32 VIN pin. Do not feed more than 5 V directly into the 3V3 pin.",
+    "3×AA batteries provide ~4.5V into the ESP32 VIN pin. Do not feed more than 5V directly into 3V3 pin.",
     "Configure GPIO 4 in software as INPUT_PULLUP so pressing the button connects it cleanly to GND.",
   ],
-  created_at: "2026-03-01T00:00:00.000Z",
-  updated_at: "2026-03-01T00:00:00.000Z",
+  created_at: "2026-10-05T09:32:43.674Z",
+  updated_at: "2026-10-06T09:45:01.108Z",
 };
 
 const laidOut = toBreadboardLayout(direct);
@@ -82,4 +88,4 @@ export const EXAMPLE_GUIDE: Guide = {
   ),
 };
 
-export const EXAMPLE_PART_ORDER = ["buz", "btn", "mcu", "breadboard"] as const;
+export const EXAMPLE_PART_ORDER = ["buzzer1", "btn1", "board1", "breadboard"] as const;

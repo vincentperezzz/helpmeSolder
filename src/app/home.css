@@ -14,6 +14,15 @@
   border: 0;
 }
 
+.proof-card {
+  display: grid;
+}
+
+.proof-card__stage {
+  margin: 0;
+  height: 100%;
+}
+
 .proof-picture {
   overflow: hidden;
   height: 26rem;
@@ -28,7 +37,151 @@
   min-height: 26rem;
 }
 
+.proof-card__wires {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 94%, var(--paper));
+}
+
+.proof-wire {
+  display: grid;
+  padding: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.proof-wire:hover {
+  border-color: color-mix(in oklab, var(--copper) 45%, var(--line-strong));
+}
+
+.proof-wire.is-hot {
+  border-color: color-mix(in oklab, var(--copper) 55%, var(--line-strong));
+  background: color-mix(in oklab, var(--copper) 7%, white);
+  box-shadow: inset 3px 0 0 var(--copper);
+}
+
+.proof-wire.is-selected {
+  border-color: var(--copper);
+  background: color-mix(in oklab, var(--copper) 11%, white);
+  box-shadow: inset 3px 0 0 var(--copper-deep);
+}
+
+.proof-wire button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.proof-wire button:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 3px;
+}
+
+.proof-wire__badge {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ink) 30%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.proof-wire__text {
+  display: grid;
+  min-width: 0;
+  justify-items: start;
+  gap: 8px;
+}
+
+.proof-wire__route {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.proof-wire__end {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.proof-wire__part {
+  color: var(--mute);
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.proof-wire__end strong {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.proof-wire__arrow {
+  display: grid;
+  place-items: center;
+  color: var(--mute);
+}
+
+.proof-wire__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.proof-wire__swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid color-mix(in oklab, var(--ink) 30%, transparent);
+  border-radius: 50%;
+}
+
+.proof-wire__why {
+  color: var(--mute);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
 @media (min-width: 1024px) {
+  .proof-card {
+    grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.85fr);
+    align-items: stretch;
+  }
+
   .proof-picture {
     height: 34rem;
     min-height: 32rem;
@@ -36,6 +189,28 @@
 
   .proof-picture .diagram-shell {
     min-height: 32rem;
+  }
+
+  .proof-card__wires {
+    border-top: 0;
+    border-left: 1px solid var(--line-strong);
+    max-height: 34rem;
+    overflow: auto;
+    align-content: start;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .proof-wire {
+    transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .proof-wire.is-selected,
+  .proof-wire.is-hot {
+    box-shadow: none;
+    outline: 2px solid Highlight;
   }
 }
 
