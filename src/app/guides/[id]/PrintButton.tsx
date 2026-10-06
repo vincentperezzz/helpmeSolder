@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
+import { WokwiDiagram } from "@/components/WokwiDiagram";
 import {
   DEFAULT_PRINT_OPTIONS,
   DEFAULT_PRINT_PAPER,
@@ -17,6 +18,7 @@ import {
   setAllPrintOptions,
   writePrintOptions,
   writePrintPaper,
+  type CircuitView,
   type PrintOptions,
   type PrintPaper,
   type PrintSection,
@@ -122,9 +124,10 @@ function restorePage(state: PrintState) {
 
 type PrintButtonProps = {
   guide?: Guide;
+  view?: CircuitView;
 };
 
-export function PrintButton({ guide }: PrintButtonProps) {
+export function PrintButton({ guide, view = "parts" }: PrintButtonProps) {
   const guideId = guide?.id;
   const menuId = useId();
   const paperName = useId();
@@ -315,6 +318,15 @@ export function PrintButton({ guide }: PrintButtonProps) {
           </div>
         ) : null}
       </div>
+      {guide && options.diagram && view === "schematic" && stage
+        ? createPortal(
+            <div className="print-only-diagram" aria-hidden="true" inert>
+              <h2>Wiring picture</h2>
+              <WokwiDiagram guide={guide} />
+            </div>,
+            stage,
+          )
+        : null}
       {guide && options.schematic && stage
         ? createPortal(
             <div className="print-only-schematic" aria-hidden="true" inert>

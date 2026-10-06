@@ -487,7 +487,10 @@ export function SchematicDiagram({
         </div>
       </div>
 
-      <p aria-live="polite" className="schematic-caption min-h-[3.25rem] border-t border-line px-4 py-2 text-xs text-ink-soft sm:px-5">
+      <p
+        aria-live="polite"
+        className={`schematic-caption border-t border-line px-4 text-xs text-ink-soft sm:px-5 ${caption ? "min-h-[3.25rem] py-2" : "py-1.5"}`}
+      >
         {caption ? (
           <>
             <strong className="font-semibold text-ink">{caption.title}.</strong> {caption.body}
@@ -509,11 +512,25 @@ export function SchematicDiagram({
             </li>
           ))}
         </ul>
-        {hasBlock ? (
-          <p className="mt-2 text-xs text-ink-soft">Boxes with pin names are boards and modules.</p>
-        ) : null}
-        {hasBreadboard ? (
-          <p className="mt-2 text-xs text-ink-soft">The breadboard is left out. It only joins wires together.</p>
+        {hasBlock || hasBreadboard ? (
+          <ol className="mt-2 flex list-none flex-col gap-1.5 p-0">
+            {[
+              hasBlock ? "Boxes with pin names are boards and modules." : null,
+              hasBreadboard ? "The breadboard is left out. It only joins wires together." : null,
+            ]
+              .filter((note): note is string => note != null)
+              .map((note, index) => (
+                <li key={note} className="flex min-w-0 items-start gap-2 text-xs text-ink-soft">
+                  <b
+                    aria-hidden="true"
+                    className="mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-copper font-mono text-[10px] font-bold text-copper-deep"
+                  >
+                    {index + 1}
+                  </b>
+                  <span className="min-w-0">{note}</span>
+                </li>
+              ))}
+          </ol>
         ) : null}
       </div>
     </div>

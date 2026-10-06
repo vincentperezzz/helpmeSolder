@@ -390,6 +390,7 @@ export function GuideWorkspace({
         onToggleChecks={toggleChecks}
         checksId={checksId}
         printGuide={layoutGuide}
+        view={view}
       />
 
       <div className="ga-body">

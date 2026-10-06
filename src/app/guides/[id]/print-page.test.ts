@@ -39,15 +39,21 @@ describe("print page size", () => {
 
   it("caps the diagram and schematic at the printable content width", () => {
     const letter = css.match(
-      /\.guide-app\[data-print-paper="letter"\] \.diagram-viewport,[\s\S]*?\.guide-app\[data-print-paper="long"\] \.schematic-canvas\s*\{([^}]*)\}/,
+      /\.guide-app\[data-print-paper="letter"\] \.diagram-viewport,[\s\S]*?\.guide-app\[data-print-paper="long"\] \.print-only-schematic\s*\{([^}]*)\}/,
     )?.[1];
     const a4 = css.match(
-      /\.guide-app\[data-print-paper="a4"\] \.diagram-viewport,[\s\S]*?\.schematic-canvas\s*\{([^}]*)\}/,
+      /\.guide-app\[data-print-paper="a4"\] \.diagram-viewport,[\s\S]*?\.print-only-schematic\s*\{([^}]*)\}/,
     )?.[1];
     expect(letter).toMatch(/max-width:\s*calc\(8\.5in - 24mm\)\s*!important/);
     expect(a4).toMatch(/max-width:\s*calc\(210mm - 24mm\)\s*!important/);
     expect(css).toMatch(/data-print-paper="letter"\] \.schematic-canvas/);
+    expect(css).toMatch(/data-print-paper="letter"\] \.diagram-shell/);
+    expect(css).toMatch(/data-print-paper="letter"\] \.print-only-diagram/);
+    expect(css).toMatch(/data-print-paper="letter"\] \.print-only-schematic/);
     expect(css).toMatch(/data-print-paper="a4"\] \.schematic-canvas/);
+    expect(css).toMatch(/data-print-paper="a4"\] \.diagram-shell/);
+    expect(css).toMatch(/data-print-paper="a4"\] \.print-only-diagram/);
+    expect(css).toMatch(/data-print-paper="a4"\] \.print-only-schematic/);
     expect(printContentWidthMm("a4")).toBeLessThan(printContentWidthMm("letter"));
     expect(printPageWidthMm("long")).toBe(printPageWidthMm("letter"));
     expect(printPictureWidth("a4")).toBeLessThan(printPictureWidth("letter"));

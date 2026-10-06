@@ -40,9 +40,13 @@
   .ga-bar {
     display: flex !important;
     flex-wrap: wrap;
+    box-sizing: border-box !important;
     min-height: 0 !important;
-    padding: 0 0 8pt !important;
+    margin-bottom: 10pt;
+    padding: 6pt 8pt !important;
     gap: 4pt 10pt !important;
+    border: 1px solid #000 !important;
+    box-shadow: inset 0 0 0 1px #000 !important;
   }
 
   .ga-bar h1 {
@@ -173,6 +177,9 @@
 
   .guide-app *:not(.diagram-world, .diagram-world *, [style*="background"]) {
     background: transparent !important;
+  }
+
+  .guide-app *:not(.diagram-world, .diagram-world *, .diagram-shell, .print-only-diagram, .print-only-schematic, .ga-bar, [style*="background"]) {
     box-shadow: none !important;
   }
 
@@ -224,27 +231,56 @@
   .guide-app[data-print-steps="off"] [data-print-section="steps"],
   .guide-app[data-print-notes="off"] [data-print-section="notes"],
   .guide-app[data-print-checks="off"] [data-print-section="checks"],
-  .guide-app[data-print-schematic="off"] .print-only-schematic {
+  .guide-app[data-print-schematic="off"] .print-only-schematic,
+  .guide-app[data-print-diagram="off"] .print-only-diagram {
     display: none !important;
   }
 
+  .guide-app[data-view="schematic"][data-print-schematic="off"] [data-print-section="diagram"] {
+    display: none !important;
+  }
+
+  .guide-app[data-view="schematic"][data-print-schematic="on"] [data-print-section="diagram"] {
+    display: block !important;
+  }
+
+  .guide-app[data-view="parts"][data-print-diagram="off"] .ga-stage > .ga-ph,
+  .guide-app[data-view="schematic"][data-print-schematic="off"] .ga-stage > .ga-ph {
+    display: none !important;
+  }
+
+  .print-only-diagram,
   .print-only-schematic {
     position: static !important;
     visibility: visible !important;
+    box-sizing: border-box !important;
     width: 100% !important;
     max-width: 100% !important;
     margin-top: 14pt;
     overflow: visible;
+    border: 1px solid #000 !important;
+    box-shadow: inset 0 0 0 1px #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
     break-inside: auto;
     page-break-inside: auto;
   }
 
+  .print-only-diagram > h2,
+  .print-only-schematic > h2 {
+    margin: 0;
+    padding: 4pt 8pt 2pt;
+  }
+
+  .print-only-diagram .diagram-shell,
   .print-only-schematic .diagram-shell {
     width: 100% !important;
     max-width: 100% !important;
     min-height: 0 !important;
     height: auto !important;
     overflow: visible !important;
+    border: 0 !important;
+    box-shadow: none !important;
     break-inside: auto !important;
     page-break-inside: auto !important;
   }
@@ -374,10 +410,20 @@
     opacity: 1 !important;
   }
 
+  .ga-bar,
   .diagram-shell,
   .whiteboard-shell,
   .whiteboard-shell.is-enlarged,
   .whiteboard-shell.is-fullscreen {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .diagram-shell,
+  .whiteboard-shell,
+  .whiteboard-shell.is-enlarged,
+  .whiteboard-shell.is-fullscreen {
+    box-sizing: border-box !important;
     overflow: hidden !important;
     contain: none !important;
     min-height: 0 !important;
@@ -385,8 +431,21 @@
     max-width: 100% !important;
     height: auto !important;
     border: 1px solid #000 !important;
+    box-shadow: inset 0 0 0 1px #000 !important;
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .print-only-diagram .diagram-shell,
+  .print-only-diagram .whiteboard-shell,
+  .print-only-diagram .whiteboard-shell.is-enlarged,
+  .print-only-diagram .whiteboard-shell.is-fullscreen,
+  .print-only-schematic .diagram-shell,
+  .print-only-schematic .whiteboard-shell,
+  .print-only-schematic .whiteboard-shell.is-enlarged,
+  .print-only-schematic .whiteboard-shell.is-fullscreen {
+    border: 0 !important;
+    box-shadow: none !important;
   }
 
   .diagram-viewport {
