@@ -1,5 +1,15 @@
+"use client";
+
+import { useMemo } from "react";
 import { getCatalogPart } from "@/lib/catalog";
-import { partCategory, type PartCategory } from "@/lib/catalog/part-media";
+import { partCategory, resolvePartPhoto, type PartCategory } from "@/lib/catalog/part-media";
+import {
+  GP_LABEL_FONT,
+  GP_PAD_R,
+  genericPinLayout,
+  type GenericPad,
+} from "./generic-layout";
+import type { PinInfo } from "./types";
 
 /** Simple generic drawing for a part type. Never prints ids. */
 export function PartGlyph({
@@ -98,6 +108,23 @@ export function PartGlyph({
   );
 }
 
+/** Calm pad colours per pin kind: power red, ground grey, buses and signals distinct. */
+const PAD_FILL: Record<GenericPad["kind"], string> = {
+  power: "#c62828",
+  ground: "#3a464d",
+  i2c: "#00838f",
+  spi: "#6a1b9a",
+  uart: "#ef6c00",
+  analog: "#2e7d32",
+  digital: "#546e7a",
+  other: "#8a979d",
+};
+
+/**
+ * Generic drawing for a part with no Wokwi element or board picture: a card
+ * with the part's illustration, name and category, and one labelled pad per
+ * catalog pin. The root exposes `pinInfo` (pad centres) so wires attach exactly.
+ */
 export function SkeletonPart({
   instanceId,
   name,
@@ -109,26 +136,91 @@ export function SkeletonPart({
 }) {
   const catalog = getCatalogPart(catalogId);
   const category = partCategory(catalog);
+  const layout = useMemo(() => genericPinLayout(catalog), [catalog]);
+  const photo = resolvePartPhoto(catalog?.photoHint);
+  const { width, height, image, pads, oneSide } = layout;
+
+  const pinInfo = useMemo<PinInfo[]>(
+    () => pads.map((pad) => ({ name: pad.id, x: pad.x, y: pad.y, signals: [], exit: pad.exit })),
+    [pads],
+  );
+  const setRef = (node: (HTMLDivElement & { pinInfo?: PinInfo[] }) | null) => {
+    if (node) node.pinInfo = pinInfo;
+  };
+
+  const textTop = oneSide ? 6 : image.y + image.h + 6;
   return (
     <div
+      ref={setRef}
       data-instance={instanceId}
-      className="rounded-md border border-line bg-paper-deep px-3 py-2"
-      style={{ minWidth: 140 }}
+      role="group"
+      aria-label={`${name}, ${pads.length} ${pads.length === 1 ? "pin" : "pins"}`}
+      className="relative select-none"
+      style={{ width, height }}
     >
-      <div className="flex items-center gap-2 text-mute">
-        <PartGlyph category={category} className="h-8 w-8 shrink-0" />
-        <div className="min-w-0">
-          <p className="text-xs font-semibold text-ink">{name}</p>
-          <p className="text-[10px] text-mute">{category}</p>
-        </div>
+      <div
+        className="absolute inset-0 rounded-lg border border-line-strong bg-paper-deep shadow-sm"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute flex items-center justify-center overflow-hidden rounded-md bg-paper text-mute"
+        style={{ left: image.x, top: image.y, width: image.w, height: image.h }}
+        aria-hidden="true"
+      >
+        {photo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photo} alt="" draggable={false} className="max-h-full max-w-full object-contain" />
+        ) : (
+          <PartGlyph category={category} className="h-full max-h-12 w-12" />
+        )}
       </div>
-      <ul className="mt-2 space-y-1">
-        {catalog?.pins.slice(0, 8).map((pin) => (
-          <li key={pin.id} className="font-mono text-[10px] text-ink-soft">
-            {pin.label}
-          </li>
-        ))}
-      </ul>
+      <div className="absolute left-2.5 right-2.5 flex items-center gap-1.5" style={{ top: textTop }}>
+        <span className="min-w-0 truncate text-[11px] font-semibold leading-4 text-ink" title={name}>
+          {name}
+        </span>
+      </div>
+      <span
+        className="absolute rounded-full border border-line bg-paper px-1.5 text-[9px] font-medium leading-[14px] text-mute"
+        style={{ left: 10, top: textTop + 17 }}
+        aria-hidden="true"
+      >
+        {category}
+      </span>
+      <svg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        className="pointer-events-none absolute left-0 top-0 overflow-visible"
+        aria-hidden="true"
+      >
+        {pads.map((pad) => {
+          const left = pad.side === "left";
+          return (
+            <g key={pad.id}>
+              <title>{pad.label}</title>
+              <circle
+                cx={pad.x}
+                cy={pad.y}
+                r={GP_PAD_R}
+                fill={PAD_FILL[pad.kind]}
+                stroke="var(--paper)"
+                strokeWidth={1.25}
+              />
+              <text
+                x={left ? pad.x + GP_PAD_R + 5 : pad.x - GP_PAD_R - 5}
+                y={pad.y}
+                dy="0.35em"
+                textAnchor={left ? "start" : "end"}
+                fontFamily="var(--font-mono), ui-monospace, monospace"
+                fontSize={GP_LABEL_FONT}
+                fill="var(--ink-soft)"
+              >
+                {pad.text}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 }
