@@ -1,5 +1,9 @@
 # HelpmeSolder
 
+<p align="center">
+  <img src="docs/assets/social-card.png" alt="HelpmeSolder: soldering guides you can just follow" width="640">
+</p>
+
 Step-by-step soldering and wiring guides, written by your AI assistant.
 
 HelpmeSolder is a hosted [MCP](https://modelcontextprotocol.io) server. Add it to Claude, ChatGPT, Cursor, Codex or Antigravity, describe what you want to build, and the assistant uses the server's tools to assemble a beginner-friendly guide: parts list, wiring diagram, solder checklist and plain-language steps. You get a private link to the finished guide. The assistant plans the project; HelpmeSolder checks the pins against a trusted part catalog, so the diagram never shows invented connections. It is not a chat model and not a circuit simulator.
