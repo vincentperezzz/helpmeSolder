@@ -123,9 +123,9 @@ export function HomeSections() {
                       className="tool-row"
                       style={{ "--i": index } as React.CSSProperties}
                     >
-                      <dt className="tool-row__head">
-                        <span className="tool-row__name">{tool.name}</span>
-                        <span className="tool-row__pill">tool</span>
+                      <dt className="tool-row__name">
+                        <span>{tool.name}</span>
+                        <span className="tool-row__arrow" aria-hidden="true">→</span>
                       </dt>
                       <dd className="tool-row__body">{tool.body}</dd>
                     </div>
