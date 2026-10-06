@@ -439,11 +439,18 @@
 /* ---------- print choice ---------- */
 
 .ga-print-choice {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
   min-height: 36px;
+  color: var(--ink);
+}
+
+.ga-print-choice-label {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--ink);
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
@@ -455,11 +462,21 @@
   accent-color: var(--copper-deep);
 }
 
-/* The printed schematic waits off screen at page width. print.css shows it. */
+.ga-print-choice-hint {
+  margin: 0;
+  max-width: 13.5rem;
+  padding-left: 22px;
+  color: var(--ink-soft);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
 .print-only-schematic {
   position: absolute;
   left: -10000px;
   width: 680px;
+  max-width: 680px;
   visibility: hidden;
   pointer-events: none;
 }

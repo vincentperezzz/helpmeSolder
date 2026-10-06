@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
 import { readPrintSchematic, writePrintSchematic } from "@/components/guide/view-storage";
 import type { Guide } from "@/lib/catalog/types";
 import "./print.css";
 
-// Width in CSS pixels that the wiring picture is scaled to. A4 and Letter with
-// 12 mm margins leave about 703 px and 725 px, so this fits both.
 const PRINT_PICTURE_WIDTH = 680;
 
 const noopSubscribe = () => () => {};
@@ -22,7 +20,6 @@ type PrintState = {
 };
 
 function preparePage(state: PrintState) {
-  // Open every <details> (the soldering how-to) so it prints in full.
   const opened: HTMLDetailsElement[] = [];
   document.querySelectorAll<HTMLDetailsElement>(".guide-app details").forEach((el) => {
     if (!el.open) {
@@ -32,12 +29,10 @@ function preparePage(state: PrintState) {
   });
   state.openedDetails.push(...opened);
 
-  // Lazy images that are off screen would otherwise print blank.
   document.querySelectorAll<HTMLImageElement>(".guide-app img[loading='lazy']").forEach((img) => {
     img.loading = "eager";
   });
 
-  // Date line next to the brand name in the top bar, read by print.css.
   const stamp = document.querySelector<HTMLElement>(".guide-app .ga-brand");
   if (stamp) {
     stamp.setAttribute(
@@ -47,14 +42,18 @@ function preparePage(state: PrintState) {
     state.stampedEl = stamp;
   }
 
-  // The wiring picture is a big canvas scaled with a CSS transform. Work out a
-  // scale and box shape that fit the page, and hand them to print.css.
   const viewport = document.querySelector<HTMLElement>(".guide-app .diagram-viewport");
   const world = viewport?.querySelector<HTMLElement>(".diagram-world");
   if (viewport && world && world.offsetWidth > 0 && world.offsetHeight > 0) {
-    const scale = Math.min(1, PRINT_PICTURE_WIDTH / world.offsetWidth);
+    const worldW = world.offsetWidth;
+    const worldH = world.offsetHeight;
+    const available =
+      viewport.clientWidth > 0 ? Math.min(viewport.clientWidth, PRINT_PICTURE_WIDTH) : PRINT_PICTURE_WIDTH;
+    const scale = Math.min(1, available / worldW);
+    viewport.style.setProperty("--print-world-w", String(worldW));
+    viewport.style.setProperty("--print-world-h", String(worldH));
     viewport.style.setProperty("--print-scale", String(scale));
-    viewport.style.setProperty("--print-ratio", `${world.offsetWidth} / ${world.offsetHeight}`);
+    viewport.style.setProperty("--print-ratio", `${worldW} / ${worldH}`);
     state.viewport = viewport;
   }
 }
@@ -66,23 +65,24 @@ function restorePage(state: PrintState) {
   state.openedDetails = [];
   state.stampedEl?.removeAttribute("data-printed");
   state.stampedEl = null;
+  state.viewport?.style.removeProperty("--print-world-w");
+  state.viewport?.style.removeProperty("--print-world-h");
   state.viewport?.style.removeProperty("--print-scale");
   state.viewport?.style.removeProperty("--print-ratio");
   state.viewport = null;
 }
 
 type PrintButtonProps = {
-  /** The guide as drawn. Needed for the "Include schematic" choice. */
   guide?: Guide;
 };
 
 export function PrintButton({ guide }: PrintButtonProps) {
   const guideId = guide?.id;
+  const hintId = useId();
   const [withSchematic, setWithSchematic] = useState(false);
   const [stage, setStage] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Read after mount so server and first client render match.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (guideId) setWithSchematic(readPrintSchematic(guideId));
     setStage(document.querySelector<HTMLElement>(".guide-app .ga-stage"));
@@ -106,8 +106,6 @@ export function PrintButton({ guide }: PrintButtonProps) {
   if (!canPrint) return null;
 
   function handleClick() {
-    // Prepare first in case the browser does not fire beforeprint for
-    // window.print(). Nothing here depends on it running twice.
     const state = stateRef.current;
     restorePage(state);
     preparePage(state);
@@ -117,17 +115,23 @@ export function PrintButton({ guide }: PrintButtonProps) {
   return (
     <>
       {guide ? (
-        <label data-print-hide="true" className="ga-print-choice">
-          <input
-            type="checkbox"
-            checked={withSchematic}
-            onChange={(event) => {
-              setWithSchematic(event.target.checked);
-              writePrintSchematic(guide.id, event.target.checked);
-            }}
-          />
-          <span>Include schematic</span>
-        </label>
+        <div data-print-hide="true" className="ga-print-choice">
+          <label className="ga-print-choice-label">
+            <input
+              type="checkbox"
+              checked={withSchematic}
+              aria-describedby={hintId}
+              onChange={(event) => {
+                setWithSchematic(event.target.checked);
+                writePrintSchematic(guide.id, event.target.checked);
+              }}
+            />
+            <span>Include schematic</span>
+          </label>
+          <p id={hintId} className="ga-print-choice-hint">
+            Adds the circuit schematic to the printed guide.
+          </p>
+        </div>
       ) : null}
       <button
         type="button"

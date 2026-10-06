@@ -201,21 +201,37 @@
     display: none !important;
   }
 
-  /* Optional schematic after the wiring picture, scaled to the page width. */
   .print-only-schematic {
     position: static !important;
     visibility: visible !important;
     width: 100% !important;
+    max-width: 100% !important;
     margin-top: 14pt;
+    overflow: hidden;
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
+  .print-only-schematic .diagram-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .print-only-schematic .overflow-x-auto {
+    overflow: hidden !important;
+    max-width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .print-only-schematic svg {
     display: block;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
   }
 
   .guide-app[data-view="schematic"] .print-only-schematic {
@@ -313,15 +329,15 @@
     opacity: 1 !important;
   }
 
-  /* Wiring picture: no scroll box, no crop, scaled to the page width. */
   .diagram-shell,
   .whiteboard-shell,
   .whiteboard-shell.is-enlarged,
   .whiteboard-shell.is-fullscreen {
-    overflow: visible !important;
+    overflow: hidden !important;
     contain: none !important;
     min-height: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
     border: 1px solid #000 !important;
     break-inside: avoid;
@@ -329,9 +345,11 @@
   }
 
   .diagram-viewport {
-    overflow: visible !important;
+    container-type: inline-size;
+    overflow: hidden !important;
     flex: none !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: var(--print-ratio, 1400 / 820);
@@ -346,5 +364,11 @@
     transform-origin: 0 0 !important;
     will-change: auto !important;
     background: #fff;
+  }
+
+  @supports (width: 1cqw) {
+    .diagram-world {
+      transform: scale(calc(100cqw / (var(--print-world-w, 1400) * 1px))) !important;
+    }
   }
 }
