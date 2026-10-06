@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { buildSiteMetadata } from "@/lib/social/metadata";
+import { getSiteUrl } from "@/lib/social/site-url";
 import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
 
@@ -20,9 +22,10 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: "HelpmeSolder",
-  description: "Step-by-step soldering guides that show exactly what to solder and where, with no circuit diagrams to decode.",
+export const metadata: Metadata = buildSiteMetadata(getSiteUrl());
+
+export const viewport: Viewport = {
+  themeColor: "#121a20",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

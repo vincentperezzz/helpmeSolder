@@ -6,6 +6,9 @@ import { buildClientOverlay } from "@/lib/catalog/client-overlay";
 import { getActiveCatalog } from "@/lib/catalog/registry";
 import { ensureCatalog } from "@/lib/catalog/server";
 import { getGuide } from "@/lib/guides/repository";
+import { headers } from "next/headers";
+import { isLinkPreviewBot } from "@/lib/social/crawlers";
+import { buildGuideMetadata } from "@/lib/social/metadata";
 import { getExpiryDate, getRetentionDays } from "@/lib/guides/retention";
 
 export const dynamic = "force-dynamic";
@@ -15,17 +18,9 @@ type GuidePageProps = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Guide | HelpmeSolder",
-    description: "Private build guide",
-    referrer: "no-referrer",
-    robots: {
-      index: false,
-      follow: false,
-      nocache: true,
-      googleBot: { index: false, follow: false, noimageindex: true },
-    },
-  };
+  // Static on purpose: no params, no database read, so link crawlers can
+  // never reset the retention timer or learn anything about the guide.
+  return buildGuideMetadata();
 }
 
 function BrandMark() {
@@ -57,7 +52,8 @@ export default async function GuidePage({ params }: GuidePageProps) {
   let loadError: string | null = null;
 
   try {
-    guide = await getGuide(id);
+    const userAgent = (await headers()).get("user-agent");
+    guide = await getGuide(id, { touch: !isLinkPreviewBot(userAgent) });
   } catch {
     loadError = "Could not load guide.";
   }
