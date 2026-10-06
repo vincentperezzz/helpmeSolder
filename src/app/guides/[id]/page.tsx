@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { GuideWorkspace } from "@/components/GuideWorkspace";
 import { VisitBeacon } from "@/components/VisitBeacon";
+import { CatalogOverlay } from "@/components/CatalogOverlay";
+import { buildClientOverlay } from "@/lib/catalog/client-overlay";
+import { getActiveCatalog } from "@/lib/catalog/registry";
 import { ensureCatalog } from "@/lib/catalog/server";
 import { getGuide } from "@/lib/guides/repository";
 import { getExpiryDate, getRetentionDays } from "@/lib/guides/retention";
@@ -80,15 +83,21 @@ export default async function GuidePage({ params }: GuidePageProps) {
   );
   const orderedSteps = [...guide.steps].sort((a, b) => a.order - b.order);
 
+  const overlayIds = guide.parts.map((part) => part.catalogId);
+  if (guide.board_id) overlayIds.push(guide.board_id);
+  const overlay = buildClientOverlay(getActiveCatalog(), overlayIds);
+
   return (
     <>
       <VisitBeacon />
-      <GuideWorkspace
-        guide={guide}
-        orderedSteps={orderedSteps}
-        expiryLabel={expiryLabel}
-        retentionDays={retentionDays}
-      />
+      <CatalogOverlay overlay={overlay}>
+        <GuideWorkspace
+          guide={guide}
+          orderedSteps={orderedSteps}
+          expiryLabel={expiryLabel}
+          retentionDays={retentionDays}
+        />
+      </CatalogOverlay>
     </>
   );
 }
