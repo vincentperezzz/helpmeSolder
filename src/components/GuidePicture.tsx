@@ -52,25 +52,31 @@ export function GuidePicture() {
       }
       const rows = [...list.querySelectorAll<HTMLElement>("[data-wire-id]")];
       const pictureBottom = picture?.getBoundingClientRect().bottom ?? 56;
-      const target = Math.min(window.innerHeight * 0.58, pictureBottom + 64);
+      const line = pictureBottom + Math.max(48, (window.innerHeight - pictureBottom) * 0.42);
       let bestId: string | null = null;
       let bestDist = Infinity;
       for (const row of rows) {
         const rect = row.getBoundingClientRect();
-        if (rect.bottom < pictureBottom + 12) {
+        if (rect.bottom <= pictureBottom) {
           continue;
         }
-        if (rect.top > target + 48) {
+        if (rect.top >= window.innerHeight) {
           continue;
         }
         const mid = rect.top + Math.min(rect.height, 72) / 2;
-        const dist = Math.abs(mid - target);
+        const dist = Math.abs(mid - line);
         if (dist < bestDist) {
           bestDist = dist;
           bestId = row.dataset.wireId ?? null;
         }
       }
-      setFocusId(bestId);
+      if (!bestId && rows.length) {
+        const last = rows[rows.length - 1];
+        if (last.getBoundingClientRect().top < line) {
+          bestId = last.dataset.wireId ?? null;
+        }
+      }
+      setFocusId((current) => (current === bestId ? current : bestId));
     }
 
     function onScroll(): void {

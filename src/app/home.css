@@ -61,13 +61,19 @@
 }
 
 @media (max-width: 1023px) {
+  .sample {
+    position: relative;
+  }
+
   .sample__picture {
     position: sticky;
     top: 3.5rem;
     z-index: 30;
+    align-self: start;
     height: 42vh;
     min-height: 14.5rem;
-    box-shadow: 0 14px 32px -22px rgb(18 26 32 / 0.5);
+    background: color-mix(in oklab, white 92%, var(--paper));
+    box-shadow: 0 12px 28px -16px rgb(18 26 32 / 0.55);
   }
 
   .sample__picture .diagram-shell {
@@ -233,8 +239,10 @@
   padding: 0 8px 12px 52px;
 }
 
-.wire-row.is-hot .wire-row__why {
-  grid-template-rows: 1fr;
+@media (min-width: 1024px) {
+  .wire-row.is-hot .wire-row__why {
+    grid-template-rows: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -892,6 +900,15 @@
   transform: translateY(0);
 }
 
+.site-nav__bar {
+  position: relative;
+  z-index: 2;
+}
+
+.site-nav__dismiss {
+  display: none;
+}
+
 .site-nav__links {
   display: flex;
   align-items: center;
@@ -977,6 +994,7 @@
     top: 100%;
     right: 0;
     left: 0;
+    z-index: 2;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
@@ -988,6 +1006,16 @@
 
   .site-nav[data-open="true"] .site-nav__links {
     display: flex;
+  }
+
+  .site-nav[data-open="true"] .site-nav__dismiss {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    border: 0;
+    background: rgb(18 26 32 / 0.28);
+    cursor: pointer;
   }
 
   .site-nav__link {

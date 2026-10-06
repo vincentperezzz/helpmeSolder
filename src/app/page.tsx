@@ -85,7 +85,7 @@ export default function Home() {
   return (
     <main
       id="top"
-      className="relative flex min-h-full flex-1 flex-col overflow-hidden"
+      className="relative flex min-h-full flex-1 flex-col"
     >
       <SiteNav />
       <VisitBeacon />
@@ -94,7 +94,7 @@ export default function Home() {
         <div className="atmosphere-grid" />
       </div>
 
-      <HeroMotion className="relative flex min-h-[100svh] flex-1 flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-16">
+      <HeroMotion className="relative flex min-h-[100svh] flex-1 flex-col justify-end overflow-hidden px-6 pb-16 pt-24 sm:px-10 lg:px-16">
         <div className="pointer-events-none absolute inset-0 opacity-90">
           <WorkbenchPlane />
           <div className="absolute inset-0 bg-gradient-to-t from-[#eef3f0] via-[#eef3f0]/78 to-transparent" />

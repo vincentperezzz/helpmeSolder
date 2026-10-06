@@ -68,6 +68,17 @@ export function SiteNav() {
     }
   }, [visible]);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [menuOpen]);
+
   function closeMenu(): void {
     setMenuOpen(false);
   }
@@ -116,6 +127,14 @@ export function SiteNav() {
           ))}
         </nav>
       </div>
+      {menuOpen ? (
+        <button
+          type="button"
+          className="site-nav__dismiss"
+          aria-label="Close menu"
+          onClick={closeMenu}
+        />
+      ) : null}
     </header>
   );
 }
