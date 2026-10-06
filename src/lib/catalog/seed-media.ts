@@ -11,7 +11,6 @@ import { MODULE_PART_MEDIA } from "./media-modules";
 export const SEED_PHOTO_FILES: Record<string, string> = {
   "arduino-mega": "/photos/arduino-mega.jpg",
   "arduino-nano": "/photos/arduino-nano.jpg",
-  "arduino-uno": "/photos/arduino-uno.jpg",
   "battery-18650": "/photos/battery-18650.svg",
   "battery-2aa": "/photos/battery-2aa.svg",
   "battery-3aa": "/photos/battery-3aa.svg",
@@ -32,7 +31,6 @@ export const SEED_PHOTO_FILES: Record<string, string> = {
   "microsd": "/photos/microsd.jpg",
   "mpu6050": "/photos/mpu6050.jpg",
   "photoresistor": "/photos/photoresistor.jpg",
-  "pico": "/photos/pico.jpg",
   "pir-motion": "/photos/pir-motion.jpg",
   "potentiometer": "/photos/potentiometer.jpg",
   "pushbutton": "/photos/pushbutton.jpg",
@@ -41,7 +39,6 @@ export const SEED_PHOTO_FILES: Record<string, string> = {
   "resistor-1k": "/photos/resistor-1k.jpg",
   "resistor-220": "/photos/resistor-220.jpg",
   "rgb-led": "/photos/rgb-led.jpg",
-  "servo": "/photos/servo.jpg",
   "ssd1306": "/photos/ssd1306.jpg",
   "stepper-motor": "/photos/stepper-motor.jpg",
   "usb-wall": "/photos/usb-wall.svg",

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" role="img" aria-label="SG90 style micro servo: blue plastic body with mounting wings, a white output horn on top and a three wire cable in orange, red and brown ending in a black connector">
+  <title>SG90 style micro servo: blue plastic body with mounting wings, a white output horn on top and a three wire cable in orange, red and brown ending in a black connector</title>
+  <ellipse cx="160" cy="206" rx="116" ry="9" fill="#121a20" opacity="0.16"/>
+  <path d="M92 150 C70 150 56 142 40 144" fill="none" stroke="#c8742a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M92 158 C70 160 54 158 40 156" fill="none" stroke="#c0392b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M92 166 C72 172 56 170 40 168" fill="none" stroke="#7a4a2a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="18" y="138" width="24" height="36" rx="3" fill="#23292d" stroke="#14181b" stroke-width="1.2"/>
+  <rect x="22" y="143" width="6" height="8" rx="1" fill="#3b4650"/>
+  <rect x="22" y="153" width="6" height="8" rx="1" fill="#3b4650"/>
+  <rect x="22" y="163" width="6" height="8" rx="1" fill="#3b4650"/>
+  <rect x="82" y="146" width="188" height="16" rx="3" fill="#2f6fb5" stroke="#1d4a80" stroke-width="1.6"/>
+  <circle cx="94" cy="154" r="3.4" fill="#0d1a24"/>
+  <circle cx="258" cy="154" r="3.4" fill="#0d1a24"/>
+  <rect x="112" y="104" width="128" height="82" rx="6" fill="#2f6fb5" stroke="#1d4a80" stroke-width="2"/>
+  <rect x="116" y="108" width="120" height="74" rx="4" fill="none" stroke="#fff" stroke-width="1" stroke-opacity="0.16"/>
+  <rect x="128" y="136" width="96" height="30" rx="3" fill="#e9eef2" stroke="#9fb3c4" stroke-width="1"/>
+  <rect x="136" y="144" width="56" height="3" rx="1" fill="#6d7f90"/>
+  <rect x="136" y="152" width="40" height="3" rx="1" fill="#6d7f90"/>
+  <rect x="176" y="84" width="52" height="28" rx="8" fill="#2f6fb5" stroke="#1d4a80" stroke-width="2"/>
+  <rect x="130" y="94" width="36" height="14" rx="4" fill="#2f6fb5" stroke="#1d4a80" stroke-width="1.6"/>
+  <circle cx="202" cy="82" r="9" fill="#e9eef2" stroke="#9fb3c4" stroke-width="1.6"/>
+  <circle cx="202" cy="82" r="3.2" fill="#6d7f90"/>
+  <rect x="168" y="74" width="68" height="16" rx="8" fill="#f4f6f8" stroke="#9fb3c4" stroke-width="1.6"/>
+  <circle cx="202" cy="82" r="6" fill="#e9eef2" stroke="#9fb3c4" stroke-width="1.2"/>
+  <circle cx="180" cy="82" r="2.2" fill="#9fb3c4"/>
+  <circle cx="190" cy="82" r="2.2" fill="#9fb3c4"/>
+  <circle cx="214" cy="82" r="2.2" fill="#9fb3c4"/>
+  <circle cx="224" cy="82" r="2.2" fill="#9fb3c4"/>
+</svg>
