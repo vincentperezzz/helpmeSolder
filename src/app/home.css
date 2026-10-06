@@ -1,5 +1,19 @@
 /* Copper-trace system for the homepage: rails, pads, pad buttons, DIP switch. */
 
+.snippet-frame {
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: color-mix(in oklab, white 86%, var(--paper));
+  box-shadow: 0 16px 36px -24px rgb(18 26 32 / 0.45);
+}
+
+.snippet-frame .diagram-shell {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+}
+
 .trace-rail,
 .trace-rail-h {
   position: absolute;

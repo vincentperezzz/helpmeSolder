@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ScrollLink } from "@/components/ScrollLink";
 
 const LINKS = [
+  { id: "example", label: "Sample" },
   { id: "how", label: "How" },
   { id: "setup", label: "Setup" },
   { id: "tools", label: "Tools" },
@@ -53,7 +54,7 @@ export function SiteNav() {
         <ScrollLink targetId="top" className="brand-mark text-lg">
           HelpmeSolder
         </ScrollLink>
-        <nav aria-label="Sections" className="flex items-center gap-6">
+        <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-5 lg:gap-6">
           {LINKS.map((link) => (
             <ScrollLink
               key={link.id}

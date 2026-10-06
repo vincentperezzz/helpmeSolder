@@ -505,21 +505,23 @@ export function WokwiDiagram({
             <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="names" /></span>
             <span className="diagram-btn-label">Wire names</span>
           </button>
-          <button
-            type="button"
-            className="diagram-zoom-btn diagram-panel-btn"
-            onClick={() => onEnlargedChange?.(!enlarged)}
-            aria-pressed={enlarged}
-            aria-label={enlarged ? "Show panel" : "Hide panel"}
-            title={
-              enlarged
-                ? "Show the parts list and steps panel again"
-                : "Hide the parts list and steps panel"
-            }
-          >
-            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
-            <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
-          </button>
+          {onEnlargedChange ? (
+            <button
+              type="button"
+              className="diagram-zoom-btn diagram-panel-btn"
+              onClick={() => onEnlargedChange(!enlarged)}
+              aria-pressed={enlarged}
+              aria-label={enlarged ? "Show panel" : "Hide panel"}
+              title={
+                enlarged
+                  ? "Show the parts list and steps panel again"
+                  : "Hide the parts list and steps panel"
+              }
+            >
+              <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
+              <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
+            </button>
+          ) : null}
           <button
             type="button"
             className="diagram-zoom-btn"

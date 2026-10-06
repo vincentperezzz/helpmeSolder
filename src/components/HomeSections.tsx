@@ -1,3 +1,4 @@
+import { ExampleGuide } from "@/components/ExampleGuide";
 import { InView } from "@/components/InView";
 import { SetupGuide } from "@/components/SetupGuide";
 import { retentionNotice } from "@/lib/guides/retention";
@@ -35,6 +36,7 @@ const HEADING =
 export function HomeSections() {
   return (
     <>
+      <ExampleGuide />
       <section
         id="how"
         className="relative z-10 bg-paper px-6 py-24 sm:px-10 lg:px-16"
