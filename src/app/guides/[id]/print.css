@@ -39,29 +39,47 @@
 
   .ga-bar {
     display: flex !important;
-    flex-wrap: wrap;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
     box-sizing: border-box !important;
+    width: calc(100% - 2px) !important;
+    max-width: calc(100% - 2px) !important;
     min-height: 0 !important;
-    margin-bottom: 10pt;
-    padding: 6pt 8pt !important;
-    gap: 4pt 10pt !important;
+    margin: 0 auto 10pt !important;
+    padding: 8pt 10pt !important;
+    gap: 4pt !important;
     border: 1px solid #000 !important;
-    box-shadow: inset 0 0 0 1px #000 !important;
+    outline: 1px solid #000 !important;
+    outline-offset: -1px;
+    text-align: center !important;
+  }
+
+  .ga-bar > span[aria-hidden],
+  .ga-bar > .ml-auto {
+    display: none !important;
   }
 
   .ga-bar h1 {
+    order: -1;
+    width: 100% !important;
     overflow: visible !important;
+    margin: 0 !important;
     white-space: normal !important;
+    text-align: center !important;
   }
 
   .ga-bar > div {
     display: flex !important;
     flex-wrap: wrap;
+    justify-content: center !important;
     gap: 4pt 10pt !important;
+    width: 100%;
   }
 
   .ga-brand {
     display: block !important;
+    text-align: center !important;
   }
 
   .ga-chip {
@@ -179,7 +197,7 @@
     background: transparent !important;
   }
 
-  .guide-app *:not(.diagram-world, .diagram-world *, .diagram-shell, .print-only-diagram, .print-only-schematic, .ga-bar, [style*="background"]) {
+  .guide-app *:not(.diagram-world, .diagram-world *, [style*="background"]) {
     box-shadow: none !important;
   }
 
@@ -254,12 +272,13 @@
     position: static !important;
     visibility: visible !important;
     box-sizing: border-box !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-top: 14pt;
+    width: calc(100% - 2px) !important;
+    max-width: calc(100% - 2px) !important;
+    margin: 14pt auto 0 !important;
     overflow: visible;
     border: 1px solid #000 !important;
-    box-shadow: inset 0 0 0 1px #000 !important;
+    outline: 1px solid #000 !important;
+    outline-offset: -1px;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     break-inside: auto;
@@ -270,6 +289,7 @@
   .print-only-schematic > h2 {
     margin: 0;
     padding: 4pt 8pt 2pt;
+    text-align: center;
   }
 
   .print-only-diagram .diagram-shell,
@@ -301,18 +321,28 @@
     page-break-inside: avoid;
   }
 
-  .print-only-schematic .diagram-world {
+  .print-only-schematic .diagram-world,
+  .print-only-diagram .diagram-world {
     transform: none !important;
-    width: 100% !important;
+    width: auto !important;
+    max-width: 100% !important;
     height: auto !important;
+    margin-inline: auto !important;
   }
 
   .print-only-schematic .schematic-canvas {
     display: block;
-    width: 100% !important;
+    width: auto !important;
     max-width: 100% !important;
     min-width: 0 !important;
     height: auto !important;
+    margin-inline: auto !important;
+  }
+
+  .print-only-schematic .diagram-viewport,
+  .print-only-diagram .diagram-viewport {
+    display: flex !important;
+    justify-content: center !important;
   }
 
   .guide-app[data-view="schematic"] .print-only-schematic {
@@ -427,11 +457,13 @@
     overflow: hidden !important;
     contain: none !important;
     min-height: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    width: calc(100% - 2px) !important;
+    max-width: calc(100% - 2px) !important;
     height: auto !important;
+    margin-inline: auto !important;
     border: 1px solid #000 !important;
-    box-shadow: inset 0 0 0 1px #000 !important;
+    outline: 1px solid #000 !important;
+    outline-offset: -1px;
     break-inside: avoid;
     page-break-inside: avoid;
   }
@@ -445,7 +477,10 @@
   .print-only-schematic .whiteboard-shell.is-enlarged,
   .print-only-schematic .whiteboard-shell.is-fullscreen {
     border: 0 !important;
+    outline: none !important;
     box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .diagram-viewport {

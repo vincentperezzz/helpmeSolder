@@ -42,18 +42,24 @@ describe("schematic print layout", () => {
   it("draws a closed border box on the print header and schematic frame", () => {
     const bar = block(".ga-bar");
     expect(bar).toMatch(/border:\s*1px solid #000\s*!important/);
-    expect(bar).toMatch(/box-shadow:\s*inset 0 0 0 1px #000\s*!important/);
-    expect(bar).toMatch(/box-sizing:\s*border-box\s*!important/);
+    expect(bar).toMatch(/outline:\s*1px solid #000\s*!important/);
+    expect(bar).toMatch(/width:\s*calc\(100% - 2px\)\s*!important/);
+    expect(bar).toMatch(/flex-direction:\s*column\s*!important/);
+    expect(bar).toMatch(/text-align:\s*center\s*!important/);
 
     expect(css).toMatch(
-      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/,
+      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*outline:\s*1px solid #000\s*!important/,
     );
     expect(css).toMatch(
-      /\.diagram-shell,\s*\.whiteboard-shell,\s*\.whiteboard-shell\.is-enlarged,\s*\.whiteboard-shell\.is-fullscreen\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/,
+      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*width:\s*calc\(100% - 2px\)\s*!important/,
     );
     expect(css).toMatch(
-      /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*box-shadow:\s*none\s*!important/,
+      /\.diagram-shell,\s*\.whiteboard-shell,\s*\.whiteboard-shell\.is-enlarged,\s*\.whiteboard-shell\.is-fullscreen\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*outline:\s*1px solid #000\s*!important/,
     );
+    expect(css).toMatch(
+      /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*outline:\s*none\s*!important/,
+    );
+    expect(css).toMatch(/\.print-only-schematic \.schematic-canvas\s*\{[^}]*margin-inline:\s*auto\s*!important/);
   });
 });
 

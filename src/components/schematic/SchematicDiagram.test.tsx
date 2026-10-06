@@ -222,7 +222,8 @@ describe("SchematicDiagram", () => {
     const html = render(ledGuide(), { hoveredWireId: "c1" });
     expect(html).toContain("aria-live=\"polite\"");
     expect(html).toContain("Signal wire");
-    expect(html).toMatch(/schematic-caption[^"]*min-h-\[3\.25rem\]/);
+    expect(html).toMatch(/schematic-caption[^"]*py-1\.5/);
+    expect(html).not.toMatch(/schematic-caption[^"]*min-h-\[3\.25rem\]/);
   });
 
   it("warns when the circuit is too big", () => {
