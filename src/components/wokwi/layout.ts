@@ -2,7 +2,8 @@ import { getCatalogPart } from "@/lib/catalog";
 import { getBatteryAsset } from "@/lib/catalog/batteries";
 import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import type { Guide } from "@/lib/catalog/types";
-import { wokwiAttrs } from "@/lib/catalog/wokwi";
+import { hasWokwiVisual, wokwiAttrs } from "@/lib/catalog/wokwi";
+import { prefersDiagramAsset } from "@/lib/catalog/board-assets";
 import { isPlugConnection } from "@/lib/guides/solder-plan";
 import {
   breadboardCol,
@@ -11,6 +12,7 @@ import {
   parseBreadboardRail,
 } from "./breadboard";
 import { BB_HEIGHT, BB_ORIGIN_X, BB_ROW_Y, BB_STEP, POWER_ORIGIN } from "./constants";
+import { genericPinLayout } from "./generic-layout";
 import { plugSpecFor, plugTransform, rotatePoint } from "./plug";
 import type { PlacedPart } from "./types";
 
@@ -101,6 +103,15 @@ export function seatPluggedPart(part: PlacedPart, breadboard: PlacedPart, guide:
   return false;
 }
 
+/** Height of the generic card a part is drawn with, or 0 when it has a Wokwi element or board picture. */
+function genericCardHeight(part: PlacedPart): number {
+  const catalog = getCatalogPart(part.catalogId);
+  if (!catalog || isBreadboardId(part.catalogId)) return 0;
+  const hasWokwi = Boolean(hasWokwiVisual(catalog) && part.tag);
+  if (hasWokwi || prefersDiagramAsset(part.catalogId, hasWokwi)) return 0;
+  return genericPinLayout(catalog).height;
+}
+
 export function layoutParts(guide: Guide): PlacedPart[] {
   const boards: PlacedPart[] = [];
   const passives: PlacedPart[] = [];
@@ -135,7 +146,7 @@ export function layoutParts(guide: Guide): PlacedPart[] {
   boards.forEach((part, index) => {
     part.x = boardX;
     part.y = boardY;
-    boardY += index === 0 ? 380 : 280;
+    boardY += Math.max(index === 0 ? 380 : 280, genericCardHeight(part) + 60);
   });
 
   const breadboards = passives.filter((part) => isBreadboardId(part.catalogId));
@@ -171,7 +182,7 @@ export function layoutParts(guide: Guide): PlacedPart[] {
       part.tag?.includes("ssd1306");
     part.x = passives.length > 0 ? 1080 : 700;
     part.y = moduleY;
-    moduleY += tall ? 300 : 200;
+    moduleY += Math.max(tall ? 300 : 200, genericCardHeight(part) + 48);
   });
 
   return [...boards, ...breadboards, ...otherPassives, ...modules];

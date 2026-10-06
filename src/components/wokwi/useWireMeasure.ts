@@ -23,6 +23,7 @@ import { POWER_WIRE_IDS } from "./focus";
 import { assignLanes, hopPoints, roundedPath } from "./lanes";
 import { breadboardHoleLocal, isBreadboardId, parseBreadboardRail } from "./breadboard";
 import { breadboardJumperPoints, breadboardPinExit, pinExitDirection } from "./geometry";
+import { genericPinLayout } from "./generic-layout";
 import { isPlugConnection } from "@/lib/guides/solder-plan";
 import { rotatedBox, rotatePoint } from "./plug";
 import {
@@ -214,7 +215,7 @@ export function useWireMeasure({
             const key = `${part.instanceId}:${pin.name}`;
             const local = turn(pin);
             anchors.set(key, { x: offsetX + local.x, y: offsetY + local.y });
-            exitDirs.set(key, pinExitDirection(local, locals));
+            exitDirs.set(key, (!part.plug && pin.exit) || pinExitDirection(local, locals));
           }
         } else if (isBreadboardId(part.catalogId)) {
           const catalog = getCatalogPart(part.catalogId);
@@ -233,6 +234,7 @@ export function useWireMeasure({
           const terminalLocals = diagramAsset?.terminals
             ? Object.values(diagramAsset.terminals)
             : [];
+          const genericPads = catalog ? genericPinLayout(catalog).pads : null;
           catalog?.pins.forEach((pin, index) => {
             const key = `${part.instanceId}:${pin.id}`;
             const named =
@@ -248,6 +250,13 @@ export function useWireMeasure({
                 key,
                 pinExitDirection(named, terminalLocals.length ? terminalLocals : [named]),
               );
+              return;
+            }
+            if (!diagramAsset && genericPads) {
+              // Same geometry the generic card draws, in case its own pin list was not readable.
+              const pad = genericPads[index];
+              anchors.set(key, { x: offsetX + pad.x, y: offsetY + pad.y });
+              exitDirs.set(key, pad.exit);
               return;
             }
             const onRight = index % 2 !== 0;

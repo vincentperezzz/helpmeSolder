@@ -1,5 +1,7 @@
-export type PinInfo = { name: string; x: number; y: number };
 export type Point = { x: number; y: number };
+export type ExitDir = { dx: number; dy: number };
+/** Pin position on a drawn part, relative to its top-left. `exit` is set by drawings that know which way their pins face. */
+export type PinInfo = { name: string; x: number; y: number; signals?: string[]; exit?: ExitDir };
 export type Rect = { x: number; y: number; w: number; h: number };
 /** A part drawing that plugs into breadboard holes, turned 0/90/180 degrees about its top-left corner. */
 export type PlugSpec = {
@@ -8,8 +10,6 @@ export type PlugSpec = {
   rotate: 0 | 90 | 180;
   pins: Record<string, Point>;
 };
-
-export type ExitDir = { dx: number; dy: number };
 
 export type PlacedPart = {
   instanceId: string;
