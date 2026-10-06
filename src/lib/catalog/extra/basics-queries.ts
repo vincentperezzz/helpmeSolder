@@ -51,7 +51,7 @@ export const EXTRA_BASICS_QUERIES: Record<string, PhotoQueriesOverride> = {
     wikipedia: ["Bipolar junction transistor"],
   },
   "passive.transistor.tip120": { commons: ["TIP120", "TIP122", "Darlington transistor"], wikipedia: ["Darlington transistor"] },
-  "passive.mosfet.irlz44n": { commons: ["IRLZ44N", "TO-220 transistor"], wikipedia: ["MOSFET"] },
+  "passive.mosfet.irlz44n": { commons: ["IRFZ44N", "IRLZ44N"], wikipedia: ["MOSFET"] },
   "passive.mosfet.irf520_module": ["IRF520", "MOSFET module"],
 
   // Switches and connectors
@@ -63,8 +63,8 @@ export const EXTRA_BASICS_QUERIES: Record<string, PhotoQueriesOverride> = {
   },
 
   // Power modules
-  "passive.regulator.7805": { commons: ["7805", "LM7805", "L7805CV"], wikipedia: ["78xx"] },
-  "passive.regulator.ams1117_33": ["AMS1117"],
+  "passive.regulator.7805": { commons: ["TS7805 voltage regulator", "Soviet 7805", "L7805CV"], wikipedia: ["78xx"] },
+  "passive.regulator.ams1117_33": ["LM1117 -Logo -Plextor", "AMS1117"],
   "passive.converter.lm2596_buck": ["LM2596 module", "buck converter module"],
   "passive.converter.mt3608_boost": ["MT3608", "boost converter module"],
   "passive.charger.tp4056_usbc": ["TP4056"],
