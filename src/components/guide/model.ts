@@ -166,13 +166,30 @@ export function noteKind(note: string): "heads-up" | "tip" {
 }
 
 const stepKey = (guideId: string) => `helpmesolder:step-ticks:${guideId}`;
+const solderKey = (guideId: string) => `helpmesolder:solder-ticks:${guideId}`;
 
-export function readStepTicks(guideId: string): string[] {
+function readIdList(key: string): string[] {
   try {
-    const parsed: unknown = JSON.parse(window.localStorage.getItem(stepKey(guideId)) ?? "[]");
-    return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
+    const parsed: unknown = JSON.parse(window.localStorage.getItem(key) ?? "[]");
+    return Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : [];
   } catch {
     return [];
+  }
+}
+
+export function readStepTicks(guideId: string): string[] {
+  return readIdList(stepKey(guideId));
+}
+
+export function readSolderTicks(guideId: string): string[] {
+  return readIdList(solderKey(guideId));
+}
+
+export function writeSolderTicks(guideId: string, ids: string[]) {
+  try {
+    window.localStorage.setItem(solderKey(guideId), JSON.stringify(ids));
+  } catch {
+    // Storage blocked: ticks still work for this visit.
   }
 }
 

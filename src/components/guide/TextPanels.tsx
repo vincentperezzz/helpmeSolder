@@ -1,38 +1,52 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { GuideStep } from "@/lib/catalog/types";
+import type { Guide, GuideStep } from "@/lib/catalog/types";
+import { buildSolderItems } from "@/lib/guides/solder-plan";
+import { resolveUpNext } from "@/lib/guides/step-progress";
 import { AlertIcon, CheckIcon, TipIcon } from "./icons";
-import { noteKind, readStepTicks, writeStepTicks } from "./model";
+import { noteKind, readSolderTicks, readStepTicks, writeStepTicks } from "./model";
 
-type StepsPanelProps = { guideId: string; steps: GuideStep[] };
+type StepsPanelProps = { guideId: string; guide: Guide; steps: GuideStep[] };
 
-/** Vertical timeline. Each node ticks off a step; the first open one is the current step. */
-export function StepsPanel({ guideId, steps }: StepsPanelProps) {
-  const [done, setDone] = useState<string[]>([]);
+/** Vertical timeline. The highlighted step is the first one whose wires are still open. */
+export function StepsPanel({ guideId, guide, steps }: StepsPanelProps) {
+  const [manual, setManual] = useState<string[]>([]);
+  const [wireTicks, setWireTicks] = useState<string[]>([]);
 
   useEffect(() => {
     // Read after mount so server and first client render match.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDone(readStepTicks(guideId));
+    setManual(readStepTicks(guideId));
+    setWireTicks(readSolderTicks(guideId));
   }, [guideId]);
 
   if (steps.length === 0) {
     return <p className="text-sm text-mute">No steps yet.</p>;
   }
 
-  const currentId = steps.find((step) => !done.includes(step.id))?.id ?? null;
+  const progress = resolveUpNext({
+    steps,
+    wires: buildSolderItems(guide).map((item) => ({
+      id: item.id,
+      text: `${item.from.part} ${item.from.pin} ${item.to.part} ${item.to.pin} ${item.sentence}`,
+    })),
+    tickedWireIds: wireTicks,
+    manualStepIds: manual,
+  });
+  const done = new Set(progress.doneIds);
+  const currentId = progress.currentId;
 
   function toggle(id: string) {
-    const next = done.includes(id) ? done.filter((entry) => entry !== id) : [...done, id];
-    setDone(next);
+    const next = manual.includes(id) ? manual.filter((entry) => entry !== id) : [...manual, id];
+    setManual(next);
     writeStepTicks(guideId, next);
   }
 
   return (
     <ol className="m-0 list-none p-0">
       {steps.map((step, index) => {
-        const isDone = done.includes(step.id);
+        const isDone = done.has(step.id);
         const current = step.id === currentId;
         const last = index === steps.length - 1;
         return (
