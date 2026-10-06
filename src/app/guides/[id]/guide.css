@@ -436,40 +436,106 @@
   }
 }
 
-/* ---------- print choice ---------- */
+/* ---------- print menu ---------- */
 
-.ga-print-choice {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  min-height: 36px;
-  color: var(--ink);
+.ga-print {
+  position: relative;
+  flex: none;
 }
 
-.ga-print-choice-label {
-  display: inline-flex;
-  align-items: center;
+.ga-print-trigger {
   gap: 6px;
+}
+
+.ga-print-caret {
+  font-size: 0.65rem;
+  line-height: 1;
+  color: var(--mute);
+}
+
+.ga-print-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  display: grid;
+  gap: 10px;
+  width: min(17.5rem, calc(100vw - 24px));
+  padding: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--ga-r);
+  background: color-mix(in oklab, white 92%, var(--paper));
+  box-shadow: 0 14px 36px color-mix(in oklab, var(--ink) 14%, transparent);
+  animation: ga-print-pop 140ms ease-out;
+}
+
+@keyframes ga-print-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ga-print-menu-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.ga-print-menu-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ga-print-menu-item {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  border-radius: 8px;
+  color: var(--ink);
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.ga-print-choice input {
+.ga-print-menu-item:hover {
+  background: color-mix(in oklab, var(--copper) 10%, transparent);
+}
+
+.ga-print-menu-item input {
   width: 16px;
   height: 16px;
   accent-color: var(--copper-deep);
 }
 
-.ga-print-choice-hint {
-  margin: 0;
-  max-width: 13.5rem;
-  padding-left: 22px;
-  color: var(--ink-soft);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  line-height: 1.25;
+.ga-print-menu-go {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid color-mix(in oklab, var(--copper-deep) 55%, var(--ink));
+  border-radius: var(--ga-r-sm);
+  background: var(--copper-deep);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ga-print-menu-go:hover {
+  filter: brightness(1.05);
 }
 
 .print-only-schematic {

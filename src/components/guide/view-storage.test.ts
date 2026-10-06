@@ -1,7 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  DEFAULT_PRINT_OPTIONS,
+  readPrintOptions,
   readPrintSchematic,
   readView,
+  writePrintOptions,
   writePrintSchematic,
   writeView,
 } from "./view-storage";
@@ -59,6 +62,20 @@ describe("view storage", () => {
     expect(readPrintSchematic("g1")).toBe(false);
   });
 
+  it("stores full print section options", () => {
+    expect(readPrintOptions("g1")).toEqual(DEFAULT_PRINT_OPTIONS);
+    writePrintOptions("g1", { ...DEFAULT_PRINT_OPTIONS, steps: false, schematic: true });
+    expect(readPrintOptions("g1").steps).toBe(false);
+    expect(readPrintOptions("g1").schematic).toBe(true);
+    expect(readPrintOptions("g2").steps).toBe(true);
+  });
+
+  it("migrates the legacy schematic flag into options", () => {
+    storage.setItem("helpmesolder:print-schematic:g1", "on");
+    expect(readPrintOptions("g1").schematic).toBe(true);
+    expect(readPrintOptions("g1").parts).toBe(true);
+  });
+
   it("survives blocked storage", () => {
     vi.stubGlobal("window", {
       get localStorage(): never {
@@ -67,7 +84,9 @@ describe("view storage", () => {
     });
     expect(readView("g1")).toBe("parts");
     expect(readPrintSchematic("g1")).toBe(false);
+    expect(readPrintOptions("g1")).toEqual(DEFAULT_PRINT_OPTIONS);
     expect(() => writeView("g1", "schematic")).not.toThrow();
     expect(() => writePrintSchematic("g1", true)).not.toThrow();
+    expect(() => writePrintOptions("g1", DEFAULT_PRINT_OPTIONS)).not.toThrow();
   });
 });

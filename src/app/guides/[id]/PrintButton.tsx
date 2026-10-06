@@ -3,7 +3,15 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
-import { readPrintSchematic, writePrintSchematic } from "@/components/guide/view-storage";
+import {
+  DEFAULT_PRINT_OPTIONS,
+  PRINT_SECTION_LABELS,
+  PRINT_SECTIONS,
+  readPrintOptions,
+  writePrintOptions,
+  type PrintOptions,
+  type PrintSection,
+} from "@/components/guide/view-storage";
 import type { Guide } from "@/lib/catalog/types";
 import "./print.css";
 
@@ -17,9 +25,28 @@ type PrintState = {
   openedDetails: HTMLDetailsElement[];
   stampedEl: HTMLElement | null;
   viewport: HTMLElement | null;
+  app: HTMLElement | null;
 };
 
-function preparePage(state: PrintState) {
+function applyPrintFlags(app: HTMLElement | null, options: PrintOptions) {
+  if (!app) return;
+  for (const key of PRINT_SECTIONS) {
+    app.setAttribute(`data-print-${key}`, options[key] ? "on" : "off");
+  }
+}
+
+function clearPrintFlags(app: HTMLElement | null) {
+  if (!app) return;
+  for (const key of PRINT_SECTIONS) {
+    app.removeAttribute(`data-print-${key}`);
+  }
+}
+
+function preparePage(state: PrintState, options: PrintOptions) {
+  const app = document.querySelector<HTMLElement>(".guide-app");
+  state.app = app;
+  applyPrintFlags(app, options);
+
   const opened: HTMLDetailsElement[] = [];
   document.querySelectorAll<HTMLDetailsElement>(".guide-app details").forEach((el) => {
     if (!el.open) {
@@ -41,6 +68,8 @@ function preparePage(state: PrintState) {
     );
     state.stampedEl = stamp;
   }
+
+  if (!options.diagram) return;
 
   const viewport = document.querySelector<HTMLElement>(".guide-app .diagram-viewport");
   const world = viewport?.querySelector<HTMLElement>(".diagram-world");
@@ -70,6 +99,8 @@ function restorePage(state: PrintState) {
   state.viewport?.style.removeProperty("--print-scale");
   state.viewport?.style.removeProperty("--print-ratio");
   state.viewport = null;
+  clearPrintFlags(state.app);
+  state.app = null;
 }
 
 type PrintButtonProps = {
@@ -78,22 +109,34 @@ type PrintButtonProps = {
 
 export function PrintButton({ guide }: PrintButtonProps) {
   const guideId = guide?.id;
-  const hintId = useId();
-  const [withSchematic, setWithSchematic] = useState(false);
+  const menuId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<PrintOptions>(DEFAULT_PRINT_OPTIONS);
   const [stage, setStage] = useState<HTMLElement | null>(null);
+  const optionsRef = useRef(options);
+
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (guideId) setWithSchematic(readPrintSchematic(guideId));
+    if (guideId) setOptions(readPrintOptions(guideId));
     setStage(document.querySelector<HTMLElement>(".guide-app .ga-stage"));
   }, [guideId]);
 
   const canPrint = useSyncExternalStore(noopSubscribe, canPrintNow, canPrintOnServer);
-  const stateRef = useRef<PrintState>({ openedDetails: [], stampedEl: null, viewport: null });
+  const stateRef = useRef<PrintState>({
+    openedDetails: [],
+    stampedEl: null,
+    viewport: null,
+    app: null,
+  });
 
   useEffect(() => {
     const state = stateRef.current;
-    const before = () => preparePage(state);
+    const before = () => preparePage(state, optionsRef.current);
     const after = () => restorePage(state);
     window.addEventListener("beforeprint", before);
     window.addEventListener("afterprint", after);
@@ -103,46 +146,88 @@ export function PrintButton({ guide }: PrintButtonProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: MouseEvent) {
+      const root = rootRef.current;
+      if (!root || root.contains(event.target as Node)) return;
+      setOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   if (!canPrint) return null;
 
-  function handleClick() {
+  function setSection(section: PrintSection, value: boolean) {
+    setOptions((prev) => {
+      const next = { ...prev, [section]: value };
+      if (guideId) writePrintOptions(guideId, next);
+      return next;
+    });
+  }
+
+  function finalizePrint() {
     const state = stateRef.current;
     restorePage(state);
-    preparePage(state);
+    preparePage(state, optionsRef.current);
+    setOpen(false);
     window.print();
   }
 
   return (
     <>
-      {guide ? (
-        <div data-print-hide="true" className="ga-print-choice">
-          <label className="ga-print-choice-label">
-            <input
-              type="checkbox"
-              checked={withSchematic}
-              aria-describedby={hintId}
-              onChange={(event) => {
-                setWithSchematic(event.target.checked);
-                writePrintSchematic(guide.id, event.target.checked);
-              }}
-            />
-            <span>Include schematic</span>
-          </label>
-          <p id={hintId} className="ga-print-choice-hint">
-            Adds the circuit schematic to the printed guide.
-          </p>
-        </div>
-      ) : null}
-      <button
-        type="button"
-        onClick={handleClick}
-        aria-label="Print this guide"
-        data-print-button
-        className="ga-btn print:hidden"
-      >
-        Print
-      </button>
-      {guide && withSchematic && stage
+      <div ref={rootRef} data-print-hide="true" className="ga-print">
+        <button
+          type="button"
+          className="ga-btn ga-print-trigger"
+          aria-label="Print options"
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-controls={menuId}
+          onClick={() => setOpen((value) => !value)}
+        >
+          Print
+          <span aria-hidden className="ga-print-caret">
+            {open ? "▴" : "▾"}
+          </span>
+        </button>
+        {open ? (
+          <div
+            id={menuId}
+            role="dialog"
+            aria-label="Choose what to print"
+            className="ga-print-menu"
+          >
+            <p className="ga-print-menu-title">Include in print</p>
+            <ul className="ga-print-menu-list">
+              {PRINT_SECTIONS.map((section) => (
+                <li key={section}>
+                  <label className="ga-print-menu-item">
+                    <input
+                      type="checkbox"
+                      checked={options[section]}
+                      onChange={(event) => setSection(section, event.target.checked)}
+                    />
+                    <span>{PRINT_SECTION_LABELS[section]}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+            <button type="button" className="ga-print-menu-go" onClick={finalizePrint}>
+              Print
+            </button>
+          </div>
+        ) : null}
+      </div>
+      {guide && options.schematic && stage
         ? createPortal(
             <div className="print-only-schematic" aria-hidden="true" inert>
               <h2>Circuit schematic</h2>

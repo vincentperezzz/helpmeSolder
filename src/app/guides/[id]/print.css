@@ -189,6 +189,7 @@
   /* Hide controls that do nothing on paper. */
   [data-print-button],
   [data-print-hide],
+  .ga-print,
   .ga-controls,
   .ptabs-wrap,
   .ga-pill,
@@ -198,6 +199,17 @@
   .guide-app button[aria-label*=" details for "],
   .guide-app nav,
   .guide-app .whiteboard-shell p.truncate + p {
+    display: none !important;
+  }
+
+  .guide-app[data-print-diagram="off"] [data-print-section="diagram"],
+  .guide-app[data-print-parts="off"] [data-print-section="parts"],
+  .guide-app[data-print-tools="off"] [data-print-section="tools"],
+  .guide-app[data-print-solder="off"] [data-print-section="solder"],
+  .guide-app[data-print-steps="off"] [data-print-section="steps"],
+  .guide-app[data-print-notes="off"] [data-print-section="notes"],
+  .guide-app[data-print-checks="off"] [data-print-section="checks"],
+  .guide-app[data-print-schematic="off"] .print-only-schematic {
     display: none !important;
   }
 
