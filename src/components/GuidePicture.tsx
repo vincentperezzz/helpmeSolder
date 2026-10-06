@@ -28,6 +28,7 @@ function Arrow() {
 
 const MOBILE_QUERY = "(max-width: 1023px)";
 const NAV_TOP = 56;
+const ACTIVATE_AT = 0.7;
 
 /** The real sample guide: a read-only picture and its wire list, linked by hover, tap, and scroll. */
 export function GuidePicture() {
@@ -55,12 +56,13 @@ export function GuidePicture() {
       const pic = picture?.getBoundingClientRect();
       const picBottom = pic?.bottom ?? NAV_TOP;
       const stuck = (pic?.top ?? Infinity) <= NAV_TOP + 2;
-      const line = stuck ? picBottom + 52 : window.innerHeight * 0.5;
+      // ~70% down the screen (the line under the picture). Rows open there
+      // so they stay expanded on the way up, with more time to read.
+      const line = window.innerHeight * ACTIVATE_AT;
       let bestId: string | null = null;
       for (const row of rows) {
         const header = row.querySelector("button") ?? row;
         const rect = header.getBoundingClientRect();
-        // Keep the expanded header in the gap under the picture, not sliding up into it.
         if (stuck && rect.top < picBottom) {
           continue;
         }
@@ -91,26 +93,6 @@ export function GuidePicture() {
       }
     };
   }, [wires]);
-
-  useEffect(() => {
-    if (!focusId || !window.matchMedia(MOBILE_QUERY).matches) {
-      return;
-    }
-    const row = listRef.current?.querySelector<HTMLElement>(
-      `[data-wire-id="${CSS.escape(focusId)}"]`,
-    );
-    const picture = pictureRef.current;
-    const header = row?.querySelector("button") ?? row;
-    if (!header || !picture) {
-      return;
-    }
-    const picBottom = picture.getBoundingClientRect().bottom;
-    const top = header.getBoundingClientRect().top;
-    const delta = top - (picBottom + 10);
-    if (delta < -2 && delta > -160) {
-      window.scrollBy(0, delta);
-    }
-  }, [focusId]);
 
   return (
     <div className="sample">
