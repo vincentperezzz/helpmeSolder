@@ -132,7 +132,7 @@ describe("catalog registry", () => {
         parts: [partRow(uno, { published: { part: uno, photoQueries: ["custom uno"] } })],
       }),
     );
-    expect(resolvePartPhoto("arduino-uno")).toBe("/photos/arduino-uno.jpg");
+    expect(resolvePartPhoto("arduino-uno")).toBe("/photos/modules/arduino-uno.svg");
     swapCatalog(snapshot);
     expect(resolvePartPhoto("arduino-uno")).toBe("https://x.test/uno.png");
     expect(photoQueriesFor(uno, "Board").commons).toEqual(["custom uno"]);
