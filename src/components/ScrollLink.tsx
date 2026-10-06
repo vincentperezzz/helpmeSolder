@@ -6,6 +6,7 @@ type ScrollLinkProps = {
   targetId: string;
   className?: string;
   current?: boolean;
+  onClick?: () => void;
   children: ReactNode;
 };
 
@@ -55,9 +56,11 @@ export function ScrollLink({
   targetId,
   className,
   current,
+  onClick,
   children,
 }: ScrollLinkProps) {
   function handleClick(event: React.MouseEvent<HTMLAnchorElement>): void {
+    onClick?.();
     const target = document.getElementById(targetId);
     if (!target) {
       return;

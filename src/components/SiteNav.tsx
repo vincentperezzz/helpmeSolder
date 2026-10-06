@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ScrollLink } from "@/components/ScrollLink";
 
@@ -14,6 +14,8 @@ const LINKS = [
 export function SiteNav() {
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
 
   // Show the bar once the sentinel near the end of the hero has scrolled above the viewport.
   useEffect(() => {
@@ -48,31 +50,100 @@ export function SiteNav() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+    function onKey(event: KeyboardEvent): void {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!visible) {
+      setMenuOpen(false);
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [menuOpen]);
+
+  function closeMenu(): void {
+    setMenuOpen(false);
+  }
+
   return (
-    <header
-      className="site-nav px-6 sm:px-10 lg:px-16"
-      data-visible={visible}
-      aria-hidden={!visible}
-      inert={!visible}
-    >
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4">
-        <ScrollLink targetId="top" className="brand-mark inline-flex items-center gap-2.5 shrink-0 text-base sm:text-lg">
-          <BrandLogo size={22} className="shrink-0 rounded-[5px] transition-transform duration-200 hover:scale-105" />
-          <span>HelpmeSolder</span>
-        </ScrollLink>
-        <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-6">
-          {LINKS.map((link) => (
-            <ScrollLink
-              key={link.id}
-              targetId={link.id}
-              className="site-nav__link"
-              current={active === link.id}
-            >
-              {link.label}
-            </ScrollLink>
-          ))}
-        </nav>
-      </div>
-    </header>
+    <>
+      <header
+        className="site-nav"
+        data-visible={visible}
+        data-open={menuOpen}
+        aria-hidden={!visible}
+        inert={!visible}
+      >
+        <div className="site-nav__bar mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
+          <ScrollLink
+            targetId="top"
+            className="brand-mark inline-flex items-center gap-2.5 shrink-0 text-base sm:text-lg"
+            onClick={closeMenu}
+          >
+            <BrandLogo
+              size={22}
+              className="shrink-0 rounded-[5px] transition-transform duration-200 hover:scale-105"
+            />
+            <span>HelpmeSolder</span>
+          </ScrollLink>
+          <button
+            type="button"
+            className="site-nav__toggle"
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="site-nav__toggle-lines" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+          <nav id={menuId} aria-label="Sections" className="site-nav__links">
+            <div className="site-nav__panel">
+              {LINKS.map((link) => (
+                <ScrollLink
+                  key={link.id}
+                  targetId={link.id}
+                  className="site-nav__link"
+                  current={active === link.id}
+                  onClick={closeMenu}
+                >
+                  {link.label}
+                </ScrollLink>
+              ))}
+            </div>
+          </nav>
+        </div>
+      </header>
+      <button
+        type="button"
+        className="site-nav__dismiss"
+        aria-label="Close menu"
+        aria-hidden={!menuOpen}
+        tabIndex={menuOpen ? 0 : -1}
+        onClick={closeMenu}
+      />
+    </>
   );
 }

@@ -30,9 +30,7 @@ function WavedText({ text }: { text: string }) {
 export function HomeSections() {
   return (
     <>
-      <InView className="scroll-reveal">
-        <ExampleGuide />
-      </InView>
+      <ExampleGuide />
 
       <section
         id="how"
