@@ -5,9 +5,11 @@ import { createPortal } from "react-dom";
 import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
 import {
   DEFAULT_PRINT_OPTIONS,
+  PRINT_GROUPS,
   PRINT_SECTION_LABELS,
   PRINT_SECTIONS,
   readPrintOptions,
+  setAllPrintOptions,
   writePrintOptions,
   type PrintOptions,
   type PrintSection,
@@ -166,12 +168,15 @@ export function PrintButton({ guide }: PrintButtonProps) {
 
   if (!canPrint) return null;
 
+  const selected = PRINT_SECTIONS.filter((section) => options[section]).length;
+
+  function commit(next: PrintOptions) {
+    setOptions(next);
+    if (guideId) writePrintOptions(guideId, next);
+  }
+
   function setSection(section: PrintSection, value: boolean) {
-    setOptions((prev) => {
-      const next = { ...prev, [section]: value };
-      if (guideId) writePrintOptions(guideId, next);
-      return next;
-    });
+    commit({ ...options, [section]: value });
   }
 
   function finalizePrint() {
@@ -206,22 +211,55 @@ export function PrintButton({ guide }: PrintButtonProps) {
             aria-label="Choose what to print"
             className="ga-print-menu"
           >
-            <p className="ga-print-menu-title">Include in print</p>
-            <ul className="ga-print-menu-list">
-              {PRINT_SECTIONS.map((section) => (
-                <li key={section}>
-                  <label className="ga-print-menu-item">
+            <div className="ga-print-menu-head">
+              <p className="ga-print-menu-title">Include in print</p>
+              <div className="ga-print-menu-actions">
+                <button
+                  type="button"
+                  className="ga-print-menu-link"
+                  onClick={() => commit(setAllPrintOptions(true))}
+                >
+                  Select all
+                </button>
+                <button
+                  type="button"
+                  className="ga-print-menu-link"
+                  onClick={() => commit(setAllPrintOptions(false))}
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+            <p className="ga-print-menu-hint" aria-live="polite">
+              {selected} of {PRINT_SECTIONS.length} selected. Remembered for this guide.
+            </p>
+            {PRINT_GROUPS.map((group) => (
+              <fieldset key={group.label} className="ga-print-menu-group">
+                <legend className="ga-print-menu-legend">{group.label}</legend>
+                {group.sections.map((section) => (
+                  <label key={section} className="ga-print-menu-item">
                     <input
                       type="checkbox"
+                      className="ga-check-input"
                       checked={options[section]}
                       onChange={(event) => setSection(section, event.target.checked)}
                     />
+                    <span aria-hidden className="ga-check-box">
+                      <svg viewBox="0 0 12 12" focusable="false">
+                        <path d="M2.5 6.4 5 8.9l4.6-5.3" />
+                      </svg>
+                    </span>
                     <span>{PRINT_SECTION_LABELS[section]}</span>
                   </label>
-                </li>
-              ))}
-            </ul>
-            <button type="button" className="ga-print-menu-go" onClick={finalizePrint}>
+                ))}
+              </fieldset>
+            ))}
+            <button
+              type="button"
+              className="ga-print-menu-go"
+              disabled={selected === 0}
+              onClick={finalizePrint}
+            >
               Print
             </button>
           </div>

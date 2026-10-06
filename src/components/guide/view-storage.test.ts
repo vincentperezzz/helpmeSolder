@@ -1,9 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_PRINT_OPTIONS,
+  PRINT_GROUPS,
+  PRINT_SECTIONS,
   readPrintOptions,
   readPrintSchematic,
   readView,
+  setAllPrintOptions,
   writePrintOptions,
   writePrintSchematic,
   writeView,
@@ -74,6 +77,17 @@ describe("view storage", () => {
     storage.setItem("helpmesolder:print-schematic:g1", "on");
     expect(readPrintOptions("g1").schematic).toBe(true);
     expect(readPrintOptions("g1").parts).toBe(true);
+  });
+
+  it("lists every print section in exactly one group", () => {
+    const grouped = PRINT_GROUPS.flatMap((group) => group.sections);
+    expect([...grouped].sort()).toEqual([...PRINT_SECTIONS].sort());
+  });
+
+  it("selects or clears every print section", () => {
+    expect(Object.values(setAllPrintOptions(true)).every(Boolean)).toBe(true);
+    expect(Object.values(setAllPrintOptions(false)).some(Boolean)).toBe(false);
+    expect(Object.keys(setAllPrintOptions(false)).sort()).toEqual([...PRINT_SECTIONS].sort());
   });
 
   it("survives blocked storage", () => {

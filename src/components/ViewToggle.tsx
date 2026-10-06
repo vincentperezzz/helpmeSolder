@@ -42,6 +42,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         aria-label="Picture style"
         aria-describedby={hintId}
         title={HINT}
+        data-value={value}
         className="ga-seg"
       >
         {OPTIONS.map((option, index) => {

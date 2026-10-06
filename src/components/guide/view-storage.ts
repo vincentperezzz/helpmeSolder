@@ -26,6 +26,15 @@ export const PRINT_SECTION_LABELS: Record<PrintSection, string> = {
   checks: "Warnings",
 };
 
+export const PRINT_GROUPS: readonly { label: string; sections: readonly PrintSection[] }[] = [
+  { label: "Picture", sections: ["diagram", "schematic"] },
+  { label: "Guide", sections: ["parts", "tools", "solder", "steps", "notes", "checks"] },
+];
+
+export function setAllPrintOptions(value: boolean): PrintOptions {
+  return Object.fromEntries(PRINT_SECTIONS.map((key) => [key, value])) as PrintOptions;
+}
+
 export const DEFAULT_PRINT_OPTIONS: PrintOptions = {
   diagram: true,
   schematic: false,
