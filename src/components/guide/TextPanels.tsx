@@ -1,35 +1,7 @@
-import type { Guide, GuideStep } from "@/lib/catalog/types";
 import { AlertIcon, TipIcon } from "./icons";
 import { noteKind } from "./model";
 
-type StepsPanelProps = { guideId: string; guide: Guide; steps: GuideStep[] };
-
-export function StepsPanel({ steps }: StepsPanelProps) {
-  if (steps.length === 0) {
-    return <p className="text-sm text-mute">No steps yet.</p>;
-  }
-
-  return (
-    <ol className="m-0 list-none space-y-4 p-0">
-      {steps.map((step) => (
-        <li key={step.id} className="flex gap-3">
-          <span
-            aria-hidden
-            className="brand-mark mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 border-copper bg-white text-sm font-bold text-copper-deep"
-          >
-            {step.order}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-base leading-snug font-bold tracking-tight text-ink">{step.title}</p>
-            <p className="mt-1 text-[15px] leading-relaxed whitespace-pre-line text-ink-soft">
-              {step.body}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  );
-}
+export { StepsPanel } from "./StepsPanel";
 
 type NotesPanelProps = {
   notes: string[];

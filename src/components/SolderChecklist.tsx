@@ -1,10 +1,20 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { DoneToggle } from "@/components/guide/DoneToggle";
+import { CheckIcon } from "@/components/guide/icons";
 import { Switch } from "@/components/guide/Switch";
 import { scrollRowIntoPanel } from "@/components/guide/scroll";
 import type { Guide } from "@/lib/catalog/types";
-import { readSolderTicks, writeSolderTicks } from "@/components/guide/model";
+import {
+  groupJoints,
+  pinName,
+  progressLabel,
+  readSolderTicks,
+  writeSolderTicks,
+  type TabId,
+} from "@/components/guide/model";
+import { badgeTextColor } from "@/components/wokwi/badges";
 import { buildSolderPlan } from "@/lib/guides/solder-plan";
 
 type SolderChecklistProps = {
@@ -17,6 +27,8 @@ type SolderChecklistProps = {
   onFocusChange: (id: string | null) => void;
   hoverId: string | null;
   onHoverChange: (id: string | null) => void;
+  /** Switch the right panel to another tab, for the "Open Steps" button. */
+  onOpenTab?: (tab: TabId) => void;
 };
 
 function Arrow({ dir }: { dir: "left" | "right" }) {
@@ -29,7 +41,7 @@ function Arrow({ dir }: { dir: "left" | "right" }) {
 
 function PowerNote({ text }: { text: string }) {
   return (
-    <p className="mb-3 rounded-[10px] border border-line bg-paper/70 px-3 py-2 text-sm leading-relaxed text-ink-soft">
+    <p className="ga-power-note">
       <span className="font-semibold text-ink">Power: </span>
       {text}
     </p>
@@ -46,10 +58,13 @@ export function SolderChecklist({
   onFocusChange,
   hoverId,
   onHoverChange,
+  onOpenTab,
 }: SolderChecklistProps) {
   const plan = useMemo(() => buildSolderPlan(guide), [guide]);
+  const groups = useMemo(() => groupJoints(plan.items), [plan.items]);
   const [ticked, setTicked] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [justFinished, setJustFinished] = useState(false);
   const rows = useRef(new Map<string, HTMLLIElement>());
 
   useEffect(() => {
@@ -81,6 +96,7 @@ export function SolderChecklist({
     const next = adding ? [...ticked, id] : ticked.filter((entry) => entry !== id);
     setTicked(next);
     writeSolderTicks(guide.id, next);
+    setJustFinished(adding && next.length === total);
     if (adding && followMode && (focusId === null || focusId === id)) {
       const start = ids.indexOf(id);
       const after = [...ids.slice(start + 1), ...ids.slice(0, start)];
@@ -107,31 +123,35 @@ export function SolderChecklist({
   const followHintId = useId();
 
   return (
-    <section aria-label="What to solder where, step by step">
+    <section aria-label="Solder joints to make">
+      <header className="ga-head" data-print-hide="true">
+        <h3 className="ga-head-title">Solder joints</h3>
+        <p className="ga-head-lede">
+          {total === 0
+            ? "The connections to solder will appear here once the wiring is added."
+            : `Make these ${total} connections in order. Tap one to light it up in the picture.`}
+        </p>
+      </header>
+
       {total === 0 ? (
         <div className="space-y-3">
           {plan.power ? <PowerNote text={plan.power} /> : null}
-          <p className="text-sm text-mute">
-            No connections yet. They will appear here once the wiring is added.
-          </p>
+          <p className="text-sm text-mute">No connections yet.</p>
         </div>
       ) : (
         <>
           <div
             data-ga-sticky=""
             data-print-hide="true"
-            className="ga-strip sticky top-0 z-10 -mx-4 -mt-3.5 mb-3 border-b border-line bg-[color-mix(in_oklab,white_90%,var(--paper))] px-4 py-2"
+            className="ga-strip sticky top-0 z-10 -mx-4 mb-3 border-y border-line bg-[color-mix(in_oklab,white_90%,var(--paper))] px-4 py-2"
           >
             <div className="ga-strip-top">
               <div className="ga-strip-progress">
                 <p className="ga-strip-count" aria-live="polite">
-                  {done} of {total} done
+                  {progressLabel(done, total, "soldered")}
                 </p>
                 <div aria-hidden className="ga-strip-bar">
-                  <span
-                    className="motion-safe:transition-[width]"
-                    style={{ width: `${(done / total) * 100}%` }}
-                  />
+                  <span style={{ width: `${(done / total) * 100}%` }} />
                 </div>
               </div>
               <Switch
@@ -139,7 +159,7 @@ export function SolderChecklist({
                 onChange={setFollow}
                 tone="flux"
                 hintId={followHintId}
-                hint="Show one wire at a time in the picture. Tick a joint to move to the next."
+                hint="Show one wire at a time in the picture. Mark a joint soldered to move to the next."
               >
                 Follow along
               </Switch>
@@ -177,102 +197,118 @@ export function SolderChecklist({
                 </button>
               </div>
             ) : null}
-
-            {followMode && allDone ? (
-              <p role="status" className="text-sm font-semibold text-flux">
-                All wires done
-              </p>
-            ) : null}
           </div>
+
+          {allDone ? (
+            <div role="status" className="ga-finish" data-fresh={justFinished} data-print-hide="true">
+              <span className="ga-finish-mark" aria-hidden>
+                <CheckIcon size={22} />
+              </span>
+              <div className="ga-finish-text">
+                <p className="ga-finish-title">All wires done</p>
+                <p className="ga-finish-sub">Every joint is soldered. Next, follow the build steps.</p>
+              </div>
+              {onOpenTab ? (
+                <button type="button" className="ga-finish-btn" onClick={() => onOpenTab("steps")}>
+                  Open Steps
+                  <Arrow dir="right" />
+                </button>
+              ) : null}
+            </div>
+          ) : null}
 
           {plan.power ? <PowerNote text={plan.power} /> : null}
 
-          <p className="mb-3 text-sm leading-relaxed text-mute">
-            Do these in order. Tick each one when the joint is done. This list
-            matches the wiring picture.
-          </p>
-
-          <ol className="ga-solder-list">
-            {plan.items.map((item, index) => {
-              const checked = ticked.includes(item.id);
-              const selected = focusId === item.id;
-              const highlighted = hoverId === item.id;
-              const inputId = `solder-${guide.id}-${item.id}`;
-              const where =
-                item.note && !item.sentence.toLowerCase().includes(item.note.toLowerCase())
-                  ? item.note
-                  : null;
-              const state = [
-                "ga-solder-row",
-                selected ? "is-selected" : "",
-                !selected && highlighted ? "is-hot" : "",
-                checked ? "is-done" : "",
-              ]
-                .filter(Boolean)
-                .join(" ");
-              return (
-                <li
-                  key={item.id}
-                  ref={(node) => {
-                    if (node) rows.current.set(item.id, node);
-                    else rows.current.delete(item.id);
-                  }}
-                  onMouseEnter={() => onHoverChange(item.id)}
-                  onMouseLeave={() => onHoverChange(null)}
-                  onFocus={() => onHoverChange(item.id)}
-                  onBlur={(event) => {
-                    if (!event.currentTarget.contains(event.relatedTarget)) {
-                      onHoverChange(null);
-                    }
-                  }}
-                  className={state}
-                >
-                  <label htmlFor={inputId} className="ga-solder-check">
-                    <input
-                      id={inputId}
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => toggle(item.id)}
-                      aria-label={`Done: wire ${index + 1}`}
-                      className="ga-solder-input"
-                    />
-                    <span className="ga-solder-mark" aria-hidden>
-                      <span className="ga-solder-num">{index + 1}</span>
-                      <svg className="ga-solder-tick" viewBox="0 0 16 16">
-                        <path d="M3.5 8.5l3 3 6-7" />
-                      </svg>
-                    </span>
-                  </label>
-                  <button
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => onFocusChange(selected ? null : item.id)}
-                    className="ga-solder-body"
-                  >
-                    <span className="ga-solder-meta">
-                      <span
-                        role="img"
-                        aria-label={`${item.colorName} wire`}
-                        title={`${item.colorName} wire`}
-                        className="ga-solder-swatch"
-                        style={{ backgroundColor: item.color }}
+          {groups.map((group) => (
+            <div key={group.id} className="ga-joint-group">
+              {group.label ? <h4 className="ga-group-title">{group.label}</h4> : null}
+              <ol className="ga-solder-list">
+                {group.joints.map(({ item, number }) => {
+                  const checked = ticked.includes(item.id);
+                  const selected = focusId === item.id;
+                  const highlighted = hoverId === item.id;
+                  const where =
+                    item.note && !item.sentence.toLowerCase().includes(item.note.toLowerCase())
+                      ? item.note
+                      : null;
+                  const state = [
+                    "ga-solder-row",
+                    selected ? "is-selected" : "",
+                    !selected && highlighted ? "is-hot" : "",
+                    checked ? "is-done" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+                  return (
+                    <li
+                      key={item.id}
+                      ref={(node) => {
+                        if (node) rows.current.set(item.id, node);
+                        else rows.current.delete(item.id);
+                      }}
+                      onMouseEnter={() => onHoverChange(item.id)}
+                      onMouseLeave={() => onHoverChange(null)}
+                      onFocus={() => onHoverChange(item.id)}
+                      onBlur={(event) => {
+                        if (!event.currentTarget.contains(event.relatedTarget)) {
+                          onHoverChange(null);
+                        }
+                      }}
+                      className={state}
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={selected}
+                        aria-label={`Wire ${number}: ${item.sentence}. Show in the picture.`}
+                        onClick={() => onFocusChange(selected ? null : item.id)}
+                        className="ga-solder-body"
+                      >
+                        <span
+                          aria-hidden
+                          className="ga-solder-badge"
+                          style={{ backgroundColor: item.color, color: badgeTextColor(item.color) }}
+                        >
+                          {number}
+                        </span>
+                        <span className="ga-solder-text">
+                          <span className="ga-solder-route">
+                            <span className="ga-solder-end">
+                              <span className="ga-solder-part">{item.from.part}</span>
+                              <strong>{pinName(item.from.pin)}</strong>
+                            </span>
+                            <span className="ga-solder-arrow" aria-hidden>
+                              <Arrow dir="right" />
+                            </span>
+                            <span className="ga-solder-end">
+                              <span className="ga-solder-part">{item.to.part}</span>
+                              <strong>{pinName(item.to.pin)}</strong>
+                            </span>
+                          </span>
+                          <span className="ga-solder-chip">
+                            <span
+                              aria-hidden
+                              className="ga-solder-swatch"
+                              style={{ backgroundColor: item.color }}
+                            />
+                            {item.colorName} wire
+                          </span>
+                          {where ? <span className="ga-solder-note">Where: {where}</span> : null}
+                          {item.why ? <span className="ga-solder-note">{item.why}</span> : null}
+                        </span>
+                      </button>
+                      <DoneToggle
+                        pressed={checked}
+                        onToggle={() => toggle(item.id)}
+                        doneLabel="Soldered"
+                        openLabel="Mark soldered"
+                        context={`wire ${number}`}
                       />
-                      <span>{item.colorName} wire</span>
-                    </span>
-                    <span className="ga-solder-route">
-                      <strong>{item.from.part}</strong>, {item.from.pin}
-                      <span className="ga-solder-arrow" aria-hidden>
-                        →
-                      </span>
-                      <strong>{item.to.part}</strong>, {item.to.pin}
-                    </span>
-                    {where ? <span className="ga-solder-note">Where: {where}</span> : null}
-                    {item.why ? <span className="ga-solder-note">{item.why}</span> : null}
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          ))}
         </>
       )}
     </section>

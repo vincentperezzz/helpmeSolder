@@ -4,8 +4,14 @@ import {
   buildChecks,
   defaultTab,
   isTabId,
+  groupJoints,
+  mentionsSoldering,
+  nextStepId,
   nextTab,
+  pinName,
+  progressLabel,
   scrollDelta,
+  tabDirection,
 } from "./model";
 
 const clean: ValidationResult = { ok: true, issues: [], needsPowerSource: false };
@@ -103,5 +109,60 @@ describe("noteKind", () => {
     const { noteKind } = await import("./model");
     expect(noteKind("Never power it with wires touching.")).toBe("heads-up");
     expect(noteKind("Use an active buzzer.")).toBe("tip");
+  });
+});
+
+describe("tabDirection", () => {
+  it("travels forward to a later tab and back to an earlier one", () => {
+    expect(tabDirection("parts", "solder")).toBe("forward");
+    expect(tabDirection("notes", "tools")).toBe("back");
+    expect(tabDirection("steps", "solder")).toBe("back");
+  });
+});
+
+describe("groupJoints", () => {
+  const feed = (id: string) => ({ id, powerFeed: true });
+  const sig = (id: string) => ({ id, powerFeed: false });
+
+  it("splits power feeds from signals and keeps the global numbers", () => {
+    const groups = groupJoints([sig("a"), feed("b"), sig("c")]);
+    expect(groups.map((g) => [g.id, g.label])).toEqual([
+      ["power", "Power"],
+      ["signals", "Signals"],
+    ]);
+    expect(groups[0].joints.map((j) => j.number)).toEqual([2]);
+    expect(groups[1].joints.map((j) => j.number)).toEqual([1, 3]);
+  });
+
+  it("drops the headings when only one kind exists", () => {
+    expect(groupJoints([sig("a"), sig("b")])).toMatchObject([{ id: "signals", label: null }]);
+    expect(groupJoints([feed("a")])).toMatchObject([{ id: "power", label: null }]);
+    expect(groupJoints([])).toEqual([]);
+  });
+});
+
+describe("joint and step text helpers", () => {
+  it("labels progress", () => {
+    expect(progressLabel(3, 7, "soldered")).toBe("3 of 7 soldered");
+  });
+
+  it("strips the word pin for the two-end layout", () => {
+    expect(pinName("pin D5")).toBe("D5");
+    expect(pinName("pin 1 (SIG)")).toBe("1 (SIG)");
+    expect(pinName("hole A1")).toBe("hole A1");
+  });
+
+  it("detects steps that talk about soldering", () => {
+    expect(mentionsSoldering("Solder the buzzer leads.")).toBe(true);
+    expect(mentionsSoldering("Check every joint again.")).toBe(true);
+    expect(mentionsSoldering("Tinned the tip, then soldering the pins")).toBe(true);
+    expect(mentionsSoldering("Plug in the USB cable.")).toBe(false);
+    expect(mentionsSoldering("Use a soldered header")).toBe(true);
+  });
+
+  it("finds the first step that is not done", () => {
+    expect(nextStepId(["a", "b", "c"], ["a"])).toBe("b");
+    expect(nextStepId(["a"], ["a"])).toBeNull();
+    expect(nextStepId([], [])).toBeNull();
   });
 });

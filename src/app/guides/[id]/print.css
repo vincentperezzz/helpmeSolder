@@ -224,6 +224,56 @@
     stroke-dashoffset: 0 !important;
   }
 
+  /* Panels stand still on paper: no slide-in, no folding. */
+  .ga-scroll > .ga-tabpanel {
+    animation: none !important;
+  }
+
+  .ga-step-fold,
+  .ga-step-fold[data-folded] {
+    display: block !important;
+    transition: none !important;
+  }
+
+  .ga-step-fold-inner {
+    overflow: visible !important;
+  }
+
+  .ga-step.is-folded {
+    padding-block: 14pt !important;
+  }
+
+  /* Done buttons become a tick box; the wire number prints as an outlined ring. */
+  .ga-done-btn {
+    min-height: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .ga-done-btn > span:not(.ga-done-check) {
+    display: none !important;
+  }
+
+  .ga-done-check {
+    width: 11pt !important;
+    height: 11pt !important;
+    border: 1.2pt solid #000 !important;
+    border-radius: 2pt !important;
+  }
+
+  .ga-done-check svg {
+    width: 9pt;
+    height: 9pt;
+  }
+
+  .guide-app .ga-solder-badge[style] {
+    background: transparent !important;
+    border: 1.2pt solid #000;
+    box-shadow: none;
+  }
+
   /* Hide controls that do nothing on paper. */
   [data-print-button],
   [data-print-hide],

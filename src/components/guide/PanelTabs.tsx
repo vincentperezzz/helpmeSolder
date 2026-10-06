@@ -32,6 +32,8 @@ export function PanelTabs({ prefix, tab, onChange, counts }: PanelTabsProps) {
     if (!node || !active) return;
     node.style.setProperty("--ptab-x", `${active.offsetLeft}px`);
     node.style.setProperty("--ptab-w", `${active.offsetWidth}px`);
+    // Until the pill is measured, the CSS paints the active tab itself (see panel-tabs.css).
+    node.dataset.placed = "true";
   }, [tab]);
 
   // Enable the slide only after the first placement, so the pill never glides in from the left.
@@ -42,9 +44,15 @@ export function PanelTabs({ prefix, tab, onChange, counts }: PanelTabsProps) {
 
   useIsoLayoutEffect(() => {
     placePill();
+    // Keep the active tab in view when the bar scrolls (narrow widths). Scroll the
+    // bar itself: scrollIntoView would also nudge every clipped ancestor (the drawer).
+    const node = list.current;
     const active = buttons.current.get(tab);
-    // Keep the active tab in view when the bar scrolls (narrow widths).
-    active?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+    if (!node || !active) return;
+    const left = active.offsetLeft - 6;
+    const right = active.offsetLeft + active.offsetWidth + 6;
+    if (left < node.scrollLeft) node.scrollLeft = left;
+    else if (right > node.scrollLeft + node.clientWidth) node.scrollLeft = right - node.clientWidth;
   }, [placePill, tab]);
 
   useEffect(() => {

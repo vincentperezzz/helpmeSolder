@@ -24,6 +24,8 @@ export type WireItem = {
   /** Plain colour name, e.g. "red". */
   colorName: string;
   kind: WireKind;
+  /** True when one end is a battery or USB supply: a power feed, not a signal. */
+  powerFeed: boolean;
   /** Short plain-language reason, or null when it cannot be derived. */
   why: string | null;
   note?: string;
@@ -73,6 +75,10 @@ function resolveEnd(
     pinPhrase = /^[+−-]/.test(pinLabel) ? `the ${pinLabel}` : `hole ${pinLabel}`;
   }
   return { part, name, pinLabel, pinPhrase, kinds: pin?.kinds ?? [] };
+}
+
+function isSupply(part: CatalogPart | undefined): boolean {
+  return Boolean(part?.id.startsWith("passive.power."));
 }
 
 function classify(a: Resolved, b: Resolved): WireKind {
@@ -131,6 +137,7 @@ export function buildSolderItems(guide: Guide): WireItem[] {
         color,
         colorName: colorName(color),
         kind,
+        powerFeed: isSupply(from.part) || isSupply(to.part),
         why: whyFor(kind, from, to),
         note: connection.note,
       } satisfies WireItem,

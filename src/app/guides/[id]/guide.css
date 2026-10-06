@@ -948,221 +948,408 @@
   outline: none;
 }
 
-/* ---------- solder checklist rows ---------- */
+/* ---------- panel header (title and one plain line, Solder and Steps) ---------- */
+
+.ga-head {
+  margin: 0 0 14px;
+}
+
+.ga-head-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.ga-head-lede {
+  max-width: 62ch;
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.ga-power-note {
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--ga-r-sm);
+  background: color-mix(in oklab, var(--paper) 70%, white);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ---------- the explicit done button (joints and steps) ---------- */
+
+.ga-done-btn {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1.5px solid color-mix(in oklab, var(--ink) 45%, white);
+  border-radius: var(--ga-r-sm);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ga-done-btn:hover {
+  border-color: var(--flux);
+  background: color-mix(in oklab, var(--flux) 7%, white);
+}
+
+.ga-done-btn:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+.ga-done-btn[aria-pressed="true"] {
+  border-color: var(--flux);
+  background: var(--flux);
+  color: #fff;
+}
+
+.ga-done-btn[aria-pressed="true"]:hover {
+  background: color-mix(in oklab, var(--flux) 88%, black);
+}
+
+.ga-done-btn:active {
+  transform: scale(0.985);
+}
+
+.ga-done-check {
+  display: grid;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.ga-done-check svg {
+  opacity: 0;
+  stroke-dasharray: 22;
+  stroke-dashoffset: 0;
+}
+
+.ga-done-btn[aria-pressed="true"] .ga-done-check {
+  border-color: transparent;
+}
+
+.ga-done-btn[aria-pressed="true"] .ga-done-check svg {
+  opacity: 1;
+}
+
+/* Joint rows put the button on its own line, full width, easy to hit with a thumb. */
+.ga-solder-row .ga-done-btn {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-done-btn {
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease,
+      transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ga-done-btn[data-tapped="true"][aria-pressed="true"] {
+    animation: ga-done-pop 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ga-done-btn[data-tapped="true"][aria-pressed="true"] .ga-done-check svg {
+    animation: ga-done-draw 140ms cubic-bezier(0.22, 1, 0.36, 1) 20ms backwards;
+  }
+}
+
+@keyframes ga-done-pop {
+  from {
+    transform: scale(0.96);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes ga-done-draw {
+  from {
+    stroke-dashoffset: 22;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- completion banner ---------- */
+
+.ga-finish {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 12px;
+  margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid color-mix(in oklab, var(--flux) 38%, var(--line));
+  border-radius: var(--ga-r-sm);
+  background: color-mix(in oklab, var(--flux) 9%, white);
+}
+
+.ga-finish-mark {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--flux);
+  color: #fff;
+}
+
+.ga-finish-title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.ga-finish-sub {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.ga-finish-btn {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--ga-r-sm);
+  background: var(--flux);
+  color: #fff;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ga-finish-btn:hover {
+  background: color-mix(in oklab, var(--flux) 88%, black);
+}
+
+.ga-finish-btn:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-finish[data-fresh="true"] {
+    animation: ga-finish-in 220ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .ga-finish[data-fresh="true"] .ga-finish-mark {
+    animation: ga-done-pop 180ms cubic-bezier(0.22, 1, 0.36, 1) 60ms backwards;
+  }
+}
+
+@keyframes ga-finish-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- solder joints ---------- */
+
+.ga-joint-group + .ga-joint-group {
+  margin-top: 18px;
+}
+
+.ga-group-title {
+  margin: 0 0 8px;
+  color: var(--mute);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
 
 .ga-solder-list {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .ga-solder-row {
-  display: flex;
-  min-height: 56px;
-  align-items: stretch;
-  border: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--ga-r-sm);
-  background: color-mix(in oklab, white 82%, var(--paper));
-  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+  background: #fff;
+  scroll-margin-top: 80px;
 }
 
 .ga-solder-row:hover {
   border-color: color-mix(in oklab, var(--copper) 45%, var(--line-strong));
-  background: color-mix(in oklab, var(--copper) 6%, white);
 }
 
 .ga-solder-row.is-done {
-  border-color: color-mix(in oklab, var(--flux) 28%, var(--line));
+  border-color: color-mix(in oklab, var(--flux) 30%, var(--line));
   background: color-mix(in oklab, var(--flux) 7%, white);
-}
-
-.ga-solder-row.is-done:hover {
-  border-color: color-mix(in oklab, var(--flux) 40%, var(--line-strong));
-  background: color-mix(in oklab, var(--flux) 10%, white);
 }
 
 .ga-solder-row.is-hot {
   border-color: color-mix(in oklab, var(--copper) 55%, var(--line-strong));
-  background: color-mix(in oklab, var(--copper) 8%, white);
+  background: color-mix(in oklab, var(--copper) 7%, white);
   box-shadow: inset 3px 0 0 var(--copper);
 }
 
 .ga-solder-row.is-selected {
   border-color: var(--copper);
-  background: color-mix(in oklab, var(--copper) 12%, white);
+  background: color-mix(in oklab, var(--copper) 11%, white);
   box-shadow: inset 3px 0 0 var(--copper-deep);
 }
 
 .ga-solder-row.is-selected.is-done {
-  border-color: var(--copper);
-  background: color-mix(in oklab, var(--copper) 10%, color-mix(in oklab, var(--flux) 8%, white));
-}
-
-.ga-solder-check {
-  position: relative;
-  display: grid;
-  flex: none;
-  place-items: start center;
-  min-width: 48px;
-  padding: 12px 4px 12px 12px;
-  cursor: pointer;
-}
-
-.ga-solder-input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.ga-solder-mark {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1.5px solid color-mix(in oklab, var(--ink) 38%, white);
-  border-radius: 50%;
-  background: #fff;
-  color: var(--ink);
-  box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--ink) 8%, transparent);
-  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
-}
-
-.ga-solder-num {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.ga-solder-tick {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0;
-  transform: scale(0.85);
-}
-
-.ga-solder-check:hover .ga-solder-mark {
-  border-color: var(--copper);
-}
-
-.ga-solder-row.is-hot .ga-solder-mark,
-.ga-solder-row.is-selected .ga-solder-mark {
-  border-color: var(--copper-deep);
-  box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--copper) 18%, transparent);
-}
-
-.ga-solder-input:checked + .ga-solder-mark {
-  border-color: var(--flux);
-  background: var(--flux);
-  color: #fff;
-  box-shadow: none;
-}
-
-.ga-solder-input:checked + .ga-solder-mark .ga-solder-num {
-  opacity: 0;
-}
-
-.ga-solder-input:checked + .ga-solder-mark .ga-solder-tick {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.ga-solder-input:focus-visible + .ga-solder-mark {
-  outline: 2px solid var(--flux);
-  outline-offset: 2px;
-}
-
-.guide-app .ga-solder-input:focus-visible {
-  outline: none;
+  background: color-mix(in oklab, var(--copper) 9%, color-mix(in oklab, var(--flux) 8%, white));
 }
 
 .ga-solder-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
   min-width: 0;
-  flex: 1;
-  padding: 11px 14px 12px 6px;
+  padding: 0;
   border: 0;
-  border-radius: 0 var(--ga-r-sm) var(--ga-r-sm) 0;
+  border-radius: 6px;
   background: transparent;
   color: inherit;
+  font: inherit;
   text-align: left;
   cursor: pointer;
 }
 
 .guide-app .ga-solder-body:focus-visible {
   outline: 2px solid var(--flux);
-  outline-offset: -3px;
+  outline-offset: 3px;
 }
 
-.ga-solder-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 8px;
-  color: var(--mute);
-  font-size: 0.8125rem;
-  line-height: 1.25;
-}
-
-.ga-solder-swatch {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+/* Same colour and number as the badge on the wire in the picture. */
+.ga-solder-badge {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 2px solid #fff;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, white 35%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ink) 30%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.ga-solder-text {
+  display: grid;
+  min-width: 0;
+  justify-items: start;
+  gap: 8px;
 }
 
 .ga-solder-route {
-  display: block;
-  margin-top: 4px;
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.ga-solder-end {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.ga-solder-part {
+  color: var(--mute);
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.ga-solder-end strong {
   color: var(--ink);
-  font-size: 0.9375rem;
-  line-height: 1.35;
-}
-
-.ga-solder-row.is-done .ga-solder-route {
-  color: var(--ink-soft);
-}
-
-.ga-solder-route strong {
+  font-size: 1.0625rem;
   font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .ga-solder-arrow {
-  margin: 0 0.2em;
+  display: grid;
+  place-items: center;
   color: var(--mute);
-  font-weight: 500;
+}
+
+.ga-solder-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ga-solder-swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid color-mix(in oklab, var(--ink) 30%, transparent);
+  border-radius: 50%;
 }
 
 .ga-solder-note {
-  display: block;
-  margin-top: 3px;
   color: var(--mute);
   font-size: 0.8125rem;
-  line-height: 1.35;
+  line-height: 1.4;
+}
+
+.ga-solder-row.is-done .ga-solder-end strong {
+  color: var(--ink-soft);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .ga-solder-tick {
-    transition: opacity 120ms ease, transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .ga-solder-num {
-    transition: opacity 100ms ease;
+  .ga-solder-row {
+    transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
   }
 }
 
@@ -1173,16 +1360,209 @@
     outline: 2px solid Highlight;
   }
 
-  .ga-solder-mark {
-    border-color: ButtonText;
-    background: Canvas;
-    color: ButtonText;
-  }
-
-  .ga-solder-input:checked + .ga-solder-mark {
+  .ga-done-btn[aria-pressed="true"] {
     border-color: Highlight;
     background: Highlight;
     color: HighlightText;
+  }
+}
+
+/* ---------- build steps (timeline) ---------- */
+
+.ga-steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ga-step {
+  position: relative;
+  padding: 14px 0 18px 16px;
+  border-left: 1px solid var(--line-strong);
+}
+
+.ga-step + .ga-step {
+  border-top: 1px solid var(--line);
+  border-top-left-radius: 0;
+}
+
+/* The one step to do now gets a bold rail on the left edge. */
+.ga-step.is-next::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--copper);
+}
+
+.ga-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+
+.ga-step-label {
+  color: var(--copper-deep);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.ga-step-flag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--copper-deep);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ga-step-title {
+  flex-basis: 100%;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ga-step-body {
+  max-width: 62ch;
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.ga-step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: 12px;
+}
+
+.ga-step-actions .ga-done-btn {
+  min-width: 150px;
+}
+
+/* A finished step folds to one line: check, number, title. Tap to open it again. */
+.ga-step-head.is-button {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ga-step-head.is-button:focus-visible {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+.ga-step-check {
+  display: grid;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--flux);
+  color: #fff;
+}
+
+.ga-step.is-done .ga-step-label {
+  flex: none;
+  color: var(--mute);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.ga-step.is-done .ga-step-title {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ga-step.is-folded {
+  padding-block: 6px;
+}
+
+.ga-step-fold {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.ga-step-fold[data-folded="true"] {
+  grid-template-rows: 0fr;
+}
+
+.ga-step-fold-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ga-step.is-done:not(.is-folded) .ga-step-fold-inner {
+  padding-top: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-step-fold {
+    transition: grid-template-rows 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ---------- tab switch: the new panel slides in from the side it lives on ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-scroll[data-dir="forward"] > .ga-tabpanel:not([data-screen-hide]) {
+    animation: ga-panel-in-fwd 200ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .ga-scroll[data-dir="back"] > .ga-tabpanel:not([data-screen-hide]) {
+    animation: ga-panel-in-back 200ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+}
+
+@keyframes ga-panel-in-fwd {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ga-panel-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -1194,27 +1574,15 @@
     page-break-inside: avoid;
   }
 
-  .ga-solder-check {
-    place-items: center;
-    padding: 8pt 4pt 8pt 8pt;
+  .ga-step {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
-  .ga-solder-input {
-    position: static;
-    width: 14pt;
-    height: 14pt;
-    overflow: visible;
-    opacity: 1;
-    clip: auto;
-    pointer-events: auto;
-  }
-
-  .ga-solder-mark {
-    display: none;
-  }
-
-  .ga-solder-route {
-    color: #000;
+  .ga-step::before,
+  .ga-step-flag,
+  .ga-step-link {
+    display: none !important;
   }
 }
 
