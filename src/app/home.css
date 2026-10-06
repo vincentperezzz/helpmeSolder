@@ -72,12 +72,19 @@
     align-self: start;
     height: 42vh;
     min-height: 14.5rem;
+    overflow: hidden;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     background: color-mix(in oklab, white 92%, var(--paper));
-    box-shadow: 0 12px 28px -16px rgb(18 26 32 / 0.55);
+    box-shadow: 0 10px 18px -10px rgb(18 26 32 / 0.4);
   }
 
   .sample__picture .diagram-shell {
     min-height: 0;
+  }
+
+  .wire-row {
+    scroll-margin-top: calc(3.5rem + 42vh + 8px);
   }
 
   .wire-row.is-selected .wire-row__why {

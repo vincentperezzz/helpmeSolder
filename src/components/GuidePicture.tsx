@@ -53,16 +53,17 @@ export function GuidePicture() {
       }
       const rows = [...list.querySelectorAll<HTMLElement>("[data-wire-id]")];
       const pic = picture?.getBoundingClientRect();
+      const picBottom = pic?.bottom ?? NAV_TOP;
       const stuck = (pic?.top ?? Infinity) <= NAV_TOP + 2;
-      // Stuck: light the row that has reached the slot just under the picture.
-      // Not stuck: only light a row after it has crossed the middle of the screen.
-      // That keeps step 1 quiet until the picture actually pins or the row hits center.
-      const line = stuck
-        ? (pic?.bottom ?? NAV_TOP) + 40
-        : window.innerHeight * 0.5;
+      const line = stuck ? picBottom + 52 : window.innerHeight * 0.5;
       let bestId: string | null = null;
       for (const row of rows) {
-        const rect = row.getBoundingClientRect();
+        const header = row.querySelector("button") ?? row;
+        const rect = header.getBoundingClientRect();
+        // Keep the expanded header in the gap under the picture, not sliding up into it.
+        if (stuck && rect.top < picBottom) {
+          continue;
+        }
         const head = rect.top + Math.min(rect.height, 56) / 2;
         if (head <= line + 12) {
           bestId = row.dataset.wireId ?? null;
@@ -90,6 +91,26 @@ export function GuidePicture() {
       }
     };
   }, [wires]);
+
+  useEffect(() => {
+    if (!focusId || !window.matchMedia(MOBILE_QUERY).matches) {
+      return;
+    }
+    const row = listRef.current?.querySelector<HTMLElement>(
+      `[data-wire-id="${CSS.escape(focusId)}"]`,
+    );
+    const picture = pictureRef.current;
+    const header = row?.querySelector("button") ?? row;
+    if (!header || !picture) {
+      return;
+    }
+    const picBottom = picture.getBoundingClientRect().bottom;
+    const top = header.getBoundingClientRect().top;
+    const delta = top - (picBottom + 10);
+    if (delta < -2 && delta > -160) {
+      window.scrollBy(0, delta);
+    }
+  }, [focusId]);
 
   return (
     <div className="sample">
