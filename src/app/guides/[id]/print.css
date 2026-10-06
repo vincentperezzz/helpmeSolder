@@ -96,13 +96,21 @@
 
   .ga-drawer-body {
     display: block !important;
+    flex: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   .ga-panel,
   .guide-app[data-enlarged="true"] .ga-panel,
   .ga-panel[data-snap] {
     position: static !important;
+    flex: none !important;
     height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     padding: 0 !important;
     animation: none !important;
     box-shadow: none !important;
@@ -113,12 +121,17 @@
   }
 
   .ga-scroll {
+    display: block !important;
+    flex: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
     overflow: visible !important;
   }
 
   /* Every tab on paper, one after another: Parts, Tools, Solder, Steps, Notes. */
   .ga-tabpanel,
-  .ga-tabpanel[hidden] {
+  .ga-tabpanel[data-screen-hide] {
     display: block !important;
     min-height: 0 !important;
     padding: 0 0 14pt !important;
@@ -135,7 +148,7 @@
   }
 
   .ga-checks,
-  .ga-checks[hidden] {
+  .ga-checks[data-screen-hide] {
     display: block !important;
     max-height: none !important;
     overflow: visible !important;

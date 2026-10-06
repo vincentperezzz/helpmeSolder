@@ -296,7 +296,8 @@
   outline-offset: -3px;
 }
 
-.ga-tabpanel[hidden] {
+.ga-tabpanel[data-screen-hide],
+.ga-checks[data-screen-hide] {
   display: none;
 }
 
@@ -604,6 +605,11 @@
   padding: 8px 0 0;
   border: 0;
   border-top: 1px solid var(--line);
+}
+
+.ga-print-paper {
+  border-top: 0;
+  padding-top: 0;
 }
 
 .ga-print-menu-legend {

@@ -2,12 +2,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_PRINT_OPTIONS,
   PRINT_GROUPS,
+  PRINT_PICTURE_WIDTH,
   PRINT_SECTIONS,
+  printContentWidthMm,
+  printPageWidthMm,
+  printPictureWidth,
   readPrintOptions,
+  readPrintPaper,
   readPrintSchematic,
   readView,
   setAllPrintOptions,
   writePrintOptions,
+  writePrintPaper,
   writePrintSchematic,
   writeView,
 } from "./view-storage";
@@ -90,6 +96,42 @@ describe("view storage", () => {
     expect(Object.keys(setAllPrintOptions(false)).sort()).toEqual([...PRINT_SECTIONS].sort());
   });
 
+  it("remembers the paper size per guide, letter by default", () => {
+    expect(readPrintPaper("g1")).toBe("letter");
+    writePrintPaper("g1", "a4");
+    expect(readPrintPaper("g1")).toBe("a4");
+    expect(readPrintPaper("g2")).toBe("letter");
+    writePrintPaper("g1", "long");
+    expect(readPrintPaper("g1")).toBe("long");
+    expect(storage.data.get("helpmesolder:print-paper:g1")).toBe("long");
+    writePrintPaper("g1", "letter");
+    expect(readPrintPaper("g1")).toBe("letter");
+    expect(storage.data.has("helpmesolder:print-paper:g1")).toBe(false);
+  });
+
+  it("ignores junk paper sizes", () => {
+    storage.setItem("helpmesolder:print-paper:g1", "legal");
+    expect(readPrintPaper("g1")).toBe("letter");
+    storage.setItem("helpmesolder:print-paper:g1", "short");
+    expect(readPrintPaper("g1")).toBe("letter");
+  });
+
+  it("fits the picture to each paper's content width, with letter as the baseline", () => {
+    expect(printPictureWidth("letter")).toBe(PRINT_PICTURE_WIDTH);
+    expect(printPictureWidth("long")).toBe(printPictureWidth("letter"));
+    expect(printContentWidthMm("long")).toBe(printContentWidthMm("letter"));
+    expect(printPageWidthMm("letter")).toBeCloseTo(8.5 * 25.4, 8);
+    expect(printPageWidthMm("long")).toBe(printPageWidthMm("letter"));
+    expect(printPageWidthMm("a4")).toBe(210);
+    expect(printContentWidthMm("letter")).toBeCloseTo(8.5 * 25.4 - 24, 8);
+    expect(printContentWidthMm("a4")).toBe(210 - 24);
+    expect(printPictureWidth("a4")).toBeLessThan(PRINT_PICTURE_WIDTH);
+    expect(printPictureWidth("a4") / printPictureWidth("letter")).toBeCloseTo(
+      printContentWidthMm("a4") / printContentWidthMm("letter"),
+      10,
+    );
+  });
+
   it("survives blocked storage", () => {
     vi.stubGlobal("window", {
       get localStorage(): never {
@@ -99,8 +141,10 @@ describe("view storage", () => {
     expect(readView("g1")).toBe("parts");
     expect(readPrintSchematic("g1")).toBe(false);
     expect(readPrintOptions("g1")).toEqual(DEFAULT_PRINT_OPTIONS);
+    expect(readPrintPaper("g1")).toBe("letter");
     expect(() => writeView("g1", "schematic")).not.toThrow();
     expect(() => writePrintSchematic("g1", true)).not.toThrow();
     expect(() => writePrintOptions("g1", DEFAULT_PRINT_OPTIONS)).not.toThrow();
+    expect(() => writePrintPaper("g1", "a4")).not.toThrow();
   });
 });

@@ -1,0 +1,51 @@
+@media print {
+  @page {
+    size: 8.5in 11in;
+    margin: 12mm;
+  }
+
+  @page print-letter {
+    size: 8.5in 11in;
+    margin: 12mm;
+  }
+
+  @page print-long {
+    size: 8.5in 13in;
+    margin: 12mm;
+  }
+
+  @page print-a4 {
+    size: 210mm 297mm;
+    margin: 12mm;
+  }
+
+  html:has(.guide-app[data-print-paper="letter"]),
+  body:has(.guide-app[data-print-paper="letter"]),
+  .guide-app[data-print-paper="letter"] {
+    page: print-letter;
+  }
+
+  html:has(.guide-app[data-print-paper="long"]),
+  body:has(.guide-app[data-print-paper="long"]),
+  .guide-app[data-print-paper="long"] {
+    page: print-long;
+  }
+
+  html:has(.guide-app[data-print-paper="a4"]),
+  body:has(.guide-app[data-print-paper="a4"]),
+  .guide-app[data-print-paper="a4"] {
+    page: print-a4;
+  }
+
+  .guide-app[data-print-paper="letter"] .diagram-viewport,
+  .guide-app[data-print-paper="letter"] .schematic-canvas,
+  .guide-app[data-print-paper="long"] .diagram-viewport,
+  .guide-app[data-print-paper="long"] .schematic-canvas {
+    max-width: calc(8.5in - 24mm) !important;
+  }
+
+  .guide-app[data-print-paper="a4"] .diagram-viewport,
+  .guide-app[data-print-paper="a4"] .schematic-canvas {
+    max-width: calc(210mm - 24mm) !important;
+  }
+}

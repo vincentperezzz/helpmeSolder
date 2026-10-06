@@ -51,7 +51,7 @@ export function ChecksRegion({ checks, open, onClose, id }: ChecksRegionProps) {
   return (
     <section
       id={id}
-      hidden={!open}
+      data-screen-hide={open ? undefined : "true"}
       data-level={checks.level}
       data-print-keep="true"
       data-print-section="checks"

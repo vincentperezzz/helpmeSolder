@@ -468,8 +468,8 @@ export function GuideWorkspace({
                 role="tabpanel"
                 id={panelDomId(uid, id)}
                 aria-labelledby={tabDomId(uid, id)}
-                hidden={tab !== id}
                 tabIndex={0}
+                data-screen-hide={tab === id ? undefined : "true"}
                 data-print-section={id}
                 className="ga-tabpanel"
               >

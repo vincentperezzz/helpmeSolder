@@ -508,13 +508,13 @@ export function SchematicDiagram({
               </span>
             </li>
           ))}
-          {hasBlock ? (
-            <li className="text-xs text-ink-soft">Boxes with pin names are boards and modules.</li>
-          ) : null}
-          {hasBreadboard ? (
-            <li className="text-xs text-ink-soft">The breadboard is left out. It only joins wires together.</li>
-          ) : null}
         </ul>
+        {hasBlock ? (
+          <p className="mt-2 text-xs text-ink-soft">Boxes with pin names are boards and modules.</p>
+        ) : null}
+        {hasBreadboard ? (
+          <p className="mt-2 text-xs text-ink-soft">The breadboard is left out. It only joins wires together.</p>
+        ) : null}
       </div>
     </div>
   );
