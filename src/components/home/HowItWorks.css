@@ -1,4 +1,4 @@
-/* How it works: Apple-style animated showcase & segmented storyboard. */
+/* How it works: High-precision engineering workbench console & 60fps frame-synced pipeline. */
 
 .hiw {
   --hiw-bad: #b3261e;
@@ -52,106 +52,129 @@
   color: var(--ink-soft);
 }
 
-/* ---- Stage Showcase Container ---- */
+/* ---- Monolith Precision Console ---- */
 
-.hiw-stage-wrapper {
+.hiw-monolith {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   width: 100%;
-}
-
-.hiw-stage {
-  position: relative;
   overflow: hidden;
-  border: 1px solid var(--line-strong);
-  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--copper) 45%, var(--line-strong));
+  border-radius: 14px;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, color-mix(in oklab, var(--copper) 6%, transparent), transparent),
-    linear-gradient(180deg, color-mix(in oklab, var(--mat) 45%, white), color-mix(in oklab, var(--paper-deep) 65%, white));
+    linear-gradient(180deg, color-mix(in oklab, var(--mat) 40%, white) 0%, color-mix(in oklab, var(--paper-deep) 60%, white) 100%);
   box-shadow:
-    0 20px 48px -24px rgb(18 26 32 / 0.18),
-    0 1px 2px rgb(18 26 32 / 0.04);
+    0 1px 2px rgb(18 26 32 / 0.05),
+    0 0 0 1px rgb(255 255 255 / 0.6) inset;
 }
 
-.hiw-stage__bar {
+/* ---- Top HUD Bar ---- */
+
+.hiw-hud {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  border-bottom: 1px solid color-mix(in oklab, var(--line-strong) 65%, transparent);
-  background: color-mix(in oklab, white 60%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 80%, var(--paper));
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
 }
 
-.hiw-stage__status {
+.hiw-hud__status {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--ink-soft);
 }
 
-.hiw-stage__dot {
-  width: 7px;
-  height: 7px;
+.hiw-hud__dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--flux);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--flux) 25%, transparent);
-  animation: pulse-dot 2.4s ease-in-out infinite;
+  background: var(--copper);
+  box-shadow: 0 0 6px var(--copper);
+  animation: hud-blink 2s ease-in-out infinite;
 }
 
-@keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+@keyframes hud-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.hiw-hud__label {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.hiw-hud__stepper {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (min-width: 640px) {
+  .hiw-hud__stepper {
+    display: inline-flex;
   }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.85);
-  }
+}
+
+.hiw-hud__step-pip {
+  padding: 2px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--mute);
+  transition: color 150ms, border-color 150ms, background-color 150ms;
+}
+
+.hiw-hud__step-pip.is-active {
+  border-color: var(--copper);
+  background: var(--copper);
+  color: #ffffff;
+}
+
+.hiw-hud__step-pip.is-passed {
+  border-color: color-mix(in oklab, var(--flux) 50%, var(--line-strong));
+  color: var(--flux);
 }
 
 .hiw-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
-  border: 1px solid color-mix(in oklab, var(--line-strong) 80%, transparent);
-  border-radius: 9999px;
-  background: color-mix(in oklab, white 85%, transparent);
-  font-family: var(--font-body), ui-sans-serif, sans-serif;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: #ffffff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--ink);
   cursor: pointer;
-  box-shadow: 0 1px 3px rgb(18 26 32 / 0.05);
-  transition:
-    background-color 160ms ease-out,
-    border-color 160ms ease-out,
-    transform 120ms ease-out,
-    box-shadow 160ms ease-out;
+  transition: border-color 120ms, background-color 120ms;
 }
 
 .hiw-toggle:hover {
-  background: #ffffff;
   border-color: var(--copper);
-  box-shadow: 0 2px 6px rgb(18 26 32 / 0.1);
+  color: var(--copper-deep);
 }
 
 .hiw-toggle:active {
-  transform: scale(0.96);
+  transform: translateY(1px);
 }
 
 .hiw-toggle__icon {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
+
+/* ---- Visual Canvas ---- */
 
 .hiw-canvas {
   padding: 24px 16px;
@@ -159,7 +182,7 @@
 
 @media (min-width: 768px) {
   .hiw-canvas {
-    padding: 36px 32px;
+    padding: 36px 28px;
   }
 }
 
@@ -190,115 +213,117 @@
   }
 }
 
-/* ---- Apple-Style Segmented Controller Dock ---- */
+/* ---- Integrated Hardware Sequencer Deck ---- */
 
-.hiw-legend-dock {
-  position: relative;
+.hiw-deck {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
   width: 100%;
-  padding: 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: 16px;
-  background: color-mix(in oklab, var(--paper-deep) 60%, white);
-  box-shadow: inset 0 1px 3px rgb(18 26 32 / 0.04);
+  border-top: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 85%, var(--paper));
 }
 
 @media (min-width: 768px) {
-  .hiw-legend-dock {
+  .hiw-deck {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
   }
 }
 
-.hiw-beat {
+.hiw-deck-tab {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
-  min-height: 86px;
-  padding: 14px 16px 16px;
-  overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: 12px;
+  min-height: 84px;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
   background: transparent;
   text-align: left;
-  color: var(--ink);
   cursor: pointer;
+  transition: background-color 160ms;
 }
 
-.hiw-beat:focus-visible {
+@media (min-width: 768px) {
+  .hiw-deck-tab {
+    border-bottom: 0;
+  }
+  .hiw-deck-tab:last-child {
+    border-right: 0;
+  }
+}
+
+.hiw-deck-tab:hover {
+  background: color-mix(in oklab, white 60%, transparent);
+}
+
+.hiw-deck-tab[data-active="true"] {
+  background: #ffffff;
+}
+
+.hiw-deck-tab:focus-visible {
   outline: 2px solid var(--copper-deep);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
-.hiw-beat-bg {
+.hiw-deck-rail {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: color-mix(in oklab, var(--line-strong) 60%, transparent);
+  overflow: hidden;
+}
+
+.hiw-deck-progress {
   position: absolute;
   inset: 0;
-  border-radius: 12px;
-  background: #ffffff;
-  border: 1px solid color-mix(in oklab, var(--copper) 45%, var(--line-strong));
-  box-shadow:
-    0 4px 14px -3px rgb(18 26 32 / 0.1),
-    0 1px 2px rgb(18 26 32 / 0.04);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--copper), var(--copper-deep));
+  transform-origin: 0 50%;
+  transition: opacity 120ms ease-out;
 }
 
-.hiw-beat-content {
-  position: relative;
-  z-index: 1;
+.hiw-deck-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
-  width: 100%;
+  gap: 6px;
+  padding: 12px 14px 14px;
   height: 100%;
 }
 
-.hiw-beat-top {
+.hiw-deck-top {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 6px;
 }
 
-.hiw-beat-num {
+.hiw-deck-num {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--copper-deep);
-  opacity: 0.85;
 }
 
-.hiw-beat-name {
+.hiw-deck-name {
   font-family: var(--font-display), ui-sans-serif, sans-serif;
-  font-size: 1.0625rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
 }
 
-.hiw-beat-hint {
+.hiw-deck-hint {
+  margin: 0;
   font-size: 0.8125rem;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--ink-soft);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
-.hiw-prog.hiw-a {
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--copper), var(--copper-deep));
-  transform-origin: 0 50%;
-  opacity: 0;
-  z-index: 2;
+.hiw-deck-tab[data-active="true"] .hiw-deck-name {
+  color: var(--copper-deep);
 }
 
 /* ---- Art & SVG elements ---- */
@@ -607,9 +632,8 @@
     display: none;
   }
 
-  .hiw-beat[aria-selected="true"] .hiw-beat-bg,
-  .hiw-beat[aria-pressed="true"] .hiw-beat-bg {
-    opacity: 1;
+  .hiw-deck-tab[data-active="true"] {
+    background: #ffffff;
   }
 
   .hiw[data-focus="ask"] .hiw-zone:not(.hiw-zone--ask),

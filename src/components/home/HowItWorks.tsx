@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./HowItWorks.css";
 import { HowItWorksScene } from "./HowItWorksScene";
-import { A, MOTION_CSS } from "./motion";
+import { MOTION_CSS } from "./motion";
 import { BEATS, beatAt, seekTimeFor, wrapMs, type BeatId } from "./timeline";
 
 const SCENE_LABEL = "How HelpmeSolder works in four beats: Ask, Plan, Wire, Open.";
@@ -23,9 +23,8 @@ function seekAll(root: HTMLElement, ms: number) {
 }
 
 /**
- * Animated storyboard of the product: ask in chat, plan through the tool
- * calls, wire the parts, open the guide on a phone. The SVG is static JSX; one
- * shared 14 s CSS clock drives it, so React only learns which beat is current.
+ * High-precision cybernetic engineering console for the HelpmeSolder pipeline.
+ * Runs on a 14s continuous hardware-accelerated clock synced via requestAnimationFrame.
  */
 export function HowItWorks() {
   const rootRef = useRef<HTMLElement>(null);
@@ -36,7 +35,8 @@ export function HowItWorks() {
   const [tabHidden, setTabHidden] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
-  const [beat, setBeat] = useState<BeatId | null>("ask");
+  const [beat, setBeat] = useState<BeatId>("ask");
+  const [beatProgress, setBeatProgress] = useState(0);
 
   const live = seen && !reduced;
   const paused = userPaused || !inView || tabHidden;
@@ -45,7 +45,6 @@ export function HowItWorks() {
     const query = window.matchMedia(REDUCED_QUERY);
     const sync = () => {
       setReduced(query.matches);
-      if (query.matches) setBeat(null);
     };
     sync();
     query.addEventListener("change", sync);
@@ -60,7 +59,7 @@ export function HowItWorks() {
         setInView(entry.isIntersecting);
         if (entry.isIntersecting) setSeen(true);
       },
-      { threshold: 0.25 },
+      { threshold: 0.2 },
     );
     observer.observe(root);
     return () => observer.disconnect();
@@ -73,8 +72,7 @@ export function HowItWorks() {
     return () => document.removeEventListener("visibilitychange", sync);
   }, []);
 
-  // A pending jump lands once the animations exist; a breakpoint flip
-  // restarts the swapped-in SVG at zero, so put it back on the shared clock.
+  // Restore clock position across responsive swaps
   useEffect(() => {
     const root = rootRef.current;
     if (!root || !live) return;
@@ -89,22 +87,37 @@ export function HowItWorks() {
     return () => query.removeEventListener("change", apply);
   }, [live]);
 
-  // Which beat is current: a slow check of the shared clock, state only on change.
+  // Ultra-fluid requestAnimationFrame tracking loop (zero lag, 100% exact sync)
   useEffect(() => {
     const root = rootRef.current;
     if (!root || !live || paused) return;
-    const id = window.setInterval(() => {
+
+    let rafId: number;
+    const tick = () => {
       const time = clockTime(root);
-      if (time === null) return;
-      lastTime.current = wrapMs(time);
-      setBeat(beatAt(time));
-    }, 160);
-    return () => window.clearInterval(id);
+      if (time !== null) {
+        const ms = wrapMs(time);
+        lastTime.current = ms;
+        const currentBeat = beatAt(ms);
+        setBeat(currentBeat);
+
+        const currentBeatObj = BEATS.find((b) => b.id === currentBeat);
+        if (currentBeatObj) {
+          const ratio = Math.max(0, Math.min(1, (ms - currentBeatObj.start) / (currentBeatObj.end - currentBeatObj.start)));
+          setBeatProgress(ratio);
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [live, paused]);
 
   const jump = useCallback(
     (id: BeatId) => {
       setBeat(id);
+      setBeatProgress(0);
       if (reduced) return;
       const target = seekTimeFor(id);
       lastTime.current = target;
@@ -127,15 +140,17 @@ export function HowItWorks() {
     .filter(Boolean)
     .join(" ");
 
+  const activeIndex = BEATS.findIndex((b) => b.id === beat);
+
   return (
     <section
       ref={rootRef}
       className={className}
-      data-focus={reduced && beat ? beat : undefined}
+      data-focus={reduced ? beat : undefined}
       aria-labelledby="hiw-title"
     >
       <style>{MOTION_CSS}</style>
-      
+
       <header className="hiw-head">
         <div className="hiw-head__text">
           <span className="hiw-badge-tag">02 · The Workflow</span>
@@ -148,41 +163,54 @@ export function HowItWorks() {
         </div>
       </header>
 
-      <div className="hiw-stage-wrapper">
-        <div className="hiw-stage">
-          <div className="hiw-stage__bar">
-            <span className="hiw-stage__status">
-              <span className="hiw-stage__dot" aria-hidden="true" />
-              Live Interactive Sequence
-            </span>
-            <button
-              type="button"
-              className="hiw-toggle"
-              onClick={() => setUserPaused((value) => !value)}
-              aria-label={userPaused ? "Play the animation" : "Pause the animation"}
-            >
-              {userPaused ? (
-                <>
-                  <svg className="hiw-toggle__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                    <path d="M4.5 3.5v9l8-4.5-8-4.5z" />
-                  </svg>
-                  <span>Play</span>
-                </>
-              ) : (
-                <>
-                  <svg className="hiw-toggle__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                    <path d="M4 3.5h3v9H4v-9zm5 0h3v9H9v-9z" />
-                  </svg>
-                  <span>Pause</span>
-                </>
-              )}
-            </button>
+      {/* Monolith Precision Workbench Stage */}
+      <div className="hiw-monolith">
+        {/* HUD Control Bar */}
+        <div className="hiw-hud">
+          <div className="hiw-hud__status">
+            <span className="hiw-hud__dot" aria-hidden="true" />
+            <span className="hiw-hud__label">SYS.ACTIVE // 4-STAGE PIPELINE</span>
           </div>
 
-          <div className="hiw-canvas">
-            <HowItWorksScene layout="tall" label={SCENE_LABEL} />
-            <HowItWorksScene layout="wide" label={SCENE_LABEL} />
+          <div className="hiw-hud__stepper" aria-hidden="true">
+            {BEATS.map((b, i) => (
+              <span
+                key={b.id}
+                className={`hiw-hud__step-pip ${i === activeIndex ? "is-active" : i < activeIndex ? "is-passed" : ""}`}
+              >
+                {`0${i + 1}`}
+              </span>
+            ))}
           </div>
+
+          <button
+            type="button"
+            className="hiw-toggle"
+            onClick={() => setUserPaused((value) => !value)}
+            aria-label={userPaused ? "Play animation" : "Pause animation"}
+          >
+            {userPaused ? (
+              <>
+                <svg className="hiw-toggle__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M4.5 3.5v9l8-4.5-8-4.5z" />
+                </svg>
+                <span>RESUME</span>
+              </>
+            ) : (
+              <>
+                <svg className="hiw-toggle__icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M4 3.5h3v9H4v-9zm5 0h3v9H9v-9z" />
+                </svg>
+                <span>FREEZE</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Live Vector Circuit Stage */}
+        <div className="hiw-canvas">
+          <HowItWorksScene layout="tall" label={SCENE_LABEL} />
+          <HowItWorksScene layout="wide" label={SCENE_LABEL} />
         </div>
 
         <ol className="sr-only">
@@ -195,37 +223,47 @@ export function HowItWorks() {
           <li>Open: a secret link opens the numbered checklist on your phone and each joint gets ticked off.</li>
         </ol>
 
-        <div className="hiw-legend-dock" role="tablist" aria-label="Workflow steps">
+        {/* Integrated Hardware Sequencer Deck */}
+        <div className="hiw-deck" role="tablist" aria-label="Workflow pipeline steps">
           {BEATS.map((b, index) => {
-            const isCurrent = beat === b.id;
+            const isActive = beat === b.id;
+            const isPassed = index < activeIndex;
+
             return (
               <button
                 key={b.id}
                 type="button"
                 role="tab"
                 id={`hiw-beat-${b.id}`}
-                className="hiw-beat"
-                aria-selected={isCurrent}
-                aria-pressed={isCurrent}
+                className="hiw-deck-tab"
+                data-active={isActive ? "true" : undefined}
+                data-passed={isPassed ? "true" : undefined}
+                aria-selected={isActive}
                 onClick={() => jump(b.id)}
               >
-                <span
-                  className="hiw-a hiw-beat-bg"
-                  style={A.activeTab[b.id]}
-                  aria-hidden="true"
-                />
-                <div className="hiw-beat-content">
-                  <div className="hiw-beat-top">
-                    <span className="hiw-beat-num">{`0${index + 1}`}</span>
-                    <span className="hiw-beat-name">{b.label}</span>
-                  </div>
-                  <span className="hiw-beat-hint">{b.hint}</span>
+                {/* Laser Progress Trace Bar */}
+                <div className="hiw-deck-rail">
+                  <div
+                    className="hiw-deck-progress"
+                    style={{
+                      transform: isActive
+                        ? `scaleX(${beatProgress})`
+                        : isPassed
+                          ? "scaleX(1)"
+                          : "scaleX(0)",
+                      opacity: isActive ? 1 : isPassed ? 0.35 : 0,
+                    }}
+                    aria-hidden="true"
+                  />
                 </div>
-                <span
-                  className="hiw-a hiw-prog"
-                  style={A.progress[b.id]}
-                  aria-hidden="true"
-                />
+
+                <div className="hiw-deck-body">
+                  <div className="hiw-deck-top">
+                    <span className="hiw-deck-num">{`0${index + 1}`}</span>
+                    <span className="hiw-deck-name">{b.label}</span>
+                  </div>
+                  <p className="hiw-deck-hint">{b.hint}</p>
+                </div>
               </button>
             );
           })}
