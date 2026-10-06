@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
 import { ScrollLink } from "@/components/ScrollLink";
 
 const LINKS = [
@@ -55,8 +56,9 @@ export function SiteNav() {
       inert={!visible}
     >
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
-        <ScrollLink targetId="top" className="brand-mark shrink-0 text-base sm:text-lg">
-          HelpmeSolder
+        <ScrollLink targetId="top" className="brand-mark inline-flex items-center gap-2.5 shrink-0 text-base sm:text-lg">
+          <BrandLogo size={22} className="shrink-0 rounded-[5px] transition-transform duration-200 hover:scale-105" />
+          <span>HelpmeSolder</span>
         </ScrollLink>
         <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-6">
           {LINKS.map((link) => (

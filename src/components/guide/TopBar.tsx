@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
 import { PrintButton } from "@/app/guides/[id]/PrintButton";
 import type { Guide } from "@/lib/catalog/types";
 import type { CircuitView } from "./view-storage";
@@ -62,9 +63,10 @@ export function TopBar({
     <header className="ga-bar">
       <Link
         href="/"
-        className="ga-brand brand-mark hidden shrink-0 rounded-[10px] px-1 text-sm tracking-tight text-mute hover:text-ink sm:block"
+        className="ga-brand brand-mark hidden shrink-0 items-center gap-2 rounded-[10px] px-1 text-sm tracking-tight text-mute hover:text-ink sm:inline-flex"
       >
-        HelpmeSolder
+        <BrandLogo size={18} className="shrink-0 rounded-[4px]" />
+        <span>HelpmeSolder</span>
       </Link>
       <span aria-hidden className="hidden h-5 w-px shrink-0 bg-line-strong sm:block" />
       <h1 className="brand-mark min-w-0 truncate text-[15px] leading-tight tracking-tight sm:text-base">
