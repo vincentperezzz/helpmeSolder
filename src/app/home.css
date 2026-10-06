@@ -49,7 +49,7 @@
 
 .proof-wire {
   display: grid;
-  padding: 12px;
+  padding: 8px 10px;
   border: 1px solid var(--line-strong);
   border-radius: 10px;
   background: #fff;
@@ -75,7 +75,7 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -111,7 +111,7 @@
   display: grid;
   min-width: 0;
   justify-items: start;
-  gap: 8px;
+  gap: 5px;
 }
 
 .proof-wire__route {
@@ -179,17 +179,16 @@
 @media (min-width: 1024px) {
   .proof-card {
     grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.85fr);
-    align-items: stretch;
+    align-items: start;
   }
 
   .proof-picture {
-    height: 100%;
+    height: 34rem;
     min-height: 34rem;
   }
 
   .proof-picture .diagram-shell {
     min-height: 34rem;
-    height: 100%;
   }
 
   .proof-card__wires {
