@@ -1,5 +1,4 @@
 import { GuidePicture } from "@/components/GuidePicture";
-import { InView } from "@/components/InView";
 
 const BENEFIT_CARDS = [
   {
@@ -39,23 +38,17 @@ export function ExampleGuide() {
 
         <GuidePicture />
 
-        <InView className="trace-scope min-w-0">
-          <ul className="benefit-cards snippet-frame">
-            {BENEFIT_CARDS.map((card, index) => (
-              <li
-                key={card.id}
-                style={{ "--i": index } as React.CSSProperties}
-                className="benefit-card trace-step"
-              >
-                <span className="pad" aria-hidden="true">
-                  {index + 1}
-                </span>
-                <h3 className="font-display text-xl font-bold tracking-tight text-ink">{card.title}</h3>
-                <p className="leading-relaxed text-ink-soft">{card.body}</p>
-              </li>
-            ))}
-          </ul>
-        </InView>
+        <ul className="benefit-cards snippet-frame">
+          {BENEFIT_CARDS.map((card, index) => (
+            <li key={card.id} className="benefit-card">
+              <span className="pad" aria-hidden="true">
+                {index + 1}
+              </span>
+              <h3 className="font-display text-xl font-bold tracking-tight text-ink">{card.title}</h3>
+              <p className="leading-relaxed text-ink-soft">{card.body}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
