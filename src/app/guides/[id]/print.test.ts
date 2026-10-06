@@ -46,13 +46,13 @@ describe("schematic print layout", () => {
     expect(bar).toMatch(/box-sizing:\s*border-box\s*!important/);
 
     expect(css).toMatch(
-      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/s,
+      /\.print-only-diagram,\s*\.print-only-schematic\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/,
     );
     expect(css).toMatch(
-      /\.diagram-shell,\s*\.whiteboard-shell,\s*\.whiteboard-shell\.is-enlarged,\s*\.whiteboard-shell\.is-fullscreen\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/s,
+      /\.diagram-shell,\s*\.whiteboard-shell,\s*\.whiteboard-shell\.is-enlarged,\s*\.whiteboard-shell\.is-fullscreen\s*\{[^}]*border:\s*1px solid #000\s*!important[^}]*box-shadow:\s*inset 0 0 0 1px #000\s*!important/,
     );
     expect(css).toMatch(
-      /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*box-shadow:\s*none\s*!important/s,
+      /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*box-shadow:\s*none\s*!important/,
     );
   });
 });
