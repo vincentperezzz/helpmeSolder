@@ -60,6 +60,13 @@ describe("schematic print layout", () => {
       /\.print-only-schematic \.diagram-shell,\s*\.print-only-schematic \.whiteboard-shell,[\s\S]*?\{[^}]*border:\s*0\s*!important[^}]*outline:\s*none\s*!important/,
     );
     expect(css).toMatch(/\.print-only-schematic \.schematic-canvas\s*\{[^}]*margin-inline:\s*auto\s*!important/);
+    expect(css).toMatch(
+      /\.print-only-schematic \.diagram-world\s*\{[^}]*transform:\s*none\s*!important/,
+    );
+    expect(css).not.toMatch(
+      /\.print-only-diagram \.diagram-world\s*\{[^}]*transform:\s*none\s*!important/,
+    );
+    expect(css).toMatch(/\.diagram-world\s*\{[^}]*transform:\s*scale\(var\(--print-scale/);
   });
 });
 
