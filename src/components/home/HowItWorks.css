@@ -52,6 +52,59 @@
   color: var(--ink-soft);
 }
 
+/* ---- Cinematic Scroll-Reveal Entrance Animation ---- */
+
+.hiw[data-seen="false"] .hiw-head {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.hiw[data-seen="true"] .hiw-head {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hiw[data-seen="false"] .hiw-monolith {
+  opacity: 0;
+  transform: translateY(32px) scale(0.975);
+}
+
+.hiw[data-seen="true"] .hiw-monolith {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms,
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+}
+
+.hiw[data-seen="false"] .hiw-deck-tab {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.hiw[data-seen="true"] .hiw-deck-tab {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 160ms;
+  transition-delay: calc(var(--i, 0) * 70ms + 260ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw .hiw-head,
+  .hiw .hiw-monolith,
+  .hiw .hiw-deck-tab {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* ---- Monolith Precision Console ---- */
 
 .hiw-monolith {

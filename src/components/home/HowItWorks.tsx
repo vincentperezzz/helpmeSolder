@@ -146,6 +146,7 @@ export function HowItWorks() {
     <section
       ref={rootRef}
       className={className}
+      data-seen={seen ? "true" : "false"}
       data-focus={reduced ? beat : undefined}
       aria-labelledby="hiw-title"
     >
@@ -236,6 +237,7 @@ export function HowItWorks() {
                 role="tab"
                 id={`hiw-beat-${b.id}`}
                 className="hiw-deck-tab"
+                style={{ "--i": index } as React.CSSProperties}
                 data-active={isActive ? "true" : undefined}
                 data-passed={isPassed ? "true" : undefined}
                 aria-selected={isActive}
