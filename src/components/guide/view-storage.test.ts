@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  DEFAULT_PRINT_OPTIONS,
+  PRINT_GROUPS,
+  PRINT_SECTIONS,
+  readPrintOptions,
   readPrintSchematic,
   readView,
+  setAllPrintOptions,
+  writePrintOptions,
   writePrintSchematic,
   writeView,
 } from "./view-storage";
@@ -59,6 +65,31 @@ describe("view storage", () => {
     expect(readPrintSchematic("g1")).toBe(false);
   });
 
+  it("stores full print section options", () => {
+    expect(readPrintOptions("g1")).toEqual(DEFAULT_PRINT_OPTIONS);
+    writePrintOptions("g1", { ...DEFAULT_PRINT_OPTIONS, steps: false, schematic: true });
+    expect(readPrintOptions("g1").steps).toBe(false);
+    expect(readPrintOptions("g1").schematic).toBe(true);
+    expect(readPrintOptions("g2").steps).toBe(true);
+  });
+
+  it("migrates the legacy schematic flag into options", () => {
+    storage.setItem("helpmesolder:print-schematic:g1", "on");
+    expect(readPrintOptions("g1").schematic).toBe(true);
+    expect(readPrintOptions("g1").parts).toBe(true);
+  });
+
+  it("lists every print section in exactly one group", () => {
+    const grouped = PRINT_GROUPS.flatMap((group) => group.sections);
+    expect([...grouped].sort()).toEqual([...PRINT_SECTIONS].sort());
+  });
+
+  it("selects or clears every print section", () => {
+    expect(Object.values(setAllPrintOptions(true)).every(Boolean)).toBe(true);
+    expect(Object.values(setAllPrintOptions(false)).some(Boolean)).toBe(false);
+    expect(Object.keys(setAllPrintOptions(false)).sort()).toEqual([...PRINT_SECTIONS].sort());
+  });
+
   it("survives blocked storage", () => {
     vi.stubGlobal("window", {
       get localStorage(): never {
@@ -67,7 +98,9 @@ describe("view storage", () => {
     });
     expect(readView("g1")).toBe("parts");
     expect(readPrintSchematic("g1")).toBe(false);
+    expect(readPrintOptions("g1")).toEqual(DEFAULT_PRINT_OPTIONS);
     expect(() => writeView("g1", "schematic")).not.toThrow();
     expect(() => writePrintSchematic("g1", true)).not.toThrow();
+    expect(() => writePrintOptions("g1", DEFAULT_PRINT_OPTIONS)).not.toThrow();
   });
 });

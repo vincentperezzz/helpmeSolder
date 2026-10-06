@@ -167,9 +167,9 @@
   flex: none;
   flex-wrap: wrap;
   align-items: center;
-  gap: 2px 14px;
-  min-height: 44px;
-  padding: 0 10px;
+  gap: 0 20px;
+  min-height: 50px;
+  padding: 2px 10px;
   border: 1px solid var(--line-strong);
   border-radius: var(--ga-r-sm);
   background: color-mix(in oklab, white 72%, var(--paper));
@@ -399,67 +399,372 @@
 /* ---------- two-option view switch (real parts, schematic) ---------- */
 
 .ga-seg {
-  display: inline-flex;
+  --seg-pad: 3px;
+  --seg-r: var(--ga-r-sm);
+
+  position: relative;
+  display: inline-grid;
   flex: none;
-  padding: 2px;
+  grid-template-columns: repeat(2, 1fr);
+  padding: var(--seg-pad);
   border: 1px solid var(--line-strong);
-  border-radius: var(--ga-r-sm);
-  background: color-mix(in oklab, var(--ink) 6%, white);
+  border-radius: var(--seg-r);
+  background: color-mix(in oklab, var(--ink) 9%, white);
+}
+
+.ga-seg::before {
+  content: "";
+  position: absolute;
+  top: var(--seg-pad);
+  bottom: var(--seg-pad);
+  left: var(--seg-pad);
+  width: calc((100% - 2 * var(--seg-pad)) / 2);
+  border-radius: calc(var(--seg-r) - var(--seg-pad));
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(18 26 32 / 0.2),
+    inset 0 -2px 0 var(--copper);
+}
+
+.ga-seg[data-value="schematic"]::before {
+  transform: translateX(100%);
 }
 
 .ga-seg-btn {
-  min-height: 36px;
-  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+  min-width: 6.25rem;
+  min-height: 32px;
+  padding: 0 14px;
   border: 0;
-  border-radius: calc(var(--ga-r-sm) - 2px);
+  border-radius: calc(var(--seg-r) - var(--seg-pad));
   background: transparent;
   color: var(--ink-soft);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background-color 120ms ease, color 120ms ease;
 }
 
 .ga-seg-btn:hover {
-  color: var(--copper-deep);
+  color: var(--ink);
+}
+
+.ga-seg-btn[aria-checked="false"]:hover {
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
 }
 
 .ga-seg-btn[aria-checked="true"] {
-  background: var(--copper-deep);
-  color: #fff;
+  color: var(--ink);
+  cursor: default;
 }
 
-@media (forced-colors: active) {
-  .ga-seg-btn[aria-checked="true"] {
-    background: Highlight;
-    color: HighlightText;
+.guide-app .ga-seg-btn:focus-visible {
+  outline-offset: 1px;
+}
+
+@media (pointer: coarse) {
+  .ga-seg-btn::after {
+    content: "";
+    position: absolute;
+    inset: -6px 0;
   }
 }
 
-/* ---------- print choice ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .ga-seg::before {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-.ga-print-choice {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
+  .ga-seg-btn {
+    transition: color 140ms ease, background-color 140ms ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .ga-seg::before {
+    background: Highlight;
+    box-shadow: none;
+  }
+
+  .ga-seg-btn[aria-checked="true"] {
+    color: HighlightText;
+  }
+
+  .ga-seg-btn[aria-checked="false"]:hover {
+    background: transparent;
+    text-decoration: underline;
+  }
+}
+
+/* ---------- print menu ---------- */
+
+.ga-print {
+  position: relative;
+  flex: none;
+}
+
+.ga-print-trigger {
   gap: 6px;
+}
+
+.ga-print-caret {
+  font-size: 0.65rem;
+  line-height: 1;
+  color: var(--mute);
+}
+
+.ga-print-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  display: grid;
+  gap: 8px;
+  width: min(18rem, calc(100vw - 24px));
+  padding: 14px 8px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--ga-r);
+  background: color-mix(in oklab, white 94%, var(--paper));
+  box-shadow: 0 14px 36px color-mix(in oklab, var(--ink) 14%, transparent);
+  animation: ga-print-pop 140ms ease-out;
+}
+
+@keyframes ga-print-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ga-print-menu {
+    animation: none;
+  }
+}
+
+.ga-print-menu-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.ga-print-menu-title {
+  margin: 0;
   color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ga-print-menu-actions {
+  display: flex;
+  gap: 2px;
+  margin-right: -6px;
+}
+
+.ga-print-menu-link {
+  min-height: 28px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--copper-deep);
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
 }
 
-.ga-print-choice input {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--copper-deep);
+.ga-print-menu-link:hover {
+  background: color-mix(in oklab, var(--copper) 12%, transparent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-/* The printed schematic waits off screen at page width. print.css shows it. */
+.ga-print-menu-hint {
+  margin: -4px 0 0;
+  padding: 0 8px;
+  color: var(--mute);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.ga-print-menu-group {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.ga-print-menu-legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 2px;
+  padding: 0 8px;
+  color: var(--mute);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ga-print-menu-legend + * {
+  clear: both;
+}
+
+.ga-print-menu-item {
+  position: relative;
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ga-print-menu-item:hover {
+  background: color-mix(in oklab, var(--copper) 9%, transparent);
+}
+
+.ga-check-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  clip: rect(0 0 0 0);
+  pointer-events: none;
+}
+
+.ga-check-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid color-mix(in oklab, var(--ink) 48%, white);
+  border-radius: 5px;
+  background: #fff;
+  color: #fff;
+}
+
+.ga-check-box svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+
+.ga-print-menu-item:hover .ga-check-box {
+  border-color: var(--copper-deep);
+}
+
+.ga-check-input:checked + .ga-check-box {
+  border-color: var(--copper-deep);
+  background: var(--copper-deep);
+}
+
+.ga-check-input:checked + .ga-check-box svg {
+  opacity: 1;
+}
+
+.guide-app .ga-check-input:focus-visible {
+  outline: none;
+}
+
+.ga-check-input:focus-visible + .ga-check-box {
+  outline: 2px solid var(--flux);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ga-check-box {
+    transition: background-color 120ms ease, border-color 120ms ease;
+  }
+
+  .ga-check-box svg {
+    transition: opacity 100ms ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .ga-check-box {
+    border-color: ButtonText;
+    background: Canvas;
+    color: HighlightText;
+  }
+
+  .ga-check-input:checked + .ga-check-box {
+    border-color: Highlight;
+    background: Highlight;
+  }
+}
+
+.ga-print-menu-go {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 16px);
+  margin: 4px 8px 0;
+  border: 1px solid color-mix(in oklab, var(--copper-deep) 55%, var(--ink));
+  border-radius: var(--ga-r-sm);
+  background: var(--copper-deep);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ga-print-menu-go:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.ga-print-menu-go:disabled {
+  border-color: var(--line-strong);
+  background: color-mix(in oklab, var(--ink) 10%, white);
+  color: var(--mute);
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  .ga-print-menu-item {
+    min-height: 44px;
+  }
+
+  .ga-print-menu-link {
+    min-height: 44px;
+  }
+
+  .ga-print-menu-go {
+    min-height: 44px;
+  }
+}
+
 .print-only-schematic {
   position: absolute;
   left: -10000px;
   width: 680px;
+  max-width: 680px;
   visibility: hidden;
   pointer-events: none;
 }

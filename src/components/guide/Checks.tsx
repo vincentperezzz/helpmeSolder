@@ -54,6 +54,7 @@ export function ChecksRegion({ checks, open, onClose, id }: ChecksRegionProps) {
       hidden={!open}
       data-level={checks.level}
       data-print-keep="true"
+      data-print-section="checks"
       aria-label={checks.level === "blocked" ? "Why this guide is blocked" : "Heads up before you build"}
       className="ga-checks"
     >

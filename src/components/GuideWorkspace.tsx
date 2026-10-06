@@ -412,7 +412,7 @@ export function GuideWorkspace({
             view={view}
             onViewChange={chooseView}
           />
-          <div className="ga-canvas-frame">
+          <div className="ga-canvas-frame" data-print-section="diagram">
             <div className="ga-canvas-fill">
               {view === "schematic" ? (
                 <SchematicDiagram
@@ -470,6 +470,7 @@ export function GuideWorkspace({
                 aria-labelledby={tabDomId(uid, id)}
                 hidden={tab !== id}
                 tabIndex={0}
+                data-print-section={id}
                 className="ga-tabpanel"
               >
                 <h2 className="ga-ph">{PANEL_HEADINGS[id]}</h2>
