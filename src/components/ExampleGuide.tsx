@@ -1,24 +1,40 @@
 import { AlertIcon, TipIcon } from "@/components/guide/icons";
-import { noteKind } from "@/components/guide/model";
 import { GuidePicture } from "@/components/GuidePicture";
 import { InView } from "@/components/InView";
-import { getCatalogPart } from "@/lib/catalog";
-import { partCategory, resolvePartPhoto } from "@/lib/catalog/part-media";
-import { EXAMPLE_GUIDE, EXAMPLE_PART_ORDER } from "@/lib/home/example-guide";
 
-const parts = EXAMPLE_PART_ORDER.map((id) => {
-  const part = EXAMPLE_GUIDE.parts.find((entry) => entry.instanceId === id);
-  const catalog = part ? getCatalogPart(part.catalogId) : undefined;
-  return {
-    id,
-    name: part?.label || catalog?.name || id,
-    category: partCategory(catalog),
-    src: resolvePartPhoto(catalog?.photoHint),
-    alt: catalog?.photoCaption || part?.label || catalog?.name || "Part",
-  };
-});
+const BENEFIT_CARDS = [
+  {
+    id: "wires",
+    title: "See what each wire joins",
+    body: "Hover or tap a jumper. It names both ends in words, so you know which pin to solder without reading a schematic.",
+  },
+  {
+    id: "catalog",
+    title: "Parts come from the catalog",
+    body: "The ESP32, buzzer, button and breadboard in this picture are real catalog parts. Pins are never invented.",
+  },
+  {
+    id: "order",
+    title: "Build in a fixed order",
+    body: "The page tells you what to do next: place, power, then signals. You follow the list at the bench.",
+  },
+  {
+    id: "link",
+    title: "Keep one secret link",
+    body: "Your assistant replies with a URL. Anyone with it sees the same picture. It updates when the plan changes.",
+  },
+] as const;
 
-const steps = [...EXAMPLE_GUIDE.steps].sort((a, b) => a.order - b.order);
+const BENEFIT_NOTES = [
+  {
+    warn: true,
+    text: "Chat sketches invent pins. This page only draws pins that exist on the part, so a 3×AA pack goes to VIN and never into the 3V3 pin.",
+  },
+  {
+    warn: false,
+    text: "Software notes travel with the wiring. INPUT_PULLUP on the button pin is written here so you do not add a resistor the chip already has.",
+  },
+] as const;
 
 export function ExampleGuide() {
   return (
@@ -29,73 +45,46 @@ export function ExampleGuide() {
             Your finished guide
           </h2>
           <p className="text-lg leading-relaxed text-ink-soft">
-            Parts to gather, the order to build them, and the warnings that keep the board safe.
+            A wiring picture you can interrogate, and a page that stays with you at the bench.
           </p>
         </div>
 
         <GuidePicture />
 
-        <ul className="snippet-frame grid grid-cols-2 gap-px bg-line-strong md:grid-cols-4">
-          {parts.map((part) => (
-            <li key={part.id} className="flex flex-col gap-3 bg-paper p-4">
-              {part.src ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={part.src}
-                  alt={part.alt}
-                  className="aspect-[4/3] w-full border border-line bg-paper-deep object-contain p-3 mix-blend-multiply"
-                />
-              ) : (
-                <span className="aspect-[4/3] w-full border border-line bg-paper-deep" />
-              )}
-              <span className="text-sm font-semibold leading-snug tracking-tight text-ink">
-                {part.name}
-              </span>
-              <span className="text-sm text-ink-soft">{part.category}</span>
-            </li>
-          ))}
-        </ul>
-
         <InView className="trace-scope min-w-0">
-          <ol className="relative flex flex-col gap-10">
-            <span aria-hidden="true" className="trace-rail" />
-            {steps.map((step, index) => (
+          <ul className="benefit-cards">
+            {BENEFIT_CARDS.map((card, index) => (
               <li
-                key={step.id}
+                key={card.id}
                 style={{ "--i": index } as React.CSSProperties}
-                className="trace-step relative flex flex-col gap-3 pl-14"
+                className="benefit-card trace-step"
               >
-                <span className="pad absolute left-0 top-0" aria-hidden="true">
+                <span className="pad" aria-hidden="true">
                   {index + 1}
                 </span>
-                <h3 className="font-display text-xl font-bold tracking-tight text-ink">
-                  {step.title}
-                </h3>
-                <p className="max-w-[65ch] leading-relaxed text-ink-soft">{step.body}</p>
+                <h3 className="font-display text-xl font-bold tracking-tight text-ink">{card.title}</h3>
+                <p className="leading-relaxed text-ink-soft">{card.body}</p>
               </li>
             ))}
-          </ol>
+          </ul>
         </InView>
 
         <ul className="flex max-w-[65ch] flex-col gap-3">
-          {EXAMPLE_GUIDE.notes.map((note) => {
-            const warn = noteKind(note) === "heads-up";
-            return (
-              <li
-                key={note}
-                className={`flex gap-3 rounded-[14px] border p-4 ${
-                  warn
-                    ? "border-warn-line bg-warn-bg text-warn-ink"
-                    : "border-flux/25 bg-flux/[0.07] text-ink"
-                }`}
-              >
-                <span className={`mt-0.5 shrink-0 ${warn ? "text-warn-ink" : "text-flux"}`}>
-                  {warn ? <AlertIcon size={20} /> : <TipIcon size={20} />}
-                </span>
-                <p className="text-sm leading-relaxed">{note}</p>
-              </li>
-            );
-          })}
+          {BENEFIT_NOTES.map((note) => (
+            <li
+              key={note.text}
+              className={`flex gap-3 rounded-[14px] border p-4 ${
+                note.warn
+                  ? "border-warn-line bg-warn-bg text-warn-ink"
+                  : "border-flux/25 bg-flux/[0.07] text-ink"
+              }`}
+            >
+              <span className={`mt-0.5 shrink-0 ${note.warn ? "text-warn-ink" : "text-flux"}`}>
+                {note.warn ? <AlertIcon size={20} /> : <TipIcon size={20} />}
+              </span>
+              <p className="text-sm leading-relaxed">{note.text}</p>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
