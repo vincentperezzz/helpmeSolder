@@ -1,0 +1,486 @@
+/* How it works: animated storyboard. Tokens come from globals.css. */
+
+.hiw {
+  --hiw-bad: #b3261e;
+  --hiw-bad-ink: #8c1d18;
+  display: grid;
+  gap: 20px;
+  width: 100%;
+}
+
+.hiw-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.hiw-title {
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hiw-lede {
+  margin: 10px 0 0;
+  max-width: 46ch;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.hiw-toggle {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font: 600 0.9rem var(--font-body), ui-sans-serif, sans-serif;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.hiw-toggle:hover {
+  border-color: var(--copper);
+  color: var(--ink);
+}
+
+.hiw-toggle:focus-visible,
+.hiw-beat:focus-visible {
+  outline: 2px solid var(--copper-deep);
+  outline-offset: 3px;
+}
+
+/* The storyboard is already a complete picture without motion. */
+@media (prefers-reduced-motion: reduce) {
+  .hiw-toggle {
+    display: none;
+  }
+}
+
+.hiw-stage {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--mat) 55%, white), color-mix(in oklab, var(--paper-deep) 70%, white));
+  box-shadow: 0 16px 36px -24px rgb(18 26 32 / 0.45);
+}
+
+.hiw-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 26rem;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.hiw-svg--wide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hiw-stage {
+    padding: 28px 24px;
+  }
+
+  .hiw-svg {
+    max-width: none;
+  }
+
+  .hiw-svg--wide {
+    display: block;
+  }
+
+  .hiw-svg--tall {
+    display: none;
+  }
+}
+
+/* ---- Legend: the four beats are also the controls ---- */
+
+.hiw-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .hiw-legend {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.hiw-beat {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 14px 14px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: transparent;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.hiw-beat:hover {
+  border-color: color-mix(in oklab, var(--copper) 55%, var(--line-strong));
+}
+
+.hiw-beat[aria-pressed="true"] {
+  border-color: var(--copper);
+  background: #fff;
+}
+
+.hiw-beat-name {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hiw-beat-hint {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--mute);
+}
+
+.hiw-prog.hiw-a {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: var(--copper);
+  transform-origin: 0 50%;
+  display: none;
+}
+
+/* ---- Art ---- */
+
+.hiw text {
+  font-family: var(--font-body), ui-sans-serif, sans-serif;
+}
+
+.hiw-bubble {
+  fill: #fff;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-prompt {
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.hiw-cover {
+  fill: #fff;
+  transform: translateX(220px);
+}
+
+.hiw-caret {
+  fill: var(--copper);
+  opacity: 0;
+}
+
+.hiw-reply {
+  fill: var(--ink);
+}
+
+.hiw-reply-text {
+  font-size: 14px;
+  font-weight: 500;
+  fill: var(--paper);
+}
+
+.hiw-trace {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-chip-box {
+  fill: #fff;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-chip-text {
+  font: 500 13px var(--font-mono), ui-monospace, monospace;
+  fill: var(--ink);
+}
+
+.hiw-chip-bad {
+  fill: color-mix(in oklab, var(--hiw-bad) 12%, transparent);
+  stroke: var(--hiw-bad);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.hiw-chip--1 {
+  transform: translate(0, -84px);
+}
+
+.hiw-chip--2 {
+  transform: translate(0, -56px);
+}
+
+.hiw-chip--3 {
+  transform: translate(0, -28px);
+}
+
+.hiw-node-box {
+  fill: var(--ink);
+}
+
+.hiw-node-text {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-anchor: middle;
+  fill: var(--paper);
+}
+
+.hiw-ring {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.hiw-ring--bad {
+  stroke: var(--hiw-bad);
+  opacity: 0;
+}
+
+.hiw-ring--ok {
+  stroke: var(--flux);
+}
+
+.hiw-pill--bad {
+  fill: #fdecea;
+  stroke: var(--hiw-bad);
+  stroke-width: 1.5;
+}
+
+.hiw-pill--ok {
+  fill: #e6f1ee;
+  stroke: var(--flux);
+  stroke-width: 1.5;
+}
+
+.hiw-pill-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hiw-pill-text--bad {
+  fill: var(--hiw-bad-ink);
+}
+
+.hiw-pill-text--ok {
+  fill: var(--flux);
+}
+
+.hiw-bed {
+  fill: color-mix(in oklab, var(--mat) 45%, white);
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-grid {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.hiw-board {
+  fill: var(--ink);
+}
+
+.hiw-usb {
+  fill: var(--ink-soft);
+  stroke: var(--paper);
+  stroke-width: 1;
+}
+
+.hiw-board-name {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--paper);
+}
+
+.hiw-pin {
+  fill: var(--copper);
+  stroke: var(--paper);
+  stroke-width: 1;
+}
+
+.hiw-pin-text {
+  font: 500 12px var(--font-mono), ui-monospace, monospace;
+  fill: var(--paper);
+}
+
+.hiw-part {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.hiw-part-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.hiw-buzzer {
+  fill: var(--ink-soft);
+}
+
+.hiw-buzzer-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--paper);
+}
+
+.hiw-wire {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-badge {
+  fill: var(--copper-deep);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.hiw-badge-text {
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #fff;
+}
+
+.hiw-phone {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+.hiw-phone-speaker {
+  fill: var(--ink);
+}
+
+.hiw-screen-title {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  fill: var(--ink);
+}
+
+.hiw-row-text {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.hiw-box {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-box-fill {
+  fill: color-mix(in oklab, var(--flux) 16%, white);
+  stroke: var(--flux);
+  stroke-width: 1.5;
+}
+
+.hiw-tick {
+  fill: none;
+  stroke: var(--flux);
+  stroke-width: 2.5;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-secret {
+  opacity: 0;
+}
+
+.hiw-secret-box {
+  fill: var(--copper-deep);
+}
+
+.hiw-secret-text {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #fff;
+}
+
+/* ---- Motion: only when JS has seen the section and motion is welcome ---- */
+
+.hiw-a {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hiw.is-live .hiw-a {
+    animation-duration: 14s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+  }
+
+  .hiw.is-live.is-paused .hiw-a {
+    animation-play-state: paused;
+  }
+
+  .hiw.is-live .hiw-prog {
+    display: block;
+  }
+
+  .hiw.is-live .hiw-trace,
+  .hiw.is-live .hiw-wire,
+  .hiw.is-live .hiw-tick {
+    stroke-linecap: butt;
+  }
+}
+
+/* ---- Storyboard stills: a beat button spotlights its panel ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw[data-focus="ask"] .hiw-zone:not(.hiw-zone--ask),
+  .hiw[data-focus="plan"] .hiw-zone:not(.hiw-zone--plan),
+  .hiw[data-focus="wire"] .hiw-zone:not(.hiw-zone--wire),
+  .hiw[data-focus="open"] .hiw-zone:not(.hiw-zone--open) {
+    opacity: 0.4;
+  }
+}
