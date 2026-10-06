@@ -321,13 +321,16 @@
     page-break-inside: avoid;
   }
 
-  .print-only-schematic .diagram-world,
-  .print-only-diagram .diagram-world {
+  .print-only-schematic .diagram-world {
     transform: none !important;
     width: auto !important;
     max-width: 100% !important;
     height: auto !important;
     margin-inline: auto !important;
+  }
+
+  .print-only-diagram .diagram-viewport {
+    overflow: hidden !important;
   }
 
   .print-only-schematic .schematic-canvas {
@@ -339,8 +342,7 @@
     margin-inline: auto !important;
   }
 
-  .print-only-schematic .diagram-viewport,
-  .print-only-diagram .diagram-viewport {
+  .print-only-schematic .diagram-viewport {
     display: flex !important;
     justify-content: center !important;
   }
