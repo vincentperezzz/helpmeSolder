@@ -239,39 +239,201 @@
     overflow: visible !important;
   }
 
-  .ga-step.is-folded {
-    padding-block: 14pt !important;
+  /*
+   * Solder joints and Build steps are the paper checklist: one row per joint
+   * or step, an empty tick box to fill in by hand, a check when already done.
+   * Wire colour is carried by the printed number ring and the "red wire" text,
+   * so the page still reads with background colours off or in greyscale.
+   */
+  .ga-power-note {
+    margin: 0 0 8pt !important;
+    padding: 5pt 8pt !important;
+    border: 0.75pt solid #000 !important;
+    border-radius: 4pt !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+    break-inside: avoid;
+    break-after: avoid;
+    page-break-after: avoid;
   }
 
-  /* Done buttons become a tick box; the wire number prints as an outlined ring. */
+  .ga-joint-group + .ga-joint-group {
+    margin-top: 10pt;
+  }
+
+  .ga-group-title {
+    margin: 0 0 5pt !important;
+    font-size: 10.5pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .ga-solder-list {
+    gap: 6pt !important;
+  }
+
+  .guide-app .ga-solder-row,
+  .guide-app .ga-solder-row.is-done,
+  .guide-app .ga-solder-row.is-hot,
+  .guide-app .ga-solder-row.is-selected {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10pt;
+    padding: 7pt 9pt !important;
+    border: 0.75pt solid #000 !important;
+    border-radius: 4pt !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .ga-solder-body {
+    gap: 9pt !important;
+    cursor: default !important;
+  }
+
+  .guide-app .ga-solder-badge[style] {
+    width: 20pt;
+    height: 20pt;
+    background: transparent !important;
+    border: 1.2pt solid #000;
+    box-shadow: none;
+    font-size: 10pt;
+  }
+
+  .ga-solder-text {
+    gap: 4pt !important;
+  }
+
+  .ga-solder-route {
+    gap: 6pt !important;
+  }
+
+  .ga-solder-part,
+  .ga-solder-note {
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .ga-solder-end strong {
+    font-size: 11pt !important;
+  }
+
+  .ga-solder-arrow svg {
+    width: 12pt;
+    height: 12pt;
+  }
+
+  .ga-solder-chip {
+    padding: 1pt 7pt 1pt 3pt !important;
+    border: 0.5pt solid #000 !important;
+    font-size: 9pt !important;
+  }
+
+  .ga-solder-swatch {
+    width: 9pt !important;
+    height: 9pt !important;
+    border: 0.5pt solid #000 !important;
+  }
+
+  /* Done toggle: a tick box with its label beside it, for joints and steps. */
   .ga-done-btn {
     min-height: 0 !important;
     width: auto !important;
     min-width: 0 !important;
     padding: 0 !important;
+    gap: 5pt !important;
     border: 0 !important;
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+    white-space: nowrap;
+    cursor: default !important;
   }
 
-  .ga-done-btn > span:not(.ga-done-check) {
-    display: none !important;
+  /* Same width for "Mark soldered" and "Soldered" so every route lines up. */
+  .ga-solder-row .ga-done-btn {
+    min-width: 86pt !important;
+    justify-content: flex-start !important;
   }
 
   .ga-done-check {
-    width: 11pt !important;
-    height: 11pt !important;
+    width: 13pt !important;
+    height: 13pt !important;
     border: 1.2pt solid #000 !important;
     border-radius: 2pt !important;
   }
 
   .ga-done-check svg {
-    width: 9pt;
-    height: 9pt;
+    width: 10pt;
+    height: 10pt;
   }
 
-  .guide-app .ga-solder-badge[style] {
-    background: transparent !important;
-    border: 1.2pt solid #000;
-    box-shadow: none;
+  /* Steps: a plain numbered list. No timeline rail, no folded rows. */
+  .ga-step,
+  .ga-step.is-done,
+  .ga-step.is-folded {
+    padding: 8pt 0 8pt !important;
+    border-left: 0 !important;
+  }
+
+  .ga-step + .ga-step {
+    border-top: 0.5pt solid #000 !important;
+  }
+
+  .ga-step-head,
+  .ga-step-head.is-button {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: baseline !important;
+    gap: 1pt 8pt !important;
+    min-height: 0 !important;
+    width: 100%;
+    padding: 0 !important;
+    cursor: default !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .ga-step-check {
+    display: none !important;
+  }
+
+  .ga-step .ga-step-label,
+  .ga-step.is-done .ga-step-label {
+    font-size: 12pt !important;
+    font-weight: 800 !important;
+  }
+
+  .ga-step .ga-step-title,
+  .ga-step.is-done .ga-step-title {
+    flex: 1 1 100% !important;
+    overflow: visible !important;
+    font-size: 11.5pt !important;
+    font-weight: 700 !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+
+  .ga-step-body {
+    max-width: none !important;
+    margin-top: 3pt !important;
+    font-size: 10.5pt !important;
+    line-height: 1.5 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .ga-step.is-done:not(.is-folded) .ga-step-fold-inner {
+    padding-top: 0 !important;
+  }
+
+  .ga-step-actions {
+    margin-top: 6pt !important;
+    gap: 0 !important;
+  }
+
+  .ga-step-actions .ga-done-btn {
+    min-width: 0 !important;
   }
 
   /* Hide controls that do nothing on paper. */
