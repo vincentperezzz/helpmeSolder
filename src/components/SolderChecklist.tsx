@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Switch } from "@/components/guide/Switch";
 import { scrollRowIntoPanel } from "@/components/guide/scroll";
 import type { Guide } from "@/lib/catalog/types";
+import { readSolderTicks, writeSolderTicks } from "@/components/guide/model";
 import { buildSolderPlan } from "@/lib/guides/solder-plan";
 
 type SolderChecklistProps = {
@@ -37,28 +38,6 @@ function PowerNote({ text }: { text: string }) {
   );
 }
 
-const storageKey = (guideId: string) => `helpmesolder:solder-ticks:${guideId}`;
-
-function readTicks(guideId: string): string[] {
-  try {
-    const raw = window.localStorage.getItem(storageKey(guideId));
-    const parsed: unknown = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed)
-      ? parsed.filter((v): v is string => typeof v === "string")
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeTicks(guideId: string, ids: string[]) {
-  try {
-    window.localStorage.setItem(storageKey(guideId), JSON.stringify(ids));
-  } catch {
-    // Storage blocked: ticks still work for this visit.
-  }
-}
-
 export function SolderChecklist({
   guide,
   followMode,
@@ -78,7 +57,7 @@ export function SolderChecklist({
   useEffect(() => {
     // Read after mount so server and first client render match.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTicked(readTicks(guide.id));
+    setTicked(readSolderTicks(guide.id));
     setLoaded(true);
   }, [guide.id]);
 
@@ -106,7 +85,7 @@ export function SolderChecklist({
     const adding = !ticked.includes(id);
     const next = adding ? [...ticked, id] : ticked.filter((entry) => entry !== id);
     setTicked(next);
-    writeTicks(guide.id, next);
+    writeSolderTicks(guide.id, next);
     if (adding && followMode && (focusId === null || focusId === id)) {
       const start = ids.indexOf(id);
       const after = [...ids.slice(start + 1), ...ids.slice(0, start)];

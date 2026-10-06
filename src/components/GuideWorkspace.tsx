@@ -489,7 +489,9 @@ export function GuideWorkspace({
                     onHoverChange={setHoverId}
                   />
                 ) : null}
-                {id === "steps" ? <StepsPanel guideId={guide.id} steps={orderedSteps} /> : null}
+                {id === "steps" ? (
+                  <StepsPanel guideId={guide.id} guide={layoutGuide} steps={orderedSteps} />
+                ) : null}
                 {id === "notes" ? (
                   <NotesPanel
                     notes={guide.notes}
