@@ -50,12 +50,12 @@ export function SiteNav() {
 
   return (
     <header
-      className="site-nav"
+      className="site-nav px-6 sm:px-10 lg:px-16"
       data-visible={visible}
       aria-hidden={!visible}
       inert={!visible}
     >
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
+      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4">
         <ScrollLink targetId="top" className="brand-mark inline-flex items-center gap-2.5 shrink-0 text-base sm:text-lg">
           <BrandLogo size={22} className="shrink-0 rounded-[5px] transition-transform duration-200 hover:scale-105" />
           <span>HelpmeSolder</span>
