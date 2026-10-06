@@ -198,7 +198,9 @@
   .diagram-zoom-btn,
   .guide-app button[aria-label*=" details for "],
   .guide-app nav,
-  .guide-app .whiteboard-shell p.truncate + p {
+  .guide-app .whiteboard-shell p.truncate + p,
+  .diagram-toolbar,
+  .schematic-caption {
     display: none !important;
   }
 
@@ -219,16 +221,19 @@
     width: 100% !important;
     max-width: 100% !important;
     margin-top: 14pt;
-    overflow: hidden;
-    break-inside: avoid;
-    page-break-inside: avoid;
+    overflow: visible;
+    break-inside: auto;
+    page-break-inside: auto;
   }
 
   .print-only-schematic .diagram-shell {
     width: 100% !important;
     max-width: 100% !important;
     min-height: 0 !important;
-    overflow: hidden !important;
+    height: auto !important;
+    overflow: visible !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
   .print-only-schematic .overflow-x-auto {
@@ -238,7 +243,22 @@
     padding-right: 0 !important;
   }
 
-  .print-only-schematic svg {
+  .print-only-schematic .diagram-viewport {
+    aspect-ratio: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    container-type: normal;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-only-schematic .diagram-world {
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .print-only-schematic .schematic-canvas {
     display: block;
     width: 100% !important;
     max-width: 100% !important;
@@ -382,5 +402,48 @@
     .diagram-world {
       transform: scale(calc(100cqw / (var(--print-world-w, 1400) * 1px))) !important;
     }
+  }
+
+  .schematic-shell {
+    overflow: visible !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  .schematic-legend {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    font-size: 10pt;
+    line-height: 1.35;
+  }
+
+  .schematic-legend ul {
+    display: block !important;
+  }
+
+  .schematic-legend li {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8pt !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 4pt !important;
+    white-space: normal !important;
+  }
+
+  .schematic-legend li > span {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  .schematic-legend .symbol-preview {
+    display: block !important;
+    width: 56px !important;
+    height: 32px !important;
+    max-width: 56px !important;
+    min-width: 56px !important;
+    flex: 0 0 56px !important;
   }
 }

@@ -92,6 +92,8 @@ describe("SchematicDiagram", () => {
       const html = render(g);
       expect(html).toContain("<svg");
       expect(html).toContain("aria-label=\"Circuit schematic\"");
+      expect(html).toContain("Fit the whole picture on screen");
+      expect(html).toContain("diagram-viewport");
     }
   });
 
@@ -158,6 +160,37 @@ describe("SchematicDiagram", () => {
     expect(html).toContain("LED.");
     expect(html).toContain("Boxes with pin names are boards and modules.");
     expect(html).not.toContain("Battery.");
+  });
+
+  it("keeps legend glyphs separate from the circuit drawing", () => {
+    const html = render(
+      guide(
+        [
+          ["mcu", ESP],
+          ["sw", "passive.pushbutton"],
+        ],
+        [
+          ["mcu", "D4", "sw", "1.l"],
+          ["sw", "2.l", "mcu", "GND.1"],
+        ],
+      ),
+    );
+    const legendAt = html.indexOf("schematic-legend");
+    expect(legendAt).toBeGreaterThan(0);
+    const drawing = html.slice(0, legendAt);
+    const legend = html.slice(legendAt);
+    expect(drawing).toContain("schematic-canvas");
+    expect(drawing).not.toContain("symbol-preview");
+    expect(legend).toContain("symbol-preview");
+    expect(legend).toContain("w-14");
+    expect(legend).not.toContain("schematic-canvas");
+    expect(legend).toContain("Push button.");
+    expect(legend).toContain("Joins two sides of the circuit while you press it and lets go when you release.");
+    expect(legend).toContain("Boxes with pin names are boards and modules.");
+    expect(html).toContain("schematic-caption");
+    expect(html).toContain("Hover, tap or tab to a part or wire to see what it does.");
+    expect(html).toContain("diagram-toolbar");
+    expect(html).toContain("Fit the whole picture on screen");
   });
 
   it("explains the hovered wire in the caption", () => {

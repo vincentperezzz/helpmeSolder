@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useId, useMemo, useState, type KeyboardEvent } from "react";
 import { getCatalogPart } from "@/lib/catalog";
 import type { Guide } from "@/lib/catalog/types";
 import { explainNet, explainSymbol, symbolMeaning, symbolName } from "@/lib/schematic/explain";
@@ -8,7 +8,27 @@ import { layoutSchematic } from "@/lib/schematic/layout";
 import { isBreadboardCatalogId } from "@/lib/schematic/nets";
 import type { SchematicLayout, SchematicNet, SchematicPart, SymbolKind } from "@/lib/schematic/types";
 import { partOpacity, wireVisual } from "@/components/wokwi/focus";
+import { useDiagramViewport } from "@/components/wokwi/useDiagramViewport";
 import { GroundFlag, PowerFlag, SchematicSymbol, getSymbolSpec } from "./symbols";
+
+const LABEL_PAD = 96;
+
+const TOOLBAR_ICONS = {
+  fit: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5M9 9h6v6H9z",
+  reset: "M4 12a8 8 0 1 0 3-6.2M4 4v4h4",
+  "panel-hide": "M4 5h16v14H4zM14 5v14M17 10l-2 2 2 2",
+  "panel-show": "M4 5h16v14H4zM14 5v14M16 10l2 2-2 2",
+  expand: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5",
+  close: "M6 6l12 12M18 6L6 18",
+} as const;
+
+function ToolbarIcon({ name }: { name: keyof typeof TOOLBAR_ICONS }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="block">
+      <path d={TOOLBAR_ICONS[name]} />
+    </svg>
+  );
+}
 
 export type SchematicDiagramProps = {
   guide: Guide;
@@ -81,7 +101,7 @@ function SymbolPreview({ kind }: { kind: SymbolKind }) {
   return (
     <svg
       viewBox={`-3 -3 ${spec.width + 6} ${spec.height + 6}`}
-      className="h-8 w-14 shrink-0 text-ink"
+      className="symbol-preview h-8 w-14 shrink-0 text-ink"
       aria-hidden="true"
       focusable="false"
     >
@@ -98,14 +118,43 @@ export function SchematicDiagram({
   onHoverWire,
   onSelectWire,
   enlarged = false,
+  onEnlargedChange,
   className,
   hoveredPartId,
   onHoverPart,
   focusedPartIds = null,
 }: SchematicDiagramProps) {
+  const helpId = useId();
   const [localPart, setLocalPart] = useState<string | null>(null);
   const layout = useMemo(() => layoutSchematic(guide), [guide]);
-  const shellClass = `diagram-shell${className ? ` ${className}` : ""}`;
+  const canvas = useMemo(() => {
+    const width = Math.max(layout.width, 1) + LABEL_PAD * 2;
+    const height = Math.max(layout.height, 1) + LABEL_PAD * 2;
+    return { width, height, fitLeft: 0, fitTop: 0, fitWidth: width, fitHeight: height };
+  }, [layout.width, layout.height]);
+  const refitKey = `${guide.parts.length}:${guide.connections.length}:${layout.width}x${layout.height}`;
+  const {
+    shellRef,
+    viewportRef,
+    zoom,
+    pan,
+    fullscreen,
+    zoomBy,
+    resetView,
+    fitToViewport,
+    toggleFullscreen,
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    onKeyDown,
+  } = useDiagramViewport({
+    guideId: guide.id,
+    refitKey,
+    canvas,
+    ready: layout.parts.length > 0,
+    enlarged,
+  });
+  const shellClass = `diagram-shell whiteboard-shell schematic-shell flex h-full min-h-0 w-full min-w-0 flex-col${fullscreen ? " is-fullscreen" : ""}${enlarged ? " is-enlarged" : ""}${className ? ` ${className}` : ""}`;
 
   const model = useMemo(() => {
     const netById = new Map(layout.nets.map((net) => [net.id, net]));
@@ -201,7 +250,7 @@ export function SchematicDiagram({
   const hasBreadboard = guide.parts.some((entry) => isBreadboardCatalogId(entry.catalogId));
 
   return (
-    <div className={shellClass}>
+    <div ref={shellRef} className={shellClass}>
       {layout.tooComplex ? (
         <p
           role="note"
@@ -210,12 +259,84 @@ export function SchematicDiagram({
           This circuit is big, so the schematic may look crowded. The real-parts picture is easier to follow.
         </p>
       ) : null}
-      <div className="overflow-x-auto px-3 py-4 sm:px-5 sm:py-6">
+      <div className="diagram-toolbar flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-paper/90 px-3 py-1.5">
+        <p className="diagram-cue min-w-0 flex-1 basis-40 truncate text-xs font-semibold tracking-tight text-ink">
+          Drag to move. Ctrl or Cmd and scroll to zoom.
+        </p>
+        <p id={helpId} className="sr-only">
+          Drag to move the schematic. Hold Ctrl or Cmd and scroll, or use the zoom buttons, to zoom. Fit all shows the whole circuit.
+        </p>
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="min-w-10 px-1 text-center text-[11px] text-mute tabular-nums" title="Zoom level">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button type="button" className="diagram-zoom-btn" onClick={() => zoomBy(-0.15)} aria-label="Zoom out" title="Zoom out">
+            <span aria-hidden="true">−</span>
+          </button>
+          <button type="button" className="diagram-zoom-btn" onClick={() => zoomBy(0.15)} aria-label="Zoom in" title="Zoom in">
+            <span aria-hidden="true">+</span>
+          </button>
+          <button type="button" className="diagram-zoom-btn" onClick={fitToViewport} aria-label="Fit the whole picture on screen" title="Fit the whole picture on screen">
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="fit" /></span>
+            <span className="diagram-btn-label">Fit all</span>
+          </button>
+          <button type="button" className="diagram-zoom-btn" onClick={resetView} aria-label="Reset view to actual size" title="Reset view to actual size">
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="reset" /></span>
+            <span className="diagram-btn-label">Reset view</span>
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn diagram-panel-btn"
+            onClick={() => onEnlargedChange?.(!enlarged)}
+            aria-pressed={enlarged}
+            aria-label={enlarged ? "Show panel" : "Hide panel"}
+            title={enlarged ? "Show the parts list and steps panel again" : "Hide the parts list and steps panel"}
+          >
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
+            <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
+          </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={() => void toggleFullscreen()}
+            aria-label={fullscreen ? "Exit full screen" : "Show the picture full screen"}
+            title={fullscreen ? "Exit full screen" : "Show the picture full screen"}
+          >
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={fullscreen ? "close" : "expand"} /></span>
+            <span className="diagram-btn-label">{fullscreen ? "Exit full screen" : "Full screen"}</span>
+          </button>
+        </div>
+      </div>
+      <div
+        ref={viewportRef}
+        className="diagram-viewport min-h-0 flex-1 cursor-grab select-none active:cursor-grabbing [&_*]:select-none [&_*]:[-webkit-user-drag:none] [&_*]:[-webkit-touch-callout:none]"
+        onDragStart={(event) => event.preventDefault()}
+        tabIndex={0}
+        role="group"
+        aria-label="Schematic viewer. Arrow keys move the picture, plus and minus zoom."
+        aria-describedby={helpId}
+        onKeyDown={onKeyDown}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <div
+          className="diagram-world relative origin-top-left"
+          style={{
+            width: canvas.width,
+            height: canvas.height,
+            flex: "none",
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+          }}
+        >
         <svg
-          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          className="schematic-canvas"
+          viewBox={`${-LABEL_PAD} ${-LABEL_PAD} ${canvas.width} ${canvas.height}`}
+          width={canvas.width}
+          height={canvas.height}
           role="img"
           aria-label="Circuit schematic"
-          className={`h-auto w-full ${enlarged ? "min-w-[720px]" : "min-w-[320px]"}`}
           fontFamily={FONT}
         >
           <rect
@@ -363,9 +484,10 @@ export function SchematicDiagram({
             );
           })}
         </svg>
+        </div>
       </div>
 
-      <p aria-live="polite" className="min-h-[3.25rem] border-t border-line px-4 py-2 text-xs text-ink-soft sm:px-5">
+      <p aria-live="polite" className="schematic-caption min-h-[3.25rem] border-t border-line px-4 py-2 text-xs text-ink-soft sm:px-5">
         {caption ? (
           <>
             <strong className="font-semibold text-ink">{caption.title}.</strong> {caption.body}
@@ -375,13 +497,13 @@ export function SchematicDiagram({
         )}
       </p>
 
-      <div className="border-t border-line px-4 py-3 sm:px-5">
+      <div className="schematic-legend border-t border-line px-4 py-3 sm:px-5">
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-mute">Symbols in this guide</h3>
         <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
           {kinds.map((kind) => (
-            <li key={kind} className="flex items-center gap-3 text-xs text-ink-soft">
+            <li key={kind} className="flex min-w-0 items-center gap-3 text-xs text-ink-soft">
               <SymbolPreview kind={kind} />
-              <span>
+              <span className="min-w-0 flex-1">
                 <strong className="font-semibold text-ink">{symbolName(kind)}.</strong> {symbolMeaning(kind)}
               </span>
             </li>
