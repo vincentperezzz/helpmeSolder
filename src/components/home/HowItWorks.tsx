@@ -209,11 +209,18 @@ export function HowItWorks() {
                 aria-pressed={isCurrent}
                 onClick={() => jump(b.id)}
               >
-                <div className="hiw-beat-top">
-                  <span className="hiw-beat-num">{`0${index + 1}`}</span>
-                  <span className="hiw-beat-name">{b.label}</span>
+                <span
+                  className="hiw-a hiw-beat-bg"
+                  style={A.activeTab[b.id]}
+                  aria-hidden="true"
+                />
+                <div className="hiw-beat-content">
+                  <div className="hiw-beat-top">
+                    <span className="hiw-beat-num">{`0${index + 1}`}</span>
+                    <span className="hiw-beat-name">{b.label}</span>
+                  </div>
+                  <span className="hiw-beat-hint">{b.hint}</span>
                 </div>
-                <span className="hiw-beat-hint">{b.hint}</span>
                 <span
                   className="hiw-a hiw-prog"
                   style={A.progress[b.id]}

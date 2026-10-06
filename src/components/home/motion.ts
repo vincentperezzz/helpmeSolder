@@ -77,10 +77,33 @@ function ring(name: string, on: number, off?: number): CSSProperties {
 }
 
 function progress(name: string, from: number, to: number): CSSProperties {
-  return def(name, [
-    [from, "transform:scaleX(0)", "linear"],
-    [to, "transform:scaleX(1)"],
-  ]);
+  const steps: Step[] = [];
+  if (from > 0) {
+    steps.push([0, "transform:scaleX(0);opacity:0"]);
+    steps.push([from - 1, "transform:scaleX(0);opacity:0"]);
+  }
+  steps.push([from, "transform:scaleX(0);opacity:1", "linear"]);
+  steps.push([to, "transform:scaleX(1);opacity:1"]);
+  if (to < 14000) {
+    steps.push([to + 1, "transform:scaleX(1);opacity:0"]);
+    steps.push([14000, "transform:scaleX(0);opacity:0"]);
+  }
+  return def(name, steps);
+}
+
+function activeTab(name: string, from: number, to: number): CSSProperties {
+  const steps: Step[] = [];
+  if (from > 0) {
+    steps.push([0, "opacity:0"]);
+    steps.push([from - 1, "opacity:0"]);
+  }
+  steps.push([from, "opacity:1"]);
+  steps.push([to - 30, "opacity:1"]);
+  if (to < 14000) {
+    steps.push([to, "opacity:0"]);
+    steps.push([14000, "opacity:0"]);
+  }
+  return def(name, steps);
 }
 
 const WIRE_AT = [8400, 8900, 9400, 9900];
@@ -166,8 +189,14 @@ export const A = {
   box3: ring("box-3", TICK_AT[2]),
   box4: ring("box-4", TICK_AT[3]),
 
-  // Legend progress: each beat's bar fills across its own window.
+  // Legend progress: each beat's bar fills across its own window only.
   progress: Object.fromEntries(BEATS.map((b) => [b.id, progress(`prog-${b.id}`, b.start, b.end)])) as Record<
+    (typeof BEATS)[number]["id"],
+    CSSProperties
+  >,
+
+  // Synchronized active tab highlight for live animation clock.
+  activeTab: Object.fromEntries(BEATS.map((b) => [b.id, activeTab(`tab-${b.id}`, b.start, b.end)])) as Record<
     (typeof BEATS)[number]["id"],
     CSSProperties
   >,
