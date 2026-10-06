@@ -1,38 +1,26 @@
-import { AlertIcon, TipIcon } from "@/components/guide/icons";
 import { GuidePicture } from "@/components/GuidePicture";
 import { InView } from "@/components/InView";
 
 const BENEFIT_CARDS = [
   {
     id: "wires",
-    title: "See what each wire joins",
-    body: "Hover or tap a jumper. It names both ends in words, so you know which pin to solder without reading a schematic.",
+    title: "Hover a wire",
+    body: "Both pins light up. Names, not schematic symbols.",
   },
   {
     id: "catalog",
-    title: "Parts come from the catalog",
-    body: "The ESP32, buzzer, button and breadboard in this picture are real catalog parts. Pins are never invented.",
+    title: "Catalog parts",
+    body: "This ESP32, buzzer, button and breadboard. Real pins.",
   },
   {
     id: "order",
-    title: "Build in a fixed order",
-    body: "The page tells you what to do next: place, power, then signals. You follow the list at the bench.",
+    title: "Ordered steps",
+    body: "Place, power, then signals. One job at a time.",
   },
   {
     id: "link",
-    title: "Keep one secret link",
-    body: "Your assistant replies with a URL. Anyone with it sees the same picture. It updates when the plan changes.",
-  },
-] as const;
-
-const BENEFIT_NOTES = [
-  {
-    warn: true,
-    text: "Chat sketches invent pins. This page only draws pins that exist on the part, so a 3×AA pack goes to VIN and never into the 3V3 pin.",
-  },
-  {
-    warn: false,
-    text: "Software notes travel with the wiring. INPUT_PULLUP on the button pin is written here so you do not add a resistor the chip already has.",
+    title: "One secret URL",
+    body: "Same picture as the chat. It updates when the plan does.",
   },
 ] as const;
 
@@ -45,14 +33,14 @@ export function ExampleGuide() {
             Your finished guide
           </h2>
           <p className="text-lg leading-relaxed text-ink-soft">
-            A wiring picture you can interrogate, and a page that stays with you at the bench.
+            Hover a wire to see what it joins.
           </p>
         </div>
 
         <GuidePicture />
 
         <InView className="trace-scope min-w-0">
-          <ul className="benefit-cards">
+          <ul className="benefit-cards snippet-frame">
             {BENEFIT_CARDS.map((card, index) => (
               <li
                 key={card.id}
@@ -68,24 +56,6 @@ export function ExampleGuide() {
             ))}
           </ul>
         </InView>
-
-        <ul className="flex max-w-[65ch] flex-col gap-3">
-          {BENEFIT_NOTES.map((note) => (
-            <li
-              key={note.text}
-              className={`flex gap-3 rounded-[14px] border p-4 ${
-                note.warn
-                  ? "border-warn-line bg-warn-bg text-warn-ink"
-                  : "border-flux/25 bg-flux/[0.07] text-ink"
-              }`}
-            >
-              <span className={`mt-0.5 shrink-0 ${note.warn ? "text-warn-ink" : "text-flux"}`}>
-                {note.warn ? <AlertIcon size={20} /> : <TipIcon size={20} />}
-              </span>
-              <p className="text-sm leading-relaxed">{note.text}</p>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
