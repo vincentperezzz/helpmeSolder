@@ -119,13 +119,15 @@ export function HomeSections() {
                   {group.tools.map((tool, index) => (
                     <div
                       key={tool.name}
+                      tabIndex={0}
                       className="tool-row"
                       style={{ "--i": index } as React.CSSProperties}
                     >
-                      <dt className="font-mono text-sm font-medium text-copper-deep">
-                        {tool.name}
+                      <dt className="tool-row__head">
+                        <span className="tool-row__name">{tool.name}</span>
+                        <span className="tool-row__pill">tool</span>
                       </dt>
-                      <dd className="text-ink-soft">{tool.body}</dd>
+                      <dd className="tool-row__body">{tool.body}</dd>
                     </div>
                   ))}
                 </dl>
