@@ -80,10 +80,6 @@
     min-height: 0;
   }
 
-  .sample__side {
-    padding-bottom: 48vh;
-  }
-
   .wire-row.is-selected .wire-row__why {
     grid-template-rows: 1fr;
   }

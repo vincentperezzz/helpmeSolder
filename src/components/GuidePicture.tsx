@@ -27,6 +27,7 @@ function Arrow() {
 }
 
 const MOBILE_QUERY = "(max-width: 1023px)";
+const NAV_TOP = 56;
 
 /** The real sample guide: a read-only picture and its wire list, linked by hover, tap, and scroll. */
 export function GuidePicture() {
@@ -51,13 +52,18 @@ export function GuidePicture() {
         return;
       }
       const rows = [...list.querySelectorAll<HTMLElement>("[data-wire-id]")];
-      const pictureBottom = picture?.getBoundingClientRect().bottom ?? 56;
-      const remaining = Math.max(0, window.innerHeight - pictureBottom);
-      const line = pictureBottom + Math.max(80, remaining * 0.4);
+      const pic = picture?.getBoundingClientRect();
+      const stuck = (pic?.top ?? Infinity) <= NAV_TOP + 2;
+      // Stuck: light the row that has reached the slot just under the picture.
+      // Not stuck: only light a row after it has crossed the middle of the screen.
+      // That keeps step 1 quiet until the picture actually pins or the row hits center.
+      const line = stuck
+        ? (pic?.bottom ?? NAV_TOP) + 40
+        : window.innerHeight * 0.5;
       let bestId: string | null = null;
       for (const row of rows) {
         const rect = row.getBoundingClientRect();
-        const head = rect.top + Math.min(rect.height, 64) / 2;
+        const head = rect.top + Math.min(rect.height, 56) / 2;
         if (head <= line + 12) {
           bestId = row.dataset.wireId ?? null;
         }

@@ -10,7 +10,7 @@ export function ExampleGuide() {
       id="example"
       className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 sm:px-10 lg:px-16"
     >
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-12">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 lg:gap-12">
         <InView className="scroll-reveal flex max-w-[60ch] flex-col gap-4">
           <h2 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-ink sm:text-5xl">
             A real guide, wire by wire
