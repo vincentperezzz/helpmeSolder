@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   description: "Step-by-step soldering guides that show exactly what to solder and where, with no circuit diagrams to decode.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"

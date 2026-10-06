@@ -1,0 +1,698 @@
+/* How it works: High-precision engineering workbench console & 60fps frame-synced pipeline. */
+
+.hiw {
+  --hiw-bad: #b3261e;
+  --hiw-bad-ink: #8c1d18;
+  display: grid;
+  gap: 28px;
+  width: 100%;
+}
+
+.hiw-head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hiw-head__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 54rem;
+}
+
+.hiw-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--copper-deep);
+}
+
+.hiw-title {
+  margin: 0;
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: clamp(2.1rem, 4.4vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hiw-lede {
+  margin: 0;
+  max-width: 48ch;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* ---- Cinematic Scroll-Reveal Entrance Animation ---- */
+
+.hiw[data-seen="false"] .hiw-head {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.hiw[data-seen="true"] .hiw-head {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hiw[data-seen="false"] .hiw-monolith {
+  opacity: 0;
+  transform: translateY(32px) scale(0.975);
+}
+
+.hiw[data-seen="true"] .hiw-monolith {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms,
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+}
+
+.hiw[data-seen="false"] .hiw-deck-tab {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.hiw[data-seen="true"] .hiw-deck-tab {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 160ms;
+  transition-delay: calc(var(--i, 0) * 70ms + 260ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw .hiw-head,
+  .hiw .hiw-monolith,
+  .hiw .hiw-deck-tab {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- Monolith Precision Console ---- */
+
+.hiw-monolith {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--copper) 45%, var(--line-strong));
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--mat) 40%, white) 0%, color-mix(in oklab, var(--paper-deep) 60%, white) 100%);
+  box-shadow:
+    0 1px 2px rgb(18 26 32 / 0.05),
+    0 0 0 1px rgb(255 255 255 / 0.6) inset;
+}
+
+/* ---- Top HUD Bar ---- */
+
+.hiw-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 80%, var(--paper));
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+.hiw-hud__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hiw-hud__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 6px var(--copper);
+  animation: hud-blink 2s ease-in-out infinite;
+}
+
+@keyframes hud-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.hiw-hud__label {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.hiw-hud__stepper {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (min-width: 640px) {
+  .hiw-hud__stepper {
+    display: inline-flex;
+  }
+}
+
+.hiw-hud__step-pip {
+  padding: 2px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--mute);
+  transition: color 150ms, border-color 150ms, background-color 150ms;
+}
+
+.hiw-hud__step-pip.is-active {
+  border-color: var(--copper);
+  background: var(--copper);
+  color: #ffffff;
+}
+
+.hiw-hud__step-pip.is-passed {
+  border-color: color-mix(in oklab, var(--flux) 50%, var(--line-strong));
+  color: var(--flux);
+}
+
+.hiw-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: #ffffff;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 120ms, background-color 120ms;
+}
+
+.hiw-toggle:hover {
+  border-color: var(--copper);
+  color: var(--copper-deep);
+}
+
+.hiw-toggle:active {
+  transform: translateY(1px);
+}
+
+.hiw-toggle__icon {
+  width: 10px;
+  height: 10px;
+}
+
+/* ---- Visual Canvas ---- */
+
+.hiw-canvas {
+  padding: 24px 16px;
+}
+
+@media (min-width: 768px) {
+  .hiw-canvas {
+    padding: 36px 28px;
+  }
+}
+
+.hiw-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 26rem;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.hiw-svg--wide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hiw-svg {
+    max-width: none;
+  }
+
+  .hiw-svg--wide {
+    display: block;
+  }
+
+  .hiw-svg--tall {
+    display: none;
+  }
+}
+
+/* ---- Integrated Hardware Sequencer Deck ---- */
+
+.hiw-deck {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  border-top: 1px solid var(--line-strong);
+  background: color-mix(in oklab, white 85%, var(--paper));
+}
+
+@media (min-width: 768px) {
+  .hiw-deck {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.hiw-deck-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 84px;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms;
+}
+
+@media (min-width: 768px) {
+  .hiw-deck-tab {
+    border-bottom: 0;
+  }
+  .hiw-deck-tab:last-child {
+    border-right: 0;
+  }
+}
+
+.hiw-deck-tab:hover {
+  background: color-mix(in oklab, white 60%, transparent);
+}
+
+.hiw-deck-tab[data-active="true"] {
+  background: #ffffff;
+}
+
+.hiw-deck-tab:focus-visible {
+  outline: 2px solid var(--copper-deep);
+  outline-offset: -2px;
+}
+
+.hiw-deck-rail {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: color-mix(in oklab, var(--line-strong) 60%, transparent);
+  overflow: hidden;
+}
+
+.hiw-deck-progress {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--copper), var(--copper-deep));
+  transform-origin: 0 50%;
+  transition: opacity 120ms ease-out;
+}
+
+.hiw-deck-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 12px 14px 14px;
+  height: 100%;
+}
+
+.hiw-deck-top {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.hiw-deck-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--copper-deep);
+}
+
+.hiw-deck-name {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.hiw-deck-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.hiw-deck-tab[data-active="true"] .hiw-deck-name {
+  color: var(--copper-deep);
+}
+
+/* ---- Art & SVG elements ---- */
+
+.hiw text {
+  font-family: var(--font-body), ui-sans-serif, sans-serif;
+}
+
+.hiw-bubble {
+  fill: #fff;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-prompt {
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.hiw-cover {
+  fill: #fff;
+  transform: translateX(220px);
+}
+
+.hiw-caret {
+  fill: var(--copper);
+  opacity: 0;
+}
+
+.hiw-reply {
+  fill: var(--ink);
+}
+
+.hiw-reply-text {
+  font-size: 14px;
+  font-weight: 500;
+  fill: var(--paper);
+}
+
+.hiw-trace {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-chip-box {
+  fill: #fff;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-chip-text {
+  font: 500 13px var(--font-mono), ui-monospace, monospace;
+  fill: var(--ink);
+}
+
+.hiw-chip-bad {
+  fill: color-mix(in oklab, var(--hiw-bad) 12%, transparent);
+  stroke: var(--hiw-bad);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.hiw-chip--1 {
+  transform: translate(0, -84px);
+}
+
+.hiw-chip--2 {
+  transform: translate(0, -56px);
+}
+
+.hiw-chip--3 {
+  transform: translate(0, -28px);
+}
+
+.hiw-node-box {
+  fill: var(--ink);
+}
+
+.hiw-node-text {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-anchor: middle;
+  fill: var(--paper);
+}
+
+.hiw-ring {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.hiw-ring--bad {
+  stroke: var(--hiw-bad);
+  opacity: 0;
+}
+
+.hiw-ring--ok {
+  stroke: var(--flux);
+}
+
+.hiw-pill--bad {
+  fill: #fdecea;
+  stroke: var(--hiw-bad);
+  stroke-width: 1.5;
+}
+
+.hiw-pill--ok {
+  fill: #e6f1ee;
+  stroke: var(--flux);
+  stroke-width: 1.5;
+}
+
+.hiw-pill-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hiw-pill-text--bad {
+  fill: var(--hiw-bad-ink);
+}
+
+.hiw-pill-text--ok {
+  fill: var(--flux);
+}
+
+.hiw-bed {
+  fill: color-mix(in oklab, var(--mat) 45%, white);
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-grid {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.hiw-board {
+  fill: var(--ink);
+}
+
+.hiw-usb {
+  fill: var(--ink-soft);
+  stroke: var(--paper);
+  stroke-width: 1;
+}
+
+.hiw-board-name {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--paper);
+}
+
+.hiw-pin {
+  fill: var(--copper);
+  stroke: var(--paper);
+  stroke-width: 1;
+}
+
+.hiw-pin-text {
+  font: 500 12px var(--font-mono), ui-monospace, monospace;
+  fill: var(--paper);
+}
+
+.hiw-part {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.hiw-part-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.hiw-buzzer {
+  fill: var(--ink-soft);
+}
+
+.hiw-buzzer-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: var(--paper);
+}
+
+.hiw-wire {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-badge {
+  fill: var(--copper-deep);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.hiw-badge-text {
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #fff;
+}
+
+.hiw-phone {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+.hiw-phone-speaker {
+  fill: var(--ink);
+}
+
+.hiw-screen-title {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  fill: var(--ink);
+}
+
+.hiw-row-text {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.hiw-box {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.hiw-box-fill {
+  fill: color-mix(in oklab, var(--flux) 16%, white);
+  stroke: var(--flux);
+  stroke-width: 1.5;
+}
+
+.hiw-tick {
+  fill: none;
+  stroke: var(--flux);
+  stroke-width: 2.5;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hiw-secret {
+  opacity: 0;
+}
+
+.hiw-secret-box {
+  fill: var(--copper-deep);
+}
+
+.hiw-secret-text {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #fff;
+}
+
+/* ---- Motion: only when JS has seen the section and motion is welcome ---- */
+
+.hiw-a {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hiw.is-live .hiw-a {
+    animation-duration: 14s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+  }
+
+  .hiw.is-live.is-paused .hiw-a {
+    animation-play-state: paused;
+  }
+
+  .hiw.is-live .hiw-trace,
+  .hiw.is-live .hiw-wire,
+  .hiw.is-live .hiw-tick {
+    stroke-linecap: butt;
+  }
+}
+
+/* ---- Reduced motion / focus states ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw-toggle {
+    display: none;
+  }
+
+  .hiw-deck-tab[data-active="true"] {
+    background: #ffffff;
+  }
+
+  .hiw[data-focus="ask"] .hiw-zone:not(.hiw-zone--ask),
+  .hiw[data-focus="plan"] .hiw-zone:not(.hiw-zone--plan),
+  .hiw[data-focus="wire"] .hiw-zone:not(.hiw-zone--wire),
+  .hiw[data-focus="open"] .hiw-zone:not(.hiw-zone--open) {
+    opacity: 0.4;
+  }
+}

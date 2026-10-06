@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CopyBlock } from "@/components/CopyBlock";
 
 type ClientId = "app" | "cursor" | "terminal" | "antigravity";
@@ -15,6 +15,9 @@ const CLIENTS: { id: ClientId; label: string }[] = [
 const DEPLOYED_ORIGIN = "https://helpmesolder.vercel.app";
 
 function mcpUrl(): string {
+  if (typeof window !== "undefined" && window.location.origin) {
+    return `${window.location.origin}/mcp`;
+  }
   const configured = process.env.NEXT_PUBLIC_APP_URL;
   const origin =
     configured && !configured.includes("localhost") ? configured : DEPLOYED_ORIGIN;
@@ -63,15 +66,37 @@ function Who({ children }: { children: React.ReactNode }) {
 }
 
 export function SetupGuide() {
-  const url = mcpUrl();
+  const [url, setUrl] = useState<string>(mcpUrl());
   const [client, setClient] = useState<ClientId>("app");
   const [direction, setDirection] = useState<1 | -1>(1);
   const index = CLIENTS.findIndex((item) => item.id === client);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.origin) {
+      setUrl(`${window.location.origin}/mcp`);
+    }
+  }, []);
 
   function select(next: ClientId): void {
     const nextIndex = CLIENTS.findIndex((item) => item.id === next);
     setDirection(nextIndex >= index ? 1 : -1);
     setClient(next);
+  }
+
+  function handleTabKey(event: React.KeyboardEvent<HTMLDivElement>): void {
+    const keys: Record<string, number> = {
+      ArrowRight: index + 1,
+      ArrowLeft: index - 1,
+      Home: 0,
+      End: CLIENTS.length - 1,
+    };
+    if (!(event.key in keys)) {
+      return;
+    }
+    event.preventDefault();
+    const target = CLIENTS[(keys[event.key] + CLIENTS.length) % CLIENTS.length];
+    select(target.id);
+    document.getElementById(`setup-tab-${target.id}`)?.focus();
   }
 
   return (
@@ -85,6 +110,7 @@ export function SetupGuide() {
         aria-label="Your AI app"
         className="dip"
         style={{ "--n": CLIENTS.length } as React.CSSProperties}
+        onKeyDown={handleTabKey}
       >
         <span
           aria-hidden="true"
@@ -96,6 +122,9 @@ export function SetupGuide() {
             key={item.id}
             type="button"
             role="tab"
+            id={`setup-tab-${item.id}`}
+            aria-controls="setup-panel"
+            tabIndex={item.id === client ? 0 : -1}
             aria-selected={item.id === client}
             onClick={() => select(item.id)}
             className="dip__tab"
@@ -107,6 +136,9 @@ export function SetupGuide() {
 
       <div
         key={client}
+        id="setup-panel"
+        role="tabpanel"
+        aria-labelledby={`setup-tab-${client}`}
         className="tab-panel flex min-w-0 flex-col gap-5"
         style={{ "--dir": direction } as React.CSSProperties}
       >
@@ -159,7 +191,7 @@ export function SetupGuide() {
           <Who>For people who use the Cursor code editor.</Who>
           <a
             href={cursorDeeplink(url)}
-            className="inline-flex items-center justify-center rounded-md bg-ink px-5 py-3.5 text-center text-base font-bold text-paper transition-colors hover:bg-copper-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
+            className="press inline-flex items-center justify-center rounded-md bg-ink px-5 py-3.5 text-center text-base font-bold text-paper hover:bg-copper-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
           >
             Add to Cursor
           </a>
@@ -258,7 +290,7 @@ export function SetupGuide() {
         <p className="text-ink-soft">
           Start a new chat and ask this:
         </p>
-        <p className="rounded-md bg-paper px-4 py-3 font-medium leading-relaxed text-ink shadow-[0_1px_0_var(--line-strong)]">
+        <p className="rounded-md bg-paper-deep/70 px-4 py-3 font-medium leading-relaxed text-ink">
           What can HelpmeSolder do?
         </p>
         <p className="text-ink-soft">

@@ -2,6 +2,7 @@ import { HeroMotion } from "@/components/HeroMotion";
 import { HomeSections } from "@/components/HomeSections";
 import { Magnetic } from "@/components/Magnetic";
 import { ScrollLink } from "@/components/ScrollLink";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { VisitBeacon } from "@/components/VisitBeacon";
 import "./home.css";
@@ -35,41 +36,23 @@ function WorkbenchPlane() {
         ))}
       </g>
       <g className="parallax-mid">
-      <path
-        className="motion-trace"
-        d="M180 620 C360 520, 480 420, 640 380 S980 340, 1180 260"
-        fill="none"
-        stroke="url(#traceFade)"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-      <path
-        className="motion-trace"
-        d="M220 700 C420 640, 560 560, 760 500 S1040 430, 1260 360"
-        fill="none"
-        stroke="#2a6b66"
-        strokeOpacity="0.45"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        className="signal"
-        pathLength="1000"
-        d="M180 620 C360 520, 480 420, 640 380 S980 340, 1180 260"
-        fill="none"
-        stroke="#f3c29b"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <path
-        className="signal signal-2"
-        pathLength="1000"
-        d="M220 700 C420 640, 560 560, 760 500 S1040 430, 1260 360"
-        fill="none"
-        stroke="#9fd6cf"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+        <path
+          className="motion-trace"
+          d="M180 620 C360 520, 480 420, 640 380 S980 340, 1180 260"
+          fill="none"
+          stroke="url(#traceFade)"
+          strokeWidth="10"
+          strokeLinecap="round"
+        />
+        <path
+          className="motion-trace"
+          d="M220 700 C420 640, 560 560, 760 500 S1040 430, 1260 360"
+          fill="none"
+          stroke="#2a6b66"
+          strokeOpacity="0.45"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
       </g>
       <g className="parallax-near">
         <g className="idle-float">
@@ -106,6 +89,7 @@ export default function Home() {
     >
       <SiteNav />
       <VisitBeacon />
+      <div data-nav-sentinel aria-hidden="true" className="pointer-events-none absolute left-0 top-[70svh] h-px w-px" />
       <div className="atmosphere" aria-hidden="true">
         <div className="atmosphere-grid" />
       </div>
@@ -128,26 +112,22 @@ export default function Home() {
             step-by-step guide showing exactly what to solder and where, with no
             circuit diagrams to decode.
           </p>
-          <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-6 pt-2">
+          <div className="motion-rise motion-rise-delay-3 flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
             <Magnetic>
               <ScrollLink targetId="setup" className="btn-pad">
                 <span className="btn-pad__face">Set up the MCP</span>
                 <span aria-hidden="true" className="btn-pad__trace" />
               </ScrollLink>
             </Magnetic>
-            <a
-              href="/api/health"
-              className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-copper-deep underline decoration-copper/50 underline-offset-6 transition-colors hover:text-copper"
-            >
-              Check service health
-            </a>
-            <span className="font-mono text-xs tracking-wide text-mute">
-              secret /guides/[id]
-            </span>
+            <ScrollLink targetId="example" className="link-quiet">
+              See a finished guide
+            </ScrollLink>
           </div>
         </div>
       </HeroMotion>
       <HomeSections />
+      <SiteFooter />
     </main>
   );
 }
+

@@ -60,6 +60,11 @@ type WokwiDiagramProps = {
   hoveredWireId?: string | null;
   onHoverWire?: (id: string | null) => void;
   onSelectWire?: (id: string | null) => void;
+  /**
+   * false: read-only embed. No toolbar, zoom, pan or full screen; the picture stays fitted
+   * and only wire and part highlighting remains. Defaults to the full app viewer.
+   */
+  chrome?: boolean;
 };
 
 type Target = { kind: "wire" | "part"; id: string };
@@ -97,7 +102,7 @@ function ToolbarIcon({ name }: { name: keyof typeof TOOLBAR_ICONS }) {
   );
 }
 
-function partContent(guide: Guide, id: string): TipContent | null {
+function partContent(guide: Guide, id: string, embed = false): TipContent | null {
   if (id === POWER_SOURCE_ID) {
     const source = guide.power_source;
     if (!source) return null;
@@ -106,7 +111,7 @@ function partContent(guide: Guide, id: string): TipContent | null {
       return {
         title: asset.label,
         tag: "Power",
-        detail: `Powers the board. ${asset.caption}.`,
+        detail: embed ? "Powers the board." : `Powers the board. ${asset.caption}.`,
       };
     }
     const bank = source === "power_bank";
@@ -132,6 +137,7 @@ export function WokwiDiagram({
   hoveredWireId = null,
   onHoverWire,
   onSelectWire,
+  chrome = true,
 }: WokwiDiagramProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const ready = useWokwiReady();
@@ -186,6 +192,17 @@ export function WokwiDiagram({
     [placed],
   );
   const wireById = useMemo(() => new Map(wires.map((wire) => [wire.id, wire])), [wires]);
+
+  useEffect(() => {
+    if (chrome) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const block = (event: WheelEvent) => {
+      if (event.ctrlKey || event.metaKey) event.stopImmediatePropagation();
+    };
+    viewport.addEventListener("wheel", block, { capture: true });
+    return () => viewport.removeEventListener("wheel", block, { capture: true });
+  }, [chrome, viewportRef, ready]);
 
   const [hover, setHover] = useState<Target | null>(null);
   const [pinned, setPinned] = useState<Target | null>(null);
@@ -255,8 +272,8 @@ export function WokwiDiagram({
         color: wire.color,
       };
     }
-    return partContent(guide, active.id);
-  }, [active, wireById, solderItems, guide]);
+    return partContent(guide, active.id, !chrome);
+  }, [active, wireById, solderItems, guide, chrome]);
 
   const positionTip = useCallback(() => {
     const tip = tipRef.current;
@@ -353,12 +370,12 @@ export function WokwiDiagram({
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     downRef.current = { x: event.clientX, y: event.clientY, target: event.target as Element };
     if (event.pointerType !== "touch") setHovered(null);
-    onPointerDown(event);
+    if (chrome) onPointerDown(event);
   };
   const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
     const down = downRef.current;
     downRef.current = null;
-    onPointerUp(event);
+    if (chrome) onPointerUp(event);
     if (!down || (event.pointerType === "mouse" && event.button !== 0)) return;
     if (Math.hypot(event.clientX - down.x, event.clientY - down.y) > TAP_SLOP) return;
     const el = down.target?.closest?.("[data-tip-kind]") as HTMLElement | null;
@@ -389,7 +406,7 @@ export function WokwiDiagram({
   }
 
   const partLabel = (id: string) => {
-    const c = partContent(guide, id);
+    const c = partContent(guide, id, !chrome);
     return c ? tooltipLabel(c) : id;
   };
 
@@ -433,6 +450,7 @@ export function WokwiDiagram({
       ref={shellRef}
       className={`diagram-shell whiteboard-shell flex h-full min-h-0 w-full min-w-0 flex-col bg-[#eef3f0] ${fullscreen ? "is-fullscreen" : ""} ${enlarged ? "is-enlarged" : ""}`}
     >
+      {chrome ? (
       <div className="diagram-toolbar flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-paper/90 px-3 py-1.5">
         <p
           className="diagram-cue min-w-0 flex-1 basis-40 truncate text-xs font-semibold tracking-tight text-ink"
@@ -505,21 +523,23 @@ export function WokwiDiagram({
             <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="names" /></span>
             <span className="diagram-btn-label">Wire names</span>
           </button>
-          <button
-            type="button"
-            className="diagram-zoom-btn diagram-panel-btn"
-            onClick={() => onEnlargedChange?.(!enlarged)}
-            aria-pressed={enlarged}
-            aria-label={enlarged ? "Show panel" : "Hide panel"}
-            title={
-              enlarged
-                ? "Show the parts list and steps panel again"
-                : "Hide the parts list and steps panel"
-            }
-          >
-            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
-            <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
-          </button>
+          {onEnlargedChange ? (
+            <button
+              type="button"
+              className="diagram-zoom-btn diagram-panel-btn"
+              onClick={() => onEnlargedChange(!enlarged)}
+              aria-pressed={enlarged}
+              aria-label={enlarged ? "Show panel" : "Hide panel"}
+              title={
+                enlarged
+                  ? "Show the parts list and steps panel again"
+                  : "Hide the parts list and steps panel"
+              }
+            >
+              <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name={enlarged ? "panel-show" : "panel-hide"} /></span>
+              <span className="diagram-btn-label">{enlarged ? "Show panel" : "Hide panel"}</span>
+            </button>
+          ) : null}
           <button
             type="button"
             className="diagram-zoom-btn"
@@ -532,6 +552,7 @@ export function WokwiDiagram({
           </button>
         </div>
       </div>
+      ) : null}
 
       {!guide.power_source ? (
         <div className="border-b border-warn-line bg-warn-bg px-3 py-2 text-xs text-warn-ink">
@@ -541,13 +562,17 @@ export function WokwiDiagram({
 
       <div
         ref={viewportRef}
-        className="diagram-viewport min-h-0 flex-1 cursor-grab select-none active:cursor-grabbing [&_*]:select-none [&_*]:[-webkit-user-drag:none] [&_*]:[-webkit-touch-callout:none]"
+        className={`diagram-viewport min-h-0 flex-1 select-none ${chrome ? "cursor-grab active:cursor-grabbing" : "cursor-default"} [&_*]:select-none [&_*]:[-webkit-user-drag:none] [&_*]:[-webkit-touch-callout:none]`}
         onDragStart={(event) => event.preventDefault()}
-        tabIndex={0}
+        tabIndex={chrome ? 0 : undefined}
         role="group"
-        aria-label="Wiring picture viewer. Arrow keys move the picture, plus and minus zoom."
-        aria-describedby="diagram-help"
-        onKeyDown={onKeyDown}
+        aria-label={
+          chrome
+            ? "Wiring picture viewer. Arrow keys move the picture, plus and minus zoom."
+            : "Wiring picture"
+        }
+        aria-describedby={chrome ? "diagram-help" : undefined}
+        onKeyDown={chrome ? onKeyDown : undefined}
         onPointerDown={handlePointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={handlePointerUp}
@@ -851,17 +876,19 @@ export function WokwiDiagram({
         </div>
       </div>
 
-      <p className="shrink-0 border-t border-line px-3 py-1.5 text-[11px] text-mute">
-        This picture shows which part connects to which. It is a guide for you, not a working
-        circuit, and the written checklist has the same information.
-        {guide.power_source
-          ? isBatteryPowerSource(guide.power_source)
-            ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`
-            : guide.power_source === "power_bank"
-              ? " Power: USB power bank, cable plugged into the board's USB port."
-              : " Power: USB wall adapter, cable plugged into the board's USB port."
-          : ""}
-      </p>
+      {chrome ? (
+        <p className="shrink-0 border-t border-line px-3 py-1.5 text-[11px] text-mute">
+          This picture shows which part connects to which. It is a guide for you, not a working
+          circuit, and the written checklist has the same information.
+          {guide.power_source
+            ? isBatteryPowerSource(guide.power_source)
+              ? ` Power: ${getBatteryAsset(guide.power_source).caption}.`
+              : guide.power_source === "power_bank"
+                ? " Power: USB power bank, cable plugged into the board's USB port."
+                : " Power: USB wall adapter, cable plugged into the board's USB port."
+            : ""}
+        </p>
+      ) : null}
       {tooltip}
     </div>
   );
