@@ -13,25 +13,17 @@ const PROMPT_EXAMPLE =
 export function HomeSections() {
   return (
     <>
-      <ExampleGuide />
+      <InView className="scroll-reveal">
+        <ExampleGuide />
+      </InView>
 
       <section
         id="how"
         className="relative z-10 scroll-mt-20 bg-paper-deep/60 px-6 py-24 sm:px-10 lg:px-16"
       >
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-12">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
-            <h2 className={HEADING}>
-              Your chat plans it. We draw it from real parts.
-            </h2>
-            <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
-              HelpmeSolder is not a chatbot. Your own Claude or Cursor does the
-              planning and calls our tools. Every diagram is drawn from a parts
-              catalog, so pins are never invented.
-            </p>
-          </div>
+        <InView className="scroll-reveal mx-auto flex w-full max-w-5xl flex-col gap-12">
           <HowItWorks />
-        </div>
+        </InView>
       </section>
 
       <section
@@ -40,7 +32,10 @@ export function HomeSections() {
         className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 outline-none sm:px-10 lg:px-16"
       >
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-14">
-          <div className="flex max-w-[60ch] flex-col gap-5">
+          <InView className="scroll-reveal flex max-w-[60ch] flex-col gap-4">
+            <span className="font-mono text-xs font-bold tracking-wider text-copper uppercase">
+              03 · Integration
+            </span>
             <h2 className={HEADING}>Set up the MCP</h2>
             <p className="text-lg leading-relaxed text-ink-soft">
               MCP is a small plug that lets your AI assistant, like Claude or
@@ -48,10 +43,10 @@ export function HomeSections() {
               can ask your assistant for a soldering guide. There is nothing to
               install and no key to find.
             </p>
-          </div>
+          </InView>
 
           <div className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
-            <InView className="trace-scope min-w-0">
+            <InView className="scroll-reveal trace-scope min-w-0" style={{ "--stagger": 1 } as React.CSSProperties}>
               <ol className="relative flex flex-col gap-10">
                 <span aria-hidden="true" className="trace-rail" />
 
@@ -93,9 +88,9 @@ export function HomeSections() {
               </ol>
             </InView>
 
-            <div className="min-w-0">
+            <InView className="scroll-reveal min-w-0" style={{ "--stagger": 2 } as React.CSSProperties}>
               <SetupGuide />
-            </div>
+            </InView>
           </div>
         </div>
       </section>
@@ -105,15 +100,18 @@ export function HomeSections() {
         className="relative z-10 scroll-mt-20 bg-paper-deep/60 px-6 py-24 sm:px-10 lg:px-16"
       >
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-12">
-          <div className="flex max-w-[60ch] flex-col gap-4">
+          <InView className="scroll-reveal flex max-w-[60ch] flex-col gap-4">
+            <span className="font-mono text-xs font-bold tracking-wider text-copper uppercase">
+              04 · Reference
+            </span>
             <h2 className={HEADING}>The tools your assistant uses</h2>
             <p className="text-lg leading-relaxed text-ink-soft">
               {TOOL_NAMES.length} tools in four groups. Your assistant picks
               them. You never call them yourself.
             </p>
-          </div>
+          </InView>
 
-          <InView className="tool-groups">
+          <InView className="scroll-reveal tool-groups" style={{ "--stagger": 1 } as React.CSSProperties}>
             {TOOL_GROUPS.map((group) => (
               <section key={group.title} className="tool-group">
                 <h3 className="tool-group__title">{group.title}</h3>

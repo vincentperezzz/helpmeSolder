@@ -4,6 +4,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 
 type InViewProps = {
   className?: string;
+  style?: React.CSSProperties;
+  id?: string;
   children: ReactNode;
 };
 
@@ -12,7 +14,7 @@ type InViewProps = {
  * scrolls into view. Without JS or with reduced motion it stays unmarked,
  * which is the fully drawn state.
  */
-export function InView({ className, children }: InViewProps) {
+export function InView({ className, style, id, children }: InViewProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function InView({ className, children }: InViewProps) {
   }, []);
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} id={id} className={className} style={style}>
       {children}
     </div>
   );
