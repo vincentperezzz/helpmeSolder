@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { ScrollLink } from "@/components/ScrollLink";
 
 const LINKS = [
@@ -13,6 +13,8 @@ const LINKS = [
 export function SiteNav() {
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
 
   // Show the bar once the sentinel near the end of the hero has scrolled above the viewport.
   useEffect(() => {
@@ -47,24 +49,67 @@ export function SiteNav() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+    function onKey(event: KeyboardEvent): void {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!visible) {
+      setMenuOpen(false);
+    }
+  }, [visible]);
+
+  function closeMenu(): void {
+    setMenuOpen(false);
+  }
+
   return (
     <header
       className="site-nav"
       data-visible={visible}
+      data-open={menuOpen}
       aria-hidden={!visible}
       inert={!visible}
     >
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
-        <ScrollLink targetId="top" className="brand-mark shrink-0 text-base sm:text-lg">
+      <div className="site-nav__bar mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
+        <ScrollLink
+          targetId="top"
+          className="brand-mark shrink-0 text-base sm:text-lg"
+          onClick={closeMenu}
+        >
           HelpmeSolder
         </ScrollLink>
-        <nav aria-label="Sections" className="flex items-center gap-3 sm:gap-6">
+        <button
+          type="button"
+          className="site-nav__toggle"
+          aria-expanded={menuOpen}
+          aria-controls={menuId}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span className="site-nav__toggle-lines" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+        </button>
+        <nav id={menuId} aria-label="Sections" className="site-nav__links">
           {LINKS.map((link) => (
             <ScrollLink
               key={link.id}
               targetId={link.id}
               className="site-nav__link"
               current={active === link.id}
+              onClick={closeMenu}
             >
               {link.label}
             </ScrollLink>
