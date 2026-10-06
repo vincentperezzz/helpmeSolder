@@ -489,7 +489,7 @@ export function SchematicDiagram({
 
       <p
         aria-live="polite"
-        className={`schematic-caption border-t border-line px-4 text-xs text-ink-soft sm:px-5 ${caption ? "min-h-[3.25rem] py-2" : "py-1.5"}`}
+        className="schematic-caption border-t border-line px-4 py-1.5 text-xs text-ink-soft sm:px-5"
       >
         {caption ? (
           <>
