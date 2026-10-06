@@ -409,24 +409,35 @@
   animation-delay: calc(var(--i, 0) * 60ms + 80ms);
 }
 
-/* Quiet text link and pressable controls with dynamic magnetic hover arrow. */
+/* Quiet text link with animated copper trace underline and sliding arrow. */
 .link-quiet {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  margin: -4px -8px;
-  border-radius: 6px;
+  gap: 5px;
+  padding-block: 0.25rem;
   color: var(--copper-deep);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
+  background: transparent;
   cursor: pointer;
   transition:
     color 180ms ease-out,
-    background-color 180ms ease-out,
     transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-quiet::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+  width: calc(100% - 1.1em);
+  height: 1.5px;
+  background: var(--copper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .link-quiet::after {
@@ -439,13 +450,17 @@
   opacity: 0.6;
   transition:
     transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 220ms ease-out;
+    opacity 220ms ease-out,
+    color 180ms ease-out;
 }
 
 .link-quiet:hover {
   color: var(--copper);
-  background: color-mix(in oklab, var(--copper) 10%, transparent);
-  transform: translateX(3px);
+  transform: translateX(2px);
+}
+
+.link-quiet:hover::before {
+  transform: scaleX(1);
 }
 
 .link-quiet:hover::after {
@@ -454,12 +469,13 @@
 }
 
 .link-quiet:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .link-quiet:focus-visible {
   outline: 2px solid var(--flux);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .press {
