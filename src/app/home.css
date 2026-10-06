@@ -183,19 +183,20 @@
   }
 
   .proof-picture {
-    height: 34rem;
-    min-height: 32rem;
+    height: 100%;
+    min-height: 34rem;
   }
 
   .proof-picture .diagram-shell {
-    min-height: 32rem;
+    min-height: 34rem;
+    height: 100%;
   }
 
   .proof-card__wires {
     border-top: 0;
     border-left: 1px solid var(--line-strong);
-    max-height: 34rem;
-    overflow: auto;
+    max-height: none;
+    overflow: visible;
     align-content: start;
   }
 }
