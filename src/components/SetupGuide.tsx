@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CopyBlock } from "@/components/CopyBlock";
 
 type ClientId = "app" | "cursor" | "terminal" | "antigravity";
@@ -15,6 +15,9 @@ const CLIENTS: { id: ClientId; label: string }[] = [
 const DEPLOYED_ORIGIN = "https://helpmesolder.vercel.app";
 
 function mcpUrl(): string {
+  if (typeof window !== "undefined" && window.location.origin) {
+    return `${window.location.origin}/mcp`;
+  }
   const configured = process.env.NEXT_PUBLIC_APP_URL;
   const origin =
     configured && !configured.includes("localhost") ? configured : DEPLOYED_ORIGIN;
@@ -63,10 +66,16 @@ function Who({ children }: { children: React.ReactNode }) {
 }
 
 export function SetupGuide() {
-  const url = mcpUrl();
+  const [url, setUrl] = useState<string>(mcpUrl());
   const [client, setClient] = useState<ClientId>("app");
   const [direction, setDirection] = useState<1 | -1>(1);
   const index = CLIENTS.findIndex((item) => item.id === client);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.origin) {
+      setUrl(`${window.location.origin}/mcp`);
+    }
+  }, []);
 
   function select(next: ClientId): void {
     const nextIndex = CLIENTS.findIndex((item) => item.id === next);
