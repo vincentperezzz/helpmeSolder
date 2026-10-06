@@ -66,7 +66,14 @@ function AskZone({ clipId }: { clipId: string }) {
   );
 }
 
-function PlanZone() {
+/**
+ * Local origin is the HelpmeSolder node centre. Wide: pills sit centred under the node.
+ * Tall (phone): the node sits in the right part of the column and the pills span
+ * wide to its left, with the trace entering as a stub from the left edge.
+ */
+function PlanZone({ wide }: { wide: boolean }) {
+  const pillX = wide ? -120 : -185;
+  const chipX = wide ? -175 : -245;
   const chips: { cls: string; style: CSSProperties; label: string; w: number }[] = [
     { cls: "hiw-chip--1", style: A.chip1, label: "create_guide", w: 116 },
     { cls: "hiw-chip--2", style: A.chip2, label: "add_part", w: 84 },
@@ -75,8 +82,8 @@ function PlanZone() {
   ];
   return (
     <g className="hiw-zone hiw-zone--plan">
-      <path className="hiw-trace hiw-a" style={A.trace} d="M-175 104H-10" pathLength={1} />
-      <g transform="translate(-175 92)">
+      <path className="hiw-trace hiw-a" style={A.trace} d={`M${chipX} 104H${wide ? -10 : -49}`} pathLength={1} />
+      <g transform={`translate(${chipX} 92)`}>
         {chips.map((c) => (
           <g key={c.label} className={`hiw-a hiw-chip ${c.cls}`} style={c.style}>
             <rect className="hiw-chip-box" width={c.w} height="24" rx="12" />
@@ -101,14 +108,14 @@ function PlanZone() {
         <rect className="hiw-a hiw-ring hiw-ring--ok" style={A.ringOk} x="-59" y="58" width="118" height="92" rx="13" />
       </g>
       <g className="hiw-a" style={A.pillBad}>
-        <rect className="hiw-pill hiw-pill--bad" x="-120" y="156" width="240" height="26" rx="13" />
-        <text className="hiw-pill-text hiw-pill-text--bad" x="-104" y="173.5">
+        <rect className="hiw-pill hiw-pill--bad" x={pillX} y="156" width="240" height="26" rx="13" />
+        <text className="hiw-pill-text hiw-pill-text--bad" x={pillX + 16} y="173.5">
           Blocked: 5 V on a 3.3 V pin
         </text>
       </g>
       <g className="hiw-a" style={A.pillOk}>
-        <rect className="hiw-pill hiw-pill--ok" x="-120" y="184" width="240" height="26" rx="13" />
-        <text className="hiw-pill-text hiw-pill-text--ok" x="-104" y="201.5">
+        <rect className="hiw-pill hiw-pill--ok" x={pillX} y="184" width="240" height="26" rx="13" />
+        <text className="hiw-pill-text hiw-pill-text--ok" x={pillX + 16} y="201.5">
           Fixed: wired to the 3.3 V pin
         </text>
       </g>
@@ -255,13 +262,15 @@ export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; la
   const wide = layout === "wide";
   // --fx/--fy: where the secret link flies in from. --px: how far the Plan zone
   // sits right of its resting place while it needs room (it slides back for Wire).
+  // --ct/--cr/--cn: how far the tool-call chips travel, bounce back and return.
   const vars = (
-    wide ? { "--fx": "-110px", "--fy": "0px", "--px": "7px" } : { "--fx": "0px", "--fy": "-72px", "--px": "0px" }
+    wide ? { "--fx": "-110px", "--fy": "0px", "--px": "7px", "--ct": "110px", "--cr": "100px", "--cn": "18px" }
+      : { "--fx": "0px", "--fy": "-72px", "--px": "0px", "--ct": "150px", "--cr": "136px", "--cn": "24px" }
   ) as CSSProperties;
   return (
     <svg
       className={`hiw-svg hiw-svg--${layout}`}
-      viewBox={wide ? "0 0 1200 230" : "0 0 350 972"}
+      viewBox={wide ? "0 0 1200 230" : "0 0 340 972"}
       role="img"
       aria-label={label}
       style={vars}
@@ -278,7 +287,7 @@ export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; la
               <AskZone clipId={`hiw-clip-${layout}`} />
             </Place>
             <Place x={450} y={10}>
-              <PlanZone />
+              <PlanZone wide />
             </Place>
             <Place x={625} y={10}>
               <WireZone gridId={`hiw-grid-${layout}`} />
@@ -289,19 +298,19 @@ export function HowItWorksScene({ layout, label }: { layout: "wide" | "tall"; la
           </>
         ) : (
           <>
-            <Link d="M175 202V358" style={A.link1} />
-            <Link d="M175 466V508" style={A.link2} />
-            <Link d="M175 708V766" style={A.link3} />
-            <Place x={60} y={0}>
+            <Link d="M170 202V358" style={A.link1} />
+            <Link d="M170 466V508" style={A.link2} />
+            <Link d="M170 708V766" style={A.link3} />
+            <Place x={55} y={0}>
               <AskZone clipId={`hiw-clip-${layout}`} />
             </Place>
-            <Place x={175} y={254}>
-              <PlanZone />
+            <Place x={265} y={254}>
+              <PlanZone wide={false} />
             </Place>
-            <Place x={50} y={508}>
+            <Place x={45} y={508}>
               <WireZone gridId={`hiw-grid-${layout}`} />
             </Place>
-            <Place x={75} y={762}>
+            <Place x={70} y={762}>
               <OpenZone />
             </Place>
           </>

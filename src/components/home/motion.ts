@@ -62,8 +62,8 @@ function chip(name: string, at: number): CSSProperties {
   return def(name, [
     [at, "opacity:0;transform:translate(0px,0px)"],
     [at + 120, "opacity:1;transform:translate(0px,0px)", GLIDE],
-    [at + 720, "opacity:1;transform:translate(110px,0px)", GLIDE],
-    [at + 820, "opacity:0;transform:translate(118px,0px)"],
+    [at + 720, "opacity:1;transform:translate(var(--ct),0px)", GLIDE],
+    [at + 820, "opacity:0;transform:translate(calc(var(--ct) + 8px),0px)"],
   ]);
 }
 
@@ -77,7 +77,7 @@ function ring(name: string, on: number, off?: number): CSSProperties {
 }
 
 // Wire begins: the Plan node slides left to its resting place (centred over its
-// column) and the Blocked/Fixed pills follow it while fading out.
+// column) and the Blocked/Fixed pills follow it and stay visible to the end.
 const SLIDE_AT = 7800;
 const SLIDE_MS = 500;
 
@@ -86,7 +86,7 @@ function pill(name: string, at: number): CSSProperties {
     [at, "opacity:0;transform:translate(var(--px),8px)"],
     [at + 400, "opacity:1;transform:translate(var(--px),0px)"],
     [SLIDE_AT, "opacity:1;transform:translate(var(--px),0px)", GLIDE],
-    [SLIDE_AT + SLIDE_MS, "opacity:0;transform:translate(0px,0px)"],
+    [SLIDE_AT + SLIDE_MS, "opacity:1;transform:translate(0px,0px)"],
   ]);
 }
 
@@ -125,11 +125,11 @@ export const A = {
   chip3: def("chip-3", [
     [4700, "opacity:0;transform:translate(0px,0px)"],
     [4800, "opacity:1;transform:translate(0px,0px)", GLIDE],
-    [5300, "opacity:1;transform:translate(110px,0px)", SETTLE],
-    [5450, "opacity:1;transform:translate(100px,0px)", GLIDE],
-    [6200, "opacity:1;transform:translate(18px,0px)", GLIDE],
-    [6900, "opacity:1;transform:translate(110px,0px)"],
-    [7000, "opacity:0;transform:translate(118px,0px)"],
+    [5300, "opacity:1;transform:translate(var(--ct),0px)", SETTLE],
+    [5450, "opacity:1;transform:translate(var(--cr),0px)", GLIDE],
+    [6200, "opacity:1;transform:translate(var(--cn),0px)", GLIDE],
+    [6900, "opacity:1;transform:translate(var(--ct),0px)"],
+    [7000, "opacity:0;transform:translate(calc(var(--ct) + 8px),0px)"],
   ]),
   chip3Bad: def("chip-3-bad", [
     [5300, "opacity:0"],
