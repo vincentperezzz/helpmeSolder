@@ -22,6 +22,15 @@ export async function GET(request: NextRequest) {
   const limited = checkRateLimit(request, PART_PHOTOS_LIMIT);
   if (limited) return limited;
 
+  // `v` is a cache-busting revision (see getPartRevision); accepted and ignored.
+  const v = request.nextUrl.searchParams.get("v");
+  if (v !== null && !/^[a-z0-9]{1,16}$/.test(v)) {
+    return NextResponse.json(
+      { images: [] },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+
   await ensureCatalog();
   const id = request.nextUrl.searchParams.get("id") ?? "";
   const part = id.length > 0 && id.length <= 64 ? getCatalogPart(id) : undefined;

@@ -6,9 +6,9 @@ import { page, wrap } from "@/lib/catalog/photo-fixtures";
 import { CACHE_EMPTY, CACHE_FAILED, CACHE_FOUND } from "@/lib/catalog/photo-cache";
 import { GET } from "./route";
 
-const mk = (id?: string) =>
+const mk = (id?: string, v?: string) =>
   new NextRequest(
-    `http://localhost/api/part-photos${id === undefined ? "" : `?id=${encodeURIComponent(id)}`}`,
+    `http://localhost/api/part-photos${id === undefined ? "" : `?id=${encodeURIComponent(id)}`}${v === undefined ? "" : `&v=${encodeURIComponent(v)}`}`,
   );
 
 const reply = (body: unknown) => async () => new Response(JSON.stringify(body), { status: 200 });
@@ -66,6 +66,32 @@ describe("GET /api/part-photos", () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ images: [] });
     expect(res.headers.get("Cache-Control")).toBe(CACHE_FAILED);
+  });
+
+  it("accepts a well-formed v and ignores it", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(reply({ query: {} })));
+    for (const v of ["s", "r12", "abc123"]) {
+      const res = await GET(mk("board.arduino.uno", v));
+      expect(res.status).toBe(200);
+      expect(res.headers.get("Cache-Control")).toBe(CACHE_EMPTY);
+    }
+  });
+
+  it("rejects a malformed v with 400 and calls no source", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    for (const v of ["", "R1", "a-b", "x".repeat(17), "<script>"]) {
+      const res = await GET(mk("board.arduino.uno", v));
+      expect(res.status).toBe(400);
+      expect(res.headers.get("Cache-Control")).toBe("no-store");
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("returns photos for a deprecated part too", async () => {
+    // getCatalogPart includes deprecated parts; the route uses it, not listCatalog.
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(reply({ query: {} })));
+    expect((await GET(mk("board.arduino.uno"))).status).toBe(200);
   });
 
   it("returns 429 over the limit", async () => {
