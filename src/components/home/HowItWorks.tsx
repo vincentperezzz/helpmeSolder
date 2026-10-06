@@ -221,7 +221,7 @@ export function HowItWorks() {
             on a 3.3 V pin and accepts the safe fix.
           </li>
           <li>Wire: numbered wires draw one by one between the board, the soil sensor and the buzzer.</li>
-          <li>Open: a secret link opens the numbered checklist on your phone and each joint gets ticked off.</li>
+          <li>Open: a secret link opens the numbered checklist in any browser, on any device, and each joint gets ticked off.</li>
         </ol>
 
         {/* Integrated Hardware Sequencer Deck */}
@@ -264,7 +264,13 @@ export function HowItWorks() {
                     <span className="hiw-deck-num">{`0${index + 1}`}</span>
                     <span className="hiw-deck-name">{b.label}</span>
                   </div>
-                  <p className="hiw-deck-hint">{b.hint}</p>
+                  <p className="hiw-deck-hint">
+                    {b.hint.split("\n").map((line) => (
+                      <span key={line} className="hiw-deck-line">
+                        {line}{" "}
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </button>
             );

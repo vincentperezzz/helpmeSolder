@@ -62,8 +62,8 @@ function chip(name: string, at: number): CSSProperties {
   return def(name, [
     [at, "opacity:0;transform:translate(0px,0px)"],
     [at + 120, "opacity:1;transform:translate(0px,0px)", GLIDE],
-    [at + 720, "opacity:1;transform:translate(150px,0px)", GLIDE],
-    [at + 820, "opacity:0;transform:translate(160px,0px)"],
+    [at + 720, "opacity:1;transform:translate(110px,0px)", GLIDE],
+    [at + 820, "opacity:0;transform:translate(118px,0px)"],
   ]);
 }
 
@@ -74,6 +74,20 @@ function ring(name: string, on: number, off?: number): CSSProperties {
   ];
   if (off !== undefined) steps.push([off, "opacity:1"], [off + 160, "opacity:0"]);
   return def(name, steps);
+}
+
+// Wire begins: the Plan node slides left to its resting place (centred over its
+// column) and the Blocked/Fixed pills follow it while fading out.
+const SLIDE_AT = 7800;
+const SLIDE_MS = 500;
+
+function pill(name: string, at: number): CSSProperties {
+  return def(name, [
+    [at, "opacity:0;transform:translate(var(--px),8px)"],
+    [at + 400, "opacity:1;transform:translate(var(--px),0px)"],
+    [SLIDE_AT, "opacity:1;transform:translate(var(--px),0px)", GLIDE],
+    [SLIDE_AT + SLIDE_MS, "opacity:0;transform:translate(0px,0px)"],
+  ]);
 }
 
 const WIRE_AT = [8400, 8900, 9400, 9900];
@@ -100,17 +114,22 @@ export const A = {
 
   // Plan: tool calls travel into HelpmeSolder; one is bounced, then fixed.
   trace: draw("trace", 3000, 600),
-  node: pop("node", 3100, 420),
+  node: def("node", [
+    [3100, "opacity:0;transform:translateX(var(--px)) scale(0.55)"],
+    [3520, "opacity:1;transform:translateX(var(--px)) scale(1)"],
+    [SLIDE_AT, "opacity:1;transform:translateX(var(--px)) scale(1)"],
+    [SLIDE_AT + SLIDE_MS, "opacity:1;transform:translateX(0px) scale(1)"],
+  ]),
   chip1: chip("chip-1", 3500),
   chip2: chip("chip-2", 4100),
   chip3: def("chip-3", [
     [4700, "opacity:0;transform:translate(0px,0px)"],
     [4800, "opacity:1;transform:translate(0px,0px)", GLIDE],
-    [5300, "opacity:1;transform:translate(150px,0px)", SETTLE],
-    [5450, "opacity:1;transform:translate(136px,0px)", GLIDE],
-    [6200, "opacity:1;transform:translate(24px,0px)", GLIDE],
-    [6900, "opacity:1;transform:translate(150px,0px)"],
-    [7000, "opacity:0;transform:translate(160px,0px)"],
+    [5300, "opacity:1;transform:translate(110px,0px)", SETTLE],
+    [5450, "opacity:1;transform:translate(100px,0px)", GLIDE],
+    [6200, "opacity:1;transform:translate(18px,0px)", GLIDE],
+    [6900, "opacity:1;transform:translate(110px,0px)"],
+    [7000, "opacity:0;transform:translate(118px,0px)"],
   ]),
   chip3Bad: def("chip-3-bad", [
     [5300, "opacity:0"],
@@ -121,8 +140,8 @@ export const A = {
   chip4: chip("chip-4", 6900),
   ringBad: ring("ring-bad", 5300, 6300),
   ringOk: ring("ring-ok", 7500),
-  pillBad: rise("pill-bad", 5500, 400, "translateY(8px)"),
-  pillOk: rise("pill-ok", 6400, 400, "translateY(8px)"),
+  pillBad: pill("pill-bad", 5500),
+  pillOk: pill("pill-ok", 6400),
   link2: draw("link-2", 7500, 300),
 
   // Wire: parts land, then wires draw one by one with numbered badges.
@@ -140,8 +159,9 @@ export const A = {
   badge4: pop("badge-4", WIRE_AT[3] + 380),
   link3: draw("link-3", 10900, 320),
 
-  // Open: the secret link lands on a phone and the guide appears.
-  phone: rise("phone", 11000, 420, "translateY(10px)"),
+  // Open: the secret link lands in the address bar and the guide appears.
+  window: rise("window", 11000, 420, "translateY(10px)"),
+  address: rise("address", 12100, 300, "translateY(4px)"),
   secret: def("secret", [
     [11250, "opacity:0;transform:translate(var(--fx),var(--fy))"],
     [11400, "opacity:1;transform:translate(var(--fx),var(--fy))", GLIDE],
