@@ -84,49 +84,51 @@ export function SiteNav() {
   }
 
   return (
-    <header
-      className="site-nav"
-      data-visible={visible}
-      data-open={menuOpen}
-      aria-hidden={!visible}
-      inert={!visible}
-    >
-      <div className="site-nav__bar mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
-        <ScrollLink
-          targetId="top"
-          className="brand-mark shrink-0 text-base sm:text-lg"
-          onClick={closeMenu}
-        >
-          HelpmeSolder
-        </ScrollLink>
-        <button
-          type="button"
-          className="site-nav__toggle"
-          aria-expanded={menuOpen}
-          aria-controls={menuId}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span className="site-nav__toggle-lines" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
-        <nav id={menuId} aria-label="Sections" className="site-nav__links">
-          {LINKS.map((link) => (
-            <ScrollLink
-              key={link.id}
-              targetId={link.id}
-              className="site-nav__link"
-              current={active === link.id}
-              onClick={closeMenu}
-            >
-              {link.label}
-            </ScrollLink>
-          ))}
-        </nav>
-      </div>
+    <>
+      <header
+        className="site-nav"
+        data-visible={visible}
+        data-open={menuOpen}
+        aria-hidden={!visible}
+        inert={!visible}
+      >
+        <div className="site-nav__bar mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
+          <ScrollLink
+            targetId="top"
+            className="brand-mark shrink-0 text-base sm:text-lg"
+            onClick={closeMenu}
+          >
+            HelpmeSolder
+          </ScrollLink>
+          <button
+            type="button"
+            className="site-nav__toggle"
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="site-nav__toggle-lines" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+          <nav id={menuId} aria-label="Sections" className="site-nav__links">
+            {LINKS.map((link) => (
+              <ScrollLink
+                key={link.id}
+                targetId={link.id}
+                className="site-nav__link"
+                current={active === link.id}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </ScrollLink>
+            ))}
+          </nav>
+        </div>
+      </header>
       {menuOpen ? (
         <button
           type="button"
@@ -135,6 +137,6 @@ export function SiteNav() {
           onClick={closeMenu}
         />
       ) : null}
-    </header>
+    </>
   );
 }

@@ -906,7 +906,13 @@
 }
 
 .site-nav__dismiss {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
   display: none;
+  border: 0;
+  background: rgb(18 26 32 / 0.32);
+  cursor: pointer;
 }
 
 .site-nav__links {
@@ -984,6 +990,11 @@
 }
 
 @media (max-width: 767px) {
+  .site-nav {
+    background: var(--paper);
+    backdrop-filter: none;
+  }
+
   .site-nav__toggle {
     display: grid;
   }
@@ -998,9 +1009,9 @@
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 0.35rem 1.5rem 0.85rem;
-    background: color-mix(in oklab, var(--paper) 94%, transparent);
-    backdrop-filter: blur(10px);
+    padding: 0.25rem 1.5rem 1rem;
+    background: var(--paper);
+    backdrop-filter: none;
     border-bottom: 1px solid var(--line-strong);
   }
 
@@ -1008,14 +1019,8 @@
     display: flex;
   }
 
-  .site-nav[data-open="true"] .site-nav__dismiss {
+  .site-nav__dismiss {
     display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    border: 0;
-    background: rgb(18 26 32 / 0.28);
-    cursor: pointer;
   }
 
   .site-nav__link {
