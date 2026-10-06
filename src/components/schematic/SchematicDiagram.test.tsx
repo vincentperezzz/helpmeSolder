@@ -160,6 +160,26 @@ describe("SchematicDiagram", () => {
     expect(html).toContain("LED.");
     expect(html).toContain("Boxes with pin names are boards and modules.");
     expect(html).not.toContain("Battery.");
+    const legend = html.slice(html.indexOf("schematic-legend"));
+    const listClose = legend.indexOf("</ul>");
+    expect(listClose).toBeGreaterThan(0);
+    expect(legend.indexOf("Resistor.")).toBeLessThan(listClose);
+    expect(legend.indexOf("Boxes with pin names are boards and modules.")).toBeGreaterThan(listClose);
+    const withBreadboard = render(
+      guide(
+        [
+          ["mcu", ESP],
+          ["bb", "passive.breadboard.half"],
+        ],
+        [["mcu", "D4", "bb", "a5"]],
+      ),
+    );
+    const breadboardLegend = withBreadboard.slice(withBreadboard.indexOf("schematic-legend"));
+    const breadboardList = breadboardLegend.slice(0, breadboardLegend.indexOf("</ul>"));
+    expect(breadboardList).not.toContain("The breadboard is left out.");
+    expect(breadboardLegend.indexOf("The breadboard is left out. It only joins wires together.")).toBeGreaterThan(
+      breadboardLegend.indexOf("</ul>"),
+    );
   });
 
   it("keeps legend glyphs separate from the circuit drawing", () => {

@@ -5,19 +5,25 @@ import { createPortal } from "react-dom";
 import { SchematicDiagram } from "@/components/schematic/SchematicDiagram";
 import {
   DEFAULT_PRINT_OPTIONS,
+  DEFAULT_PRINT_PAPER,
   PRINT_GROUPS,
+  PRINT_PAPER_LABELS,
+  PRINT_PAPERS,
   PRINT_SECTION_LABELS,
   PRINT_SECTIONS,
+  printPictureWidth,
   readPrintOptions,
+  readPrintPaper,
   setAllPrintOptions,
   writePrintOptions,
+  writePrintPaper,
   type PrintOptions,
+  type PrintPaper,
   type PrintSection,
 } from "@/components/guide/view-storage";
 import type { Guide } from "@/lib/catalog/types";
 import "./print.css";
-
-const PRINT_PICTURE_WIDTH = 680;
+import "./print-page.css";
 
 const noopSubscribe = () => () => {};
 const canPrintNow = () => typeof window.print === "function";
@@ -26,15 +32,16 @@ const canPrintOnServer = () => true;
 type PrintState = {
   openedDetails: HTMLDetailsElement[];
   stampedEl: HTMLElement | null;
-  viewport: HTMLElement | null;
+  viewports: HTMLElement[];
   app: HTMLElement | null;
 };
 
-function applyPrintFlags(app: HTMLElement | null, options: PrintOptions) {
+function applyPrintFlags(app: HTMLElement | null, options: PrintOptions, paper: PrintPaper) {
   if (!app) return;
   for (const key of PRINT_SECTIONS) {
     app.setAttribute(`data-print-${key}`, options[key] ? "on" : "off");
   }
+  app.setAttribute("data-print-paper", paper);
 }
 
 function clearPrintFlags(app: HTMLElement | null) {
@@ -42,12 +49,13 @@ function clearPrintFlags(app: HTMLElement | null) {
   for (const key of PRINT_SECTIONS) {
     app.removeAttribute(`data-print-${key}`);
   }
+  app.removeAttribute("data-print-paper");
 }
 
-function preparePage(state: PrintState, options: PrintOptions) {
+function preparePage(state: PrintState, options: PrintOptions, paper: PrintPaper) {
   const app = document.querySelector<HTMLElement>(".guide-app");
   state.app = app;
-  applyPrintFlags(app, options);
+  applyPrintFlags(app, options, paper);
 
   const opened: HTMLDetailsElement[] = [];
   document.querySelectorAll<HTMLDetailsElement>(".guide-app details").forEach((el) => {
@@ -71,22 +79,27 @@ function preparePage(state: PrintState, options: PrintOptions) {
     state.stampedEl = stamp;
   }
 
-  if (!options.diagram) return;
+  const pictureWidth = printPictureWidth(paper);
+  scalePicture(state, pictureWidth);
+}
 
-  const viewport = document.querySelector<HTMLElement>(".guide-app .diagram-viewport");
-  const world = viewport?.querySelector<HTMLElement>(".diagram-world");
-  if (viewport && world && world.offsetWidth > 0 && world.offsetHeight > 0) {
+function scalePicture(state: PrintState, pictureWidth: number) {
+  const fitted: HTMLElement[] = [];
+  document.querySelectorAll<HTMLElement>(".guide-app .diagram-viewport").forEach((viewport) => {
+    const world = viewport.querySelector<HTMLElement>(".diagram-world");
+    if (!world || world.offsetWidth <= 0 || world.offsetHeight <= 0) return;
     const worldW = world.offsetWidth;
     const worldH = world.offsetHeight;
     const available =
-      viewport.clientWidth > 0 ? Math.min(viewport.clientWidth, PRINT_PICTURE_WIDTH) : PRINT_PICTURE_WIDTH;
+      viewport.clientWidth > 0 ? Math.min(viewport.clientWidth, pictureWidth) : pictureWidth;
     const scale = Math.min(1, available / worldW);
     viewport.style.setProperty("--print-world-w", String(worldW));
     viewport.style.setProperty("--print-world-h", String(worldH));
     viewport.style.setProperty("--print-scale", String(scale));
     viewport.style.setProperty("--print-ratio", `${worldW} / ${worldH}`);
-    state.viewport = viewport;
-  }
+    fitted.push(viewport);
+  });
+  state.viewports = fitted;
 }
 
 function restorePage(state: PrintState) {
@@ -96,11 +109,13 @@ function restorePage(state: PrintState) {
   state.openedDetails = [];
   state.stampedEl?.removeAttribute("data-printed");
   state.stampedEl = null;
-  state.viewport?.style.removeProperty("--print-world-w");
-  state.viewport?.style.removeProperty("--print-world-h");
-  state.viewport?.style.removeProperty("--print-scale");
-  state.viewport?.style.removeProperty("--print-ratio");
-  state.viewport = null;
+  state.viewports.forEach((viewport) => {
+    viewport.style.removeProperty("--print-world-w");
+    viewport.style.removeProperty("--print-world-h");
+    viewport.style.removeProperty("--print-scale");
+    viewport.style.removeProperty("--print-ratio");
+  });
+  state.viewports = [];
   clearPrintFlags(state.app);
   state.app = null;
 }
@@ -112,19 +127,29 @@ type PrintButtonProps = {
 export function PrintButton({ guide }: PrintButtonProps) {
   const guideId = guide?.id;
   const menuId = useId();
+  const paperName = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<PrintOptions>(DEFAULT_PRINT_OPTIONS);
+  const [paper, setPaper] = useState<PrintPaper>(DEFAULT_PRINT_PAPER);
   const [stage, setStage] = useState<HTMLElement | null>(null);
   const optionsRef = useRef(options);
+  const paperRef = useRef(paper);
 
   useEffect(() => {
     optionsRef.current = options;
   }, [options]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (guideId) setOptions(readPrintOptions(guideId));
+    paperRef.current = paper;
+  }, [paper]);
+
+  useEffect(() => {
+    if (guideId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setOptions(readPrintOptions(guideId));
+      setPaper(readPrintPaper(guideId));
+    }
     setStage(document.querySelector<HTMLElement>(".guide-app .ga-stage"));
   }, [guideId]);
 
@@ -132,13 +157,13 @@ export function PrintButton({ guide }: PrintButtonProps) {
   const stateRef = useRef<PrintState>({
     openedDetails: [],
     stampedEl: null,
-    viewport: null,
+    viewports: [],
     app: null,
   });
 
   useEffect(() => {
     const state = stateRef.current;
-    const before = () => preparePage(state, optionsRef.current);
+    const before = () => preparePage(state, optionsRef.current, paperRef.current);
     const after = () => restorePage(state);
     window.addEventListener("beforeprint", before);
     window.addEventListener("afterprint", after);
@@ -179,10 +204,15 @@ export function PrintButton({ guide }: PrintButtonProps) {
     commit({ ...options, [section]: value });
   }
 
+  function commitPaper(next: PrintPaper) {
+    setPaper(next);
+    if (guideId) writePrintPaper(guideId, next);
+  }
+
   function finalizePrint() {
     const state = stateRef.current;
     restorePage(state);
-    preparePage(state, optionsRef.current);
+    preparePage(state, optionsRef.current, paperRef.current);
     setOpen(false);
     window.print();
   }
@@ -211,6 +241,26 @@ export function PrintButton({ guide }: PrintButtonProps) {
             aria-label="Choose what to print"
             className="ga-print-menu"
           >
+            <fieldset className="ga-print-menu-group ga-print-paper">
+              <legend className="ga-print-menu-legend">Paper</legend>
+              {PRINT_PAPERS.map((id) => (
+                <label key={id} className="ga-print-menu-item">
+                  <input
+                    type="radio"
+                    name={paperName}
+                    className="ga-check-input"
+                    checked={paper === id}
+                    onChange={() => commitPaper(id)}
+                  />
+                  <span aria-hidden className="ga-check-box">
+                    <svg viewBox="0 0 12 12" focusable="false">
+                      <path d="M2.5 6.4 5 8.9l4.6-5.3" />
+                    </svg>
+                  </span>
+                  <span>{PRINT_PAPER_LABELS[id]}</span>
+                </label>
+              ))}
+            </fieldset>
             <div className="ga-print-menu-head">
               <p className="ga-print-menu-title">Include in print</p>
               <div className="ga-print-menu-actions">
