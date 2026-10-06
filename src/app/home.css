@@ -385,7 +385,7 @@
 
 .tool-row:hover .tool-row__text,
 .tool-row:focus-visible .tool-row__text {
-  transform: translateX(18px);
+  transform: translateX(24px);
 }
 
 .tool-row__body {
@@ -393,12 +393,47 @@
   font-size: 0.875rem;
   line-height: 1.45;
   color: var(--ink-soft);
-  transition: color 180ms ease-out;
 }
 
-.tool-row:hover .tool-row__body,
-.tool-row:focus-visible .tool-row__body {
-  color: var(--ink);
+.tool-row__desc {
+  display: inline;
+}
+
+.tool-row__char {
+  display: inline-block;
+  color: inherit;
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms ease-out;
+}
+
+.tool-row:hover .tool-row__char,
+.tool-row:focus-visible .tool-row__char {
+  animation: letter-wave 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--char-i, 0) * 12ms);
+}
+
+@keyframes letter-wave {
+  0% {
+    transform: translateY(0);
+    color: var(--ink-soft);
+  }
+  45% {
+    transform: translateY(-2.5px);
+    color: var(--copper);
+  }
+  100% {
+    transform: translateY(0);
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-row__char {
+    display: inline;
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 @media (min-width: 640px) {

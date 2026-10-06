@@ -10,6 +10,23 @@ const HEADING =
 const PROMPT_EXAMPLE =
   "Use HelpmeSolder to make me a guide for an ESP32 that reads a soil moisture sensor and sounds a buzzer when the soil is dry.";
 
+function WavedText({ text }: { text: string }) {
+  return (
+    <span className="tool-row__desc" aria-label={text}>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          className="tool-row__char"
+          style={{ "--char-i": i } as React.CSSProperties}
+          aria-hidden="true"
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function HomeSections() {
   return (
     <>
@@ -127,7 +144,9 @@ export function HomeSections() {
                         <span className="tool-row__arrow" aria-hidden="true">→</span>
                         <span className="tool-row__text">{tool.name}</span>
                       </dt>
-                      <dd className="tool-row__body">{tool.body}</dd>
+                      <dd className="tool-row__body">
+                        <WavedText text={tool.body} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
