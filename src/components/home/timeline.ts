@@ -7,16 +7,17 @@ export type BeatId = "ask" | "plan" | "wire" | "open";
 export interface Beat {
   id: BeatId;
   label: string;
+  /** Two short lines separated by a newline (rendered as two lines on wide screens). */
   hint: string;
   start: number;
   end: number;
 }
 
 export const BEATS: readonly Beat[] = [
-  { id: "ask", label: "Ask", hint: "Describe the build in a chat", start: 0, end: 3000 },
-  { id: "plan", label: "Plan", hint: "Tool calls are checked, unsafe pins bounce", start: 3000, end: 7800 },
-  { id: "wire", label: "Wire", hint: "Numbered wires draw one by one", start: 7800, end: 11200 },
-  { id: "open", label: "Open", hint: "A secret link opens the guide on your phone", start: 11200, end: LOOP_MS },
+  { id: "ask", label: "Ask", hint: "Describe the build in a chat.\nYour assistant takes it from there.", start: 0, end: 3000 },
+  { id: "plan", label: "Plan", hint: "Tool calls are checked, unsafe pins\nbounce back with a safe fix.", start: 3000, end: 7800 },
+  { id: "wire", label: "Wire", hint: "Numbered wires draw in one by one,\neach matching the checklist.", start: 7800, end: 11200 },
+  { id: "open", label: "Open", hint: "A secret link opens the guide in\nany browser, on any device.", start: 11200, end: LOOP_MS },
 ];
 
 /** Wrap any clock reading (the browser reports cumulative time) into one loop. */
