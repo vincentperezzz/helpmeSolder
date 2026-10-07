@@ -35,6 +35,7 @@ export function GuidePicture() {
   const wires = useMemo(() => buildSolderItems(EXAMPLE_GUIDE), []);
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [focusId, setFocusId] = useState<string | null>(null);
+  const [stuck, setStuck] = useState(false);
   const pictureRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
 
@@ -45,6 +46,7 @@ export function GuidePicture() {
     function pick(): void {
       frame = 0;
       if (!media.matches) {
+        setStuck(false);
         return;
       }
       const list = listRef.current;
@@ -55,7 +57,8 @@ export function GuidePicture() {
       const rows = [...list.querySelectorAll<HTMLElement>("[data-wire-id]")];
       const pic = picture?.getBoundingClientRect();
       const picBottom = pic?.bottom ?? NAV_TOP;
-      const stuck = (pic?.top ?? Infinity) <= NAV_TOP + 2;
+      const pinned = (pic?.top ?? Infinity) <= NAV_TOP + 2;
+      setStuck((current) => (current === pinned ? current : pinned));
       // ~70% down the screen (the line under the picture). Rows open there
       // so they stay expanded on the way up, with more time to read.
       const line = window.innerHeight * ACTIVATE_AT;
@@ -63,7 +66,7 @@ export function GuidePicture() {
       for (const row of rows) {
         const header = row.querySelector("button") ?? row;
         const rect = header.getBoundingClientRect();
-        if (stuck && rect.top < picBottom) {
+        if (pinned && rect.top < picBottom) {
           continue;
         }
         const head = rect.top + Math.min(rect.height, 56) / 2;
@@ -96,7 +99,7 @@ export function GuidePicture() {
 
   return (
     <div className="sample">
-      <InView className="sample__picture snippet-frame">
+      <InView className={`sample__picture snippet-frame${stuck ? " is-stuck" : ""}`}>
         <figure
           ref={pictureRef}
           className="sample__stage"
