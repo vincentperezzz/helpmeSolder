@@ -120,7 +120,7 @@ export function SiteNav() {
             </span>
           </button>
           <nav id={menuId} aria-label="Sections" className="site-nav__links">
-            <div className="site-nav__panel">
+            <div className="site-nav__panel px-6 sm:px-10">
               {LINKS.map((link) => (
                 <ScrollLink
                   key={link.id}

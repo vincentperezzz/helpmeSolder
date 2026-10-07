@@ -926,13 +926,17 @@
 
 .site-nav__toggle {
   display: none;
+  appearance: none;
+  -webkit-appearance: none;
   width: 2.75rem;
   height: 2.75rem;
   place-items: center;
   margin-right: -0.5rem;
   padding: 0;
   border: 0;
+  border-radius: 0;
   background: transparent;
+  box-shadow: none;
   color: var(--ink);
   cursor: pointer;
 }
@@ -1006,6 +1010,15 @@
     display: grid;
   }
 
+  /* Hang the sheet from the full header, not the padded bar. */
+  .site-nav__bar {
+    position: static;
+  }
+
+  .site-nav[data-open="true"] {
+    border-bottom-color: transparent;
+  }
+
   .site-nav__links {
     display: grid;
     grid-template-rows: 0fr;
@@ -1030,7 +1043,6 @@
     align-items: stretch;
     min-height: 0;
     overflow: hidden;
-    padding: 0 1.5rem;
   }
 
   .site-nav[data-open="true"] .site-nav__links {
