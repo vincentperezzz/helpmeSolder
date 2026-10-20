@@ -108,9 +108,18 @@
   line-height: 1.5;
 }
 
-.sample__link span {
+.sample__link-path {
   font-family: var(--font-mono), ui-monospace, monospace;
   overflow-wrap: anywhere;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--flux) 50%, transparent);
+  text-underline-offset: 0.18em;
+  transition: color 160ms ease-out;
+}
+
+.sample__link-path:hover {
+  color: var(--copper-deep);
 }
 
 .wire-list {

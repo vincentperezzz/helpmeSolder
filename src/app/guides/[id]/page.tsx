@@ -5,6 +5,7 @@ import { CatalogOverlay } from "@/components/CatalogOverlay";
 import { buildClientOverlay } from "@/lib/catalog/client-overlay";
 import { getActiveCatalog } from "@/lib/catalog/registry";
 import { ensureCatalog } from "@/lib/catalog/server";
+import { ensurePinnedExampleGuide, isPinnedGuideId } from "@/lib/guides/pinned-example";
 import { getGuide } from "@/lib/guides/repository";
 import { headers } from "next/headers";
 import { isLinkPreviewBot } from "@/lib/social/crawlers";
@@ -53,7 +54,12 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   try {
     const userAgent = (await headers()).get("user-agent");
-    guide = await getGuide(id, { touch: !isLinkPreviewBot(userAgent) });
+    const touch = !isLinkPreviewBot(userAgent);
+    guide = await getGuide(id, { touch });
+    if (!guide && isPinnedGuideId(id)) {
+      await ensurePinnedExampleGuide();
+      guide = await getGuide(id, { touch });
+    }
   } catch {
     loadError = "Could not load guide.";
   }

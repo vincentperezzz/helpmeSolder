@@ -1,4 +1,5 @@
 import { customAlphabet } from "nanoid";
+import { EXAMPLE_LINK_ID } from "@/lib/guides/pinned-example";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import type {
   Guide,
@@ -175,6 +176,7 @@ export async function deleteExpiredGuides(retentionDays: number): Promise<number
   const result = await supabase
     .from("guides")
     .delete()
+    .neq("id", EXAMPLE_LINK_ID)
     .or(
       `last_accessed_at.lt.${cutoff},and(last_accessed_at.is.null,updated_at.lt.${cutoff})`,
     )

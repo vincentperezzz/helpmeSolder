@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { pinName } from "@/components/guide/model";
 import { InView } from "@/components/InView";
@@ -183,7 +184,9 @@ export function GuidePicture() {
         </ol>
         <p className="sample__link">
           A wiring guide, not a working circuit. Your link looks like{" "}
-          <span>/guides/{EXAMPLE_LINK_ID}</span>
+          <Link href={`/guides/${EXAMPLE_LINK_ID}`} className="sample__link-path">
+            /guides/{EXAMPLE_LINK_ID}
+          </Link>
         </p>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { ScrollLink } from "@/components/ScrollLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { VisitBeacon } from "@/components/VisitBeacon";
+import { ensurePinnedExampleGuide } from "@/lib/guides/pinned-example";
 import "./home.css";
 
 function WorkbenchPlane() {
@@ -81,7 +82,13 @@ function WorkbenchPlane() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  try {
+    await ensurePinnedExampleGuide();
+  } catch (error) {
+    console.error("[guides] failed to ensure pinned example guide:", error);
+  }
+
   return (
     <main
       id="top"

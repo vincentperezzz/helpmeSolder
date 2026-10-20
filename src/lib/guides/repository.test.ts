@@ -11,7 +11,7 @@ function chain(op: string, resolver: () => unknown) {
     calls.push({ op: `${op}.${name}`, args });
     return builder;
   };
-  for (const name of ["eq", "or", "lt", "select", "single", "maybeSingle"]) {
+  for (const name of ["eq", "neq", "or", "lt", "select", "single", "maybeSingle"]) {
     builder[name] = handler(name);
   }
   builder.then = (resolve: (v: unknown) => unknown, reject: (e: unknown) => unknown) =>
@@ -111,6 +111,9 @@ describe("deleteExpiredGuides", () => {
     expect(cutoff).toBeLessThanOrEqual(Date.now() - 30 * DAY + 5);
     expect(filter).toContain("last_accessed_at.is.null");
     expect(filter).toContain("updated_at.lt.");
+    const neq = calls.find((c) => c.op === "delete.neq");
+    expect(neq?.args[0]).toBe("id");
+    expect(neq?.args[1]).toBe("h025arr103368ja5g303f0");
   });
 
   it("refuses to delete anything when the column is missing", async () => {
