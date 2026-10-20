@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 340" width="230" height="340" role="img" aria-label="ESP32-CAM top view (original simplified drawing, CC0)">
+  <title>ESP32-CAM top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Camera end at the top; 5V (left) and 3V3 (right) are the header pins nearest the camera.
+    Header order from the AI-Thinker ESP32-CAM pinout. IO16 (grey) is used by PSRAM;
+    VCC is a supply output whose voltage depends on a solder jumper.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="30" y="40" width="170" height="286" rx="6" fill="#111214" stroke="#000" stroke-width="2"/>
+  <rect class="metal" x="82" y="50" width="66" height="92" rx="3" opacity="0.85"/>
+  <rect x="90" y="56" width="50" height="50" rx="5" fill="#141414" stroke="#000"/>
+  <circle cx="115" cy="81" r="17" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="2"/>
+  <circle cx="115" cy="81" r="8" fill="#0b0f2e"/>
+  <circle cx="113" cy="79" r="3" fill="#3949ab"/>
+  <path d="M104 106 H126 V150 H104 Z" fill="#e0912e" stroke="#b86e12" stroke-width="0.8"/>
+  <rect x="80" y="150" width="70" height="26" rx="2" fill="#ece7dc" stroke="#9e9a90"/>
+  <rect x="86" y="158" width="58" height="10" fill="#2b2b2b"/>
+  <rect x="134" y="262" width="16" height="16" rx="2" fill="#fffde7" stroke="#bdb76b"/>
+  <circle cx="142" cy="270" r="4.5" fill="#fff59d"/>
+  <text class="label" x="142" y="290" text-anchor="middle" font-size="6">FLASH</text>
+  <text class="label" x="104" y="306" text-anchor="middle" font-size="12" font-weight="bold">ESP32-CAM</text>
+  <g id="headers">
+    <circle class="hole pwr" cx="44" cy="64" r="6"/>
+    <text class="pinlbl" x="55" y="67" text-anchor="start">5V</text>
+    <circle class="hole gnd" cx="44" cy="90" r="6"/>
+    <text class="pinlbl" x="55" y="93" text-anchor="start">GND</text>
+    <circle class="hole" cx="44" cy="116" r="6"/>
+    <text class="pinlbl" x="55" y="119" text-anchor="start">IO12</text>
+    <circle class="hole" cx="44" cy="142" r="6"/>
+    <text class="pinlbl" x="55" y="145" text-anchor="start">IO13</text>
+    <circle class="hole" cx="44" cy="168" r="6"/>
+    <text class="pinlbl" x="55" y="171" text-anchor="start">IO15</text>
+    <circle class="hole" cx="44" cy="194" r="6"/>
+    <text class="pinlbl" x="55" y="197" text-anchor="start">IO14</text>
+    <circle class="hole" cx="44" cy="220" r="6"/>
+    <text class="pinlbl" x="55" y="223" text-anchor="start">IO2</text>
+    <circle class="hole" cx="44" cy="246" r="6"/>
+    <text class="pinlbl" x="55" y="249" text-anchor="start">IO4</text>
+    <circle class="hole v3" cx="186" cy="64" r="6"/>
+    <text class="pinlbl" x="175" y="67" text-anchor="end">3V3</text>
+    <circle class="hole" cx="186" cy="90" r="6"/>
+    <text class="pinlbl muted" x="175" y="93" text-anchor="end">IO16</text>
+    <circle class="hole" cx="186" cy="116" r="6"/>
+    <text class="pinlbl" x="175" y="119" text-anchor="end">IO0</text>
+    <circle class="hole gnd" cx="186" cy="142" r="6"/>
+    <text class="pinlbl" x="175" y="145" text-anchor="end">GND</text>
+    <circle class="hole" cx="186" cy="168" r="6"/>
+    <text class="pinlbl" x="175" y="171" text-anchor="end">VCC</text>
+    <circle class="hole" cx="186" cy="194" r="6"/>
+    <text class="pinlbl" x="175" y="197" text-anchor="end">U0R</text>
+    <circle class="hole" cx="186" cy="220" r="6"/>
+    <text class="pinlbl" x="175" y="223" text-anchor="end">U0T</text>
+    <circle class="hole gnd" cx="186" cy="246" r="6"/>
+    <text class="pinlbl" x="175" y="249" text-anchor="end">GND</text>
+  </g>
+</svg>

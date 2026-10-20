@@ -1,3 +1,5 @@
+import { GENERATED_BOARD_ASSETS, GENERATED_MODULE_ASSETS } from "./part-drawings.generated";
+
 export type BoardTerminalPoint = { x: number; y: number };
 
 export type BoardAsset = {
@@ -7,6 +9,8 @@ export type BoardAsset = {
   caption: string;
   license: string;
   terminals?: Record<string, BoardTerminalPoint>;
+  /** Direction every wire leaves the terminals in, when one header row makes it ambiguous. */
+  pinExit?: { dx: number; dy: number };
 };
 
 export const boardAssets: Record<string, BoardAsset> = {
@@ -159,6 +163,7 @@ export const boardAssets: Record<string, BoardAsset> = {
       D23: { x: 190, y: 430 },
     },
   },
+  ...GENERATED_BOARD_ASSETS,
 };
 
 export const moduleAssets: Record<string, BoardAsset> = {
@@ -179,6 +184,7 @@ export const moduleAssets: Record<string, BoardAsset> = {
       do: { x: 120, y: 42 },
     },
   },
+  ...GENERATED_MODULE_ASSETS,
 };
 
 export function getBoardAsset(id: string): BoardAsset | undefined {

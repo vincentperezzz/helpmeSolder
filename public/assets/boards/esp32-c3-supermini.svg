@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 270" width="220" height="270" role="img" aria-label="ESP32-C3 SuperMini top view (original simplified drawing, CC0)">
+  <title>ESP32-C3 SuperMini top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    USB-C at the top, antenna at the bottom, eight pads down each side.
+    Pad order from the commonly printed SuperMini pinout; clones can differ, check the silkscreen.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="30" y="40" width="160" height="214" rx="6" fill="#1d2026" stroke="#0b0c0f" stroke-width="2"/>
+  <rect class="usb" x="90" y="30" width="40" height="18" rx="9"/>
+  <rect x="96" y="37" width="28" height="4" rx="2" fill="#78909c"/>
+
+  <rect class="chip" x="94" y="132" width="32" height="32" rx="2"/>
+  <text class="label" x="110" y="151" text-anchor="middle" font-size="6">C3</text>
+  <circle cx="110" cy="96" r="3" fill="#42a5f5"/>
+  <text class="label" x="110" y="112" text-anchor="middle" font-size="6">LED</text>
+  <rect x="96" y="234" width="28" height="10" rx="1.5" fill="#455a64"/>
+  <text class="label" x="110" y="228" text-anchor="middle" font-size="6">ANT</text>
+  <text class="label" x="110" y="196" text-anchor="middle" font-size="7">SuperMini</text>
+  <g id="headers">
+    <circle class="hole pwr" cx="44" cy="76" r="6"/>
+    <text class="pinlbl" x="55" y="79" text-anchor="start">5V</text>
+    <circle class="hole gnd" cx="44" cy="100" r="6"/>
+    <text class="pinlbl" x="55" y="103" text-anchor="start">GND</text>
+    <circle class="hole v3" cx="44" cy="124" r="6"/>
+    <text class="pinlbl" x="55" y="127" text-anchor="start">3V3</text>
+    <circle class="hole" cx="44" cy="148" r="6"/>
+    <text class="pinlbl" x="55" y="151" text-anchor="start">GPIO4</text>
+    <circle class="hole" cx="44" cy="172" r="6"/>
+    <text class="pinlbl" x="55" y="175" text-anchor="start">GPIO3</text>
+    <circle class="hole" cx="44" cy="196" r="6"/>
+    <text class="pinlbl" x="55" y="199" text-anchor="start">GPIO2</text>
+    <circle class="hole" cx="44" cy="220" r="6"/>
+    <text class="pinlbl" x="55" y="223" text-anchor="start">GPIO1</text>
+    <circle class="hole" cx="44" cy="244" r="6"/>
+    <text class="pinlbl" x="55" y="247" text-anchor="start">GPIO0</text>
+    <circle class="hole" cx="176" cy="76" r="6"/>
+    <text class="pinlbl" x="165" y="79" text-anchor="end">GPIO5</text>
+    <circle class="hole" cx="176" cy="100" r="6"/>
+    <text class="pinlbl" x="165" y="103" text-anchor="end">GPIO6</text>
+    <circle class="hole" cx="176" cy="124" r="6"/>
+    <text class="pinlbl" x="165" y="127" text-anchor="end">GPIO7</text>
+    <circle class="hole" cx="176" cy="148" r="6"/>
+    <text class="pinlbl" x="165" y="151" text-anchor="end">GPIO8</text>
+    <circle class="hole" cx="176" cy="172" r="6"/>
+    <text class="pinlbl" x="165" y="175" text-anchor="end">GPIO9</text>
+    <circle class="hole" cx="176" cy="196" r="6"/>
+    <text class="pinlbl" x="165" y="199" text-anchor="end">GPIO10</text>
+    <circle class="hole" cx="176" cy="220" r="6"/>
+    <text class="pinlbl" x="165" y="223" text-anchor="end">RX</text>
+    <circle class="hole" cx="176" cy="244" r="6"/>
+    <text class="pinlbl" x="165" y="247" text-anchor="end">TX</text>
+  </g>
+</svg>

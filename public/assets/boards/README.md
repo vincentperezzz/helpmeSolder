@@ -23,4 +23,18 @@ These seven SVGs are original clean 2D silhouettes (green PCB, USB, headers, rea
 | `esp8266-nodemcu.svg` | ESP8266 NodeMCU | MIT — see `LICENSE-MIT-squix78.txt` |
 | `esp32-devkit-v1-wokwi.svg` | ESP32 DevKit V1 | MIT — see `LICENSE-MIT-wokwi-elements.txt` |
 
+## Generated ESP32 variants (original)
+
+Drawn by `scripts/gen-part-drawings.mjs` (`npm run gen:part-drawings`), which also writes
+each drawing's wire terminals to `src/lib/catalog/part-drawings.generated.ts`. Edit the
+script, not the SVGs. Header orders follow each board's published pinout.
+
+| File | Board | License |
+|------|--------|---------|
+| `esp32-s3-devkitc.svg` | ESP32-S3-DevKitC-1 | Original CC0 for HelpmeSolder |
+| `esp32-c3-devkitm1.svg` | ESP32-C3-DevKitM-1 | Original CC0 for HelpmeSolder |
+| `esp32-c3-supermini.svg` | ESP32-C3 SuperMini | Original CC0 for HelpmeSolder |
+| `esp32-cam.svg` | ESP32-CAM (AI-Thinker) | Original CC0 for HelpmeSolder |
+| `xiao-esp32c3.svg` | Seeed Studio XIAO ESP32C3 | Original CC0 for HelpmeSolder |
+
 Catalog map: `src/lib/catalog/board-assets.ts`.

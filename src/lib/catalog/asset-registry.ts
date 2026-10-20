@@ -37,9 +37,10 @@
  *    arcs), "Display" (screen with text lines), "Output" (light bulb), "Input"
  *    (button), "Power" (battery), default "Basic part" (axial component).
  *    genericRef is "skeleton:<category>" in lower case, for example
- *    "skeleton:sensor". Today no catalog part needs it (every part has a
- *    Wokwi tag, SVG or built-in drawing), but it catches any new part added
- *    without art.
+ *    "skeleton:sensor". Many expansion parts still fall back to it; the
+ *    admin Assets page lists them.
+ *  - Original drawings for parts with no Wokwi element (RC522, ESP32 variants)
+ *    are generated with their terminals by scripts/gen-part-drawings.mjs.
  *  - PrepParts.tsx also renders PartGlyph (the same glyphs) as the Parts-tab
  *    placeholder when a part has no thumbnail (thumbnailSource "none").
  *  - Pico, Pico W, Pico 2, Pi 3B+, Pi 4B and Pi 5 each have their own
