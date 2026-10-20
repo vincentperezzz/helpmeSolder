@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 175" width="150" height="175" role="img" aria-label="BH1750 light sensor board top view (original simplified drawing, CC0)">
+  <title>BH1750 light sensor board top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    GY-302 board: clear BH1750 window, 3.3 V regulator, I2C pull-ups.
+    Header left to right: VCC, GND, SCL, SDA, ADDR (some boards order them differently or add DVI; check the silkscreen).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="14" width="110" height="148" rx="5" fill="#5e35b1" stroke="#311b92" stroke-width="2"/>
+  <circle cx="39" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="39" cy="34" r="5"/>
+  <text class="pinlbl" x="39" y="48" transform="rotate(90 39 48)" text-anchor="start" dy="2.7" font-size="7.5">VCC</text>
+  <circle cx="57" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="57" cy="34" r="5"/>
+  <text class="pinlbl" x="57" y="48" transform="rotate(90 57 48)" text-anchor="start" dy="2.7" font-size="7.5">GND</text>
+  <circle cx="75" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="75" cy="34" r="5"/>
+  <text class="pinlbl" x="75" y="48" transform="rotate(90 75 48)" text-anchor="start" dy="2.7" font-size="7.5">SCL</text>
+  <circle cx="93" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="93" cy="34" r="5"/>
+  <text class="pinlbl" x="93" y="48" transform="rotate(90 93 48)" text-anchor="start" dy="2.7" font-size="7.5">SDA</text>
+  <circle cx="111" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="111" cy="34" r="5"/>
+  <text class="pinlbl" x="111" y="48" transform="rotate(90 111 48)" text-anchor="start" dy="2.7" font-size="7.5">ADDR</text>
+  <rect x="80" y="100" width="30" height="22" rx="2" fill="#e3f2fd" stroke="#90a4ae" stroke-width="1"/>
+  <rect x="87" y="106" width="16" height="10" rx="1" fill="#3949ab"/>
+  <rect x="36" y="100" width="12" height="8" rx="1" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+  <rect x="37" y="108" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="41" y="108" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="45" y="108" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="38" y="97" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="44" y="97" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="34" y="120" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="48" y="120" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="34" y="132" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="48" y="132" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="100" y="134" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <text class="label" x="75" y="154" text-anchor="middle" font-size="7">GY-302</text>
+</svg>

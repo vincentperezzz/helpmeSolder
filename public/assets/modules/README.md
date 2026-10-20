@@ -34,3 +34,12 @@ Header at the **top** (low Y); probe tip toward high Y.
 | `@wokwi/elements` | MIT but **no soil element** | Skeleton fallback today |
 
 See also `../boards/ESP-SOIL-ASSETS.md` for BoardAssets / ModuleAssets wiring notes.
+
+## Generated drawings (all other modules)
+
+Every catalog module that has no Wokwi element is drawn from a real-product reference by
+`scripts/drawings/*.mjs` (one file per family: actuators, comms-ics, displays, passives,
+sensors, esp32-rfid) and written here as `public/assets/modules/<name>.svg`. Run
+`npm run gen:part-drawings` after editing a drawing; it also rewrites
+`src/lib/catalog/part-drawings.generated.ts`, which holds each drawing's size and the wire
+terminal of every catalog pin. Edit the scripts, not the SVGs. All are original, CC0.

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="PN532 NFC module top view (original simplified drawing, CC0)">
+  <title>PN532 NFC module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Red V3 board: printed antenna loop, PN532 chip, two-switch mode selector. All headers on the top edge.
+    Left to right: VCC GND SDA SCL | SCK MISO MOSI SS | IRQ RSTO. Mode switches: HSU 0 0, I2C 1 0, SPI 0 1 (as printed on the common board; check yours).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="10" width="300" height="280" rx="6" fill="#b71c1c" stroke="#7f0000" stroke-width="2"/>
+  <circle cx="24" cy="24" r="4.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="296" cy="24" r="4.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="24" cy="276" r="4.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="296" cy="276" r="4.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <rect x="41" y="23" width="76" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="52" cy="32" r="6"/>
+  <text class="pinlbl" x="52" y="46" transform="rotate(90 52 46)" text-anchor="start" dy="3" font-size="7.5">VCC</text>
+  <circle class="hole gnd" cx="70" cy="32" r="6"/>
+  <text class="pinlbl" x="70" y="46" transform="rotate(90 70 46)" text-anchor="start" dy="3" font-size="7.5">GND</text>
+  <circle class="hole" cx="88" cy="32" r="6"/>
+  <text class="pinlbl" x="88" y="46" transform="rotate(90 88 46)" text-anchor="start" dy="3" font-size="7.5">SDA</text>
+  <circle class="hole" cx="106" cy="32" r="6"/>
+  <text class="pinlbl" x="106" y="46" transform="rotate(90 106 46)" text-anchor="start" dy="3" font-size="7.5">SCL</text>
+  <rect x="123" y="23" width="76" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="134" cy="32" r="6"/>
+  <text class="pinlbl" x="134" y="46" transform="rotate(90 134 46)" text-anchor="start" dy="3" font-size="7.5">SCK</text>
+  <circle class="hole" cx="152" cy="32" r="6"/>
+  <text class="pinlbl" x="152" y="46" transform="rotate(90 152 46)" text-anchor="start" dy="3" font-size="7.5">MISO</text>
+  <circle class="hole" cx="170" cy="32" r="6"/>
+  <text class="pinlbl" x="170" y="46" transform="rotate(90 170 46)" text-anchor="start" dy="3" font-size="7.5">MOSI</text>
+  <circle class="hole" cx="188" cy="32" r="6"/>
+  <text class="pinlbl" x="188" y="46" transform="rotate(90 188 46)" text-anchor="start" dy="3" font-size="7.5">SS</text>
+  <rect x="203" y="23" width="40" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="214" cy="32" r="6"/>
+  <text class="pinlbl" x="214" y="46" transform="rotate(90 214 46)" text-anchor="start" dy="3" font-size="7.5">IRQ</text>
+  <circle class="hole" cx="232" cy="32" r="6"/>
+  <text class="pinlbl" x="232" y="46" transform="rotate(90 232 46)" text-anchor="start" dy="3" font-size="7.5">RSTO</text>
+  <g>
+    <rect class="chip" x="64" y="92" width="40" height="40" rx="1.5"/>
+    <circle cx="68" cy="96" r="1.3" fill="#555"/>
+    <text class="label" x="84" y="114" text-anchor="middle" font-size="7">PN532</text>
+  </g>
+  <rect class="metal" x="120" y="100" width="22" height="9" rx="1"/>
+  <rect class="smd" x="120" y="116" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="130" y="116" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="150" y="100" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="150" y="110" width="6" height="4" rx="0.6"/>
+  <rect x="196" y="92" width="42" height="24" rx="2" fill="#1565c0" stroke="#0d3c7a"/>
+  <rect x="202" y="98" width="12" height="12" rx="1" fill="#eceff1"/><rect x="202" y="98" width="12" height="6" fill="#90a4ae"/>
+  <rect x="220" y="98" width="12" height="12" rx="1" fill="#eceff1"/><rect x="220" y="104" width="12" height="6" fill="#90a4ae"/>
+  <text class="label" x="217" y="88" text-anchor="middle" style="font-size:5.5px">SEL  0   1</text>
+  <text class="label" x="256" y="100" text-anchor="start" style="font-size:6px">HSU 0 0</text>
+  <text class="label" x="256" y="109" text-anchor="start" style="font-size:6px">I2C 1 0</text>
+  <text class="label" x="256" y="118" text-anchor="start" style="font-size:6px">SPI 0 1</text>
+  <text class="label" x="217" y="132" text-anchor="middle" style="font-size:5.5px">ON</text>
+  <rect x="30" y="150" width="260" height="128" rx="12" fill="none" stroke="#ff9e9e" stroke-width="2.4"/>
+  <rect x="38" y="158" width="244" height="112" rx="10" fill="none" stroke="#ff9e9e" stroke-width="2.4"/>
+  <rect x="46" y="166" width="228" height="96" rx="8" fill="none" stroke="#ff9e9e" stroke-width="2.4"/>
+  <rect x="54" y="174" width="212" height="80" rx="6" fill="none" stroke="#ff9e9e" stroke-width="2.4"/>
+  <rect x="62" y="182" width="196" height="64" rx="4" fill="none" stroke="#ff9e9e" stroke-width="2.4"/>
+  <text class="label" x="160" y="212" text-anchor="middle" style="font-size:14px;fill:#ffebee">PN532</text>
+  <text class="label" x="160" y="228" text-anchor="middle" style="font-size:8px;fill:#ffcdd2">NFC / RFID MODULE V3</text>
+</svg>

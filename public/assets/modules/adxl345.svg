@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 160" width="190" height="160" role="img" aria-label="ADXL345 accelerometer board top view (original simplified drawing, CC0)">
+  <title>ADXL345 accelerometer board top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    GY-291 board: tiny ADXL345 chip, 3.3 V regulator, 8-pin header.
+    Header left to right: GND, VCC, CS, INT1, INT2, SDO, SDA, SCL.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="16" y="14" width="158" height="130" rx="5" fill="#1f56b0" stroke="#143c80" stroke-width="2"/>
+  <circle cx="32" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="32" cy="34" r="5"/>
+  <text class="pinlbl" x="32" y="48" transform="rotate(90 32 48)" text-anchor="start" dy="2.7" font-size="7.5">GND</text>
+  <circle cx="50" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="50" cy="34" r="5"/>
+  <text class="pinlbl" x="50" y="48" transform="rotate(90 50 48)" text-anchor="start" dy="2.7" font-size="7.5">VCC</text>
+  <circle cx="68" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="68" cy="34" r="5"/>
+  <text class="pinlbl" x="68" y="48" transform="rotate(90 68 48)" text-anchor="start" dy="2.7" font-size="7.5">CS</text>
+  <circle cx="86" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="86" cy="34" r="5"/>
+  <text class="pinlbl" x="86" y="48" transform="rotate(90 86 48)" text-anchor="start" dy="2.7" font-size="7.5">INT1</text>
+  <circle cx="104" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="104" cy="34" r="5"/>
+  <text class="pinlbl" x="104" y="48" transform="rotate(90 104 48)" text-anchor="start" dy="2.7" font-size="7.5">INT2</text>
+  <circle cx="122" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="122" cy="34" r="5"/>
+  <text class="pinlbl" x="122" y="48" transform="rotate(90 122 48)" text-anchor="start" dy="2.7" font-size="7.5">SDO</text>
+  <circle cx="140" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="140" cy="34" r="5"/>
+  <text class="pinlbl" x="140" y="48" transform="rotate(90 140 48)" text-anchor="start" dy="2.7" font-size="7.5">SDA</text>
+  <circle cx="158" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="158" cy="34" r="5"/>
+  <text class="pinlbl" x="158" y="48" transform="rotate(90 158 48)" text-anchor="start" dy="2.7" font-size="7.5">SCL</text>
+  <circle cx="30" cy="128" r="4" fill="#f5f5f5" stroke="#d9b44a" stroke-width="2.5"/>
+  <circle cx="160" cy="128" r="4" fill="#f5f5f5" stroke="#d9b44a" stroke-width="2.5"/>
+  <rect x="40" y="92" width="30" height="20" rx="1.5" fill="#1a1a1a" stroke="#000" stroke-width="1"/>
+  <circle cx="45" cy="97" r="1.3" fill="#777"/>
+  <text class="label" x="55" y="105" text-anchor="middle" font-size="4.8">ADXL345</text>
+  <rect x="86" y="96" width="12" height="8" rx="1" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+  <rect x="87" y="104" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="91" y="104" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="95" y="104" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="88" y="93" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="94" y="93" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="106" y="96" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="118" y="96" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="106" y="108" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="120" y="108" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <text class="label" x="128" y="126" text-anchor="middle" font-size="7">GY-291</text>
+</svg>

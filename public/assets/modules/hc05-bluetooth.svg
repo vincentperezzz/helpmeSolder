@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 336" width="160" height="336" role="img" aria-label="HC-05 Bluetooth module top view (original simplified drawing, CC0)">
+  <title>HC-05 Bluetooth module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    ZS-040 carrier with the silver radio module, KEY button and status LED.
+    Header left to right: STATE, RXD, TXD, GND, VCC, EN (KEY).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="10" width="140" height="316" rx="6" fill="#1d7a46" stroke="#0f5230" stroke-width="2"/>
+  <circle cx="22" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="138" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <rect x="24" y="25" width="112" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="35" cy="34" r="6"/>
+  <text class="pinlbl" x="35" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 35 48)">STATE</text>
+  <circle class="hole" cx="53" cy="34" r="6"/>
+  <text class="pinlbl" x="53" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 53 48)">RXD</text>
+  <circle class="hole" cx="71" cy="34" r="6"/>
+  <text class="pinlbl" x="71" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 71 48)">TXD</text>
+  <circle class="hole gnd" cx="89" cy="34" r="6"/>
+  <text class="pinlbl" x="89" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 89 48)">GND</text>
+  <circle class="hole" cx="107" cy="34" r="6"/>
+  <text class="pinlbl" x="107" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 107 48)">VCC</text>
+  <circle class="hole" cx="125" cy="34" r="6"/>
+  <text class="pinlbl" x="125" y="48" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 125 48)">EN/KEY</text>
+  <rect class="btn" x="108" y="96" width="20" height="14" rx="2"/>
+  <circle cx="118" cy="103" r="3.5" fill="#90a4ae"/>
+  <text class="label" x="118" y="121" text-anchor="middle" style="font-size:6px">KEY</text>
+  <rect x="24" y="130" width="112" height="190" rx="3" fill="#2f8f5c" stroke="#c9a227" stroke-width="1.5"/>
+  <rect x="21" y="146" width="6" height="8" fill="#d9b44a"/><rect x="133" y="146" width="6" height="8" fill="#d9b44a"/>
+  <rect x="21" y="162" width="6" height="8" fill="#d9b44a"/><rect x="133" y="162" width="6" height="8" fill="#d9b44a"/>
+  <rect x="21" y="178" width="6" height="8" fill="#d9b44a"/><rect x="133" y="178" width="6" height="8" fill="#d9b44a"/>
+  <rect x="21" y="194" width="6" height="8" fill="#d9b44a"/><rect x="133" y="194" width="6" height="8" fill="#d9b44a"/>
+  <rect x="21" y="210" width="6" height="8" fill="#d9b44a"/><rect x="133" y="210" width="6" height="8" fill="#d9b44a"/>
+  <rect x="21" y="226" width="6" height="8" fill="#d9b44a"/><rect x="133" y="226" width="6" height="8" fill="#d9b44a"/>
+  <rect class="metal" x="40" y="146" width="80" height="92" rx="2"/>
+  <text class="label" x="80" y="188" text-anchor="middle" style="font-size:13px;fill:#37474f">HC-05</text>
+  <text class="label" x="80" y="204" text-anchor="middle" style="font-size:7px;fill:#546e7a">Bluetooth</text>
+  <path d="M 46 252 L 114 252 L 114 258 L 46 258 L 46 264 L 114 264 L 114 270 L 46 270 L 46 276 L 114 276 L 114 282 L 46 282 L 46 288 L 114 288 L 114 294 L 46 294 L 46 300 L 114 300 L 114 306" fill="none" stroke="#d7ccc8" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="40" cy="245" r="3.2" fill="#e53935" stroke="#00000055" stroke-width="0.6"/>
+
+  <rect class="smd" x="100" y="242" width="6" height="4" rx="0.6"/>
+  <text class="label" x="80" y="316" text-anchor="middle" style="font-size:5.5px;fill:#a5d6a7">ZS-040</text>
+</svg>

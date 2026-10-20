@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 170" width="320" height="170" role="img" aria-label="LM386 amplifier module top view (original simplified drawing, CC0)">
+  <title>LM386 amplifier module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Blue board with the DIP-8 LM386, a big blue volume trimmer and two electrolytic caps.
+    Left header top to bottom: VCC GND IN. Right speaker pads: OUT and GND (the module's GND is shared; only the left GND is wired).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="10" width="300" height="150" rx="5" fill="#1f56b0" stroke="#143c80" stroke-width="2"/>
+  <circle class="hole" cx="28" cy="62" r="6"/>
+  <text class="pinlbl" x="40" y="65" text-anchor="start">VCC</text>
+  <circle class="hole gnd" cx="28" cy="82" r="6"/>
+  <text class="pinlbl" x="40" y="85" text-anchor="start">GND</text>
+  <circle class="hole" cx="28" cy="102" r="6"/>
+  <text class="pinlbl" x="40" y="105" text-anchor="start">IN</text>
+  <circle class="hole" cx="292" cy="72" r="6"/>
+  <text class="pinlbl" x="280" y="75" text-anchor="end">OUT</text>
+  <circle class="hole gnd" cx="292" cy="94" r="6"/>
+  <text class="pinlbl" x="280" y="97" text-anchor="end">GND</text>
+  <rect x="96" y="24" width="76" height="40" rx="3" fill="#1e88e5" stroke="#0d47a1" stroke-width="1.5"/>
+  <circle cx="132" cy="44" r="12" fill="#d4a84b" stroke="#8a6a1e" stroke-width="1.5"/>
+  <path d="M124 44 H140 M132 36 V52" stroke="#7a5a14" stroke-width="2"/>
+  <text class="label" x="184" y="48" font-size="6">VOL</text>
+  <rect class="metal" x="126" y="130" width="5" height="8"/>
+  <rect class="metal" x="126" y="86" width="5" height="8"/>
+  <rect class="metal" x="142" y="130" width="5" height="8"/>
+  <rect class="metal" x="142" y="86" width="5" height="8"/>
+  <rect class="metal" x="158" y="130" width="5" height="8"/>
+  <rect class="metal" x="158" y="86" width="5" height="8"/>
+  <rect class="metal" x="174" y="130" width="5" height="8"/>
+  <rect class="metal" x="174" y="86" width="5" height="8"/>
+  <rect class="chip" x="120" y="92" width="62" height="40" rx="2"/>
+  <path d="M120 104 a5 5 0 0 1 0 10" fill="#1f56b0"/>
+  <text class="label" x="153" y="115" text-anchor="middle" font-size="9" font-weight="bold">LM386</text>
+  <circle cx="232" cy="52" r="17" fill="#263238" stroke="#000" stroke-width="1.5"/>
+  <path d="M232 35 a17 17 0 0 1 0 34 z" fill="#78909c" opacity="0.7"/>
+  <circle cx="232" cy="108" r="17" fill="#263238" stroke="#000" stroke-width="1.5"/>
+  <path d="M232 91 a17 17 0 0 1 0 34 z" fill="#78909c" opacity="0.7"/>
+  <rect class="smd" x="72" y="128" width="9" height="5" rx="1"/>
+  <rect class="smd" x="86" y="128" width="9" height="5" rx="1"/>
+  <rect class="smd" x="196" y="76" width="9" height="5" rx="1"/>
+  <rect class="smd" x="196" y="136" width="9" height="5" rx="1"/>
+  <text class="label" x="153" y="150" text-anchor="middle" font-size="6">AUDIO AMP</text>
+</svg>

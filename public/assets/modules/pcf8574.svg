@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 270" width="200" height="270" role="img" aria-label="PCF8574 I2C expander module top view (original simplified drawing, CC0)">
+  <title>PCF8574 I2C expander module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Blue board: SOIC-16 chip, top header GND VCC SDA SCL INT, P0-P7 down the right edge, three address jumpers A0 A1 A2 at the bottom.
+    Each jumper has two pads (the upper one is the address line, the lower one ground); layouts vary between sellers.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="10" width="180" height="250" rx="6" fill="#1e56b4" stroke="#143c80" stroke-width="2"/>
+  <circle cx="22" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="178" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <rect x="35" y="23" width="92" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole gnd" cx="46" cy="32" r="6"/>
+  <text class="pinlbl" x="46" y="46" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 46 46)">GND</text>
+  <circle class="hole" cx="64" cy="32" r="6"/>
+  <text class="pinlbl" x="64" y="46" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 64 46)">VCC</text>
+  <circle class="hole" cx="82" cy="32" r="6"/>
+  <text class="pinlbl" x="82" y="46" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 82 46)">SDA</text>
+  <circle class="hole" cx="100" cy="32" r="6"/>
+  <text class="pinlbl" x="100" y="46" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 100 46)">SCL</text>
+  <circle class="hole" cx="118" cy="32" r="6"/>
+  <text class="pinlbl" x="118" y="46" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 118 46)">INT</text>
+  <rect x="163" y="41" width="18" height="144" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="172" cy="50" r="6"/>
+  <text class="pinlbl" x="158" y="53" text-anchor="end" style="font-size:7.5px">P0</text>
+  <circle class="hole" cx="172" cy="68" r="6"/>
+  <text class="pinlbl" x="158" y="71" text-anchor="end" style="font-size:7.5px">P1</text>
+  <circle class="hole" cx="172" cy="86" r="6"/>
+  <text class="pinlbl" x="158" y="89" text-anchor="end" style="font-size:7.5px">P2</text>
+  <circle class="hole" cx="172" cy="104" r="6"/>
+  <text class="pinlbl" x="158" y="107" text-anchor="end" style="font-size:7.5px">P3</text>
+  <circle class="hole" cx="172" cy="122" r="6"/>
+  <text class="pinlbl" x="158" y="125" text-anchor="end" style="font-size:7.5px">P4</text>
+  <circle class="hole" cx="172" cy="140" r="6"/>
+  <text class="pinlbl" x="158" y="143" text-anchor="end" style="font-size:7.5px">P5</text>
+  <circle class="hole" cx="172" cy="158" r="6"/>
+  <text class="pinlbl" x="158" y="161" text-anchor="end" style="font-size:7.5px">P6</text>
+  <circle class="hole" cx="172" cy="176" r="6"/>
+  <text class="pinlbl" x="158" y="179" text-anchor="end" style="font-size:7.5px">P7</text>
+  <rect class="chip" x="52" y="108" width="72" height="30" rx="2"/>
+  <circle cx="58" cy="114" r="1.5" fill="#666"/>
+  <rect x="57" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="57" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="65.5" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="65.5" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="74" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="74" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="82.5" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="82.5" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="91" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="91" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="99.5" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="99.5" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="108" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="108" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <rect x="116.5" y="104" width="2.6" height="4" fill="#b0bec5"/><rect x="116.5" y="138" width="2.6" height="4" fill="#b0bec5"/>
+  <text class="label" x="88" y="126" text-anchor="middle" style="font-size:7px">PCF8574</text>
+  <circle cx="60" cy="164" r="3.2" fill="#ef5350" stroke="#00000055" stroke-width="0.6"/>
+  <text class="label" x="60" y="175" text-anchor="middle" font-size="6">PWR</text>
+  <rect class="smd" x="100" y="160" width="8" height="4" rx="0.6"/>
+  <rect class="smd" x="114" y="160" width="8" height="4" rx="0.6"/>
+  <rect class="smd" x="100" y="168" width="8" height="4" rx="0.6"/>
+  <rect class="smd" x="114" y="168" width="8" height="4" rx="0.6"/>
+  <text class="label" x="30" y="192" text-anchor="start" style="font-size:6px">ADDR</text>
+  <text class="label" x="42" y="202" text-anchor="middle" style="font-size:7.5px">A0</text>
+  <rect x="34" y="205" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect x="34" y="219" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect class="smd" x="54" y="208" width="5" height="3" rx="0.6"/>
+  <text class="label" x="88" y="202" text-anchor="middle" style="font-size:7.5px">A1</text>
+  <rect x="80" y="205" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect x="80" y="219" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect class="smd" x="100" y="208" width="5" height="3" rx="0.6"/>
+  <text class="label" x="134" y="202" text-anchor="middle" style="font-size:7.5px">A2</text>
+  <rect x="126" y="205" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect x="126" y="219" width="16" height="10" rx="2" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.6"/>
+  <rect class="smd" x="146" y="208" width="5" height="3" rx="0.6"/>
+  <text class="label" x="100" y="246" text-anchor="middle" style="font-size:7px;fill:#cfd8dc">I2C EXPANDER</text>
+</svg>

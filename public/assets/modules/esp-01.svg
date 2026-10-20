@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 276" width="144" height="276" role="img" aria-label="ESP-01 ESP8266 module top view (original simplified drawing, CC0)">
+  <title>ESP-01 ESP8266 module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Black AI-Thinker style board: PCB antenna at the top, silver ESP8266 shield, two LEDs, 2 x 4 header at the bottom edge.
+    Header rows left to right: bottom (outer) row GND GPIO2 GPIO0 RX; inner row TX CH_PD RST VCC. Which row is outer varies by how the module is held, double check against your board.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="8" y="8" width="128" height="260" rx="5" fill="#1c1c1c" stroke="#555" stroke-width="2"/>
+  <circle cx="20" cy="20" r="3" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="124" cy="20" r="3" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <path d="M 24 22 L 120 22 L 120 27.5 L 24 27.5 L 24 33 L 120 33 L 120 38.5 L 24 38.5 L 24 44 L 120 44 L 120 49.5 L 24 49.5 L 24 55 L 120 55 L 120 60.5 L 24 60.5 L 24 66" fill="none" stroke="#c9a227" stroke-width="2.4" stroke-linejoin="round"/>
+  <rect class="metal" x="20" y="76" width="84" height="64" rx="2"/>
+  <rect x="25" y="81" width="74" height="54" rx="1" fill="none" stroke="#78909c" stroke-width="0.8"/>
+  <text class="label" x="62" y="106" text-anchor="middle" style="font-size:11px;fill:#37474f">ESP-01</text>
+  <text class="label" x="62" y="120" text-anchor="middle" style="font-size:6.5px;fill:#546e7a">ESP8266</text>
+  <rect class="chip" x="110" y="118" width="20" height="20" rx="1.5"/>
+  <text class="label" x="120" y="130" text-anchor="middle" style="font-size:4.5px">FLASH</text>
+  <circle cx="118" cy="88" r="3.2" fill="#e53935" stroke="#00000055" stroke-width="0.6"/>
+
+  <circle cx="118" cy="102" r="3.2" fill="#42a5f5" stroke="#00000055" stroke-width="0.6"/>
+
+  <text class="label" x="129" y="90" text-anchor="end" style="font-size:4.5px">PWR</text>
+  <rect x="28" y="189" width="88" height="44" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="39" cy="200" r="6"/>
+  <circle class="hole gnd" cx="39" cy="222" r="6"/>
+  <text class="pinlbl" x="39" y="186" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 39 186)">TX</text>
+  <text class="pinlbl" x="39" y="236" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 39 236)">GND</text>
+  <circle class="hole" cx="61" cy="200" r="6"/>
+  <circle class="hole" cx="61" cy="222" r="6"/>
+  <text class="pinlbl" x="61" y="186" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 61 186)">CH_PD</text>
+  <text class="pinlbl" x="61" y="236" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 61 236)">GPIO2</text>
+  <circle class="hole" cx="83" cy="200" r="6"/>
+  <circle class="hole" cx="83" cy="222" r="6"/>
+  <text class="pinlbl" x="83" y="186" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 83 186)">RST</text>
+  <text class="pinlbl" x="83" y="236" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 83 236)">GPIO0</text>
+  <circle class="hole" cx="105" cy="200" r="6"/>
+  <circle class="hole" cx="105" cy="222" r="6"/>
+  <text class="pinlbl" x="105" y="186" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 105 186)">VCC</text>
+  <text class="pinlbl" x="105" y="236" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 105 236)">RX</text>
+</svg>

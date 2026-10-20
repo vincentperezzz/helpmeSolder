@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 320" width="180" height="320" role="img" aria-label="SPST toggle switch side view (original simplified drawing, CC0)">
+  <title>SPST toggle switch side view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Metal toggle: lever, threaded bushing with nut, black body and two solder lugs with holes.
+    A 3-lug version has the same two outer lugs; the third is not used for SPST.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <path d="M48 214 H64 V308 H48 Z" fill="#cfd8dc" stroke="#607d8b" stroke-width="2"/>
+  <circle cx="56" cy="296" r="4.5" fill="#f5f5f5" stroke="#546e7a" stroke-width="1.5"/>
+  <path d="M116 214 H132 V308 H116 Z" fill="#cfd8dc" stroke="#607d8b" stroke-width="2"/>
+  <circle cx="124" cy="296" r="4.5" fill="#f5f5f5" stroke="#546e7a" stroke-width="1.5"/>
+  <path d="M84 70 L104 16" stroke="#607d8b" stroke-width="16" stroke-linecap="round"/>
+  <path d="M84 70 L104 16" stroke="#eceff1" stroke-width="11" stroke-linecap="round"/>
+  <rect x="66" y="64" width="48" height="52" rx="3" fill="#b0bec5" stroke="#546e7a" stroke-width="2"/>
+  <path d="M66 78 H114 M66 90 H114 M66 102 H114" stroke="#78909c" stroke-width="1.5"/>
+  <path d="M52 116 H128 V132 H52 Z" fill="#cfd8dc" stroke="#546e7a" stroke-width="2"/>
+  <rect x="34" y="132" width="112" height="82" rx="4" fill="#212121" stroke="#000" stroke-width="2"/>
+  <text x="90" y="176" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#b0bec5">ON-OFF</text>
+  <text x="90" y="194" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#78909c">SPST 6A</text>
+  <rect x="49.2" y="254" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="56" y="265" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">1</text>
+  <rect x="117.2" y="254" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="124" y="265" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">2</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="300" height="150" role="img" aria-label="MT3608 boost converter module top view (original simplified drawing, CC0)">
+  <title>MT3608 boost converter module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Small blue board: IN+ / IN- pads at the left, OUT+ / OUT- at the right.
+    MT3608 chip (marked B628), 4R7 SMD inductor, SS34 diode, blue multi-turn trimmer sets the output voltage.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="2" y="2" width="296" height="146" rx="6" fill="#1f56b0" stroke="#143c80" stroke-width="2"/>
+  <circle cx="20" cy="26" r="10" fill="#d9b44a" stroke="#a07d1c" stroke-width="1"/>
+  <circle class="hole" cx="20" cy="26" r="5"/>
+  <text x="35" y="29" text-anchor="start" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1" font-weight="bold">IN+</text>
+  <circle cx="20" cy="124" r="10" fill="#d9b44a" stroke="#a07d1c" stroke-width="1"/>
+  <circle class="hole" cx="20" cy="124" r="5"/>
+  <text x="35" y="127" text-anchor="start" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1" font-weight="bold">IN-</text>
+  <circle cx="280" cy="26" r="10" fill="#d9b44a" stroke="#a07d1c" stroke-width="1"/>
+  <circle class="hole" cx="280" cy="26" r="5"/>
+  <text x="265" y="29" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1" font-weight="bold">OUT+</text>
+  <circle cx="280" cy="124" r="10" fill="#d9b44a" stroke="#a07d1c" stroke-width="1"/>
+  <circle class="hole" cx="280" cy="124" r="5"/>
+  <text x="265" y="127" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1" font-weight="bold">OUT-</text>
+  <rect class="chip" x="62" y="60" width="22" height="16" rx="1.5"/>
+  <text x="73" y="71" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="5" fill="#eceff1">B628</text>
+  <rect x="96" y="44" width="56" height="50" rx="3" fill="#2b2b2b" stroke="#000" stroke-width="1.5"/>
+  <rect x="102" y="50" width="44" height="38" rx="2" fill="#3a3a3a"/>
+  <text x="124" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#eceff1" font-weight="bold">4R7</text>
+  <rect x="196" y="52" width="32" height="30" rx="2" fill="#4a8fdd" stroke="#0d3c7a" stroke-width="1.5"/>
+  <circle cx="212" cy="67" r="9" fill="#eceff1" stroke="#78909c" stroke-width="1.2"/>
+  <path d="M205 67 H219" stroke="#546e7a" stroke-width="2"/>
+  <rect x="166" y="98" width="24" height="12" fill="#1a1a1a" rx="1"/>
+  <rect x="184" y="98" width="4" height="12" fill="#cfd8dc" />
+  <rect x="160" y="40" width="14" height="8" fill="#d7ccc8" stroke="#6d4c41"/>
+  <rect x="58" y="100" width="14" height="8" fill="#d7ccc8" stroke="#6d4c41"/>
+  <rect x="238" y="98" width="14" height="8" fill="#d7ccc8" stroke="#6d4c41"/>
+  <text x="150" y="138" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#eceff1">MT3608 2A BOOST</text>
+</svg>

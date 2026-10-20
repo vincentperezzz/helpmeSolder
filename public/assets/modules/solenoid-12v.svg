@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 148" width="262" height="148" role="img" aria-label="12 V open-frame solenoid top view (original simplified drawing, CC0)">
+  <title>12 V open-frame solenoid top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Open-frame solenoid: steel frame, copper coil on a black bobbin, plunger on the right, two wire tails on the left.
+    Terminals: V+ (red, top) and SW (black, bottom). The coil has no polarity but the app keeps V+ on the supply.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="52" y="22" width="132" height="96" rx="6" fill="#b0bec5" stroke="#607d8b" stroke-width="2"/>
+  <rect x="60" y="30" width="116" height="80" rx="3" fill="#78909c" opacity="0.5"/>
+  <rect x="64" y="34" width="104" height="72" rx="4" fill="#1b1b1b"/>
+  <rect x="68" y="38" width="96" height="64" rx="2" fill="#c77b2a" stroke="#8a4f12"/>
+  <path d="M72 40 V100 M80 40 V100 M88 40 V100 M96 40 V100 M104 40 V100 M112 40 V100 M120 40 V100 M128 40 V100 M136 40 V100 M144 40 V100 M152 40 V100 M160 40 V100" stroke="#8a4f12" stroke-width="1" opacity="0.7"/>
+  <rect class="metal" x="170" y="58" width="82" height="24" rx="3"/>
+  <circle cx="240" cy="70" r="5" fill="#f5f5f5" stroke="#607d8b" stroke-width="1.5"/>
+  <rect x="176" y="52" width="6" height="36" rx="2" fill="#546e7a"/>
+  <text x="116" y="136" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#37474f">12V DC</text>
+  <path d="M68 56 C40 56 36 44 10 44" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M68 56 C40 56 36 44 10 44" fill="none" stroke="#d32f2f" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="10" cy="44" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+  <path d="M68 86 C40 86 36 96 10 96" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M68 86 C40 86 36 96 10 96" fill="none" stroke="#212121" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="10" cy="96" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+</svg>

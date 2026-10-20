@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 146" width="140" height="146" role="img" aria-label="QMC5883L compass board GY-271 top view (original simplified drawing, CC0)">
+  <title>QMC5883L compass board GY-271 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    GY-271 board: tiny magnetometer chip, 3.3 V regulator, header.
+    Header left to right: VCC, GND, SCL, SDA, DRDY (a 5-pin variant; some GY-271 boards have an extra pin or a different order).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="15" y="14" width="110" height="118" rx="5" fill="#1f56b0" stroke="#143c80" stroke-width="2"/>
+  <circle cx="34" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="34" cy="34" r="5"/>
+  <text class="pinlbl" x="34" y="48" transform="rotate(90 34 48)" text-anchor="start" dy="2.7" font-size="7.5">VCC</text>
+  <circle cx="52" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="52" cy="34" r="5"/>
+  <text class="pinlbl" x="52" y="48" transform="rotate(90 52 48)" text-anchor="start" dy="2.7" font-size="7.5">GND</text>
+  <circle cx="70" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="70" cy="34" r="5"/>
+  <text class="pinlbl" x="70" y="48" transform="rotate(90 70 48)" text-anchor="start" dy="2.7" font-size="7.5">SCL</text>
+  <circle cx="88" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="88" cy="34" r="5"/>
+  <text class="pinlbl" x="88" y="48" transform="rotate(90 88 48)" text-anchor="start" dy="2.7" font-size="7.5">SDA</text>
+  <circle cx="106" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="106" cy="34" r="5"/>
+  <text class="pinlbl" x="106" y="48" transform="rotate(90 106 48)" text-anchor="start" dy="2.7" font-size="7.5">DRDY</text>
+  <rect x="60" y="92" width="20" height="20" rx="1.5" fill="#1a1a1a" stroke="#000" stroke-width="1"/>
+  <circle cx="65" cy="97" r="1.2" fill="#777"/>
+  <text class="label" x="70" y="105" text-anchor="middle" font-size="5.5">5883</text>
+  <rect x="28" y="94" width="12" height="8" rx="1" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+  <rect x="29" y="102" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="33" y="102" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="37" y="102" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="30" y="91" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="36" y="91" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="94" y="90" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="94" y="100" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="100" y="110" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="26" y="114" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <text class="label" x="70" y="125" text-anchor="middle" font-size="6.5">GY-271</text>
+</svg>

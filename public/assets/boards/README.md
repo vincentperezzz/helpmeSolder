@@ -38,3 +38,10 @@ script, not the SVGs. Header orders follow each board's published pinout.
 | `xiao-esp32c3.svg` | Seeed Studio XIAO ESP32C3 | Original CC0 for HelpmeSolder |
 
 Catalog map: `src/lib/catalog/board-assets.ts`.
+
+## Generated board drawings
+
+The boards with no Wokwi element (Arduino Leonardo, Micro, Nano Every, Pro Mini, D1 Mini,
+Pi Zero 2 W, Pico 2 W, Teensy 4.0, Blue Pill, Digispark, micro:bit v2, XIAO RP2040 and the
+ESP32 variants above) are drawn by `scripts/drawings/boards.mjs` and `esp32-rfid.mjs`. Same
+rules as the modules: edit the script, run `npm run gen:part-drawings`.

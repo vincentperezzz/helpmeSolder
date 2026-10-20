@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351 268" width="351" height="268" role="img" aria-label="Graphic LCD 128x64 ST7920, front view">
+  <title>Graphic LCD 128x64 ST7920, front view</title>
+  <!--
+    12864 ST7920 LCD, about 93 x 70 mm green board with yellow-green glass, about 3.6 units per mm.
+    20-pin header along the top, pin 1 at the left: GND, VCC, V0, RS, R/W, E, DB0-DB7, PSB, NC, RST, VOUT, BLA, BLK. DB0-DB7, NC and VOUT are drawn but not wired in serial mode. Blue-backlit versions use a blue board.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="8" y="8" width="335" height="252" rx="4" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
+  <circle cx="20" cy="20" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="331" cy="20" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="20" cy="248" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="331" cy="248" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <rect x="76.60000000000001" y="15" width="196.79999999999998" height="18" rx="2" fill="#1b1b1b"/>
+  <circle class="hole gnd" cx="87.6" cy="24" r="3.4"/>
+  <text class="pinlbl" x="87.6" y="38" transform="rotate(90 87.6 38)" text-anchor="start" dy="3" font-size="7.5">GND</text>
+  <circle class="hole" cx="96.8" cy="24" r="3.4"/>
+  <text class="pinlbl" x="96.8" y="38" transform="rotate(90 96.8 38)" text-anchor="start" dy="3" font-size="7.5">VCC</text>
+  <circle class="hole" cx="106" cy="24" r="3.4"/>
+  <text class="pinlbl" x="106" y="38" transform="rotate(90 106 38)" text-anchor="start" dy="3" font-size="7.5">V0</text>
+  <circle class="hole" cx="115.2" cy="24" r="3.4"/>
+  <text class="pinlbl" x="115.2" y="38" transform="rotate(90 115.2 38)" text-anchor="start" dy="3" font-size="7.5">RS</text>
+  <circle class="hole" cx="124.4" cy="24" r="3.4"/>
+  <text class="pinlbl" x="124.4" y="38" transform="rotate(90 124.4 38)" text-anchor="start" dy="3" font-size="7.5">RW</text>
+  <circle class="hole" cx="133.6" cy="24" r="3.4"/>
+  <text class="pinlbl" x="133.6" y="38" transform="rotate(90 133.6 38)" text-anchor="start" dy="3" font-size="7.5">E</text>
+  <circle class="hole" cx="142.8" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="142.8" y="38" transform="rotate(90 142.8 38)" text-anchor="start" dy="3" font-size="7.5">DB0</text>
+  <circle class="hole" cx="152" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="152" y="38" transform="rotate(90 152 38)" text-anchor="start" dy="3" font-size="7.5">DB1</text>
+  <circle class="hole" cx="161.2" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="161.2" y="38" transform="rotate(90 161.2 38)" text-anchor="start" dy="3" font-size="7.5">DB2</text>
+  <circle class="hole" cx="170.4" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="170.4" y="38" transform="rotate(90 170.4 38)" text-anchor="start" dy="3" font-size="7.5">DB3</text>
+  <circle class="hole" cx="179.6" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="179.6" y="38" transform="rotate(90 179.6 38)" text-anchor="start" dy="3" font-size="7.5">DB4</text>
+  <circle class="hole" cx="188.8" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="188.8" y="38" transform="rotate(90 188.8 38)" text-anchor="start" dy="3" font-size="7.5">DB5</text>
+  <circle class="hole" cx="198" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="198" y="38" transform="rotate(90 198 38)" text-anchor="start" dy="3" font-size="7.5">DB6</text>
+  <circle class="hole" cx="207.2" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="207.2" y="38" transform="rotate(90 207.2 38)" text-anchor="start" dy="3" font-size="7.5">DB7</text>
+  <circle class="hole" cx="216.4" cy="24" r="3.4"/>
+  <text class="pinlbl" x="216.4" y="38" transform="rotate(90 216.4 38)" text-anchor="start" dy="3" font-size="7.5">PSB</text>
+  <circle class="hole" cx="225.6" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="225.6" y="38" transform="rotate(90 225.6 38)" text-anchor="start" dy="3" font-size="7.5">NC</text>
+  <circle class="hole" cx="234.8" cy="24" r="3.4"/>
+  <text class="pinlbl" x="234.8" y="38" transform="rotate(90 234.8 38)" text-anchor="start" dy="3" font-size="7.5">RST</text>
+  <circle class="hole" cx="244" cy="24" r="3.4"/>
+  <text class="pinlbl muted" x="244" y="38" transform="rotate(90 244 38)" text-anchor="start" dy="3" font-size="7.5">VOUT</text>
+  <circle class="hole" cx="253.2" cy="24" r="3.4"/>
+  <text class="pinlbl" x="253.2" y="38" transform="rotate(90 253.2 38)" text-anchor="start" dy="3" font-size="7.5">BLA</text>
+  <circle class="hole" cx="262.4" cy="24" r="3.4"/>
+  <text class="pinlbl" x="262.4" y="38" transform="rotate(90 262.4 38)" text-anchor="start" dy="3" font-size="7.5">BLK</text>
+  <rect x="296" y="34" width="20" height="14" rx="1.5" fill="#1565c0" stroke="#0b3d82"/>
+  <circle cx="306" cy="41" r="4" fill="#cfd8dc" stroke="#546e7a"/>
+  <text class="label" x="306" y="58" text-anchor="middle" font-size="6.5" style="fill:#eceff1" opacity="1">V0</text>
+  <rect x="40" y="76" width="271" height="170" rx="2" fill="#9aa0a6" stroke="#5f6368" stroke-width="1.2"/>
+  <rect x="52" y="86" width="247" height="150" fill="#2b2f21" stroke="#15170f"/>
+  <rect x="68" y="100" width="215" height="108" fill="#c3d14a" stroke="#6f7a1c" stroke-width="1"/>
+  <text x="175" y="146" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" fill="#2a3008" opacity="0.85">128 x 64</text>
+  <text x="175" y="170" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="#2a3008" opacity="0.7">ST7920</text>
+  <polygon points="68,208 175.5,100 222.8,100 115.3,208" fill="#fff" opacity="0.07"/>
+  <polygon points="132.5,208 229.3,100 244.3,100 147.6,208" fill="#fff" opacity="0.05"/>
+</svg>

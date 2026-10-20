@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 310" width="200" height="310" role="img" aria-label="Alarm siren top view (original simplified drawing, CC0)">
+  <title>Alarm siren top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Black horn siren: flared horn seen from the front, box behind it with two mounting ears, red (V+) and black (GND) leads out the back.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="180" width="160" height="50" rx="6" fill="#263238" stroke="#000" stroke-width="2"/>
+  <circle cx="34" cy="205" r="6" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <circle cx="166" cy="205" r="6" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <text x="100" y="208" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#eceff1">12V  110dB</text>
+  <circle cx="100" cy="100" r="84" fill="#1b2428" stroke="#000" stroke-width="2"/>
+  <circle cx="100" cy="100" r="70" fill="#2f3b41" stroke="#0e1417"/>
+  <circle cx="100" cy="100" r="52" fill="#263238" stroke="#0e1417"/>
+  <circle cx="100" cy="100" r="34" fill="#1b2428" stroke="#0e1417"/>
+  <circle cx="100" cy="100" r="16" fill="#455a64" stroke="#0e1417"/>
+  <path d="M52 62 A60 60 0 0 1 112 42" fill="none" stroke="#90a4ae" stroke-width="4" opacity="0.45" stroke-linecap="round"/>
+  <rect x="86" y="228" width="28" height="9" rx="3" fill="#111"/>
+  <path d="M94 234 C94 258 82 268 82 296" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M94 234 C94 258 82 268 82 296" fill="none" stroke="#d32f2f" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="82" cy="296" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+  <path d="M106 234 C106 258 118 268 118 296" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M106 234 C106 258 118 268 118 296" fill="none" stroke="#212121" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="118" cy="296" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+</svg>

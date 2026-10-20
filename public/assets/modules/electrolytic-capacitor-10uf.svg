@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="200" height="180" role="img" aria-label="Electrolytic capacitor 10µF (original simplified drawing, CC0)">
+  <title>Electrolytic capacitor 10µF (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Radial electrolytic can: the white stripe with minus signs marks the negative leg; the + leg is longer.
+    Leg 1 = + (long leg, right), leg 2 = - (stripe side, left). Value and voltage printed on the can.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <line x1="84" y1="92" x2="84" y2="158" stroke="#607d8b" stroke-width="6" stroke-linecap="round"/>
+  <line x1="84" y1="92" x2="84" y2="158" stroke="#cfd8dc" stroke-width="4" stroke-linecap="round"/>
+  <line x1="116" y1="92" x2="116" y2="174" stroke="#607d8b" stroke-width="6" stroke-linecap="round"/>
+  <line x1="116" y1="92" x2="116" y2="174" stroke="#cfd8dc" stroke-width="4" stroke-linecap="round"/>
+  <path d="M68 96 V24 Q68 14 78 14 H122 Q132 14 132 24 V96 Z" fill="#1e4fa8" stroke="#000" stroke-opacity="0.5" stroke-width="2"/>
+  <rect x="68" y="19" width="64" height="3" fill="#000" opacity="0.25"/>
+  <rect x="68" y="88" width="64" height="8" fill="#111"/>
+  <rect x="70" y="23" width="15.36" height="65" fill="#eceff1" opacity="0.92"/>
+  <text x="77.68" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#263238" font-weight="bold">−</text>
+  <text x="77.68" y="52" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#263238" font-weight="bold">−</text>
+  <text x="77.68" y="70" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#263238" font-weight="bold">−</text>
+  <text x="102.816" y="55" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.88" fill="#eceff1" font-weight="bold" transform="rotate(-90 102.816 55)">10µF</text>
+  <text x="114.784" y="55" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#eceff1" transform="rotate(-90 114.784 55)">25V</text>
+  <rect x="77.2" y="114" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="84" y="125" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">−</text>
+  <rect x="109.2" y="114" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="116" y="125" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">+</text>
+</svg>

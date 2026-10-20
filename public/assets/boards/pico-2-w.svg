@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 510" width="270" height="510" role="img" aria-label="Raspberry Pi Pico 2 W top view (original simplified drawing, CC0)">
+  <title>Raspberry Pi Pico 2 W top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    51 x 21 mm green board, micro-USB and BOOTSEL at the top, RP2350 in the middle, Infineon CYW43439 shielded wireless module
+    and the PCB antenna at the bottom, three SWD pads at the bottom edge. 20 castellated pins per side, pin 1 (GP0) top left.
+    Grey labels are pins the catalog does not wire (3V3_EN, ADC_VREF, RUN).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="40" y="36" width="189" height="459" rx="7" fill="#2e7d32" stroke="#1b5e20" stroke-width="2" />
+  <rect x="39" y="40.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="40.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="63.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="63.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="86" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="86" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="108.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="108.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="131.7" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="131.7" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="154.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="154.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="177.5" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="177.5" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="200.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="200.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="223.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="223.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="246" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="246" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="268.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="268.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="291.8" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="291.8" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="314.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="314.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="337.5" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="337.5" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="360.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="360.3" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="383.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="383.2" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="406.1" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="406.1" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="428.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="428.9" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="451.8" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="451.8" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="39" y="474.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <rect x="216" y="474.6" width="14" height="16" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <g transform="translate(134.5 36) rotate(0)">
+    <rect x="-33" y="-14" width="66" height="48" rx="2.5" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2"/>
+    <path d="M-25.1 -12.5H25.1V-4.8L19.8 0.2H-19.8L-25.1 -4.8Z" fill="#37474f"/>
+    <rect x="-18.5" y="-10" width="37" height="2" fill="#90a4ae"/>
+    <rect x="-30" y="15.3" width="60" height="10.2" rx="1" fill="#b0bec5"/>
+  </g>
+  <rect class="btn" x="78" y="101" width="24" height="18" rx="2"/>
+  <circle cx="90" cy="110" r="5.4" fill="#37474f"/>
+  <text x="90" y="132" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1">BOOTSEL</text>
+  <rect x="171" y="99.5" width="8" height="5" rx="1" fill="#66bb6a" stroke="#00000066" stroke-width="0.6"/>
+  <text x="134.5" y="174" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#c8e6c9">Raspberry Pi</text>
+  <text x="134.5" y="188" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#eceff1" font-weight="bold">Pico 2 W</text>
+  <path d="M107.5 228V231 M107.5 293V296 M100.5 235H103.5 M165.5 235H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M112.4 228V231 M112.4 293V296 M100.5 239.9H103.5 M165.5 239.9H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M117.3 228V231 M117.3 293V296 M100.5 244.8H103.5 M165.5 244.8H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M122.2 228V231 M122.2 293V296 M100.5 249.7H103.5 M165.5 249.7H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M127.1 228V231 M127.1 293V296 M100.5 254.6H103.5 M165.5 254.6H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M132 228V231 M132 293V296 M100.5 259.5H103.5 M165.5 259.5H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M137 228V231 M137 293V296 M100.5 264.5H103.5 M165.5 264.5H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M141.9 228V231 M141.9 293V296 M100.5 269.4H103.5 M165.5 269.4H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M146.8 228V231 M146.8 293V296 M100.5 274.3H103.5 M165.5 274.3H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M151.7 228V231 M151.7 293V296 M100.5 279.2H103.5 M165.5 279.2H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M156.6 228V231 M156.6 293V296 M100.5 284.1H103.5 M165.5 284.1H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M161.5 228V231 M161.5 293V296 M100.5 289H103.5 M165.5 289H168.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="103.5" y="231" width="62" height="62" rx="1.5"/>
+  <circle cx="108.5" cy="236" r="1.4" fill="#555"/>
+  <text x="134.5" y="261" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#eceff1">RP2350</text>
+  <text x="134.5" y="269" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#b0bec5">Pico 2</text>
+  <g>
+    <path d="M158.8 320V323 M158.8 341V344" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M165.3 320V323 M165.3 341V344" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M171.8 320V323 M171.8 341V344" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M178.3 320V323 M178.3 341V344" stroke="#b0bec5" stroke-width="1.4"/>
+    <rect class="chip" x="155.5" y="323" width="26" height="18" rx="1"/>
+    <circle cx="159" cy="326.5" r="1.1" fill="#555"/>
+    <text x="168.5" y="333.8" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#eceff1">FLASH</text>
+  </g>
+  <rect x="90.5" y="323" width="28" height="18" rx="7.5" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="93.5" y="326" width="22" height="12" rx="1.5" fill="#b0bec5"/>
+  <text x="104.5" y="334" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#263238">12MHz</text>
+  <rect class="smd" x="128.5" y="348" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="140.5" y="348" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="88.5" y="366" width="8" height="5" rx="0.6"/>
+  <rect x="92.5" y="376" width="84" height="56" rx="2" fill="#cfd8dc" stroke="#78909c" stroke-width="1.2" />
+  <rect x="97.5" y="381" width="74" height="46" rx="1.5" fill="#e3e8ea" />
+  <text x="134.5" y="400" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#263238" font-weight="bold">Infineon</text>
+  <text x="134.5" y="412" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#455a64">CYW43439</text>
+  <path d="M92.5 477 V441 H101.5 V477 H110.5 V441 H119.5 V477 H128.5 V441 H137.5 V477 H146.5 V441 H155.5 V477 H164.5 V441 H173.5 V477 H182.5" fill="none" stroke="#c8e6c9" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
+  <circle cx="111.5" cy="487" r="3.4" fill="#d9b44a"/>
+  <circle cx="134.5" cy="487" r="3.4" fill="#d9b44a"/>
+  <circle cx="157.5" cy="487" r="3.4" fill="#d9b44a"/>
+  <circle cx="54.5" cy="48.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="48.3" r="4.6"/>
+  <text x="65.5" y="51.1" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP0</text>
+  <circle cx="54.5" cy="71.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="71.2" r="4.6"/>
+  <text x="65.5" y="74" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP1</text>
+  <circle cx="54.5" cy="94" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="54.5" cy="94" r="4.6"/>
+  <text x="65.5" y="96.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="54.5" cy="116.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="116.9" r="4.6"/>
+  <text x="65.5" y="119.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP2</text>
+  <circle cx="54.5" cy="139.7" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="139.7" r="4.6"/>
+  <text x="65.5" y="142.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP3</text>
+  <circle cx="54.5" cy="162.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="162.6" r="4.6"/>
+  <text x="65.5" y="165.4" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP4</text>
+  <circle cx="54.5" cy="185.5" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="185.5" r="4.6"/>
+  <text x="65.5" y="188.3" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP5</text>
+  <circle cx="54.5" cy="208.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="54.5" cy="208.3" r="4.6"/>
+  <text x="65.5" y="211.1" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="54.5" cy="231.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="231.2" r="4.6"/>
+  <text x="65.5" y="234" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP6</text>
+  <circle cx="54.5" cy="254" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="254" r="4.6"/>
+  <text x="65.5" y="256.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP7</text>
+  <circle cx="54.5" cy="276.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="276.9" r="4.6"/>
+  <text x="65.5" y="279.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP8</text>
+  <circle cx="54.5" cy="299.8" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="299.8" r="4.6"/>
+  <text x="65.5" y="302.6" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP9</text>
+  <circle cx="54.5" cy="322.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="54.5" cy="322.6" r="4.6"/>
+  <text x="65.5" y="325.4" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="54.5" cy="345.5" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="345.5" r="4.6"/>
+  <text x="65.5" y="348.3" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP10</text>
+  <circle cx="54.5" cy="368.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="368.3" r="4.6"/>
+  <text x="65.5" y="371.1" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP11</text>
+  <circle cx="54.5" cy="391.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="391.2" r="4.6"/>
+  <text x="65.5" y="394" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP12</text>
+  <circle cx="54.5" cy="414.1" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="414.1" r="4.6"/>
+  <text x="65.5" y="416.9" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP13</text>
+  <circle cx="54.5" cy="436.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="54.5" cy="436.9" r="4.6"/>
+  <text x="65.5" y="439.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="54.5" cy="459.8" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="459.8" r="4.6"/>
+  <text x="65.5" y="462.6" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP14</text>
+  <circle cx="54.5" cy="482.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="54.5" cy="482.6" r="4.6"/>
+  <text x="65.5" y="485.4" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP15</text>
+  <circle cx="214.5" cy="48.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole pwr" cx="214.5" cy="48.3" r="4.6"/>
+  <text x="203.5" y="51.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">VBUS</text>
+  <circle cx="214.5" cy="71.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole pwr" cx="214.5" cy="71.2" r="4.6"/>
+  <text x="203.5" y="74" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">VSYS</text>
+  <circle cx="214.5" cy="94" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="214.5" cy="94" r="4.6"/>
+  <text x="203.5" y="96.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="214.5" cy="116.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="116.9" r="4.6"/>
+  <text x="203.5" y="119.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">3V3_EN</text>
+  <circle cx="214.5" cy="139.7" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole v3" cx="214.5" cy="139.7" r="4.6"/>
+  <text x="203.5" y="142.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">3V3</text>
+  <circle cx="214.5" cy="162.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="162.6" r="4.6"/>
+  <text x="203.5" y="165.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">ADC_VREF</text>
+  <circle cx="214.5" cy="185.5" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="185.5" r="4.6"/>
+  <text x="203.5" y="188.3" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP28</text>
+  <circle cx="214.5" cy="208.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="214.5" cy="208.3" r="4.6"/>
+  <text x="203.5" y="211.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="214.5" cy="231.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="231.2" r="4.6"/>
+  <text x="203.5" y="234" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP27</text>
+  <circle cx="214.5" cy="254" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="254" r="4.6"/>
+  <text x="203.5" y="256.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP26</text>
+  <circle cx="214.5" cy="276.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="276.9" r="4.6"/>
+  <text x="203.5" y="279.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">RUN</text>
+  <circle cx="214.5" cy="299.8" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="299.8" r="4.6"/>
+  <text x="203.5" y="302.6" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP22</text>
+  <circle cx="214.5" cy="322.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="214.5" cy="322.6" r="4.6"/>
+  <text x="203.5" y="325.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="214.5" cy="345.5" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="345.5" r="4.6"/>
+  <text x="203.5" y="348.3" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP21</text>
+  <circle cx="214.5" cy="368.3" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="368.3" r="4.6"/>
+  <text x="203.5" y="371.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP20</text>
+  <circle cx="214.5" cy="391.2" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="391.2" r="4.6"/>
+  <text x="203.5" y="394" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP19</text>
+  <circle cx="214.5" cy="414.1" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="414.1" r="4.6"/>
+  <text x="203.5" y="416.9" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP18</text>
+  <circle cx="214.5" cy="436.9" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="214.5" cy="436.9" r="4.6"/>
+  <text x="203.5" y="439.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="214.5" cy="459.8" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="459.8" r="4.6"/>
+  <text x="203.5" y="462.6" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP17</text>
+  <circle cx="214.5" cy="482.6" r="7.4" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="214.5" cy="482.6" r="4.6"/>
+  <text x="203.5" y="485.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GP16</text>
+</svg>

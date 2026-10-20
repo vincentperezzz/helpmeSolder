@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 218" width="260" height="218" role="img" aria-label="74HC595 DIP-16 top view (original simplified drawing, CC0)">
+  <title>74HC595 DIP-16 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    DIP-16, notch at the top. Pins 1-8 down the left side, 9-16 up the right side (pin 16 VCC top right).
+    Terminals sit at the leg tips.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="2" y="2" width="256" height="214" rx="10" fill="#2b3a42"/>
+  <rect class="chip" x="102" y="22" width="56" height="176" rx="3"/>
+  <path d="M 123 22 A 7 7 0 0 0 137 22 Z" fill="#2b3a42"/>
+  <circle cx="110" cy="32" r="2" fill="#555"/>
+  <rect x="88" y="37" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="42.6" text-anchor="end" style="font-size:7.5px">QB</text>
+  <text class="label" x="106" y="42" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">1</text>
+  <rect x="88" y="57" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="62.6" text-anchor="end" style="font-size:7.5px">QC</text>
+  <text class="label" x="106" y="62" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">2</text>
+  <rect x="88" y="77" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="82.6" text-anchor="end" style="font-size:7.5px">QD</text>
+  <text class="label" x="106" y="82" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">3</text>
+  <rect x="88" y="97" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="102.6" text-anchor="end" style="font-size:7.5px">QE</text>
+  <text class="label" x="106" y="102" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">4</text>
+  <rect x="88" y="117" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="122.6" text-anchor="end" style="font-size:7.5px">QF</text>
+  <text class="label" x="106" y="122" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">5</text>
+  <rect x="88" y="137" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="142.6" text-anchor="end" style="font-size:7.5px">QG</text>
+  <text class="label" x="106" y="142" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">6</text>
+  <rect x="88" y="157" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="162.6" text-anchor="end" style="font-size:7.5px">QH</text>
+  <text class="label" x="106" y="162" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">7</text>
+  <rect x="88" y="177" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="82" y="182.6" text-anchor="end" style="font-size:7.5px">GND</text>
+  <text class="label" x="106" y="182" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">8</text>
+  <rect x="157" y="37" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="42.6" text-anchor="start" style="font-size:7.5px">VCC</text>
+  <text class="label" x="154" y="42" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">16</text>
+  <rect x="157" y="57" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="62.6" text-anchor="start" style="font-size:7.5px">QA</text>
+  <text class="label" x="154" y="62" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">15</text>
+  <rect x="157" y="77" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="82.6" text-anchor="start" style="font-size:7.5px">SER</text>
+  <text class="label" x="154" y="82" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">14</text>
+  <rect x="157" y="97" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="102.6" text-anchor="start" style="font-size:7.5px">OE</text>
+  <text class="label" x="154" y="102" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">13</text>
+  <rect x="157" y="117" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="122.6" text-anchor="start" style="font-size:7.5px">RCLK</text>
+  <text class="label" x="154" y="122" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">12</text>
+  <rect x="157" y="137" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="142.6" text-anchor="start" style="font-size:7.5px">SRCLK</text>
+  <text class="label" x="154" y="142" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">11</text>
+  <rect x="157" y="157" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="162.6" text-anchor="start" style="font-size:7.5px">SRCLR</text>
+  <text class="label" x="154" y="162" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">10</text>
+  <rect x="157" y="177" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="178" y="182.6" text-anchor="start" style="font-size:7.5px">QH'</text>
+  <text class="label" x="154" y="182" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">9</text>
+  <text class="label" x="126" y="110" text-anchor="middle" style="font-size:11px;fill:#cfd8dc" transform="rotate(90 126 110)">74HC595</text>
+  <text class="label" x="137" y="110" text-anchor="middle" style="font-size:5.5px;fill:#78909c" transform="rotate(90 137 110)">8-BIT SHIFT REGISTER</text>
+</svg>

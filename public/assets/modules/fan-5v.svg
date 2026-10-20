@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 340" width="280" height="340" role="img" aria-label="Mini 5 V fan top view (original simplified drawing, CC0)">
+  <title>Mini 5 V fan top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    40 mm square brushless fan, seven blades, four corner holes. Cable leaves the bottom edge: red is V+, black is GND.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="10" width="240" height="240" rx="16" fill="#263238" stroke="#000" stroke-width="2"/>
+  <circle cx="140" cy="130" r="112" fill="#1b2428" stroke="#37474f" stroke-width="2"/>
+  <circle cx="38" cy="28" r="7" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <circle cx="242" cy="28" r="7" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <circle cx="38" cy="232" r="7" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <circle cx="242" cy="232" r="7" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <g transform="translate(140 130)">
+    <path transform="rotate(0)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(51.4)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(102.9)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(154.3)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(205.7)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(257.1)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <path transform="rotate(308.6)" d="M-10 -30 C-34 -66 -24 -98 28 -106 C42 -78 32 -52 14 -30 Z" fill="#455a64" stroke="#1c262b" stroke-width="1.5"/>
+    <circle r="34" fill="#37474f" stroke="#000"/>
+    <circle r="24" fill="#eceff1" stroke="#90a4ae"/>
+    <text y="-2" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="bold" fill="#263238">5V DC</text>
+    <text y="9" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#37474f">0.1A</text>
+  </g>
+  <rect x="196" y="246" width="44" height="12" rx="3" fill="#111" stroke="#000"/>
+  <path d="M208 254 C208 284 196 292 196 322" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M208 254 C208 284 196 292 196 322" fill="none" stroke="#d32f2f" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="196" cy="322" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+  <path d="M228 254 C228 284 240 292 240 322" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M228 254 C228 284 240 292 240 322" fill="none" stroke="#212121" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="240" cy="322" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+</svg>

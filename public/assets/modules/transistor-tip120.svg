@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 330" width="200" height="330" role="img" aria-label="Power NPN transistor TIP120 (TO-220, printed side toward you) (original simplified drawing, CC0)">
+  <title>Power NPN transistor TIP120 (TO-220, printed side toward you) (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    TO-220, printed side toward you, legs down: B, C, E left to right. The metal tab is the collector.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="56" y="212" width="12" height="106" rx="1" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.5"/>
+  <rect x="94" y="212" width="12" height="106" rx="1" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.5"/>
+  <rect x="132" y="212" width="12" height="106" rx="1" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.5"/>
+  <path d="M38 120 V24 Q38 12 50 12 H150 Q162 12 162 24 V120 Z" fill="#b0bec5" stroke="#546e7a" stroke-width="2"/>
+  <circle cx="100" cy="46" r="13" fill="#f5f5f5" stroke="#546e7a" stroke-width="2"/>
+  <text x="100" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#455a64">tab = C</text>
+  <rect x="38" y="118" width="124" height="96" fill="#1d1d1d" stroke="#000" stroke-width="2"/>
+  <rect x="38" y="118" width="124" height="4" fill="#000" opacity="0.5"/>
+  <text x="100" y="156" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" fill="#eceff1" font-weight="bold">TIP120</text>
+  <text x="100" y="176" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#b0bec5">NPN Darlington</text>
+  <rect x="55.2" y="236" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="62" y="247" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">B</text>
+  <rect x="93.2" y="236" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="100" y="247" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">C</text>
+  <rect x="131.2" y="236" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="138" y="247" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">E</text>
+</svg>

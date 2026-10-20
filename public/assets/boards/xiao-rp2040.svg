@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 250" width="240" height="250" role="img" aria-label="Seeed Studio XIAO RP2040 top view (original simplified drawing, CC0)">
+  <title>Seeed Studio XIAO RP2040 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    USB-C at the top, bare RP2040 with its flash chip and 12 MHz crystal, RGB LED, RESET and BOOT buttons at the bottom edge.
+    Pad order from Seeed's published XIAO pinout: D0-D6 down the left side, 5V, GND, 3V3 and D10-D7 down the right side.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="40" y="40" width="160" height="196" rx="16" fill="#141414" stroke="#000" stroke-width="2"/>
+  <rect x="92" y="26" width="56" height="50" rx="8" fill="#d5d9dc" stroke="#7d868c" stroke-width="1.5"/>
+  <rect x="100" y="34" width="40" height="16" rx="8" fill="#9aa3a8"/>
+  <rect x="108" y="40" width="24" height="4" rx="2" fill="#5f686d"/>
+  <rect x="150" y="84" width="10" height="10" rx="1.5" fill="#fafafa" stroke="#9e9e9e" stroke-width="0.8" />
+  <circle cx="152.5" cy="86.5" r="1.4" fill="#ef5350"/><circle cx="157.5" cy="86.5" r="1.4" fill="#66bb6a"/><circle cx="155" cy="91" r="1.4" fill="#42a5f5"/>
+  <rect x="163" y="52" width="6" height="4" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <rect x="90" y="87" width="20" height="10" rx="4.2" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="93" y="90" width="14" height="4" rx="1.5" fill="#b0bec5"/>
+  <text x="100" y="94" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#263238">12M</text>
+  <path d="M95 110V113 M95 171V174 M88 117H91 M149 117H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M101.3 110V113 M101.3 171V174 M88 123.3H91 M149 123.3H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M107.5 110V113 M107.5 171V174 M88 129.5H91 M149 129.5H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M113.8 110V113 M113.8 171V174 M88 135.8H91 M149 135.8H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M120 110V113 M120 171V174 M88 142H91 M149 142H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M126.3 110V113 M126.3 171V174 M88 148.3H91 M149 148.3H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M132.5 110V113 M132.5 171V174 M88 154.5H91 M149 154.5H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M138.8 110V113 M138.8 171V174 M88 160.8H91 M149 160.8H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M145 110V113 M145 171V174 M88 167H91 M149 167H152" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="91" y="113" width="58" height="58" rx="1.5"/>
+  <circle cx="96" cy="118" r="1.4" fill="#555"/>
+  <text x="120" y="144" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#eceff1">RP2040</text>
+  <g>
+    <path d="M110.3 175V178 M110.3 194V197" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M116.8 175V178 M116.8 194V197" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M123.3 175V178 M123.3 194V197" stroke="#b0bec5" stroke-width="1.4"/>
+    <path d="M129.8 175V178 M129.8 194V197" stroke="#b0bec5" stroke-width="1.4"/>
+    <rect class="chip" x="107" y="178" width="26" height="16" rx="1"/>
+    <circle cx="110.5" cy="181.5" r="1.1" fill="#555"/>
+    <text x="120" y="187.6" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">FLASH</text>
+  </g>
+  <rect class="smd" x="80" y="126" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="80" y="134" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="160" y="126" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="160" y="134" width="6" height="4" rx="0.6"/>
+  <rect class="btn" x="70" y="207" width="20" height="14" rx="2"/>
+  <circle cx="80" cy="214" r="4.2" fill="#37474f"/>
+  <rect class="btn" x="150" y="207" width="20" height="14" rx="2"/>
+  <circle cx="160" cy="214" r="4.2" fill="#37474f"/>
+  <text x="80" y="230" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">B</text>
+  <text x="160" y="230" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">R</text>
+  <text x="120" y="214" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1" font-weight="bold">XIAO</text>
+  <text x="120" y="223" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#b0bec5">RP2040</text>
+  <g id="headers">
+    <rect x="38" y="57" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="64" r="4.5"/>
+    <text class="pinlbl" x="61" y="67" text-anchor="start">D0</text>
+    <rect x="38" y="81" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="88" r="4.5"/>
+    <text class="pinlbl" x="61" y="91" text-anchor="start">D1</text>
+    <rect x="38" y="105" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="112" r="4.5"/>
+    <text class="pinlbl" x="61" y="115" text-anchor="start">D2</text>
+    <rect x="38" y="129" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="136" r="4.5"/>
+    <text class="pinlbl" x="61" y="139" text-anchor="start">D3</text>
+    <rect x="38" y="153" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="160" r="4.5"/>
+    <text class="pinlbl" x="61" y="163" text-anchor="start">D4</text>
+    <rect x="38" y="177" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="184" r="4.5"/>
+    <text class="pinlbl" x="61" y="187" text-anchor="start">D5</text>
+    <rect x="38" y="201" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="208" r="4.5"/>
+    <text class="pinlbl" x="61" y="211" text-anchor="start">D6</text>
+    <rect x="186" y="57" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole pwr" cx="190" cy="64" r="4.5"/>
+    <text class="pinlbl" x="179" y="67" text-anchor="end">5V</text>
+    <rect x="186" y="81" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole gnd" cx="190" cy="88" r="4.5"/>
+    <text class="pinlbl" x="179" y="91" text-anchor="end">GND</text>
+    <rect x="186" y="105" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole v3" cx="190" cy="112" r="4.5"/>
+    <text class="pinlbl" x="179" y="115" text-anchor="end">3V3</text>
+    <rect x="186" y="129" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="136" r="4.5"/>
+    <text class="pinlbl" x="179" y="139" text-anchor="end">D10</text>
+    <rect x="186" y="153" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="160" r="4.5"/>
+    <text class="pinlbl" x="179" y="163" text-anchor="end">D9</text>
+    <rect x="186" y="177" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="184" r="4.5"/>
+    <text class="pinlbl" x="179" y="187" text-anchor="end">D8</text>
+    <rect x="186" y="201" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="208" r="4.5"/>
+    <text class="pinlbl" x="179" y="211" text-anchor="end">D7</text>
+  </g>
+</svg>

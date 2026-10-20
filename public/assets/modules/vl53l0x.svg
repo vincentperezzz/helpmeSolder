@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 184" width="150" height="184" role="img" aria-label="VL53L0X time-of-flight distance sensor top view (original simplified drawing, CC0)">
+  <title>VL53L0X time-of-flight distance sensor top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Tiny board: the VL53L0X module with its emitter and receiver apertures, 3.3 V regulator, 6-pin header.
+    Header left to right: VIN, GND, SCL, SDA, GPIO1, XSHUT.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="15" y="14" width="120" height="156" rx="5" fill="#4a2a8c" stroke="#2a1560" stroke-width="2"/>
+  <circle cx="30" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole pwr" cx="30" cy="34" r="5"/>
+  <text class="pinlbl" x="30" y="48" transform="rotate(90 30 48)" text-anchor="start" dy="2.7" font-size="7.5">VIN</text>
+  <circle cx="48" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="48" cy="34" r="5"/>
+  <text class="pinlbl" x="48" y="48" transform="rotate(90 48 48)" text-anchor="start" dy="2.7" font-size="7.5">GND</text>
+  <circle cx="66" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="66" cy="34" r="5"/>
+  <text class="pinlbl" x="66" y="48" transform="rotate(90 66 48)" text-anchor="start" dy="2.7" font-size="7.5">SCL</text>
+  <circle cx="84" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="84" cy="34" r="5"/>
+  <text class="pinlbl" x="84" y="48" transform="rotate(90 84 48)" text-anchor="start" dy="2.7" font-size="7.5">SDA</text>
+  <circle cx="102" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="102" cy="34" r="5"/>
+  <text class="pinlbl" x="102" y="48" transform="rotate(90 102 48)" text-anchor="start" dy="2.7" font-size="7.5">GPIO1</text>
+  <circle cx="120" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="120" cy="34" r="5"/>
+  <text class="pinlbl" x="120" y="48" transform="rotate(90 120 48)" text-anchor="start" dy="2.7" font-size="7.5">XSHUT</text>
+  <rect x="55" y="98" width="40" height="22" rx="2" fill="#212121" stroke="#000" stroke-width="1"/>
+  <rect x="59" y="102" width="10" height="14" rx="1.5" fill="#5c4b8a" stroke="#9575cd" stroke-width="0.6"/>
+  <rect x="74" y="102" width="17" height="14" rx="1.5" fill="#37474f" stroke="#78909c" stroke-width="0.6"/>
+  <rect x="28" y="108" width="12" height="8" rx="1" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+  <rect x="29" y="116" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="33" y="116" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="37" y="116" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="30" y="105" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="36" y="105" width="2" height="3" rx="0" fill="#cfd8dc"/>
+  <rect x="30" y="128" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="42" y="128" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <rect x="108" y="106" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="108" y="118" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="108" y="130" width="8" height="5" rx="0.8" fill="#c8a06a" stroke="#6d4c41" stroke-width="0.5"/>
+  <text class="label" x="75" y="158" text-anchor="middle" font-size="7">VL53L0X</text>
+</svg>
