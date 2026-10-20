@@ -248,7 +248,8 @@ export function useWireMeasure({
               });
               exitDirs.set(
                 key,
-                pinExitDirection(named, terminalLocals.length ? terminalLocals : [named]),
+                diagramAsset?.pinExit ??
+                  pinExitDirection(named, terminalLocals.length ? terminalLocals : [named]),
               );
               return;
             }
