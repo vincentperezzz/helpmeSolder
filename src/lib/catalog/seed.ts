@@ -6,6 +6,7 @@ import { EXTRA_OUTPUTS } from "./extra/outputs";
 import { EXTRA_DISPLAYS } from "./extra/displays";
 import { EXTRA_SENSORS } from "./extra/sensors";
 import { EXTRA_BOARDS } from "./extra/boards";
+import { NEW_BOARDS } from "./extra/new-boards";
 import { recipes } from "./recipes";
 import type { CatalogSnapshot } from "./registry";
 import { SEED_PHOTO_FILES } from "./seed-media";
@@ -16,7 +17,7 @@ export { SEED_PHOTO_FILES, SEED_PHOTO_QUERY_OVERRIDES };
 
 /** Assemble the bundled catalog (the default registry content). */
 export function buildSeedSnapshot(): CatalogSnapshot {
-  const boards = [...baseBoards, ...EXTRA_BOARDS];
+  const boards = [...baseBoards, ...EXTRA_BOARDS, ...NEW_BOARDS];
   const modules = [...baseModules, ...EXTRA_OUTPUTS, ...EXTRA_DISPLAYS, ...EXTRA_SENSORS];
   const passives = [...basePassives, ...EXTRA_BASICS];
   const parts = new Map<string, CatalogPart>(

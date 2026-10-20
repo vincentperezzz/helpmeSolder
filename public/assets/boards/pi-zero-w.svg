@@ -1,107 +1,178 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Raspberry Pi Zero W top-view wiring diagram">
-  <title>Raspberry Pi Zero W (original simplified top-view, CC0)</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 341 196" width="341" height="196" role="img" aria-label="Raspberry Pi Zero W top view (original drawing, CC0)">
+  <title>Raspberry Pi Zero W top view (original drawing, CC0)</title>
   <!--
-    Original CC0 simplified top-view for HelpmeSolder wiring diagrams.
-    Physical layout facts only (not a copy of third-party artwork).
-    Board ~65 x 30 mm (scaled ~x4.5). mini-HDMI / micro-USB ports on short edge (left).
-    40-pin GPIO header along the long top edge (pin 1 = 3V3 nearest SD / right-of-USB side).
-    Orientation: ports LEFT, GPIO along TOP, microSD RIGHT, camera FPC BOTTOM-ish.
+    Original CC0 top view for HelpmeSolder wiring diagrams.
+    65 x 30 mm. 40-pin GPIO header along the top edge; microSD slot at the left end; mini-HDMI, the micro-USB data port and the PWR micro-USB
+    on the bottom edge; CSI camera connector at the right end; BCM2835 beside the metal RF shield.
+    Header: 40 pins in two rows of 20. Odd pins (1 = 3V3, square pad) on the row nearer the board centre, even pins (2 = 5V) on the outer row;
+    pin 1 is at the left end next to the SD-card end. Labels are the BCM GPIO numbers. Catalog terminals: 3V3 = pin 1, 5V = pin 2, GND = pin 6.
   -->
   <defs>
     <style type="text/css"><![CDATA[
-      .board { fill: #1b7a4a; stroke: #0f4d2e; stroke-width: 2; }
-      .chip { fill: #1a1a1a; }
-      .port { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1; }
-      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1; }
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
       .gnd { fill: #212121; stroke: #000; }
       .pwr { fill: #c62828; stroke: #8e0000; }
       .v3 { fill: #ef6c00; stroke: #e65100; }
-      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #e8f5e9; }
-      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 7px; fill: #263238; }
-      .caption { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; fill: #546e7a; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
     ]]></style>
   </defs>
+<g transform="translate(8 38) scale(5)">
+<rect x="0" y="0" width="65" height="30" rx="2.2" fill="#1b7f3b" stroke="#135f2b" stroke-width="0.3"/>
+<circle cx="3.5" cy="3.5" r="1.45" fill="#f5f5f5" stroke="#d9b44a" stroke-width="0.5"/>
+<circle cx="61.5" cy="3.5" r="1.45" fill="#f5f5f5" stroke="#d9b44a" stroke-width="0.5"/>
+<circle cx="3.5" cy="26.5" r="1.45" fill="#f5f5f5" stroke="#d9b44a" stroke-width="0.5"/>
+<circle cx="61.5" cy="26.5" r="1.45" fill="#f5f5f5" stroke="#d9b44a" stroke-width="0.5"/>
+<rect x="0" y="11" width="14" height="12" fill="none" stroke="#9ccc9f" stroke-width="0.2" stroke-dasharray="0.7 0.5"/>
+<rect x="-1.6" y="13" width="6" height="8" rx="0.4" fill="#b0bec5" stroke="#607d8b" stroke-width="0.2"/>
+<text x="8" y="17.4" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.1px;fill:#c8e6c9;">microSD</text>
+<g transform="rotate(180 12.4 28.3)">
+<rect x="6.8" y="26.5" width="11.2" height="3.6" rx="0.3" fill="#cfd8dc" stroke="#607d8b" stroke-width="0.2"/>
+<rect x="7.6" y="26.5" width="9.5" height="1" rx="0.2" fill="#263238"/>
+<rect x="7.3" y="28" width="10.2" height="0.1" fill="#90a4ae"/>
+</g>
+<text x="12.4" y="24.6" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.1px;fill:#c8e6c9;">HDMI</text>
+<g transform="rotate(180 41.4 27.4)">
+<rect x="37.6" y="24.6" width="7.6" height="5.6" rx="0.3" fill="#cfd8dc" stroke="#607d8b" stroke-width="0.2"/>
+<rect x="38.4" y="24.6" width="6.1" height="1" rx="0.2" fill="#263238"/>
+<rect x="38.1" y="26.1" width="6.6" height="0.1" fill="#90a4ae"/>
+</g>
+<text x="41.4" y="22.9" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.1px;fill:#c8e6c9;">USB</text>
+<g transform="rotate(180 54 27.4)">
+<rect x="50.2" y="24.6" width="7.6" height="5.6" rx="0.3" fill="#cfd8dc" stroke="#607d8b" stroke-width="0.2"/>
+<rect x="51" y="24.6" width="6.1" height="1" rx="0.2" fill="#263238"/>
+<rect x="50.7" y="26.1" width="6.6" height="0.1" fill="#90a4ae"/>
+</g>
+<text x="54" y="22.9" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.1px;fill:#c8e6c9;">PWR</text>
+<rect x="59.7" y="8.6" width="3.4" height="17" rx="0.2" fill="#e8e4da" stroke="#8d8672" stroke-width="0.15"/>
+<rect x="61.6" y="9" width="1.2" height="16.2" fill="#2b2b2b"/>
 
-  <rect class="board" x="24" y="28" width="272" height="124" rx="6"/>
-  <!-- mounting holes -->
-  <circle cx="40" cy="44" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
-  <circle cx="280" cy="44" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
-  <circle cx="40" cy="136" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
-  <circle cx="280" cy="136" r="5" fill="none" stroke="#f9a825" stroke-width="2.5"/>
-
-  <!-- Left edge ports: mini-HDMI, USB-OTG, power -->
-  <g id="ports-left">
-    <rect class="port" id="mini-hdmi" x="8" y="48" width="22" height="18" rx="2"/>
-    <text class="label" x="48" y="60" font-size="7">HDMI</text>
-    <rect class="port" id="usb-otg" x="8" y="78" width="22" height="14" rx="2"/>
-    <text class="label" x="48" y="88" font-size="7">USB</text>
-    <rect class="port" id="usb-pwr" x="8" y="102" width="22" height="14" rx="2"/>
-    <text class="label" x="52" y="112" font-size="7">PWR</text>
-  </g>
-
-  <!-- microSD on right -->
-  <rect class="port" id="microsd" x="278" y="70" width="28" height="36" rx="2"/>
-  <text class="label" x="268" y="92" text-anchor="end">SD</text>
-
-  <!-- Wireless / SoC -->
-  <rect class="chip" x="120" y="70" width="48" height="40" rx="2"/>
-  <text class="label" x="144" y="94" text-anchor="middle" font-size="7">SoC</text>
-  <rect x="190" y="78" width="36" height="22" rx="2" fill="#263238" stroke="#90a4ae"/>
-  <text class="label" x="208" y="92" text-anchor="middle" font-size="6">WiFi</text>
-
-  <!-- Camera FPC hint (bottom edge) -->
-  <rect id="camera-fpc" x="100" y="140" width="40" height="10" rx="1" fill="#37474f"/>
-  <text class="label" x="120" y="158" text-anchor="middle" font-size="7">CAM</text>
-
-  <!-- 40-pin GPIO: 2 rows of 20 along top. Pin 1 (3V3) near left/port side. -->
-  <g id="gpio-header">
-    <!-- Odd pins (outer / top row): 1,3,5,...,39 -->
-    <circle id="pin-1-3v3" class="hole v3" cx="56" cy="22" r="4.5"/>
-    <text class="pinlbl" x="56" y="14" text-anchor="middle">3V3</text>
-    <circle id="pin-3-gpio2" class="hole" cx="68" cy="22" r="4.5"/>
-    <circle id="pin-5-gpio3" class="hole" cx="80" cy="22" r="4.5"/>
-    <circle id="pin-7-gpio4" class="hole" cx="92" cy="22" r="4.5"/>
-    <circle id="pin-9-gnd" class="hole gnd" cx="104" cy="22" r="4.5"/>
-    <circle id="pin-11-gpio17" class="hole" cx="116" cy="22" r="4.5"/>
-    <circle id="pin-13-gpio27" class="hole" cx="128" cy="22" r="4.5"/>
-    <circle id="pin-15-gpio22" class="hole" cx="140" cy="22" r="4.5"/>
-    <circle id="pin-17-3v3" class="hole v3" cx="152" cy="22" r="4.5"/>
-    <circle id="pin-19-gpio10" class="hole" cx="164" cy="22" r="4.5"/>
-    <circle id="pin-21-gpio9" class="hole" cx="176" cy="22" r="4.5"/>
-    <circle id="pin-23-gpio11" class="hole" cx="188" cy="22" r="4.5"/>
-    <circle id="pin-25-gnd" class="hole gnd" cx="200" cy="22" r="4.5"/>
-    <circle id="pin-27-gpio0" class="hole" cx="212" cy="22" r="4.5"/>
-    <circle id="pin-29-gpio5" class="hole" cx="224" cy="22" r="4.5"/>
-    <circle id="pin-31-gpio6" class="hole" cx="236" cy="22" r="4.5"/>
-    <circle id="pin-33-gpio13" class="hole" cx="248" cy="22" r="4.5"/>
-    <circle id="pin-35-gpio19" class="hole" cx="260" cy="22" r="4.5"/>
-    <circle id="pin-37-gpio26" class="hole" cx="272" cy="22" r="4.5"/>
-    <circle id="pin-39-gnd" class="hole gnd" cx="284" cy="22" r="4.5"/>
-
-    <!-- Even pins (inner / lower row): 2,4,6,...,40 -->
-    <circle id="pin-2-5v" class="hole pwr" cx="56" cy="36" r="4.5"/>
-    <text class="pinlbl" x="56" y="50" text-anchor="middle">5V</text>
-    <circle id="pin-4-5v" class="hole pwr" cx="68" cy="36" r="4.5"/>
-    <circle id="pin-6-gnd" class="hole gnd" cx="80" cy="36" r="4.5"/>
-    <text class="pinlbl" x="80" y="50" text-anchor="middle">GND</text>
-    <circle id="pin-8-gpio14" class="hole" cx="92" cy="36" r="4.5"/>
-    <circle id="pin-10-gpio15" class="hole" cx="104" cy="36" r="4.5"/>
-    <circle id="pin-12-gpio18" class="hole" cx="116" cy="36" r="4.5"/>
-    <circle id="pin-14-gnd" class="hole gnd" cx="128" cy="36" r="4.5"/>
-    <circle id="pin-16-gpio23" class="hole" cx="140" cy="36" r="4.5"/>
-    <circle id="pin-18-gpio24" class="hole" cx="152" cy="36" r="4.5"/>
-    <circle id="pin-20-gnd" class="hole gnd" cx="164" cy="36" r="4.5"/>
-    <circle id="pin-22-gpio25" class="hole" cx="176" cy="36" r="4.5"/>
-    <circle id="pin-24-gpio8" class="hole" cx="188" cy="36" r="4.5"/>
-    <circle id="pin-26-gpio7" class="hole" cx="200" cy="36" r="4.5"/>
-    <circle id="pin-28-gpio1" class="hole" cx="212" cy="36" r="4.5"/>
-    <circle id="pin-30-gnd" class="hole gnd" cx="224" cy="36" r="4.5"/>
-    <circle id="pin-32-gpio12" class="hole" cx="236" cy="36" r="4.5"/>
-    <circle id="pin-34-gnd" class="hole gnd" cx="248" cy="36" r="4.5"/>
-    <circle id="pin-36-gpio16" class="hole" cx="260" cy="36" r="4.5"/>
-    <circle id="pin-38-gpio20" class="hole" cx="272" cy="36" r="4.5"/>
-    <circle id="pin-40-gpio21" class="hole" cx="284" cy="36" r="4.5"/>
-  </g>
-
-  <text class="caption" x="160" y="172" text-anchor="middle">Pi Zero W - ports left, GPIO top, pin1=3V3</text>
+<text x="62.2" y="28.4" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1px;fill:#c8e6c9;">CSI</text>
+<rect x="21.5" y="13.4" width="10.5" height="10.5" rx="0.5" fill="#222" stroke="#000" stroke-width="0.2"/>
+<text x="26.8" y="18.1" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.2px;fill:#cfd8dc;">BCM</text>
+<text x="26.8" y="19.7" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.2px;fill:#cfd8dc;">2835</text>
+<rect x="35" y="13.4" width="12.5" height="8.6" rx="0.4" fill="#cfd8dc" stroke="#78909c" stroke-width="0.2"/>
+<rect x="35.5" y="13.9" width="11.5" height="7.6" rx="0.3" fill="#e3e8ea"/>
+<text x="41.3" y="18.4" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1px;fill:#546e7a;">RF shield</text>
+<path d="M49.6 23.2 V16.8 H50.9 V23.2 H52.2 V16.8 H53.5 V23.2 H54.8 V16.8" fill="none" stroke="#d8c26a" stroke-width="0.45"/>
+<rect x="15" y="20.6" width="4.4" height="3.4" fill="#222" stroke="#000" stroke-width="0.12"/>
+<text x="17.2" y="22.7" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:0.8px;fill:#90a4ae;">PMIC</text>
+<rect x="20" y="24.3" width="1" height="0.6" fill="#cfc0ac" stroke="#8a7660" stroke-width="0.08"/>
+<rect x="22.4" y="25" width="1" height="0.6" fill="#cfc0ac" stroke="#8a7660" stroke-width="0.08"/>
+<rect x="33.2" y="24.4" width="1" height="0.6" fill="#cfc0ac" stroke="#8a7660" stroke-width="0.08"/>
+<rect x="34.4" y="24.4" width="1" height="0.6" fill="#cfc0ac" stroke="#8a7660" stroke-width="0.08"/>
+<rect x="4.3" y="25.8" width="1.4" height="0.8" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="0.08"/>
+<rect x="4.7" y="25.9" width="0.7" height="0.6" fill="#66bb6a"/>
+<text x="6.2" y="26.5" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:0.9px;fill:#eceff1;">ACT</text>
+<text x="28.5" y="28.2" text-anchor="middle" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:1.9px;fill:#d7ecd9;font-weight:bold;">Pi Zero W</text>
+</g>
+<rect x="42.8" y="48.5" width="255.4" height="26.7" rx="2" fill="#2b2f33"/>
+<rect x="40.8" y="2" width="259.4" height="33" rx="4" fill="#263238"/>
+<rect class="hole v3" x="45.1" y="63.5" width="9.5" height="9.5"/>
+<text x="49.8" y="76" transform="rotate(90 49.8 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#ffb74d">3V3</text>
+<circle class="hole pwr" cx="49.8" cy="55.5" r="4.8"/>
+<line x1="49.8" y1="49.8" x2="49.8" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="49.8" y="31" transform="rotate(-90 49.8 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#ff8a80">5V</text>
+<circle class="hole" cx="62.6" cy="68.2" r="4.8"/>
+<text x="62.6" y="76" transform="rotate(90 62.6 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO2</text>
+<circle class="hole pwr" cx="62.6" cy="55.5" r="4.8"/>
+<line x1="62.6" y1="49.8" x2="62.6" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="62.6" y="31" transform="rotate(-90 62.6 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#ff8a80">5V</text>
+<circle class="hole" cx="75.3" cy="68.2" r="4.8"/>
+<text x="75.3" y="76" transform="rotate(90 75.3 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO3</text>
+<circle class="hole gnd" cx="75.3" cy="55.5" r="4.8"/>
+<line x1="75.3" y1="49.8" x2="75.3" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="75.3" y="31" transform="rotate(-90 75.3 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="87.9" cy="68.2" r="4.8"/>
+<text x="87.9" y="76" transform="rotate(90 87.9 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO4</text>
+<circle class="hole" cx="87.9" cy="55.5" r="4.8"/>
+<line x1="87.9" y1="49.8" x2="87.9" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="87.9" y="31" transform="rotate(-90 87.9 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO14</text>
+<circle class="hole gnd" cx="100.7" cy="68.2" r="4.8"/>
+<text x="100.7" y="76" transform="rotate(90 100.7 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="100.7" cy="55.5" r="4.8"/>
+<line x1="100.7" y1="49.8" x2="100.7" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="100.7" y="31" transform="rotate(-90 100.7 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO15</text>
+<circle class="hole" cx="113.4" cy="68.2" r="4.8"/>
+<text x="113.4" y="76" transform="rotate(90 113.4 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO17</text>
+<circle class="hole" cx="113.4" cy="55.5" r="4.8"/>
+<line x1="113.4" y1="49.8" x2="113.4" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="113.4" y="31" transform="rotate(-90 113.4 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO18</text>
+<circle class="hole" cx="126.1" cy="68.2" r="4.8"/>
+<text x="126.1" y="76" transform="rotate(90 126.1 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO27</text>
+<circle class="hole gnd" cx="126.1" cy="55.5" r="4.8"/>
+<line x1="126.1" y1="49.8" x2="126.1" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="126.1" y="31" transform="rotate(-90 126.1 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="138.8" cy="68.2" r="4.8"/>
+<text x="138.8" y="76" transform="rotate(90 138.8 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO22</text>
+<circle class="hole" cx="138.8" cy="55.5" r="4.8"/>
+<line x1="138.8" y1="49.8" x2="138.8" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="138.8" y="31" transform="rotate(-90 138.8 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO23</text>
+<circle class="hole v3" cx="151.5" cy="68.2" r="4.8"/>
+<text x="151.5" y="76" transform="rotate(90 151.5 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#ffb74d">3V3</text>
+<circle class="hole" cx="151.5" cy="55.5" r="4.8"/>
+<line x1="151.5" y1="49.8" x2="151.5" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="151.5" y="31" transform="rotate(-90 151.5 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO24</text>
+<circle class="hole" cx="164.1" cy="68.2" r="4.8"/>
+<text x="164.1" y="76" transform="rotate(90 164.1 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO10</text>
+<circle class="hole gnd" cx="164.1" cy="55.5" r="4.8"/>
+<line x1="164.1" y1="49.8" x2="164.1" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="164.1" y="31" transform="rotate(-90 164.1 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="176.8" cy="68.2" r="4.8"/>
+<text x="176.8" y="76" transform="rotate(90 176.8 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO9</text>
+<circle class="hole" cx="176.8" cy="55.5" r="4.8"/>
+<line x1="176.8" y1="49.8" x2="176.8" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="176.8" y="31" transform="rotate(-90 176.8 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO25</text>
+<circle class="hole" cx="189.6" cy="68.2" r="4.8"/>
+<text x="189.6" y="76" transform="rotate(90 189.6 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO11</text>
+<circle class="hole" cx="189.6" cy="55.5" r="4.8"/>
+<line x1="189.6" y1="49.8" x2="189.6" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="189.6" y="31" transform="rotate(-90 189.6 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO8</text>
+<circle class="hole gnd" cx="202.3" cy="68.2" r="4.8"/>
+<text x="202.3" y="76" transform="rotate(90 202.3 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="202.3" cy="55.5" r="4.8"/>
+<line x1="202.3" y1="49.8" x2="202.3" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="202.3" y="31" transform="rotate(-90 202.3 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO7</text>
+<circle class="hole" cx="215" cy="68.2" r="4.8"/>
+<text x="215" y="76" transform="rotate(90 215 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">ID_SD</text>
+<circle class="hole" cx="215" cy="55.5" r="4.8"/>
+<line x1="215" y1="49.8" x2="215" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="215" y="31" transform="rotate(-90 215 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">ID_SC</text>
+<circle class="hole" cx="227.7" cy="68.2" r="4.8"/>
+<text x="227.7" y="76" transform="rotate(90 227.7 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO5</text>
+<circle class="hole gnd" cx="227.7" cy="55.5" r="4.8"/>
+<line x1="227.7" y1="49.8" x2="227.7" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="227.7" y="31" transform="rotate(-90 227.7 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="240.4" cy="68.2" r="4.8"/>
+<text x="240.4" y="76" transform="rotate(90 240.4 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO6</text>
+<circle class="hole" cx="240.4" cy="55.5" r="4.8"/>
+<line x1="240.4" y1="49.8" x2="240.4" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="240.4" y="31" transform="rotate(-90 240.4 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO12</text>
+<circle class="hole" cx="253.1" cy="68.2" r="4.8"/>
+<text x="253.1" y="76" transform="rotate(90 253.1 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO13</text>
+<circle class="hole gnd" cx="253.1" cy="55.5" r="4.8"/>
+<line x1="253.1" y1="49.8" x2="253.1" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="253.1" y="31" transform="rotate(-90 253.1 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="265.8" cy="68.2" r="4.8"/>
+<text x="265.8" y="76" transform="rotate(90 265.8 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO19</text>
+<circle class="hole" cx="265.8" cy="55.5" r="4.8"/>
+<line x1="265.8" y1="49.8" x2="265.8" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="265.8" y="31" transform="rotate(-90 265.8 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO16</text>
+<circle class="hole" cx="278.5" cy="68.2" r="4.8"/>
+<text x="278.5" y="76" transform="rotate(90 278.5 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO26</text>
+<circle class="hole" cx="278.5" cy="55.5" r="4.8"/>
+<line x1="278.5" y1="49.8" x2="278.5" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="278.5" y="31" transform="rotate(-90 278.5 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO20</text>
+<circle class="hole gnd" cx="291.2" cy="68.2" r="4.8"/>
+<text x="291.2" y="76" transform="rotate(90 291.2 76)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#b0bec5">GND</text>
+<circle class="hole" cx="291.2" cy="55.5" r="4.8"/>
+<line x1="291.2" y1="49.8" x2="291.2" y2="35" stroke="#78909c" stroke-width="0.7"/>
+<text x="291.2" y="31" transform="rotate(-90 291.2 31)" dy="2.3" text-anchor="start" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:6.4px;fill:#eceff1">GPIO21</text>
+<text x="37.8" y="70.5" text-anchor="end" style="font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:5.5px;fill:#eceff1">1</text>
 </svg>

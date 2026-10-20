@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228 470" width="228" height="470" role="img" aria-label="ESP32-C6-DevKitC-1 top view (original simplified drawing, CC0)">
+  <title>ESP32-C6-DevKitC-1 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Black Espressif board: ESP32-C6-WROOM-1 module with its antenna at the top, addressable RGB LED (GPIO8), BOOT and RST buttons and two USB-C ports
+    (UART bridge and native USB) on the bottom edge.
+    Left header J1 top to bottom: 3V3, RST, 4, 5, 6, 7, 0, 1, 8, 10, 11, 2, 3, 5V, G, NC. Right header J3: G, TX, RX, 15, 23, 22, 21, 20, 19, 18, 9, G, 13, 12, G, NC.
+    Pin lists follow Espressif's ESP32-C6-DevKitC-1 v1.2 user guide (16 pins per header). Pins 13 and 12 (USB data) and NC are drawn but not wired in the catalog.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="16" width="188" height="438" rx="8" fill="#1b1e22" stroke="#050607" stroke-width="2"/>
+  <circle cx="114" cy="23" r="0" fill="none"/>
+  <rect x="22" y="38" width="16" height="271" rx="2" fill="#141414"/>
+  <circle cx="30" cy="46" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole v3" cx="30" cy="46" r="5.2"/>
+  <text x="42" y="48.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">3V3</text>
+  <circle cx="30" cy="63" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="63" r="5.2"/>
+  <text x="42" y="65.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RST</text>
+  <circle cx="30" cy="80" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="80" r="5.2"/>
+  <text x="42" y="82.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">4</text>
+  <circle cx="30" cy="97" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="97" r="5.2"/>
+  <text x="42" y="99.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">5</text>
+  <circle cx="30" cy="114" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="114" r="5.2"/>
+  <text x="42" y="116.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">6</text>
+  <circle cx="30" cy="131" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="131" r="5.2"/>
+  <text x="42" y="133.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">7</text>
+  <circle cx="30" cy="148" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="148" r="5.2"/>
+  <text x="42" y="150.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">0</text>
+  <circle cx="30" cy="165" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="165" r="5.2"/>
+  <text x="42" y="167.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">1</text>
+  <circle cx="30" cy="182" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="182" r="5.2"/>
+  <text x="42" y="184.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">8</text>
+  <circle cx="30" cy="199" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="199" r="5.2"/>
+  <text x="42" y="201.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">10</text>
+  <circle cx="30" cy="216" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="216" r="5.2"/>
+  <text x="42" y="218.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">11</text>
+  <circle cx="30" cy="233" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="233" r="5.2"/>
+  <text x="42" y="235.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">2</text>
+  <circle cx="30" cy="250" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="250" r="5.2"/>
+  <text x="42" y="252.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">3</text>
+  <circle cx="30" cy="267" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole pwr" cx="30" cy="267" r="5.2"/>
+  <text x="42" y="269.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">5V</text>
+  <circle cx="30" cy="284" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole gnd" cx="30" cy="284" r="5.2"/>
+  <text x="42" y="286.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">G</text>
+  <circle cx="30" cy="301" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="301" r="5.2"/>
+  <text x="42" y="303.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">NC</text>
+  <rect x="190" y="38" width="16" height="271" rx="2" fill="#141414"/>
+  <circle cx="198" cy="46" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole gnd" cx="198" cy="46" r="5.2"/>
+  <text x="186" y="48.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">G</text>
+  <circle cx="198" cy="63" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="63" r="5.2"/>
+  <text x="186" y="65.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">TX</text>
+  <circle cx="198" cy="80" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="80" r="5.2"/>
+  <text x="186" y="82.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RX</text>
+  <circle cx="198" cy="97" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="97" r="5.2"/>
+  <text x="186" y="99.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">15</text>
+  <circle cx="198" cy="114" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="114" r="5.2"/>
+  <text x="186" y="116.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">23</text>
+  <circle cx="198" cy="131" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="131" r="5.2"/>
+  <text x="186" y="133.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">22</text>
+  <circle cx="198" cy="148" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="148" r="5.2"/>
+  <text x="186" y="150.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">21</text>
+  <circle cx="198" cy="165" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="165" r="5.2"/>
+  <text x="186" y="167.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">20</text>
+  <circle cx="198" cy="182" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="182" r="5.2"/>
+  <text x="186" y="184.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">19</text>
+  <circle cx="198" cy="199" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="199" r="5.2"/>
+  <text x="186" y="201.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">18</text>
+  <circle cx="198" cy="216" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="216" r="5.2"/>
+  <text x="186" y="218.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">9</text>
+  <circle cx="198" cy="233" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole gnd" cx="198" cy="233" r="5.2"/>
+  <text x="186" y="235.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">G</text>
+  <circle cx="198" cy="250" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="250" r="5.2"/>
+  <text x="186" y="252.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">13</text>
+  <circle cx="198" cy="267" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="267" r="5.2"/>
+  <text x="186" y="269.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">12</text>
+  <circle cx="198" cy="284" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole gnd" cx="198" cy="284" r="5.2"/>
+  <text x="186" y="286.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">G</text>
+  <circle cx="198" cy="301" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="198" cy="301" r="5.2"/>
+  <text x="186" y="303.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#90a4ae">NC</text>
+  <rect x="62" y="22" width="104" height="172" rx="3" fill="#2b3036" stroke="#d9b44a" stroke-width="1"/>
+  <path d="M68 72 V30 H76 V72 H83 V30 H91 V72 H98 V30 H106 V72 H113 V30 H121 V72 H128 V30 H136 V72 H143 V30 H151 V72 H158" fill="none" stroke="#d9b44a" stroke-width="2.6" stroke-linejoin="round"/>
+  <rect x="66" y="78" width="96" height="112" rx="2" fill="#cfd8dc" stroke="#78909c" stroke-width="1.2"/>
+  <rect x="71" y="83" width="86" height="102" rx="1.5" fill="#e3e8ea"/>
+  <text x="114" y="116" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#263238" font-weight="bold">ESP32-C6</text>
+  <text x="114" y="129" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#263238" font-weight="bold">-WROOM-1</text>
+  <text x="114" y="144" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#455a64">Wi-Fi 6 BLE</text>
+  <text x="114" y="153" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#455a64">Zigbee Thread</text>
+  <text x="114" y="176" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#455a64" font-weight="bold">FC  CE</text>
+  <rect x="89" y="206" width="11" height="11" rx="1.5" fill="#fafafa" stroke="#9e9e9e" stroke-width="0.8"/>
+  <circle cx="92" cy="209" r="1.3" fill="#ef5350"/><circle cx="97" cy="209" r="1.3" fill="#66bb6a"/><circle cx="94.5" cy="214" r="1.3" fill="#42a5f5"/>
+  <text x="94.5" y="228" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">RGB</text>
+  <rect x="132" y="208.5" width="8" height="5" rx="1" fill="#ef5350" stroke="#00000066" stroke-width="0.6"/>
+  <text x="136" y="223" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">PWR</text>
+  <rect x="154" y="206" width="20" height="9" rx="1.5" fill="#141414"/>
+  <circle cx="160" cy="210.5" r="2.4" fill="#d9b44a"/><circle cx="168" cy="210.5" r="2.4" fill="#d9b44a"/>
+  <text x="164" y="223" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">J5</text>
+  <path d="M81 298V301 M81 331V334 M74 305H77 M107 305H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M84.7 298V301 M84.7 331V334 M74 308.7H77 M107 308.7H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M88.3 298V301 M88.3 331V334 M74 312.3H77 M107 312.3H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M92 298V301 M92 331V334 M74 316H77 M107 316H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M95.7 298V301 M95.7 331V334 M74 319.7H77 M107 319.7H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M99.3 298V301 M99.3 331V334 M74 323.3H77 M107 323.3H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M103 298V301 M103 331V334 M74 327H77 M107 327H110" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="77" y="301" width="30" height="30" rx="1.5"/>
+  <circle cx="82" cy="306" r="1.4" fill="#555"/>
+  <text x="92" y="318" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">CP2102N</text>
+  <rect class="chip" x="132" y="304" width="22" height="15" rx="1.5"/>
+  <rect x="154" y="307" width="6" height="9" fill="#1a1a1a"/>
+  <rect class="smd" x="126" y="332" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="138" y="332" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="150" y="332" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="58" y="346" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="70" y="346" width="8" height="5" rx="0.6"/>
+  <rect class="btn" x="91" y="381" width="16" height="14" rx="2"/>
+  <circle cx="99" cy="388" r="4.2" fill="#37474f"/>
+  <text x="99" y="404" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">BOOT</text>
+  <rect class="btn" x="121" y="381" width="16" height="14" rx="2"/>
+  <circle cx="129" cy="388" r="4.2" fill="#37474f"/>
+  <text x="129" y="404" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">RST</text>
+  <rect x="44" y="427" width="40" height="30" rx="4" fill="#d5d9dc" stroke="#7d868c" stroke-width="1.3"/>
+  <rect x="48" y="443" width="32" height="12" rx="6" fill="#9aa3a8"/>
+  <rect x="55" y="447" width="18" height="4" rx="2" fill="#5f686d"/>
+  <rect x="144" y="427" width="40" height="30" rx="4" fill="#d5d9dc" stroke="#7d868c" stroke-width="1.3"/>
+  <rect x="148" y="443" width="32" height="12" rx="6" fill="#9aa3a8"/>
+  <rect x="155" y="447" width="18" height="4" rx="2" fill="#5f686d"/>
+  <text x="64" y="419" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">UART</text>
+  <text x="164" y="419" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">USB</text>
+  <text x="114" y="261" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#b0bec5">ESP32-C6-DevKitC-1</text>
+</svg>

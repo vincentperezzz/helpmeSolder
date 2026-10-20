@@ -3,6 +3,7 @@ import { EXTRA_OUTPUTS_QUERIES } from "./extra/outputs-queries";
 import { EXTRA_DISPLAYS_QUERIES } from "./extra/displays-queries";
 import { EXTRA_SENSORS_QUERIES } from "./extra/sensors-queries";
 import { EXTRA_BOARDS_QUERIES } from "./extra/boards-queries";
+import { NEW_BOARDS_QUERIES } from "./extra/new-boards";
 import type { PhotoQueriesOverride } from "./types";
 
 /** Bundled photo search phrases per part id (the seed). Leaf module: no registry import. */
@@ -135,4 +136,5 @@ export const SEED_PHOTO_QUERY_OVERRIDES: Record<string, PhotoQueriesOverride> = 
   ...EXTRA_DISPLAYS_QUERIES,
   ...EXTRA_SENSORS_QUERIES,
   ...EXTRA_BOARDS_QUERIES,
+  ...NEW_BOARDS_QUERIES,
 };
