@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 230" width="240" height="230" role="img" aria-label="Diode 1N4007 (original simplified drawing, CC0)">
+  <title>Diode 1N4007 (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Black DO-41 rectifier with a silver band at the cathode end (C).
+    Anode left, cathode (band) right.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <path d="M60 70 H32 V214" fill="none" stroke="#607d8b" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M60 70 H32 V214" fill="none" stroke="#cfd8dc" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M180 70 H208 V214" fill="none" stroke="#607d8b" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M180 70 H208 V214" fill="none" stroke="#cfd8dc" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="58" y="46" width="124" height="48" rx="5" fill="#1d1d1d" stroke="#000" stroke-opacity="0.6" stroke-width="2"/>
+
+  <rect x="160" y="47" width="14" height="46" fill="#cfd8dc"/>
+  <rect x="65" y="50" width="110" height="3" rx="1.5" fill="#fff" opacity="0.16"/>
+  <text x="112" y="74.2" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#eceff1" font-weight="bold">1N4007</text>
+  <rect x="25.2" y="182" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="32" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">A</text>
+  <rect x="201.2" y="182" width="13.6" height="14" rx="7" fill="#263238" opacity="0.92"/>
+  <text x="208" y="193" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#eceff1">C</text>
+  <text x="208" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#607d8b">band</text>
+</svg>

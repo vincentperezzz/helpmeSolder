@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353.5 263.5" width="353.5" height="263.5" role="img" aria-label="4-channel relay module top view (original simplified drawing, CC0)">
+  <title>4-channel relay module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Blue board, 4 blue SRD-05VDC relay cubes, optocouplers and LEDs. Screw terminals along the top edge, each NO COM NC.
+    Control header along the bottom, left to right: GND IN1 IN2 IN3 IN4 VCC, then the JD-VCC / VCC / GND jumper pins with the yellow jumper cap fitted on JD-VCC and VCC.
+    Printed pin order and terminal order differ a little between makers.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="8" y="8" width="337.5" height="247.5" rx="5.4" fill="#1f56b0" stroke="#143c80" stroke-width="2"/>
+  <circle cx="16.1" cy="16.1" r="5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2"/>
+  <circle cx="337.4" cy="16.1" r="5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2"/>
+  <circle cx="16.1" cy="247.4" r="5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2"/>
+  <circle cx="337.4" cy="247.4" r="5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2"/>
+  <rect x="15.4" y="13.4" width="67.5" height="38.7" rx="1.8" fill="#2e9e4f" stroke="#1b5e20" stroke-width="1"/>
+  <rect x="19.9" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="26.7" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M21.7 36.6 H31.6" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="42.4" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="49.2" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M44.2 36.6 H54.1" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="64.9" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="71.7" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M66.7 36.6 H76.6" stroke="#546e7a" stroke-width="1.4"/>
+  <text class="label" x="26.7" y="58.4" text-anchor="middle" font-size="4.6">NO</text>
+  <text class="label" x="49.2" y="58.4" text-anchor="middle" font-size="4.6">COM</text>
+  <text class="label" x="71.7" y="58.4" text-anchor="middle" font-size="4.6">NC</text>
+  <rect x="14.3" y="65.6" width="69.8" height="85.5" rx="2.7" fill="#2f86d9" stroke="#0d47a1" stroke-width="1.5"/>
+  <rect x="17.9" y="69.2" width="62.6" height="78.3" rx="1.8" fill="none" stroke="#1565c0" stroke-width="0.8"/>
+  <text class="label" x="49.2" y="99.8" text-anchor="middle" font-size="4.8" font-weight="bold">SRD-05VDC</text>
+  <text class="label" x="49.2" y="109.7" text-anchor="middle" font-size="3.1999999999999997">10A 250VAC</text>
+  <text class="label" x="49.2" y="116.9" text-anchor="middle" font-size="3.1999999999999997">SONGLE</text>
+  <g>
+    <rect class="chip" x="17" y="161" width="20.7" height="15.3" rx="1.2"/>
+    <circle cx="21" cy="165" r="1.3" fill="#555"/>
+    <text class="label" x="27.4" y="169.76666666666665" text-anchor="middle" font-size="3.2">817</text>
+  </g>
+  <g>
+    <rect class="chip" x="45.8" y="162.8" width="12.6" height="10.4" rx="1.2"/>
+    <circle cx="49.8" cy="166.8" r="1.3" fill="#555"/>
+
+  </g>
+  <rect class="smd" x="63.8" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <rect class="smd" x="72.8" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <circle cx="76.9" cy="168.7" r="3.4" fill="#ff5252" stroke="#00000066" stroke-width="0.6"/>
+
+  <rect x="97.3" y="13.4" width="67.5" height="38.7" rx="1.8" fill="#2e9e4f" stroke="#1b5e20" stroke-width="1"/>
+  <rect x="101.8" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="108.6" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M103.6 36.6 H113.5" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="124.3" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="131.1" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M126.1 36.6 H136" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="146.8" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="153.6" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M148.6 36.6 H158.5" stroke="#546e7a" stroke-width="1.4"/>
+  <text class="label" x="108.6" y="58.4" text-anchor="middle" font-size="4.6">NO</text>
+  <text class="label" x="131.1" y="58.4" text-anchor="middle" font-size="4.6">COM</text>
+  <text class="label" x="153.6" y="58.4" text-anchor="middle" font-size="4.6">NC</text>
+  <rect x="96.2" y="65.6" width="69.8" height="85.5" rx="2.7" fill="#2f86d9" stroke="#0d47a1" stroke-width="1.5"/>
+  <rect x="99.8" y="69.2" width="62.6" height="78.3" rx="1.8" fill="none" stroke="#1565c0" stroke-width="0.8"/>
+  <text class="label" x="131.1" y="99.8" text-anchor="middle" font-size="4.8" font-weight="bold">SRD-05VDC</text>
+  <text class="label" x="131.1" y="109.7" text-anchor="middle" font-size="3.1999999999999997">10A 250VAC</text>
+  <text class="label" x="131.1" y="116.9" text-anchor="middle" font-size="3.1999999999999997">SONGLE</text>
+  <g>
+    <rect class="chip" x="98.9" y="161" width="20.7" height="15.3" rx="1.2"/>
+    <circle cx="102.9" cy="165" r="1.3" fill="#555"/>
+    <text class="label" x="109.3" y="169.76666666666665" text-anchor="middle" font-size="3.2">817</text>
+  </g>
+  <g>
+    <rect class="chip" x="127.7" y="162.8" width="12.6" height="10.4" rx="1.2"/>
+    <circle cx="131.7" cy="166.8" r="1.3" fill="#555"/>
+
+  </g>
+  <rect class="smd" x="145.7" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <rect class="smd" x="154.7" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <circle cx="158.7" cy="168.7" r="3.4" fill="#ff5252" stroke="#00000066" stroke-width="0.6"/>
+
+  <rect x="179.2" y="13.4" width="67.5" height="38.7" rx="1.8" fill="#2e9e4f" stroke="#1b5e20" stroke-width="1"/>
+  <rect x="183.7" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="190.5" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M185.5 36.6 H195.4" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="206.2" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="213" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M208 36.6 H217.9" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="228.7" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="235.5" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M230.5 36.6 H240.4" stroke="#546e7a" stroke-width="1.4"/>
+  <text class="label" x="190.5" y="58.4" text-anchor="middle" font-size="4.6">NO</text>
+  <text class="label" x="213" y="58.4" text-anchor="middle" font-size="4.6">COM</text>
+  <text class="label" x="235.5" y="58.4" text-anchor="middle" font-size="4.6">NC</text>
+  <rect x="178.1" y="65.6" width="69.8" height="85.5" rx="2.7" fill="#2f86d9" stroke="#0d47a1" stroke-width="1.5"/>
+  <rect x="181.7" y="69.2" width="62.6" height="78.3" rx="1.8" fill="none" stroke="#1565c0" stroke-width="0.8"/>
+  <text class="label" x="213" y="99.8" text-anchor="middle" font-size="4.8" font-weight="bold">SRD-05VDC</text>
+  <text class="label" x="213" y="109.7" text-anchor="middle" font-size="3.1999999999999997">10A 250VAC</text>
+  <text class="label" x="213" y="116.9" text-anchor="middle" font-size="3.1999999999999997">SONGLE</text>
+  <g>
+    <rect class="chip" x="180.8" y="161" width="20.7" height="15.3" rx="1.2"/>
+    <circle cx="184.8" cy="165" r="1.3" fill="#555"/>
+    <text class="label" x="191.1" y="169.76666666666665" text-anchor="middle" font-size="3.2">817</text>
+  </g>
+  <g>
+    <rect class="chip" x="209.6" y="162.8" width="12.6" height="10.4" rx="1.2"/>
+    <circle cx="213.6" cy="166.8" r="1.3" fill="#555"/>
+
+  </g>
+  <rect class="smd" x="227.6" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <rect class="smd" x="236.6" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <circle cx="240.7" cy="168.7" r="3.4" fill="#ff5252" stroke="#00000066" stroke-width="0.6"/>
+
+  <rect x="261.1" y="13.4" width="67.5" height="38.7" rx="1.8" fill="#2e9e4f" stroke="#1b5e20" stroke-width="1"/>
+  <rect x="265.6" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="272.4" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M267.4 36.6 H277.3" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="288.1" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="294.9" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M289.9 36.6 H299.8" stroke="#546e7a" stroke-width="1.4"/>
+  <rect x="310.6" y="13.4" width="13.5" height="9.9" fill="#102a14"/>
+  <circle cx="317.4" cy="36.6" r="8.1" fill="#cfd8dc" stroke="#546e7a" stroke-width="1"/>
+  <path d="M312.4 36.6 H322.3" stroke="#546e7a" stroke-width="1.4"/>
+  <text class="label" x="272.4" y="58.4" text-anchor="middle" font-size="4.6">NO</text>
+  <text class="label" x="294.9" y="58.4" text-anchor="middle" font-size="4.6">COM</text>
+  <text class="label" x="317.4" y="58.4" text-anchor="middle" font-size="4.6">NC</text>
+  <rect x="260" y="65.6" width="69.8" height="85.5" rx="2.7" fill="#2f86d9" stroke="#0d47a1" stroke-width="1.5"/>
+  <rect x="263.6" y="69.2" width="62.6" height="78.3" rx="1.8" fill="none" stroke="#1565c0" stroke-width="0.8"/>
+  <text class="label" x="294.9" y="99.8" text-anchor="middle" font-size="4.8" font-weight="bold">SRD-05VDC</text>
+  <text class="label" x="294.9" y="109.7" text-anchor="middle" font-size="3.1999999999999997">10A 250VAC</text>
+  <text class="label" x="294.9" y="116.9" text-anchor="middle" font-size="3.1999999999999997">SONGLE</text>
+  <g>
+    <rect class="chip" x="262.7" y="161" width="20.7" height="15.3" rx="1.2"/>
+    <circle cx="266.7" cy="165" r="1.3" fill="#555"/>
+    <text class="label" x="273" y="169.76666666666665" text-anchor="middle" font-size="3.2">817</text>
+  </g>
+  <g>
+    <rect class="chip" x="291.5" y="162.8" width="12.6" height="10.4" rx="1.2"/>
+    <circle cx="295.5" cy="166.8" r="1.3" fill="#555"/>
+
+  </g>
+  <rect class="smd" x="309.5" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <rect class="smd" x="318.5" y="162.8" width="7.2" height="4.1" rx="0.6"/>
+  <circle cx="322.6" cy="168.7" r="3.4" fill="#ff5252" stroke="#00000066" stroke-width="0.6"/>
+
+  <rect x="21.5" y="224.5" width="90" height="13.5" fill="#1b1b1b"/>
+  <circle class="hole gnd" cx="28.3" cy="231.2" r="4.2"/>
+  <text class="label" x="28.3" y="245.2" text-anchor="middle" font-size="4.6">GND</text>
+  <circle class="hole" cx="43.6" cy="231.2" r="4.2"/>
+  <text class="label" x="43.6" y="245.2" text-anchor="middle" font-size="4.6">IN1</text>
+  <circle class="hole" cx="58.9" cy="231.2" r="4.2"/>
+  <text class="label" x="58.9" y="245.2" text-anchor="middle" font-size="4.6">IN2</text>
+  <circle class="hole" cx="74.1" cy="231.2" r="4.2"/>
+  <text class="label" x="74.1" y="245.2" text-anchor="middle" font-size="4.6">IN3</text>
+  <circle class="hole" cx="89.5" cy="231.2" r="4.2"/>
+  <text class="label" x="89.5" y="245.2" text-anchor="middle" font-size="4.6">IN4</text>
+  <circle class="hole" cx="104.8" cy="231.2" r="4.2"/>
+  <text class="label" x="104.8" y="245.2" text-anchor="middle" font-size="4.6">VCC</text>
+  <rect x="126.8" y="224.5" width="44.1" height="13.5" fill="#1b1b1b"/>
+  <circle class="hole" cx="133.6" cy="231.2" r="4.2"/>
+  <text class="label" x="133.6" y="245.2" text-anchor="middle" font-size="4.199999999999999">JD-VCC</text>
+  <circle class="hole" cx="148.9" cy="231.2" r="4.2"/>
+  <text class="label" x="148.9" y="245.2" text-anchor="middle" font-size="4.199999999999999">VCC</text>
+  <circle class="hole gnd" cx="164.1" cy="231.2" r="4.2"/>
+  <text class="label" x="164.1" y="245.2" text-anchor="middle" font-size="4.199999999999999">GND</text>
+  <rect x="127.7" y="225.4" width="23.8" height="11.7" rx="1.8" fill="#ffd54f" stroke="#b28900" stroke-width="0.8" opacity="0.9"/>
+</svg>

@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 392" width="250" height="392" role="img" aria-label="Arduino Pro Mini 5 V top view (original simplified drawing, CC0)">
+  <title>Arduino Pro Mini 5 V top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Red 33 x 18 mm SparkFun-style board, 6-pin FTDI header across the top, ATmega328P TQFP and 16 MHz resonator.
+    Left edge top to bottom: TXO, RXI, RST, GND, D2-D9. Right edge: RAW, GND, RST, VCC, A3, A2, A1, A0, D13-D10.
+    A4/A5 and A6/A7 are the inner holes. The FTDI GND pin is the third GND (GND.3 is drawn there only as label; wire to the edge pins).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="32" y="20" width="180" height="348" rx="6" fill="#c62828" stroke="#7f0000" stroke-width="2" />
+  <rect x="47" y="39" width="128" height="18" rx="2" fill="#1b1b1b" />
+  <circle cx="56" cy="48" r="5" fill="#d9b44a"/>
+  <circle cx="78" cy="48" r="5" fill="#d9b44a"/>
+  <circle cx="100" cy="48" r="5" fill="#d9b44a"/>
+  <circle cx="122" cy="48" r="5" fill="#d9b44a"/>
+  <circle cx="144" cy="48" r="5" fill="#d9b44a"/>
+  <circle cx="166" cy="48" r="5" fill="#d9b44a"/>
+
+  <text x="78" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">CTS</text>
+  <text x="100" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">VCC</text>
+  <text x="122" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">TXO</text>
+  <text x="144" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">RXI</text>
+  <text x="166" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">DTR</text>
+  <text x="56" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <rect class="btn" x="182" y="43" width="16" height="14" rx="2"/>
+  <circle cx="190" cy="50" r="4.2" fill="#37474f"/>
+  <text x="190" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">RST</text>
+  <path d="M79 175V178 M79 232V235 M72 182H75 M129 182H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M85.6 175V178 M85.6 232V235 M72 188.6H75 M129 188.6H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M92.1 175V178 M92.1 232V235 M72 195.1H75 M129 195.1H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M98.7 175V178 M98.7 232V235 M72 201.7H75 M129 201.7H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M105.3 175V178 M105.3 232V235 M72 208.3H75 M129 208.3H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M111.9 175V178 M111.9 232V235 M72 214.9H75 M129 214.9H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M118.4 175V178 M118.4 232V235 M72 221.4H75 M129 221.4H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M125 175V178 M125 232V235 M72 228H75 M129 228H132" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="75" y="178" width="54" height="54" rx="1.5"/>
+  <circle cx="80" cy="183" r="1.4" fill="#555"/>
+  <text x="102" y="204" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1">ATmega</text>
+  <text x="102" y="212" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#b0bec5">328P</text>
+  <rect x="90" y="258" width="24" height="12" rx="2" fill="#e0c068" stroke="#8d6e1b"/>
+  <text x="102" y="282" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">16MHz</text>
+  <rect class="chip" x="132" y="278" width="16" height="10" rx="1.5"/>
+  <rect class="smd" x="122" y="300" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="134" y="300" width="8" height="5" rx="0.6"/>
+  <rect x="68" y="317.5" width="8" height="5" rx="1" fill="#66bb6a" stroke="#00000066" stroke-width="0.6"/>
+  <text x="72" y="332" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">PWR</text>
+  <rect x="128" y="317.5" width="8" height="5" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <text x="132" y="332" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">13</text>
+  <text x="122" y="352" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#ffcdd2">Pro Mini 5V/16MHz</text>
+  <circle cx="44" cy="94" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="94" r="4.3"/>
+  <text x="55" y="96.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">TXO</text>
+  <circle cx="44" cy="117" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="117" r="4.3"/>
+  <text x="55" y="119.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RXI</text>
+  <circle cx="44" cy="140" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="140" r="4.3"/>
+  <text x="55" y="142.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RST</text>
+  <circle cx="44" cy="163" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="44" cy="163" r="4.3"/>
+  <text x="55" y="165.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="44" cy="186" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="186" r="4.3"/>
+  <text x="55" y="188.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D2</text>
+  <circle cx="44" cy="209" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="209" r="4.3"/>
+  <text x="55" y="211.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D3</text>
+  <circle cx="44" cy="232" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="232" r="4.3"/>
+  <text x="55" y="234.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D4</text>
+  <circle cx="44" cy="255" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="255" r="4.3"/>
+  <text x="55" y="257.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D5</text>
+  <circle cx="44" cy="278" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="278" r="4.3"/>
+  <text x="55" y="280.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D6</text>
+  <circle cx="44" cy="301" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="301" r="4.3"/>
+  <text x="55" y="303.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D7</text>
+  <circle cx="44" cy="324" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="324" r="4.3"/>
+  <text x="55" y="326.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D8</text>
+  <circle cx="44" cy="347" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="44" cy="347" r="4.3"/>
+  <text x="55" y="349.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D9</text>
+  <circle cx="200" cy="94" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole pwr" cx="200" cy="94" r="4.3"/>
+  <text x="189" y="96.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RAW</text>
+  <circle cx="200" cy="117" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole gnd" cx="200" cy="117" r="4.3"/>
+  <text x="189" y="119.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle cx="200" cy="140" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="140" r="4.3"/>
+  <text x="189" y="142.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RST</text>
+  <circle cx="200" cy="163" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole pwr" cx="200" cy="163" r="4.3"/>
+  <text x="189" y="165.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">VCC</text>
+  <circle cx="200" cy="186" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="186" r="4.3"/>
+  <text x="189" y="188.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A3</text>
+  <circle cx="200" cy="209" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="209" r="4.3"/>
+  <text x="189" y="211.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A2</text>
+  <circle cx="200" cy="232" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="232" r="4.3"/>
+  <text x="189" y="234.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A1</text>
+  <circle cx="200" cy="255" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="255" r="4.3"/>
+  <text x="189" y="257.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A0</text>
+  <circle cx="200" cy="278" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="278" r="4.3"/>
+  <text x="189" y="280.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D13</text>
+  <circle cx="200" cy="301" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="301" r="4.3"/>
+  <text x="189" y="303.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D12</text>
+  <circle cx="200" cy="324" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="324" r="4.3"/>
+  <text x="189" y="326.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D11</text>
+  <circle cx="200" cy="347" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="200" cy="347" r="4.3"/>
+  <text x="189" y="349.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">D10</text>
+  <circle cx="166" cy="186" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="166" cy="186" r="4.3"/>
+  <text x="155" y="188.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A4</text>
+  <circle cx="166" cy="209" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="166" cy="209" r="4.3"/>
+  <text x="155" y="211.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A5</text>
+  <circle cx="166" cy="140" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="166" cy="140" r="4.3"/>
+  <text x="155" y="142.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A6</text>
+  <circle cx="166" cy="163" r="7.6" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="166" cy="163" r="4.3"/>
+  <text x="155" y="165.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A7</text>
+</svg>

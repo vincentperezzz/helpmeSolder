@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250" role="img" aria-label="AMS1117-3.3 regulator module top view (original simplified drawing, CC0)">
+  <title>AMS1117-3.3 regulator module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Small blue module: 3-pin header VIN, GND, VOUT along the top, SOT-223 regulator with its tab in the middle,
+    input and output capacitors beside it. Input up to about 12 V, output 3.3 V.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="8" width="180" height="234" rx="6" fill="#1b4f9c" stroke="#10336a" stroke-width="2"/>
+  <rect x="44" y="22" width="112" height="24" rx="2" fill="#1b1b1b"/>
+  <circle class="hole pwr" cx="56" cy="34" r="6"/>
+  <text x="56" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#eceff1">VIN</text>
+  <circle class="hole gnd" cx="100" cy="34" r="6"/>
+  <text x="100" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#eceff1">GND</text>
+  <circle class="hole v3" cx="144" cy="34" r="6"/>
+  <text x="144" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#eceff1">VOUT</text>
+  <rect x="81" y="98" width="6" height="16" fill="#cfd8dc" stroke="#607d8b"/>
+  <rect x="97" y="98" width="6" height="16" fill="#cfd8dc" stroke="#607d8b"/>
+  <rect x="113" y="98" width="6" height="16" fill="#cfd8dc" stroke="#607d8b"/>
+  <rect class="chip" x="68" y="112" width="64" height="40" rx="1.5"/>
+  <rect class="metal" x="76" y="152" width="48" height="14"/>
+  <text x="100" y="134" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#eceff1" font-weight="bold">1117</text>
+  <text x="100" y="146" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#b0bec5">3.3</text>
+  <rect x="24" y="96" width="26" height="34" fill="#a1887f" rx="2" stroke="#5d4037"/>
+  <text x="37" y="117" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3e2723">+</text>
+  <rect x="150" y="96" width="26" height="34" fill="#a1887f" rx="2" stroke="#5d4037"/>
+  <text x="163" y="117" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3e2723">+</text>
+  <rect x="36" y="176" width="14" height="8" fill="#d7ccc8" stroke="#6d4c41"/>
+  <rect x="150" y="176" width="14" height="8" fill="#d7ccc8" stroke="#6d4c41"/>
+  <rect x="24" y="150" width="8" height="14" fill="#d7ccc8" stroke="#6d4c41"/>
+  <text x="100" y="204" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#eceff1" font-weight="bold">AMS1117</text>
+  <text x="100" y="222" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#eceff1">3.3V</text>
+</svg>

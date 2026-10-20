@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 266" width="260" height="266" role="img" aria-label="MCP23017 DIP-28 top view (original simplified drawing, CC0)">
+  <title>MCP23017 DIP-28 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Narrow DIP-28, notch at the top. Pins 1-14 down the left (GPB0-7, VDD, VSS, NC, SCL, SDA, NC), 15-28 up the right (A0-A2, RESET, INTB, INTA, GPA0-7).
+    Terminals sit at the leg tips; NC pins are drawn but not wired.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="2" y="2" width="256" height="262" rx="10" fill="#2b3a42"/>
+  <rect class="chip" x="108" y="22" width="44" height="218" rx="3"/>
+  <path d="M 123 22 A 7 7 0 0 0 137 22 Z" fill="#2b3a42"/>
+  <circle cx="116" cy="32" r="2" fill="#555"/>
+  <rect x="94" y="37" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="42.6" text-anchor="end" style="font-size:7.5px">GPB0</text>
+  <text class="label" x="112" y="42" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">1</text>
+  <rect x="94" y="51" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="56.6" text-anchor="end" style="font-size:7.5px">GPB1</text>
+  <text class="label" x="112" y="56" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">2</text>
+  <rect x="94" y="65" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="70.6" text-anchor="end" style="font-size:7.5px">GPB2</text>
+  <text class="label" x="112" y="70" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">3</text>
+  <rect x="94" y="79" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="84.6" text-anchor="end" style="font-size:7.5px">GPB3</text>
+  <text class="label" x="112" y="84" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">4</text>
+  <rect x="94" y="93" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="98.6" text-anchor="end" style="font-size:7.5px">GPB4</text>
+  <text class="label" x="112" y="98" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">5</text>
+  <rect x="94" y="107" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="112.6" text-anchor="end" style="font-size:7.5px">GPB5</text>
+  <text class="label" x="112" y="112" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">6</text>
+  <rect x="94" y="121" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="126.6" text-anchor="end" style="font-size:7.5px">GPB6</text>
+  <text class="label" x="112" y="126" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">7</text>
+  <rect x="94" y="135" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="140.6" text-anchor="end" style="font-size:7.5px">GPB7</text>
+  <text class="label" x="112" y="140" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">8</text>
+  <rect x="94" y="149" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="154.6" text-anchor="end" style="font-size:7.5px">VDD</text>
+  <text class="label" x="112" y="154" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">9</text>
+  <rect x="94" y="163" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="168.6" text-anchor="end" style="font-size:7.5px">VSS</text>
+  <text class="label" x="112" y="168" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">10</text>
+  <rect x="94" y="177" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl muted" x="88" y="182.6" text-anchor="end" style="font-size:7.5px">NC</text>
+  <text class="label" x="112" y="182" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">11</text>
+  <rect x="94" y="191" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="196.6" text-anchor="end" style="font-size:7.5px">SCL</text>
+  <text class="label" x="112" y="196" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">12</text>
+  <rect x="94" y="205" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="88" y="210.6" text-anchor="end" style="font-size:7.5px">SDA</text>
+  <text class="label" x="112" y="210" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">13</text>
+  <rect x="94" y="219" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl muted" x="88" y="224.6" text-anchor="end" style="font-size:7.5px">NC</text>
+  <text class="label" x="112" y="224" text-anchor="start" style="font-size:5.5px;fill:#90a4ae">14</text>
+  <rect x="151" y="37" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="42.6" text-anchor="start" style="font-size:7.5px">GPA7</text>
+  <text class="label" x="148" y="42" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">28</text>
+  <rect x="151" y="51" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="56.6" text-anchor="start" style="font-size:7.5px">GPA6</text>
+  <text class="label" x="148" y="56" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">27</text>
+  <rect x="151" y="65" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="70.6" text-anchor="start" style="font-size:7.5px">GPA5</text>
+  <text class="label" x="148" y="70" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">26</text>
+  <rect x="151" y="79" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="84.6" text-anchor="start" style="font-size:7.5px">GPA4</text>
+  <text class="label" x="148" y="84" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">25</text>
+  <rect x="151" y="93" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="98.6" text-anchor="start" style="font-size:7.5px">GPA3</text>
+  <text class="label" x="148" y="98" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">24</text>
+  <rect x="151" y="107" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="112.6" text-anchor="start" style="font-size:7.5px">GPA2</text>
+  <text class="label" x="148" y="112" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">23</text>
+  <rect x="151" y="121" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="126.6" text-anchor="start" style="font-size:7.5px">GPA1</text>
+  <text class="label" x="148" y="126" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">22</text>
+  <rect x="151" y="135" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="140.6" text-anchor="start" style="font-size:7.5px">GPA0</text>
+  <text class="label" x="148" y="140" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">21</text>
+  <rect x="151" y="149" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="154.6" text-anchor="start" style="font-size:7.5px">INTA</text>
+  <text class="label" x="148" y="154" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">20</text>
+  <rect x="151" y="163" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="168.6" text-anchor="start" style="font-size:7.5px">INTB</text>
+  <text class="label" x="148" y="168" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">19</text>
+  <rect x="151" y="177" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="182.6" text-anchor="start" style="font-size:7.5px">RESET</text>
+  <text class="label" x="148" y="182" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">18</text>
+  <rect x="151" y="191" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="196.6" text-anchor="start" style="font-size:7.5px">A2</text>
+  <text class="label" x="148" y="196" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">17</text>
+  <rect x="151" y="205" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="210.6" text-anchor="start" style="font-size:7.5px">A1</text>
+  <text class="label" x="148" y="210" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">16</text>
+  <rect x="151" y="219" width="15" height="6" rx="1" fill="#b0bec5" stroke="#607d8b" stroke-width="0.6"/>
+  <text class="pinlbl" x="172" y="224.6" text-anchor="start" style="font-size:7.5px">A0</text>
+  <text class="label" x="148" y="224" text-anchor="end" style="font-size:5.5px;fill:#90a4ae">15</text>
+  <text class="label" x="126" y="131" text-anchor="middle" style="font-size:11px;fill:#cfd8dc" transform="rotate(90 126 131)">MCP23017</text>
+  <text class="label" x="137" y="131" text-anchor="middle" style="font-size:5.5px;fill:#78909c" transform="rotate(90 137 131)">I2C 16-BIT I/O EXPANDER</text>
+</svg>

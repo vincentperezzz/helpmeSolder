@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 360" width="130" height="360" role="img" aria-label="Water level sensor board top view (original simplified drawing, CC0)">
+  <title>Water level sensor board top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Long board with ten bare parallel copper strips (alternating power and sense) and a 3-pin header.
+    Header left to right: S (signal), + (VCC), - (GND). Some boards print - + S instead; check yours.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="14" width="90" height="332" rx="5" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
+  <circle cx="47" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="47" cy="34" r="5"/>
+  <text class="pinlbl" x="47" y="48" transform="rotate(90 47 48)" text-anchor="start" dy="2.7" font-size="7.5">S</text>
+  <circle cx="65" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="65" cy="34" r="5"/>
+  <text class="pinlbl" x="65" y="48" transform="rotate(90 65 48)" text-anchor="start" dy="2.7" font-size="7.5">+</text>
+  <circle cx="83" cy="34" r="8.5" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+  <circle class="hole" cx="83" cy="34" r="5"/>
+  <text class="pinlbl" x="83" y="48" transform="rotate(90 83 48)" text-anchor="start" dy="2.7" font-size="7.5">-</text>
+  <rect x="30" y="70" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="46" y="70" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="62" y="70" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="78" y="70" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="94" y="70" width="10" height="5" rx="0.8" fill="#212121" stroke="#000" stroke-width="0.5"/>
+  <rect x="26" y="88" width="78" height="4" rx="1" fill="#e6c978"/>
+  <rect x="29.5" y="100" width="5" height="232" rx="1" fill="#e6c978"/>
+  <rect x="36.9" y="100" width="3.2" height="232" rx="1" fill="#cfd8dc"/>
+  <rect x="44.3" y="100" width="5" height="232" rx="1" fill="#e6c978"/>
+  <rect x="51.7" y="100" width="3.2" height="232" rx="1" fill="#cfd8dc"/>
+  <rect x="59.1" y="100" width="5" height="232" rx="1" fill="#e6c978"/>
+  <rect x="66.5" y="100" width="3.2" height="232" rx="1" fill="#cfd8dc"/>
+  <rect x="73.9" y="100" width="5" height="232" rx="1" fill="#e6c978"/>
+  <rect x="81.3" y="100" width="3.2" height="232" rx="1" fill="#cfd8dc"/>
+  <rect x="88.7" y="100" width="5" height="232" rx="1" fill="#e6c978"/>
+  <rect x="96.1" y="100" width="3.2" height="232" rx="1" fill="#cfd8dc"/>
+  <text class="label" x="65" y="338" text-anchor="middle" font-size="6">WATER</text>
+</svg>

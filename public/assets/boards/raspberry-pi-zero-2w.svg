@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 362 232" width="362" height="232" role="img" aria-label="Raspberry Pi Zero 2 W top view (original simplified drawing, CC0)">
+  <title>Raspberry Pi Zero 2 W top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    65 x 30 mm green board: 40-pin header along the top edge (pin 1 at the left, odd pins on the lower row, even pins on the upper row),
+    mini-HDMI bottom-left, two micro-USB ports (USB data, PWR IN) at the bottom, microSD slot on the left, camera connector on the right,
+    silver RP3A0 package. Pin labels are the usual BCM names (GP = GPIO).
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="16" y="44" width="330" height="156" rx="8" fill="#2e7d32" stroke="#1b5e20" stroke-width="2" />
+  <circle cx="34" cy="62" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="328" cy="62" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="34" cy="182" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="328" cy="182" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <rect x="44" y="52" width="267" height="31" rx="2" fill="#151515" />
+  <rect x="6" y="106" width="54" height="56" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2" />
+  <rect x="10" y="116" width="40" height="36" rx="1" fill="#90a4ae" />
+  <rect x="6" y="130" width="14" height="8" fill="#37474f" />
+  <rect x="324" y="94" width="22" height="68" rx="2" fill="#eceff1" stroke="#90a4ae" stroke-width="1" />
+  <rect x="330" y="98" width="12" height="60" rx="1" fill="#37474f" />
+  <text x="316" y="130" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1" transform="rotate(-90 316 130)">CAM</text>
+  <rect x="166" y="122" width="56" height="56" rx="3" fill="#b0bec5" stroke="#78909c" stroke-width="1.4" />
+  <rect x="170" y="126" width="48" height="48" rx="2" fill="#cfd8dc" />
+  <text x="194" y="148" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#263238" font-weight="bold">RP3A0</text>
+  <text x="194" y="158" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#455a64">Pi Zero 2</text>
+  <rect class="smd" x="136" y="128" width="7" height="4" rx="0.6"/>
+  <rect class="smd" x="136" y="136" width="7" height="4" rx="0.6"/>
+  <rect class="smd" x="230" y="128" width="7" height="4" rx="0.6"/>
+  <rect class="smd" x="230" y="136" width="7" height="4" rx="0.6"/>
+  <rect x="244.5" y="112" width="7" height="4" rx="1" fill="#66bb6a" stroke="#00000066" stroke-width="0.6"/>
+  <g>
+  <rect x="66" y="164" width="58" height="39" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2" />
+  <rect x="72" y="194" width="46" height="7" rx="2" fill="#263238" />
+  </g>
+  <text x="95" y="156" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1">HDMI</text>
+  <g transform="translate(230 200) rotate(180)">
+    <rect x="-21" y="-3" width="42" height="31" rx="2.5" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2"/>
+    <path d="M-16 -1.5H16V0.2L12.6 2.4H-12.6L-16 0.2Z" fill="#37474f"/>
+    <rect x="-11.8" y="1" width="23.5" height="2" fill="#90a4ae"/>
+    <rect x="-18" y="12.6" width="36" height="8.4" rx="1" fill="#b0bec5"/>
+  </g>
+  <g transform="translate(294 200) rotate(180)">
+    <rect x="-21" y="-3" width="42" height="31" rx="2.5" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2"/>
+    <path d="M-16 -1.5H16V0.2L12.6 2.4H-12.6L-16 0.2Z" fill="#37474f"/>
+    <rect x="-11.8" y="1" width="23.5" height="2" fill="#90a4ae"/>
+    <rect x="-18" y="12.6" width="36" height="8.4" rx="1" fill="#b0bec5"/>
+  </g>
+  <text x="230" y="164" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1">USB</text>
+  <text x="294" y="164" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#eceff1">PWR</text>
+  <text x="184" y="194" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6.5" fill="#c8e6c9">Raspberry Pi Zero 2 W</text>
+  <circle class="hole pwr" cx="54" cy="61" r="4"/>
+  <text x="54" y="52" transform="rotate(-90 54 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">5V</text>
+  <circle class="hole v3" cx="54" cy="74" r="4"/>
+  <text x="54" y="83" transform="rotate(90 54 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">3V3</text>
+  <circle class="hole pwr" cx="67" cy="61" r="4"/>
+  <text x="67" y="52" transform="rotate(-90 67 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">5V</text>
+  <circle class="hole" cx="67" cy="74" r="4"/>
+  <text x="67" y="83" transform="rotate(90 67 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP2</text>
+  <circle class="hole gnd" cx="80" cy="61" r="4"/>
+  <text x="80" y="52" transform="rotate(-90 80 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="80" cy="74" r="4"/>
+  <text x="80" y="83" transform="rotate(90 80 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP3</text>
+  <circle class="hole" cx="93" cy="61" r="4"/>
+  <text x="93" y="52" transform="rotate(-90 93 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP14</text>
+  <circle class="hole" cx="93" cy="74" r="4"/>
+  <text x="93" y="83" transform="rotate(90 93 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP4</text>
+  <circle class="hole" cx="106" cy="61" r="4"/>
+  <text x="106" y="52" transform="rotate(-90 106 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP15</text>
+  <circle class="hole gnd" cx="106" cy="74" r="4"/>
+  <text x="106" y="83" transform="rotate(90 106 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="119" cy="61" r="4"/>
+  <text x="119" y="52" transform="rotate(-90 119 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP18</text>
+  <circle class="hole" cx="119" cy="74" r="4"/>
+  <text x="119" y="83" transform="rotate(90 119 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP17</text>
+  <circle class="hole gnd" cx="132" cy="61" r="4"/>
+  <text x="132" y="52" transform="rotate(-90 132 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="132" cy="74" r="4"/>
+  <text x="132" y="83" transform="rotate(90 132 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP27</text>
+  <circle class="hole" cx="145" cy="61" r="4"/>
+  <text x="145" y="52" transform="rotate(-90 145 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP23</text>
+  <circle class="hole" cx="145" cy="74" r="4"/>
+  <text x="145" y="83" transform="rotate(90 145 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP22</text>
+  <circle class="hole" cx="158" cy="61" r="4"/>
+  <text x="158" y="52" transform="rotate(-90 158 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP24</text>
+  <circle class="hole v3" cx="158" cy="74" r="4"/>
+  <text x="158" y="83" transform="rotate(90 158 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">3V3</text>
+  <circle class="hole gnd" cx="171" cy="61" r="4"/>
+  <text x="171" y="52" transform="rotate(-90 171 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="171" cy="74" r="4"/>
+  <text x="171" y="83" transform="rotate(90 171 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP10</text>
+  <circle class="hole" cx="184" cy="61" r="4"/>
+  <text x="184" y="52" transform="rotate(-90 184 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP25</text>
+  <circle class="hole" cx="184" cy="74" r="4"/>
+  <text x="184" y="83" transform="rotate(90 184 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP9</text>
+  <circle class="hole" cx="197" cy="61" r="4"/>
+  <text x="197" y="52" transform="rotate(-90 197 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP8</text>
+  <circle class="hole" cx="197" cy="74" r="4"/>
+  <text x="197" y="83" transform="rotate(90 197 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP11</text>
+  <circle class="hole" cx="210" cy="61" r="4"/>
+  <text x="210" y="52" transform="rotate(-90 210 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP7</text>
+  <circle class="hole gnd" cx="210" cy="74" r="4"/>
+  <text x="210" y="83" transform="rotate(90 210 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="223" cy="61" r="4"/>
+  <text x="223" y="52" transform="rotate(-90 223 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#90a4ae">ID_SC</text>
+  <circle class="hole" cx="223" cy="74" r="4"/>
+  <text x="223" y="83" transform="rotate(90 223 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#90a4ae">ID_SD</text>
+  <circle class="hole gnd" cx="236" cy="61" r="4"/>
+  <text x="236" y="52" transform="rotate(-90 236 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="236" cy="74" r="4"/>
+  <text x="236" y="83" transform="rotate(90 236 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP5</text>
+  <circle class="hole" cx="249" cy="61" r="4"/>
+  <text x="249" y="52" transform="rotate(-90 249 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP12</text>
+  <circle class="hole" cx="249" cy="74" r="4"/>
+  <text x="249" y="83" transform="rotate(90 249 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP6</text>
+  <circle class="hole gnd" cx="262" cy="61" r="4"/>
+  <text x="262" y="52" transform="rotate(-90 262 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle class="hole" cx="262" cy="74" r="4"/>
+  <text x="262" y="83" transform="rotate(90 262 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP13</text>
+  <circle class="hole" cx="275" cy="61" r="4"/>
+  <text x="275" y="52" transform="rotate(-90 275 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP16</text>
+  <circle class="hole" cx="275" cy="74" r="4"/>
+  <text x="275" y="83" transform="rotate(90 275 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP19</text>
+  <circle class="hole" cx="288" cy="61" r="4"/>
+  <text x="288" y="52" transform="rotate(-90 288 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP20</text>
+  <circle class="hole" cx="288" cy="74" r="4"/>
+  <text x="288" y="83" transform="rotate(90 288 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP26</text>
+  <circle class="hole" cx="301" cy="61" r="4"/>
+  <text x="301" y="52" transform="rotate(-90 301 52)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GP21</text>
+  <circle class="hole gnd" cx="301" cy="74" r="4"/>
+  <text x="301" y="83" transform="rotate(90 301 83)" dy="2.6" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+</svg>

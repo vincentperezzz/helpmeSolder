@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 252" width="200" height="252" role="img" aria-label="Coin vibration motor top view (original simplified drawing, CC0)">
+  <title>Coin vibration motor top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    10 mm silver disc with a short flex tail and two soldered wires: red is V+, black is GND.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <circle cx="100" cy="86" r="64" fill="#b0bec5" stroke="#607d8b" stroke-width="2"/>
+  <circle cx="100" cy="86" r="52" fill="#cfd8dc" stroke="#90a4ae"/>
+  <circle cx="100" cy="86" r="14" fill="#90a4ae" opacity="0.5"/>
+  <path d="M60 60 A48 48 0 0 1 140 60" fill="none" stroke="#fff" stroke-width="5" opacity="0.5"/>
+  <text x="100" y="124" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#37474f">3V  10x3</text>
+  <rect x="82" y="138" width="36" height="34" rx="3" fill="#8d6e3b" stroke="#5d4630"/>
+  <circle cx="92" cy="162" r="5" fill="#d9b44a" stroke="#a07d1c"/>
+  <circle cx="108" cy="162" r="5" fill="#d9b44a" stroke="#a07d1c"/>
+  <path d="M92 162 C92 196 78 204 78 238" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M92 162 C92 196 78 204 78 238" fill="none" stroke="#d32f2f" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="78" cy="238" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+  <path d="M108 162 C108 196 122 204 122 238" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M108 162 C108 196 122 204 122 238" fill="none" stroke="#212121" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="122" cy="238" r="3.6" fill="#e0e0e0" stroke="#607d8b" stroke-width="1"/>
+</svg>

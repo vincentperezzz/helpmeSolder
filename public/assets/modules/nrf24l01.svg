@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 276" width="140" height="276" role="img" aria-label="nRF24L01+ module top view (original simplified drawing, CC0)">
+  <title>nRF24L01+ module top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Antenna end up, 2 x 4 header at the bottom edge. Pairs across the header: GND/VCC, CE/CSN, SCK/MOSI, MISO/IRQ.
+    Bottom (outer) row: GND CE SCK MISO. Inner row: VCC CSN MOSI IRQ.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="10" y="10" width="120" height="256" rx="6" fill="#1b8a4b" stroke="#0f5a30" stroke-width="2"/>
+  <circle cx="22" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="118" cy="22" r="3.5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.2"/>
+  <rect x="18" y="18" width="104" height="66" fill="#146b39" rx="3"/>
+  <path d="M 30 26 L 108 26 L 108 31.8 L 30 31.8 L 30 37.6 L 108 37.6 L 108 43.3 L 30 43.3 L 30 49.1 L 108 49.1 L 108 54.9 L 30 54.9 L 30 60.7 L 108 60.7 L 108 66.4 L 30 66.4 L 30 72.2 L 108 72.2 L 108 78" fill="none" stroke="#e8d9a0" stroke-width="2.4" stroke-linejoin="round"/>
+  <rect class="chip" x="52" y="104" width="34" height="34" rx="2"/>
+  <circle cx="58" cy="110" r="1.6" fill="#666"/>
+  <text class="label" x="69" y="123" text-anchor="middle" style="font-size:6px">nRF24</text>
+  <text class="label" x="69" y="131" text-anchor="middle" style="font-size:6px">L01+</text>
+  <rect class="metal" x="96" y="108" width="16" height="9" rx="1"/>
+  <rect class="smd" x="98" y="124" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="106" y="124" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="26" y="108" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="26" y="118" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="36" y="150" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="98" y="140" width="6" height="4" rx="0.6"/>
+  <rect x="29" y="187" width="82" height="44" rx="2" fill="#1b1b1b"/>
+  <circle class="hole" cx="40" cy="198" r="6"/>
+  <circle class="hole gnd" cx="40" cy="220" r="6"/>
+  <text class="pinlbl" x="40" y="184" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 40 184)">VCC</text>
+  <text class="pinlbl" x="40" y="234" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 40 234)">GND</text>
+  <circle class="hole" cx="60" cy="198" r="6"/>
+  <circle class="hole" cx="60" cy="220" r="6"/>
+  <text class="pinlbl" x="60" y="184" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 60 184)">CSN</text>
+  <text class="pinlbl" x="60" y="234" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 60 234)">CE</text>
+  <circle class="hole" cx="80" cy="198" r="6"/>
+  <circle class="hole" cx="80" cy="220" r="6"/>
+  <text class="pinlbl" x="80" y="184" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 80 184)">MOSI</text>
+  <text class="pinlbl" x="80" y="234" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 80 234)">SCK</text>
+  <circle class="hole" cx="100" cy="198" r="6"/>
+  <circle class="hole" cx="100" cy="220" r="6"/>
+  <text class="pinlbl" x="100" y="184" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(-90 100 184)">IRQ</text>
+  <text class="pinlbl" x="100" y="234" dy="3" text-anchor="start" style="font-size:7.5px" transform="rotate(90 100 234)">MISO</text>
+</svg>

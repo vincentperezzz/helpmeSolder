@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 420" width="200" height="420" role="img" aria-label="DS18B20 waterproof temperature probe (original simplified drawing, CC0)">
+  <title>DS18B20 waterproof temperature probe (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Waterproof probe: stainless tube, heat-shrink, 3 wires. Usual colours: black GND, yellow/white DQ, red VDD (check the seller note).
+    The bare TO-92 chip has the same three pins, flat face toward you: GND, DQ, VDD.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="82" y="20" width="36" height="172" rx="18" fill="#cfd8dc" stroke="#78909c" stroke-width="1.5"/>
+  <rect x="90" y="36" width="6" height="140" rx="3" fill="#ffffff" opacity="0.55"/>
+  <rect x="77" y="190" width="46" height="38" rx="5" fill="#1b1b1b" stroke="#546e7a" stroke-width="1"/>
+  <rect x="93" y="228" width="14" height="38" rx="3" fill="#37474f" stroke="#546e7a" stroke-width="1"/>
+  <path d="M100 262 C100 300 62 318 62 372" fill="none" stroke="#78909c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M100 262 C100 300 62 318 62 372" fill="none" stroke="#212121" stroke-width="4" stroke-linecap="round"/>
+  <rect x="59.5" y="366" width="5" height="16" rx="1" fill="#d4a24c"/>
+  <text class="label" x="62" y="404" text-anchor="middle" font-size="9" style="fill:#78909c">GND</text>
+  <path d="M100 262 C100 300 100 318 100 372" fill="none" stroke="#78909c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M100 262 C100 300 100 318 100 372" fill="none" stroke="#fbc02d" stroke-width="4" stroke-linecap="round"/>
+  <rect x="97.5" y="366" width="5" height="16" rx="1" fill="#d4a24c"/>
+  <text class="label" x="100" y="404" text-anchor="middle" font-size="9" style="fill:#78909c">DQ</text>
+  <path d="M100 262 C100 300 138 318 138 372" fill="none" stroke="#78909c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M100 262 C100 300 138 318 138 372" fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"/>
+  <rect x="135.5" y="366" width="5" height="16" rx="1" fill="#d4a24c"/>
+  <text class="label" x="138" y="404" text-anchor="middle" font-size="9" style="fill:#78909c">VDD</text>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 270" width="260" height="270" role="img" aria-label="12 mm metal push button with LED ring (original simplified drawing, CC0)">
+  <title>12 mm metal push button with LED ring (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified drawing for HelpmeSolder wiring diagrams.
+    Metal bezel with glowing ring, four solder lugs below: COM, NO (switch) then LED +, LED - (ring light).
+    Lug order varies by seller; check the symbol on the body.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="65" y="138" width="130" height="30" rx="4" fill="#263238" stroke="#000" stroke-width="1"/>
+  <rect x="80" y="160" width="10" height="74" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1"/>
+  <circle cx="85" cy="224" r="3.2" fill="#37474f" stroke="#263238" stroke-width="0.8"/>
+  <text class="label" x="85" y="252" text-anchor="middle" font-size="8" style="fill:#78909c">COM</text>
+  <rect x="110" y="160" width="10" height="74" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1"/>
+  <circle cx="115" cy="224" r="3.2" fill="#37474f" stroke="#263238" stroke-width="0.8"/>
+  <text class="label" x="115" y="252" text-anchor="middle" font-size="8" style="fill:#78909c">NO</text>
+  <rect x="140" y="160" width="10" height="74" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1"/>
+  <circle cx="145" cy="224" r="3.2" fill="#37474f" stroke="#263238" stroke-width="0.8"/>
+  <text class="label" x="145" y="252" text-anchor="middle" font-size="8" style="fill:#78909c">LED +</text>
+  <rect x="170" y="160" width="10" height="74" rx="2" fill="#cfd8dc" stroke="#607d8b" stroke-width="1"/>
+  <circle cx="175" cy="224" r="3.2" fill="#37474f" stroke="#263238" stroke-width="0.8"/>
+  <text class="label" x="175" y="252" text-anchor="middle" font-size="8" style="fill:#78909c">LED -</text>
+  <circle cx="130" cy="90" r="66" fill="#b0bec5" stroke="#607d8b" stroke-width="2"/>
+  <circle cx="130" cy="90" r="58" fill="#90a4ae" stroke="#607d8b" stroke-width="1"/>
+  <circle cx="130" cy="90" r="52" fill="#29b6f6"/>
+  <circle cx="130" cy="90" r="44" fill="#cfd8dc" stroke="#78909c" stroke-width="1.5"/>
+  <circle cx="130" cy="90" r="38" fill="#eceff1"/>
+  <path d="M104 74 A30 30 0 0 1 128 58" fill="none" stroke="#ffffffcc" stroke-width="4" stroke-linecap="round"/>
+  <text class="label" x="130" y="94" text-anchor="middle" font-size="9" style="fill:#546e7a">12 mm</text>
+</svg>
