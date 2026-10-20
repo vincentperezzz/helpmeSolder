@@ -3,6 +3,7 @@ import { EXTRA_OUTPUTS_MEDIA } from "./extra/outputs-media";
 import { EXTRA_DISPLAYS_MEDIA } from "./extra/displays-media";
 import { EXTRA_SENSORS_MEDIA } from "./extra/sensors-media";
 import { EXTRA_BOARDS_MEDIA } from "./extra/boards-media";
+import { NEW_BOARDS_MEDIA } from "./extra/new-boards";
 import { BASIC_PART_MEDIA } from "./media-basic";
 import { BATTERY_PART_MEDIA } from "./media-batteries";
 import { MODULE_PART_MEDIA } from "./media-modules";
@@ -74,4 +75,5 @@ export const SEED_PHOTO_FILES: Record<string, string> = {
   ...EXTRA_DISPLAYS_MEDIA,
   ...EXTRA_SENSORS_MEDIA,
   ...EXTRA_BOARDS_MEDIA,
+  ...NEW_BOARDS_MEDIA,
 };

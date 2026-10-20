@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 250" width="240" height="250" role="img" aria-label="Seeed Studio XIAO ESP32S3 top view (original simplified drawing, CC0)">
+  <title>Seeed Studio XIAO ESP32S3 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    USB-C at the top with charge and user LEDs; shielded ESP32-S3R8 module, U.FL antenna socket between the B (BOOT) and R (RESET) buttons at the bottom.
+    Pad order from Seeed's published XIAO pinout: D0-D6 down the left side, 5V, GND, 3V3 and D10-D7 down the right side.
+    The battery and camera pads on the back of the board are not drawn.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="40" y="40" width="160" height="196" rx="16" fill="#141414" stroke="#000" stroke-width="2"/>
+  <rect x="92" y="26" width="56" height="50" rx="8" fill="#d5d9dc" stroke="#7d868c" stroke-width="1.5"/>
+  <rect x="100" y="34" width="40" height="16" rx="8" fill="#9aa3a8"/>
+  <rect x="108" y="40" width="24" height="4" rx="2" fill="#5f686d"/>
+  <rect x="154" y="38" width="6" height="4" rx="1" fill="#ef9a9a"/>
+  <rect x="154" y="48" width="6" height="4" rx="1" fill="#ffb74d"/>
+  <text class="label" x="164" y="44" font-size="6">CH</text>
+  <text class="label" x="164" y="54" font-size="6">USER</text>
+  <rect x="80" y="84" width="80" height="102" rx="3" fill="#f4f5f5" stroke="#b0b6ba" stroke-width="1.2"/>
+  <text x="120" y="106" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#263238">seeed</text>
+  <text x="120" y="118" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#263238">studio</text>
+  <text x="120" y="138" text-anchor="middle" font-family="ui-monospace, monospace" font-size="6" fill="#455a64">XIAO-ESP32-S3</text>
+  <text x="104" y="168" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="bold" fill="#263238">FC</text>
+  <text x="136" y="168" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="bold" fill="#263238">CE</text>
+  <rect x="82" y="196" width="22" height="20" rx="2" fill="#cfd3d6" stroke="#7d868c"/>
+  <circle cx="93" cy="206" r="5" fill="#263238"/>
+  <circle cx="120" cy="206" r="9" fill="#cfd3d6" stroke="#7d868c"/>
+  <circle cx="120" cy="206" r="3.5" fill="#b8860b"/>
+  <rect x="136" y="196" width="22" height="20" rx="2" fill="#cfd3d6" stroke="#7d868c"/>
+  <circle cx="147" cy="206" r="5" fill="#263238"/>
+  <text class="label" x="93" y="228" text-anchor="middle" font-size="7">B</text>
+  <text class="label" x="147" y="228" text-anchor="middle" font-size="7">R</text>
+  <g id="headers">
+    <rect x="38" y="57" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="64" r="4.5"/>
+    <text class="pinlbl" x="61" y="67" text-anchor="start">D0</text>
+    <rect x="38" y="81" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="88" r="4.5"/>
+    <text class="pinlbl" x="61" y="91" text-anchor="start">D1</text>
+    <rect x="38" y="105" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="112" r="4.5"/>
+    <text class="pinlbl" x="61" y="115" text-anchor="start">D2</text>
+    <rect x="38" y="129" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="136" r="4.5"/>
+    <text class="pinlbl" x="61" y="139" text-anchor="start">D3</text>
+    <rect x="38" y="153" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="160" r="4.5"/>
+    <text class="pinlbl" x="61" y="163" text-anchor="start">D4</text>
+    <rect x="38" y="177" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="184" r="4.5"/>
+    <text class="pinlbl" x="61" y="187" text-anchor="start">D5</text>
+    <rect x="38" y="201" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="50" cy="208" r="4.5"/>
+    <text class="pinlbl" x="61" y="211" text-anchor="start">D6</text>
+    <rect x="186" y="57" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole pwr" cx="190" cy="64" r="4.5"/>
+    <text class="pinlbl" x="179" y="67" text-anchor="end">5V</text>
+    <rect x="186" y="81" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole gnd" cx="190" cy="88" r="4.5"/>
+    <text class="pinlbl" x="179" y="91" text-anchor="end">GND</text>
+    <rect x="186" y="105" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole v3" cx="190" cy="112" r="4.5"/>
+    <text class="pinlbl" x="179" y="115" text-anchor="end">3V3</text>
+    <rect x="186" y="129" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="136" r="4.5"/>
+    <text class="pinlbl" x="179" y="139" text-anchor="end">D10</text>
+    <rect x="186" y="153" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="160" r="4.5"/>
+    <text class="pinlbl" x="179" y="163" text-anchor="end">D9</text>
+    <rect x="186" y="177" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="184" r="4.5"/>
+    <text class="pinlbl" x="179" y="187" text-anchor="end">D8</text>
+    <rect x="186" y="201" width="16" height="14" rx="3" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8"/>
+    <circle class="hole" cx="190" cy="208" r="4.5"/>
+    <text class="pinlbl" x="179" y="211" text-anchor="end">D7</text>
+  </g>
+</svg>

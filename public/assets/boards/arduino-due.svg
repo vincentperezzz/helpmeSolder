@@ -1,0 +1,326 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 552" width="300" height="552" role="img" aria-label="Arduino Due top view (original simplified drawing, CC0)">
+  <title>Arduino Due top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Mega-shaped teal board drawn standing up (turned 90 degrees clockwise from the usual view): DC jack and the two micro-USB ports
+    (PROGRAMMING nearest the jack, NATIVE) at the top. Right edge: SCL1 SDA1 AREF GND 13..8, 7..0, 14..21. Left edge: power header,
+    A0-A7, A8-A11 DAC0 DAC1 CANRX CANTX. The 2 x 18 block of pins 22-53 (5V at one end, GND at the other) runs along the bottom;
+    evens on the upper row, odds on the lower row (silkscreen order of the real board may differ slightly).
+    Only one GND (the left end of the block) is wired for that block; the other end pins are drawn without a wire target.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="16" y="28" width="267" height="508" rx="8" fill="#006f7a" stroke="#004a52" stroke-width="2"/>
+  <circle cx="251" cy="58" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="149" cy="468" r="6" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="194" cy="98" r="5" fill="#f5f5f5" stroke="#c9a227" stroke-width="2.5"/>
+  <rect x="261" y="107.9" width="18" height="132.3" rx="2" fill="#1b1b1b"/>
+  <rect x="261" y="247.6" width="18" height="106.9" rx="2" fill="#1b1b1b"/>
+  <rect x="261" y="361.9" width="18" height="106.9" rx="2" fill="#1b1b1b"/>
+  <rect x="20" y="146" width="18" height="106.9" rx="2" fill="#1b1b1b"/>
+  <rect x="20" y="260.3" width="18" height="106.9" rx="2" fill="#1b1b1b"/>
+  <rect x="20" y="374.6" width="18" height="106.9" rx="2" fill="#1b1b1b"/>
+  <rect x="45.1" y="491.4" width="233.9" height="30.7" rx="2" fill="#1b1b1b"/>
+  <rect x="28" y="16" width="50" height="78" rx="3" fill="#212121" stroke="#000" stroke-width="1"/>
+  <rect x="32" y="20" width="42" height="30" rx="2" fill="#37474f"/>
+  <circle cx="53" cy="70" r="9" fill="#111" stroke="#455a64"/>
+  <circle cx="53" cy="70" r="3" fill="#78909c"/>
+  <text x="53" y="110" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#cfd8dc">DC IN</text>
+  <g transform="translate(128 30) rotate(0)">
+    <rect x="-20" y="-10" width="40" height="36" rx="2.5" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2"/>
+    <path d="M-15.2 -8.5H15.2V-3L12 1H-12L-15.2 -3Z" fill="#37474f"/>
+    <rect x="-11.2" y="-6" width="22.4" height="2" fill="#90a4ae"/>
+    <rect x="-17" y="11.7" width="34" height="7.8" rx="1" fill="#b0bec5"/>
+  </g>
+  <g transform="translate(204 30) rotate(0)">
+    <rect x="-20" y="-10" width="40" height="36" rx="2.5" fill="#cfd8dc" stroke="#607d8b" stroke-width="1.2"/>
+    <path d="M-15.2 -8.5H15.2V-3L12 1H-12L-15.2 -3Z" fill="#37474f"/>
+    <rect x="-11.2" y="-6" width="22.4" height="2" fill="#90a4ae"/>
+    <rect x="-17" y="11.7" width="34" height="7.8" rx="1" fill="#b0bec5"/>
+  </g>
+  <text x="128" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.2" fill="#cfd8dc">PROGRAMMING</text>
+  <text x="204" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.2" fill="#cfd8dc">NATIVE</text>
+  <rect class="btn" x="121" y="88" width="14" height="12" rx="2"/>
+  <circle cx="128" cy="94" r="3.6" fill="#37474f"/>
+  <text x="128" y="110" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#eceff1">ERASE</text>
+  <rect class="btn" x="159" y="88" width="14" height="12" rx="2"/>
+  <circle cx="166" cy="94" r="3.6" fill="#37474f"/>
+  <text x="166" y="110" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#eceff1">RESET</text>
+  <rect class="chip" x="40" y="132" width="18" height="14" rx="1.5"/>
+  <rect class="chip" x="40" y="156" width="18" height="14" rx="1.5"/>
+  <rect class="smd" x="66" y="136" width="8" height="5" rx="0.6"/>
+  <rect class="smd" x="66" y="160" width="8" height="5" rx="0.6"/>
+  <path d="M125 135V138 M125 168V171 M118 142H121 M151 142H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M129.4 135V138 M129.4 168V171 M118 146.4H121 M151 146.4H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M133.8 135V138 M133.8 168V171 M118 150.8H121 M151 150.8H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M138.2 135V138 M138.2 168V171 M118 155.2H121 M151 155.2H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M142.6 135V138 M142.6 168V171 M118 159.6H121 M151 159.6H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M147 135V138 M147 168V171 M118 164H121 M151 164H154" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="121" y="138" width="30" height="30" rx="1.5"/>
+  <circle cx="126" cy="143" r="1.4" fill="#555"/>
+  <text x="136" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">16U2</text>
+  <rect x="169" y="142" width="14" height="22" rx="5.8" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="172" y="145" width="8" height="16" rx="1.5" fill="#b0bec5"/>
+  <text x="176" y="155" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#263238">16.00</text>
+  <rect x="97" y="187" width="40" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="106" cy="196" r="3" fill="#d9b44a"/>
+  <circle cx="117" cy="196" r="3" fill="#d9b44a"/>
+  <circle cx="128" cy="196" r="3" fill="#d9b44a"/>
+  <rect x="97" y="199" width="40" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="106" cy="208" r="3" fill="#d9b44a"/>
+  <circle cx="117" cy="208" r="3" fill="#d9b44a"/>
+  <circle cx="128" cy="208" r="3" fill="#d9b44a"/>
+  <text x="117" y="188" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#b0bec5">ICSP</text>
+  <rect x="212.5" y="138" width="7" height="4" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <rect x="212.5" y="148" width="7" height="4" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <rect x="212.5" y="158" width="7" height="4" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <rect x="212.5" y="168" width="7" height="4" rx="1" fill="#66bb6a" stroke="#00000066" stroke-width="0.6"/>
+  <text x="224" y="142" text-anchor="start" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">L</text>
+  <text x="224" y="152" text-anchor="start" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">TX</text>
+  <text x="224" y="162" text-anchor="start" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">RX</text>
+  <text x="224" y="172" text-anchor="start" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">ON</text>
+  <path d="M100 245V248 M100 348V351 M93 252H96 M196 252H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M104 245V248 M104 348V351 M93 256H96 M196 256H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M108 245V248 M108 348V351 M93 260H96 M196 260H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M112 245V248 M112 348V351 M93 264H96 M196 264H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M116 245V248 M116 348V351 M93 268H96 M196 268H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M120 245V248 M120 348V351 M93 272H96 M196 272H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M124 245V248 M124 348V351 M93 276H96 M196 276H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M128 245V248 M128 348V351 M93 280H96 M196 280H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M132 245V248 M132 348V351 M93 284H96 M196 284H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M136 245V248 M136 348V351 M93 288H96 M196 288H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M140 245V248 M140 348V351 M93 292H96 M196 292H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M144 245V248 M144 348V351 M93 296H96 M196 296H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M148 245V248 M148 348V351 M93 300H96 M196 300H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M152 245V248 M152 348V351 M93 304H96 M196 304H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M156 245V248 M156 348V351 M93 308H96 M196 308H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M160 245V248 M160 348V351 M93 312H96 M196 312H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M164 245V248 M164 348V351 M93 316H96 M196 316H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M168 245V248 M168 348V351 M93 320H96 M196 320H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M172 245V248 M172 348V351 M93 324H96 M196 324H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M176 245V248 M176 348V351 M93 328H96 M196 328H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M180 245V248 M180 348V351 M93 332H96 M196 332H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M184 245V248 M184 348V351 M93 336H96 M196 336H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M188 245V248 M188 348V351 M93 340H96 M196 340H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M192 245V248 M192 348V351 M93 344H96 M196 344H199" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="96" y="248" width="100" height="100" rx="1.5"/>
+  <circle cx="101" cy="253" r="1.4" fill="#555"/>
+  <text x="146" y="297" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#eceff1">SAM3X8E</text>
+  <text x="146" y="305" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#b0bec5">ATSAM3X8E-AU</text>
+  <rect x="131" y="372" width="30" height="12" rx="5" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="134" y="375" width="24" height="6" rx="1.5" fill="#b0bec5"/>
+  <text x="146" y="380" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#263238">12.000</text>
+  <rect x="75" y="267" width="10" height="22" rx="4.2" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="78" y="270" width="4" height="16" rx="1.5" fill="#b0bec5"/>
+
+  <rect x="107" y="407" width="50" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="116" cy="416" r="2.6" fill="#d9b44a"/>
+  <circle cx="124" cy="416" r="2.6" fill="#d9b44a"/>
+  <circle cx="132" cy="416" r="2.6" fill="#d9b44a"/>
+  <circle cx="140" cy="416" r="2.6" fill="#d9b44a"/>
+  <circle cx="148" cy="416" r="2.6" fill="#d9b44a"/>
+  <rect x="107" y="417" width="50" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="116" cy="426" r="2.6" fill="#d9b44a"/>
+  <circle cx="124" cy="426" r="2.6" fill="#d9b44a"/>
+  <circle cx="132" cy="426" r="2.6" fill="#d9b44a"/>
+  <circle cx="140" cy="426" r="2.6" fill="#d9b44a"/>
+  <circle cx="148" cy="426" r="2.6" fill="#d9b44a"/>
+  <text x="132" y="408" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#b0bec5">JTAG</text>
+  <rect x="177" y="407" width="40" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="186" cy="416" r="3" fill="#d9b44a"/>
+  <circle cx="197" cy="416" r="3" fill="#d9b44a"/>
+  <circle cx="208" cy="416" r="3" fill="#d9b44a"/>
+  <rect x="177" y="417" width="40" height="18" rx="2" fill="#1b1b1b"/>
+  <circle cx="186" cy="426" r="3" fill="#d9b44a"/>
+  <circle cx="197" cy="426" r="3" fill="#d9b44a"/>
+  <circle cx="208" cy="426" r="3" fill="#d9b44a"/>
+  <text x="197" y="408" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#b0bec5">SPI</text>
+  <text x="151" y="448" text-anchor="middle" font-family="ui-monospace, monospace" font-size="20" fill="#eceff1" font-weight="bold">DUE</text>
+  <text x="151" y="463" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#b2ebf2">ARDUINO</text>
+  <circle class="hole" cx="270" cy="116.9" r="4.3"/>
+  <text x="259" y="119.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">SCL1</text>
+  <circle class="hole" cx="270" cy="129.6" r="4.3"/>
+  <text x="259" y="132.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">SDA1</text>
+  <circle class="hole" cx="270" cy="142.3" r="4.3"/>
+  <text x="259" y="145.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">AREF</text>
+  <circle class="hole gnd" cx="270" cy="155" r="4.3"/>
+  <text x="259" y="157.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle class="hole" cx="270" cy="167.7" r="4.3"/>
+  <text x="259" y="170.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">13</text>
+  <circle class="hole" cx="270" cy="180.4" r="4.3"/>
+  <text x="259" y="183.2" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">12</text>
+  <circle class="hole" cx="270" cy="193.1" r="4.3"/>
+  <text x="259" y="195.9" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">11</text>
+  <circle class="hole" cx="270" cy="205.8" r="4.3"/>
+  <text x="259" y="208.6" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">10</text>
+  <circle class="hole" cx="270" cy="218.5" r="4.3"/>
+  <text x="259" y="221.3" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">9</text>
+  <circle class="hole" cx="270" cy="231.2" r="4.3"/>
+  <text x="259" y="234" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">8</text>
+  <circle class="hole" cx="270" cy="256.6" r="4.3"/>
+  <text x="259" y="259.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">7</text>
+  <circle class="hole" cx="270" cy="269.3" r="4.3"/>
+  <text x="259" y="272.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">6</text>
+  <circle class="hole" cx="270" cy="282" r="4.3"/>
+  <text x="259" y="284.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">5</text>
+  <circle class="hole" cx="270" cy="294.7" r="4.3"/>
+  <text x="259" y="297.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">4</text>
+  <circle class="hole" cx="270" cy="307.4" r="4.3"/>
+  <text x="259" y="310.2" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">3</text>
+  <circle class="hole" cx="270" cy="320.1" r="4.3"/>
+  <text x="259" y="322.9" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">2</text>
+  <circle class="hole" cx="270" cy="332.8" r="4.3"/>
+  <text x="259" y="335.6" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">1 TX0</text>
+  <circle class="hole" cx="270" cy="345.5" r="4.3"/>
+  <text x="259" y="348.3" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">0 RX0</text>
+  <circle class="hole" cx="270" cy="370.9" r="4.3"/>
+  <text x="259" y="373.7" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">14 TX3</text>
+  <circle class="hole" cx="270" cy="383.6" r="4.3"/>
+  <text x="259" y="386.4" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">15 RX3</text>
+  <circle class="hole" cx="270" cy="396.3" r="4.3"/>
+  <text x="259" y="399.1" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">16 TX2</text>
+  <circle class="hole" cx="270" cy="409" r="4.3"/>
+  <text x="259" y="411.8" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">17 RX2</text>
+  <circle class="hole" cx="270" cy="421.7" r="4.3"/>
+  <text x="259" y="424.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">18 TX1</text>
+  <circle class="hole" cx="270" cy="434.4" r="4.3"/>
+  <text x="259" y="437.2" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">19 RX1</text>
+  <circle class="hole" cx="270" cy="447.1" r="4.3"/>
+  <text x="259" y="449.9" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">20 SDA</text>
+  <circle class="hole" cx="270" cy="459.8" r="4.3"/>
+  <text x="259" y="462.6" text-anchor="end" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">21 SCL</text>
+  <circle class="hole" cx="29" cy="155" r="4.3"/>
+  <text x="40" y="157.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">NC</text>
+  <circle class="hole" cx="29" cy="167.7" r="4.3"/>
+  <text x="40" y="170.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">IOREF</text>
+  <circle class="hole" cx="29" cy="180.4" r="4.3"/>
+  <text x="40" y="183.2" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RESET</text>
+  <circle class="hole v3" cx="29" cy="193.1" r="4.3"/>
+  <text x="40" y="195.9" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">3V3</text>
+  <circle class="hole pwr" cx="29" cy="205.8" r="4.3"/>
+  <text x="40" y="208.6" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">5V</text>
+  <circle class="hole gnd" cx="29" cy="218.5" r="4.3"/>
+  <text x="40" y="221.3" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle class="hole gnd" cx="29" cy="231.2" r="4.3"/>
+  <text x="40" y="234" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">GND</text>
+  <circle class="hole pwr" cx="29" cy="243.9" r="4.3"/>
+  <text x="40" y="246.7" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">VIN</text>
+  <circle class="hole" cx="29" cy="269.3" r="4.3"/>
+  <text x="40" y="272.1" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A0</text>
+  <circle class="hole" cx="29" cy="282" r="4.3"/>
+  <text x="40" y="284.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A1</text>
+  <circle class="hole" cx="29" cy="294.7" r="4.3"/>
+  <text x="40" y="297.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A2</text>
+  <circle class="hole" cx="29" cy="307.4" r="4.3"/>
+  <text x="40" y="310.2" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A3</text>
+  <circle class="hole" cx="29" cy="320.1" r="4.3"/>
+  <text x="40" y="322.9" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A4</text>
+  <circle class="hole" cx="29" cy="332.8" r="4.3"/>
+  <text x="40" y="335.6" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A5</text>
+  <circle class="hole" cx="29" cy="345.5" r="4.3"/>
+  <text x="40" y="348.3" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A6</text>
+  <circle class="hole" cx="29" cy="358.2" r="4.3"/>
+  <text x="40" y="361" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A7</text>
+  <circle class="hole" cx="29" cy="383.6" r="4.3"/>
+  <text x="40" y="386.4" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A8</text>
+  <circle class="hole" cx="29" cy="396.3" r="4.3"/>
+  <text x="40" y="399.1" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A9</text>
+  <circle class="hole" cx="29" cy="409" r="4.3"/>
+  <text x="40" y="411.8" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A10</text>
+  <circle class="hole" cx="29" cy="421.7" r="4.3"/>
+  <text x="40" y="424.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">A11</text>
+  <circle class="hole" cx="29" cy="434.4" r="4.3"/>
+  <text x="40" y="437.2" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">DAC0</text>
+  <circle class="hole" cx="29" cy="447.1" r="4.3"/>
+  <text x="40" y="449.9" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">DAC1</text>
+  <circle class="hole" cx="29" cy="459.8" r="4.3"/>
+  <text x="40" y="462.6" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">CANRX</text>
+  <circle class="hole" cx="29" cy="472.5" r="4.3"/>
+  <text x="40" y="475.3" text-anchor="start" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">CANTX</text>
+  <circle class="hole pwr" cx="270" cy="500.4" r="3.9"/>
+  <text x="270" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">5V</text>
+  <circle class="hole pwr" cx="270" cy="513.1" r="3.9"/>
+  <text x="270" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">5V</text>
+  <circle class="hole" cx="257.3" cy="500.4" r="3.9"/>
+  <text x="257.3" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">22</text>
+  <circle class="hole" cx="257.3" cy="513.1" r="3.9"/>
+  <text x="257.3" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">23</text>
+  <circle class="hole" cx="244.6" cy="500.4" r="3.9"/>
+  <text x="244.6" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">24</text>
+  <circle class="hole" cx="244.6" cy="513.1" r="3.9"/>
+  <text x="244.6" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">25</text>
+  <circle class="hole" cx="231.9" cy="500.4" r="3.9"/>
+  <text x="231.9" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">26</text>
+  <circle class="hole" cx="231.9" cy="513.1" r="3.9"/>
+  <text x="231.9" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">27</text>
+  <circle class="hole" cx="219.2" cy="500.4" r="3.9"/>
+  <text x="219.2" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">28</text>
+  <circle class="hole" cx="219.2" cy="513.1" r="3.9"/>
+  <text x="219.2" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">29</text>
+  <circle class="hole" cx="206.5" cy="500.4" r="3.9"/>
+  <text x="206.5" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">30</text>
+  <circle class="hole" cx="206.5" cy="513.1" r="3.9"/>
+  <text x="206.5" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">31</text>
+  <circle class="hole" cx="193.8" cy="500.4" r="3.9"/>
+  <text x="193.8" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">32</text>
+  <circle class="hole" cx="193.8" cy="513.1" r="3.9"/>
+  <text x="193.8" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">33</text>
+  <circle class="hole" cx="181.1" cy="500.4" r="3.9"/>
+  <text x="181.1" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">34</text>
+  <circle class="hole" cx="181.1" cy="513.1" r="3.9"/>
+  <text x="181.1" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">35</text>
+  <circle class="hole" cx="168.4" cy="500.4" r="3.9"/>
+  <text x="168.4" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">36</text>
+  <circle class="hole" cx="168.4" cy="513.1" r="3.9"/>
+  <text x="168.4" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">37</text>
+  <circle class="hole" cx="155.7" cy="500.4" r="3.9"/>
+  <text x="155.7" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">38</text>
+  <circle class="hole" cx="155.7" cy="513.1" r="3.9"/>
+  <text x="155.7" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">39</text>
+  <circle class="hole" cx="143" cy="500.4" r="3.9"/>
+  <text x="143" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">40</text>
+  <circle class="hole" cx="143" cy="513.1" r="3.9"/>
+  <text x="143" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">41</text>
+  <circle class="hole" cx="130.3" cy="500.4" r="3.9"/>
+  <text x="130.3" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">42</text>
+  <circle class="hole" cx="130.3" cy="513.1" r="3.9"/>
+  <text x="130.3" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">43</text>
+  <circle class="hole" cx="117.6" cy="500.4" r="3.9"/>
+  <text x="117.6" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">44</text>
+  <circle class="hole" cx="117.6" cy="513.1" r="3.9"/>
+  <text x="117.6" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">45</text>
+  <circle class="hole" cx="104.9" cy="500.4" r="3.9"/>
+  <text x="104.9" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">46</text>
+  <circle class="hole" cx="104.9" cy="513.1" r="3.9"/>
+  <text x="104.9" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">47</text>
+  <circle class="hole" cx="92.2" cy="500.4" r="3.9"/>
+  <text x="92.2" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">48</text>
+  <circle class="hole" cx="92.2" cy="513.1" r="3.9"/>
+  <text x="92.2" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">49</text>
+  <circle class="hole" cx="79.5" cy="500.4" r="3.9"/>
+  <text x="79.5" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">50</text>
+  <circle class="hole" cx="79.5" cy="513.1" r="3.9"/>
+  <text x="79.5" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">51</text>
+  <circle class="hole" cx="66.8" cy="500.4" r="3.9"/>
+  <text x="66.8" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">52</text>
+  <circle class="hole" cx="66.8" cy="513.1" r="3.9"/>
+  <text x="66.8" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">53</text>
+  <circle class="hole gnd" cx="54.1" cy="500.4" r="3.9"/>
+  <text x="54.1" y="493.4" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">GND</text>
+  <circle class="hole gnd" cx="54.1" cy="513.1" r="3.9"/>
+  <text x="54.1" y="524.1" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5.5" fill="#eceff1">GND</text>
+</svg>

@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 366" width="200" height="366" role="img" aria-label="Adafruit Feather RP2040 top view (original simplified drawing, CC0)">
+  <title>Adafruit Feather RP2040 top view (original simplified drawing, CC0)</title>
+  <!--
+    Original CC0 simplified top view for HelpmeSolder wiring diagrams.
+    Feather footprint drawn upright with USB-C on top (Adafruit usually shows it sideways with USB on the left): 16-pin header on the right, 12-pin header on the left.
+    Right side top to bottom: NC, RST, 3V3, ARef, GND, A0-A3, 24, 25, SCK, MOSI, MISO, RX, TX. Left side: BAT, EN, USB, 13, 12, 11, 10, 9, 6, 5, SCL, SDA.
+    BOOTSEL and RESET buttons beside the USB-C, red LED on pin 13, NeoPixel, JST PH battery connector, STEMMA QT connector, RP2040 with QSPI flash and 12 MHz crystal.
+    Pin-1 position of the 16-pin header (NC) and the exact spot of the connectors are drawn from memory of the Feather standard; check against your board.
+  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .hole { fill: #f5f5f5; stroke: #37474f; stroke-width: 1.2; }
+      .gnd { fill: #212121; stroke: #000; }
+      .pwr { fill: #c62828; stroke: #8e0000; }
+      .v3 { fill: #ef6c00; stroke: #e65100; }
+      .usb { fill: #cfd8dc; stroke: #546e7a; stroke-width: 1.2; }
+      .metal { fill: #b0bec5; stroke: #607d8b; stroke-width: 1; }
+      .btn { fill: #eceff1; stroke: #607d8b; stroke-width: 1; }
+      .chip { fill: #1a1a1a; stroke: #000; stroke-width: 0.8; }
+      .smd { fill: #d7ccc8; stroke: #6d4c41; stroke-width: 0.5; }
+      .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; fill: #eceff1; }
+      .pinlbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; fill: #eceff1; }
+      .muted { fill: #90a4ae; }
+    ]]></style>
+  </defs>
+  <rect x="20" y="16" width="150" height="334" rx="8" fill="#1b1e22" stroke="#050607" stroke-width="2"/>
+  <rect x="22" y="110" width="16" height="192" rx="2" fill="#141414"/>
+  <circle cx="30" cy="118" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole pwr" cx="30" cy="118" r="4.8"/>
+  <text x="42" y="120.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">BAT</text>
+  <circle cx="30" cy="134" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="134" r="4.8"/>
+  <text x="42" y="136.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">EN</text>
+  <circle cx="30" cy="150" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole pwr" cx="30" cy="150" r="4.8"/>
+  <text x="42" y="152.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">USB</text>
+  <circle cx="30" cy="166" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="166" r="4.8"/>
+  <text x="42" y="168.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">13</text>
+  <circle cx="30" cy="182" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="182" r="4.8"/>
+  <text x="42" y="184.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">12</text>
+  <circle cx="30" cy="198" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="198" r="4.8"/>
+  <text x="42" y="200.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">11</text>
+  <circle cx="30" cy="214" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="214" r="4.8"/>
+  <text x="42" y="216.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">10</text>
+  <circle cx="30" cy="230" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="230" r="4.8"/>
+  <text x="42" y="232.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">9</text>
+  <circle cx="30" cy="246" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="246" r="4.8"/>
+  <text x="42" y="248.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">6</text>
+  <circle cx="30" cy="262" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="262" r="4.8"/>
+  <text x="42" y="264.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">5</text>
+  <circle cx="30" cy="278" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="278" r="4.8"/>
+  <text x="42" y="280.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">SCL</text>
+  <circle cx="30" cy="294" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="30" cy="294" r="4.8"/>
+  <text x="42" y="296.5" text-anchor="start" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">SDA</text>
+  <rect x="152" y="46" width="16" height="256" rx="2" fill="#141414"/>
+  <circle cx="160" cy="54" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="54" r="4.8"/>
+  <text x="148" y="56.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#90a4ae">NC</text>
+  <circle cx="160" cy="70" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="70" r="4.8"/>
+  <text x="148" y="72.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">RST</text>
+  <circle cx="160" cy="86" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole v3" cx="160" cy="86" r="4.8"/>
+  <text x="148" y="88.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">3V3</text>
+  <circle cx="160" cy="102" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="102" r="4.8"/>
+  <text x="148" y="104.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">ARef</text>
+  <circle cx="160" cy="118" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole gnd" cx="160" cy="118" r="4.8"/>
+  <text x="148" y="120.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">GND</text>
+  <circle cx="160" cy="134" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="134" r="4.8"/>
+  <text x="148" y="136.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">A0</text>
+  <circle cx="160" cy="150" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="150" r="4.8"/>
+  <text x="148" y="152.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">A1</text>
+  <circle cx="160" cy="166" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="166" r="4.8"/>
+  <text x="148" y="168.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">A2</text>
+  <circle cx="160" cy="182" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="182" r="4.8"/>
+  <text x="148" y="184.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">A3</text>
+  <circle cx="160" cy="198" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="198" r="4.8"/>
+  <text x="148" y="200.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">24</text>
+  <circle cx="160" cy="214" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="214" r="4.8"/>
+  <text x="148" y="216.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">25</text>
+  <circle cx="160" cy="230" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="230" r="4.8"/>
+  <text x="148" y="232.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">SCK</text>
+  <circle cx="160" cy="246" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="246" r="4.8"/>
+  <text x="148" y="248.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">MOSI</text>
+  <circle cx="160" cy="262" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="262" r="4.8"/>
+  <text x="148" y="264.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">MISO</text>
+  <circle cx="160" cy="278" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="278" r="4.8"/>
+  <text x="148" y="280.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">RX</text>
+  <circle cx="160" cy="294" r="7" fill="#d9b44a" stroke="#a07d1c" stroke-width="0.8" opacity="0.9"/>
+  <circle class="hole" cx="160" cy="294" r="4.8"/>
+  <text x="148" y="296.5" text-anchor="end" font-family="ui-monospace, monospace" font-size="6.5" fill="#eceff1">TX</text>
+  <rect x="73" y="13" width="44" height="30" rx="4" fill="#d5d9dc" stroke="#7d868c" stroke-width="1.3"/>
+  <rect x="77" y="15" width="36" height="12" rx="6" fill="#9aa3a8"/>
+  <rect x="84" y="19" width="22" height="4" rx="2" fill="#5f686d"/>
+  <rect class="btn" x="43" y="30" width="14" height="12" rx="2"/>
+  <circle cx="50" cy="36" r="3.6" fill="#37474f"/>
+  <text x="50" y="50" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#eceff1">BOOT</text>
+  <rect class="btn" x="117" y="30" width="14" height="12" rx="2"/>
+  <circle cx="124" cy="36" r="3.6" fill="#37474f"/>
+  <text x="124" y="50" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#eceff1">RESET</text>
+  <rect x="18" y="66" width="24" height="36" rx="2" fill="#f1f1ea" stroke="#9e9e9e" stroke-width="1"/>
+  <rect x="24" y="72" width="12" height="24" rx="1" fill="#d6d6cc"/>
+  <text x="54" y="87" text-anchor="start" font-family="ui-monospace, monospace" font-size="5.5" fill="#cfd8dc">LiPo</text>
+  <rect x="105.5" y="74" width="7" height="4" rx="1" fill="#ef5350" stroke="#00000066" stroke-width="0.6"/>
+  <text x="109" y="87" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">#13</text>
+  <rect x="67" y="70" width="11" height="11" rx="1.5" fill="#fafafa" stroke="#9e9e9e" stroke-width="0.8"/>
+  <circle cx="70" cy="73" r="1.3" fill="#ef5350"/><circle cx="75" cy="73" r="1.3" fill="#66bb6a"/><circle cx="72.5" cy="78" r="1.3" fill="#42a5f5"/>
+  <text x="72.5" y="92" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4.5" fill="#cfd8dc">NeoPixel</text>
+  <rect x="105.5" y="100" width="7" height="4" rx="1" fill="#ffb74d" stroke="#00000066" stroke-width="0.6"/>
+  <text x="109" y="113" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">CHG</text>
+  <rect class="chip" x="71" y="112" width="14" height="10" rx="1.2"/>
+  <rect class="smd" x="89" y="114" width="6" height="4" rx="0.6"/>
+  <path d="M77 151V154 M77 198V201 M70 158H73 M117 158H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M80.6 151V154 M80.6 198V201 M70 161.6H73 M117 161.6H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M84.2 151V154 M84.2 198V201 M70 165.2H73 M117 165.2H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M87.8 151V154 M87.8 198V201 M70 168.8H73 M117 168.8H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M91.4 151V154 M91.4 198V201 M70 172.4H73 M117 172.4H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M95 151V154 M95 198V201 M70 176H73 M117 176H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M98.6 151V154 M98.6 198V201 M70 179.6H73 M117 179.6H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M102.2 151V154 M102.2 198V201 M70 183.2H73 M117 183.2H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M105.8 151V154 M105.8 198V201 M70 186.8H73 M117 186.8H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M109.4 151V154 M109.4 198V201 M70 190.4H73 M117 190.4H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M113 151V154 M113 198V201 M70 194H73 M117 194H120" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="73" y="154" width="44" height="44" rx="1.5"/>
+  <circle cx="78" cy="159" r="1.4" fill="#555"/>
+  <text x="95" y="178" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#eceff1">RP2040</text>
+  <path d="M85.3 219.5V222.5 M85.3 237.5V240.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M91.8 219.5V222.5 M91.8 237.5V240.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M98.3 219.5V222.5 M98.3 237.5V240.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <path d="M104.8 219.5V222.5 M104.8 237.5V240.5" stroke="#b0bec5" stroke-width="1.4"/>
+  <rect class="chip" x="82" y="222.5" width="26" height="15" rx="1"/>
+  <circle cx="85.5" cy="226" r="1.1" fill="#555"/>
+  <text x="95" y="231.6" text-anchor="middle" font-family="ui-monospace, monospace" font-size="4.5" fill="#eceff1">FLASH</text>
+  <rect x="62" y="251" width="18" height="10" rx="4.2" fill="#cfd8dc" stroke="#78909c" stroke-width="1"/>
+  <rect x="65" y="254" width="12" height="4" rx="1.5" fill="#b0bec5"/>
+  <text x="71" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#263238">12M</text>
+  <rect class="smd" x="99" y="252" width="6" height="4" rx="0.6"/>
+  <rect class="smd" x="109" y="252" width="6" height="4" rx="0.6"/>
+  <rect x="79" y="330" width="32" height="22" rx="2" fill="#f1f1ea" stroke="#9e9e9e" stroke-width="1"/>
+  <rect x="83" y="330" width="24" height="10" rx="1" fill="#d6d6cc"/>
+  <text x="95" y="323" text-anchor="middle" font-family="ui-monospace, monospace" font-size="5" fill="#cfd8dc">STEMMA QT</text>
+  <text x="95" y="288" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#eceff1" font-weight="bold">Feather</text>
+  <text x="95" y="299" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7" fill="#ffb74d" font-weight="bold">RP2040</text>
+</svg>
