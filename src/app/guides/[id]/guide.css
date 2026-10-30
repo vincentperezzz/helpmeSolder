@@ -139,6 +139,50 @@
   outline-offset: 2px;
 }
 
+/* ---------- creator credit ---------- */
+
+.ga-credit {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 16px;
+  min-height: 28px;
+  padding: 0 var(--ga-gap) 6px;
+  color: var(--mute);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.ga-credit strong {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.ga-credit a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.ga-credit a:hover {
+  color: var(--copper-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (pointer: coarse) {
+  .ga-credit a::after {
+    content: "";
+    position: absolute;
+    inset: -10px -6px;
+  }
+}
+
 /* ---------- body ---------- */
 
 .ga-body {
