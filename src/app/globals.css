@@ -358,6 +358,22 @@ body {
   outline: none;
 }
 
+/* "Show current": white dots crawl along the wire. Ground runs the other way. */
+@media (prefers-reduced-motion: no-preference) {
+  .diagram-flow {
+    animation: diagram-flow 1.2s linear infinite;
+  }
+  .diagram-flow-back {
+    animation-direction: reverse;
+  }
+}
+
+@keyframes diagram-flow {
+  to {
+    stroke-dashoffset: -12.1;
+  }
+}
+
 .diagram-focusable:focus-visible {
   outline: 2px solid var(--flux);
   outline-offset: 2px;

@@ -20,6 +20,25 @@ type StepsPanelProps = {
   onOpenTab?: (tab: TabId) => void;
 };
 
+/** The reusable ideas the builder picked up, collected from the steps. */
+function RecapCard({ steps }: { steps: GuideStep[] }) {
+  const ideas = steps.flatMap((step) => (step.learned?.trim() ? [step.learned.trim()] : []));
+  if (ideas.length === 0) return null;
+  return (
+    <aside className="ga-recap" aria-labelledby="ga-recap-title">
+      <h3 id="ga-recap-title" className="ga-recap-title">
+        What you learned
+      </h3>
+      <p className="ga-recap-lede">These carry over to your next project.</p>
+      <ul className="ga-recap-list">
+        {ideas.map((idea) => (
+          <li key={idea}>{idea}</li>
+        ))}
+      </ul>
+    </aside>
+  );
+}
+
 /** The build order: a timeline of steps, each with its own Done button. */
 export function StepsPanel({ guideId, steps, onOpenTab }: StepsPanelProps) {
   const [ticked, setTicked] = useState<string[]>([]);
@@ -97,6 +116,18 @@ export function StepsPanel({ guideId, steps, onOpenTab }: StepsPanelProps) {
                 <div id={bodyId} className="ga-step-fold" data-folded={folded} inert={folded}>
                   <div className="ga-step-fold-inner">
                     <p className="ga-step-body">{step.body}</p>
+                    {step.why ? (
+                      <p className="ga-step-why">
+                        <span className="ga-step-why-label">Why</span>{" "}
+                        {step.why}
+                      </p>
+                    ) : null}
+                    {step.ifStuck ? (
+                      <details className="ga-step-stuck">
+                        <summary>If this doesn’t work</summary>
+                        <p>{step.ifStuck}</p>
+                      </details>
+                    ) : null}
                     <div className="ga-step-actions">
                       <DoneToggle
                         pressed={done}
@@ -122,6 +153,7 @@ export function StepsPanel({ guideId, steps, onOpenTab }: StepsPanelProps) {
           })}
         </ol>
       )}
+      <RecapCard steps={steps} />
     </section>
   );
 }

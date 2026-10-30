@@ -1,4 +1,5 @@
 import { BrandLogo } from "@/components/BrandLogo";
+import { CreatorBlock } from "@/components/CreatorCredit";
 import { retentionNotice } from "@/lib/guides/retention";
 
 export function SiteFooter() {
@@ -22,6 +23,7 @@ export function SiteFooter() {
           </p>
         </div>
       </div>
+      <CreatorBlock />
     </footer>
   );
 }

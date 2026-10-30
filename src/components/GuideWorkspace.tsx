@@ -24,6 +24,7 @@ import {
 } from "@/components/guide/model";
 import { DrawerHead } from "@/components/guide/DrawerHead";
 import { PHONE_QUERY, snapForKey, type Snap } from "@/components/guide/drawer";
+import { CreatorStrip } from "@/components/CreatorCredit";
 import { PanelTabs, panelDomId, tabDomId } from "@/components/guide/PanelTabs";
 import { SCROLL_ATTR } from "@/components/guide/scroll";
 import { readView, writeView, type CircuitView } from "@/components/guide/view-storage";
@@ -516,6 +517,7 @@ export function GuideWorkspace({
           </div>
         </section>
       </div>
+      <CreatorStrip />
     </main>
   );
 }

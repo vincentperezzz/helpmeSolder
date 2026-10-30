@@ -36,6 +36,7 @@ const patchSchema = z.object({
         from: z.object({ instanceId: z.string(), pinId: z.string() }),
         to: z.object({ instanceId: z.string(), pinId: z.string() }),
         note: z.string().optional(),
+        why: z.string().optional(),
       }),
     )
     .optional(),
@@ -46,6 +47,9 @@ const patchSchema = z.object({
         title: z.string(),
         body: z.string(),
         order: z.number().int(),
+        why: z.string().optional(),
+        ifStuck: z.string().optional(),
+        learned: z.string().optional(),
       }),
     )
     .optional(),

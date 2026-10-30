@@ -1,3 +1,4 @@
+import { CREATOR, CREATOR_LINE } from "@/lib/site/creator";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getCatalogPart, listCatalog } from "@/lib/catalog";
@@ -202,6 +203,27 @@ function missingForShare(guide: Guide, validation: ValidationResult): string[] {
   return missing;
 }
 
+/** Non-blocking nudges that keep the guide teaching, not only listing steps. */
+export function teachingGaps(guide: Guide): string[] {
+  const gaps: string[] = [];
+  const noWhyConnections = guide.connections.filter((connection) => !connection.why?.trim());
+  if (noWhyConnections.length > 0) {
+    gaps.push(
+      `${noWhyConnections.length} connection(s) have no \`why\` (call add_connection again with a one-sentence reason): ${noWhyConnections
+        .map((connection) => connection.id)
+        .join(", ")}`,
+    );
+  }
+  const noWhySteps = guide.steps.filter((step) => !step.why?.trim());
+  if (noWhySteps.length > 0) {
+    gaps.push(`${noWhySteps.length} step(s) have no \`why\` (call set_steps with a reason per step)`);
+  }
+  if (guide.steps.length > 0 && !guide.steps.some((step) => step.learned?.trim())) {
+    gaps.push("no step has `learned`; add 2 to 4 reusable ideas for the recap");
+  }
+  return gaps;
+}
+
 /** The share link exists only once the guide is complete and valid. */
 function shareStatus(ctx: ToolContext, guide: Guide) {
   const validation = validateGuide(guide);
@@ -222,6 +244,7 @@ function shareStatus(ctx: ToolContext, guide: Guide) {
     blocked: false,
     readyToShare: true,
     shareUrl: `${ctx.appUrl}/guides/${guide.id}`,
+    teachingSuggestions: teachingGaps(guide),
     message: `Share this link with the user once. Mention that guides are deleted if nobody opens them for ${getRetentionDays()} days.`,
   };
 }
@@ -442,14 +465,20 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
         from: connectionEndpoint,
         to: connectionEndpoint,
         note: z.string().optional(),
+        why: z
+          .string()
+          .optional()
+          .describe(
+            "One plain sentence on why this wire exists, for a beginner (for example \"The 220 ohm resistor limits current so the LED does not burn out\"). Always provide it.",
+          ),
       },
     },
-    ({ guide_id, id, from, to, note }) =>
+    ({ guide_id, id, from, to, note, why }) =>
       safely(() =>
         changeGuide(ctx, guide_id, (guide) => ({
           connections: [
             ...guide.connections.filter((connection) => connection.id !== id),
-            { id, from, to, note },
+            { id, from, to, note, why },
           ],
         })),
       ),
@@ -458,7 +487,7 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "set_steps",
     {
-      description: "Replace the ordered steps (and optional notes) on a guide. Write for beginners: one action per step, short plain sentences. Refer to pins with the exact labels used in the connections (for example \"1 (SIG)\" or \"GND\"); never invent other names like + or - for them. Order the steps: prepare parts, solder power and ground first, then signal wires, then power up and test. Do not list every wire again: the guide page already shows a generated \"What to solder where\" checklist from the connections. Use notes for warnings.",
+      description: "Replace the ordered steps (and optional notes) on a guide. Write for beginners: one action per step, short plain sentences. Refer to pins with the exact labels used in the connections (for example \"1 (SIG)\" or \"GND\"); never invent other names like + or - for them. Order the steps: prepare parts, solder power and ground first, then signal wires, then power up and test. Do not list every wire again: the guide page already shows a generated \"What to solder where\" checklist from the connections. Use notes for warnings. Give every step a `why` (one sentence on the reason), an `ifStuck` where something commonly goes wrong, and a `learned` for ideas that carry to the next project (pull-up resistors, shared GND, I2C addresses). The guide page turns these into reasons, troubleshooting hints and a recap.",
       inputSchema: {
         guide_id: z.string(),
         steps: z.array(
@@ -467,6 +496,15 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
             title: z.string(),
             body: z.string(),
             order: z.number().int(),
+            why: z.string().optional().describe("Why this step is done, one plain sentence."),
+            ifStuck: z
+              .string()
+              .optional()
+              .describe("What to check if this step does not work (swapped polarity, wrong pin, loose joint)."),
+            learned: z
+              .string()
+              .optional()
+              .describe("A reusable idea the builder just picked up, for the recap at the end."),
           }),
         ),
         notes: z.array(z.string()).optional(),
@@ -660,7 +698,12 @@ export function registerTools(server: McpServer, ctx: ToolContext): void {
 
 export function createMcpServer(ctx: ToolContext): McpServer {
   const server = new McpServer(
-    { name: "helpmesolder", version: "0.2.0" },
+    {
+      name: "helpmesolder",
+      title: `HelpmeSolder (${CREATOR_LINE})`,
+      version: "0.2.0",
+      websiteUrl: CREATOR.github.url,
+    },
     { instructions: INSTRUCTIONS },
   );
   registerTools(server, ctx);
