@@ -138,7 +138,7 @@ export function buildSolderItems(guide: Guide): WireItem[] {
         colorName: colorName(color),
         kind,
         powerFeed: isSupply(from.part) || isSupply(to.part),
-        why: whyFor(kind, from, to),
+        why: connection.why?.trim() || whyFor(kind, from, to),
         note: connection.note,
       } satisfies WireItem,
     };

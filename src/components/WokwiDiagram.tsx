@@ -26,6 +26,7 @@ import { isBatteryPowerSource } from "@/lib/guides/power-source";
 import { buildSolderItems, type WireItem } from "@/lib/guides/solder-plan";
 import { hasWokwiVisual } from "@/lib/catalog/wokwi";
 import { isBreadboardId } from "./wokwi/breadboard";
+import { useFlowSetting } from "./wokwi/useFlowSetting";
 import { BreadboardVisual } from "./wokwi/BreadboardVisual";
 import { BADGE_R, badgeRects, badgeTextColor } from "./wokwi/badges";
 import { cardText, placeCards, pointToward, stringPath, tagGeometry, TAG_HOLE_R, type CardRequest, type TagSide } from "./wokwi/cards";
@@ -76,6 +77,7 @@ const TAP_SLOP = 6;
 const TOOLBAR_ICONS = {
   fit: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5M9 9h6v6H9z",
   reset: "M4 12a8 8 0 1 0 3-6.2M4 4v4h4",
+  flow: "M3 12h4M10 12h4M17 12h4M17 8l4 4-4 4",
   names: "M4 6h9a3 3 0 0 1 3 3v0M4 12h12M4 18h7M17 15l3 3-3 3",
   "panel-hide": "M4 5h16v14H4zM14 5v14M17 10l-2 2 2 2",
   "panel-show": "M4 5h16v14H4zM14 5v14M16 10l2 2-2 2",
@@ -143,6 +145,7 @@ export function WokwiDiagram({
   const ready = useWokwiReady();
   const [canvas, setCanvas] = useState<CanvasSize>({ width: 1400, height: 820 });
   const [showNames, setShowNames] = useState(false);
+  const { flow: showFlow, reduced: reducedMotion, toggle: toggleFlow } = useFlowSetting();
   const [selected, setSelected] = useState<string | null>(null);
   const refitKey = useMemo(
     () =>
@@ -523,6 +526,22 @@ export function WokwiDiagram({
             <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="names" /></span>
             <span className="diagram-btn-label">Wire names</span>
           </button>
+          <button
+            type="button"
+            className="diagram-zoom-btn"
+            onClick={toggleFlow}
+            aria-pressed={showFlow}
+            disabled={reducedMotion}
+            aria-label="Show current"
+            title={
+              reducedMotion
+                ? "Off because your device asks for less motion"
+                : "Animate dots along the wires to show electricity moving (illustrative: ground returns the other way)"
+            }
+          >
+            <span className="diagram-btn-icon" aria-hidden="true"><ToolbarIcon name="flow" /></span>
+            <span className="diagram-btn-label">Show current</span>
+          </button>
           {onEnlargedChange ? (
             <button
               type="button"
@@ -694,6 +713,23 @@ export function WokwiDiagram({
                         className="motion-trace"
                         style={{ strokeDasharray: 1, strokeDashoffset: 1 }}
                       />
+                      {showFlow && visual.visible ? (
+                        <path
+                          d={wire.d}
+                          fill="none"
+                          stroke="#ffffff"
+                          strokeOpacity={0.85}
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeDasharray="0.1 12"
+                          className={
+                            solderItems.get(wire.id)?.kind === "ground"
+                              ? "diagram-flow diagram-flow-back"
+                              : "diagram-flow"
+                          }
+                          style={{ pointerEvents: "none" }}
+                        />
+                      ) : null}
                       <circle cx={wire.from.x} cy={wire.from.y} r={visual.emphasized ? 4.2 : 3.2} fill={wire.color} />
                       <circle cx={wire.to.x} cy={wire.to.y} r={visual.emphasized ? 4.2 : 3.2} fill={wire.color} />
                     </>

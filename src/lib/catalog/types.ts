@@ -153,6 +153,8 @@ export type GuideConnection = {
   from: { instanceId: string; pinId: string };
   to: { instanceId: string; pinId: string };
   note?: string;
+  /** One plain sentence on why this wire exists ("the resistor limits current so the LED survives"). */
+  why?: string;
 };
 
 export type GuideStep = {
@@ -160,6 +162,12 @@ export type GuideStep = {
   title: string;
   body: string;
   order: number;
+  /** Why this step is done, in one plain sentence. */
+  why?: string;
+  /** What to check when this step does not work out. */
+  ifStuck?: string;
+  /** A reusable idea the builder picks up here; collected into the recap. */
+  learned?: string;
 };
 
 export type Guide = {

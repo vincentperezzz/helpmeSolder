@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { CREATOR } from "@/lib/site/creator";
 
 export const CARD_SIZE = { width: 1200, height: 630 } as const;
 
@@ -131,6 +132,23 @@ export async function renderSocialCard({
               </div>
             ))}
           </div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 28,
+            display: "flex",
+            justifyContent: "center",
+            fontFamily: "DM Sans",
+            fontWeight: 500,
+            fontSize: 24,
+            color: MAT,
+            opacity: 0.7,
+          }}
+        >
+          {`by ${CREATOR.name} · github.com/${CREATOR.github.handle} · @${CREATOR.instagram.handle}`}
         </div>
       </div>
     ),

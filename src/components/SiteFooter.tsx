@@ -1,4 +1,5 @@
 import { BrandLogo } from "@/components/BrandLogo";
+import { CreatorCredit } from "@/components/CreatorCredit";
 import { retentionNotice } from "@/lib/guides/retention";
 
 export function SiteFooter() {
@@ -20,6 +21,7 @@ export function SiteFooter() {
               Service status
             </a>
           </p>
+          <CreatorCredit />
         </div>
       </div>
     </footer>

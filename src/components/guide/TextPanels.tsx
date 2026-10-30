@@ -1,3 +1,4 @@
+import { CreatorCredit } from "@/components/CreatorCredit";
 import { AlertIcon, TipIcon } from "./icons";
 import { noteKind } from "./model";
 
@@ -58,6 +59,7 @@ export function NotesPanel({ notes, expiryLabel, retentionDays }: NotesPanelProp
         <p className="text-xs leading-relaxed text-mute">
           Part drawings use the MIT-licensed Wokwi Elements.
         </p>
+        <CreatorCredit className="text-xs leading-relaxed text-mute" />
       </section>
     </div>
   );
