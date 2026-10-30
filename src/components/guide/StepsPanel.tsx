@@ -118,7 +118,7 @@ export function StepsPanel({ guideId, steps, onOpenTab }: StepsPanelProps) {
                     <p className="ga-step-body">{step.body}</p>
                     {step.why ? (
                       <p className="ga-step-why">
-                        <span className="ga-step-why-label">Why</span>
+                        <span className="ga-step-why-label">Why</span>{" "}
                         {step.why}
                       </p>
                     ) : null}
