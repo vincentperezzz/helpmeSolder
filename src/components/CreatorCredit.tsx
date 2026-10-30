@@ -94,7 +94,8 @@ export function CreatorStrip() {
   return (
     <footer className="ga-credit">
       <span>
-        Made by <strong>{CREATOR.name}</strong>
+        <span className="ga-credit-lead">Made by </span>
+        <strong>{CREATOR.name}</strong>
       </span>
       <a href={CREATOR.instagram.url} {...EXTERNAL}>
         <InstagramIcon size={14} />
